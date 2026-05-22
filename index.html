@@ -105,14 +105,30 @@
 .ai-form-jp{font-family:'Shippori Mincho',serif;font-size:18px;color:var(--red-d);margin-top:4px;font-weight:600}
 .ai-field{margin-bottom:14px}
 .ai-label{display:block;font-size:11px;color:#8b6f3f;margin-bottom:6px;font-weight:600;letter-spacing:.05em}
+.ai-label-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
 .ai-input{width:100%;background:#fff;border:.5px solid var(--gold);border-radius:8px;padding:.6rem .75rem;font-size:13px;font-family:'Noto Serif JP',serif;color:var(--ma);outline:none}
 .ai-input:focus{border-color:var(--red);box-shadow:0 0 0 2px rgba(155,42,26,.12)}
+/* 神社入力（複数追加可） */
+.shrine-row{display:flex;gap:6px;margin-bottom:6px;align-items:center}
+.shrine-row .ai-input{flex:1}
+.shrine-del{width:28px;height:28px;border-radius:50%;background:#fff;border:.5px solid #d4a89d;color:var(--red);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;line-height:1}
+.shrine-del:hover{background:var(--red-l)}
+.shrine-add{background:#fff;border:.5px dashed var(--gold);color:#8b6f3f;font-size:12px;padding:8px;border-radius:8px;cursor:pointer;width:100%;font-family:'Noto Serif JP',serif;margin-top:2px;transition:all .18s var(--ease)}
+.shrine-add:hover{background:var(--gold-l);border-style:solid}
+.shrine-add:disabled{opacity:.4;cursor:not-allowed}
+.ai-hint{font-size:10px;color:#aaa;margin-top:3px;line-height:1.5}
 .ai-tags{display:flex;gap:6px;flex-wrap:wrap}
 .ai-tag{background:#fff;color:#8b6f3f;font-size:12px;padding:6px 13px;border-radius:18px;border:.5px solid var(--gold);cursor:pointer;font-family:'Noto Serif JP',serif;transition:all .18s var(--ease)}
 .ai-tag.on{background:var(--red);color:#fff;border-color:var(--red);box-shadow:0 2px 6px rgba(155,42,26,.3)}
 .ai-time{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
 .ai-time-btn{background:#fff;color:#8b6f3f;font-size:12px;padding:9px;border-radius:8px;text-align:center;border:.5px solid var(--gold);cursor:pointer;font-family:'Noto Serif JP',serif;transition:all .18s var(--ease)}
 .ai-time-btn.on{background:var(--red);color:#fff;border-color:var(--red)}
+/* 交通手段選択（4択） */
+.ai-transport{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
+.ai-tr-btn{background:#fff;color:#8b6f3f;font-size:11px;padding:8px 4px;border-radius:8px;text-align:center;border:.5px solid var(--gold);cursor:pointer;font-family:'Noto Serif JP',serif;transition:all .18s var(--ease);display:flex;flex-direction:column;align-items:center;gap:3px}
+.ai-tr-btn.on{background:var(--red);color:#fff;border-color:var(--red)}
+.ai-tr-btn svg{width:18px;height:18px}
+.ai-tr-btn.on svg path,.ai-tr-btn.on svg circle,.ai-tr-btn.on svg rect,.ai-tr-btn.on svg line{stroke:#fff}
 .ai-submit{width:100%;background:var(--red-d);color:#fff;border:none;padding:14px;border-radius:10px;font-size:14px;font-family:'Shippori Mincho',serif;font-weight:600;letter-spacing:.1em;cursor:pointer;margin-top:6px;box-shadow:0 4px 12px -2px rgba(74,27,12,.4);transition:transform .15s var(--ease)}
 .ai-submit:hover{background:var(--red)}
 .ai-submit:active{transform:scale(.985)}
@@ -128,29 +144,44 @@
 .ai-limit-btn{flex:1;padding:11px;border-radius:8px;font-size:12px;font-family:'Noto Serif JP',serif;font-weight:600;cursor:pointer;border:none}
 .ai-limit-btn.primary{background:var(--red-d);color:#fff}
 .ai-limit-btn.secondary{background:#fff;color:#666;border:.5px solid #ccc}
-/* AIルート結果ページ（巻物式タイムライン） */
-.ai-result{padding:1.25rem;background:var(--washi);min-height:100%}
-.ai-result-card{background:#faf7f0;border:1px solid var(--gold);border-radius:14px;padding:1.25rem;box-shadow:0 2px 10px -4px rgba(74,27,12,.15)}
-.ai-result-hd{text-align:center;padding-bottom:14px;border-bottom:1px solid var(--gold);margin-bottom:18px}
-.ai-result-en{font-family:'Shippori Mincho',serif;font-size:10px;letter-spacing:.3em;color:#8b6f3f}
-.ai-result-tit{font-family:'Shippori Mincho',serif;font-size:18px;color:var(--red-d);margin-top:5px;font-weight:600}
-.ai-result-meta{font-size:11px;color:#8b6f3f;margin-top:5px}
-.ai-timeline{position:relative;padding-left:30px}
-.ai-timeline::before{content:"";position:absolute;left:10px;top:6px;bottom:6px;width:1px;background:var(--gold)}
-.ai-stop{position:relative;margin-bottom:18px}
-.ai-stop-num{position:absolute;left:-30px;top:0;width:22px;height:22px;border-radius:50%;background:var(--red-d);color:var(--washi);font-family:'Shippori Mincho',serif;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center}
-.ai-stop-time{font-size:11px;color:#8b6f3f;margin-bottom:2px}
-.ai-stop-name{font-family:'Shippori Mincho',serif;font-weight:600;font-size:15px;color:var(--red-d);line-height:1.3}
-.ai-stop-stay{font-size:11px;color:#8b6f3f;margin-top:4px}
-.ai-stop-tag{display:inline-block;background:var(--red);color:#fff;font-size:10px;padding:2px 9px;border-radius:10px;margin-top:6px}
-.ai-move{font-size:11px;color:#8b6f3f;margin-bottom:8px;padding-left:4px;display:flex;align-items:center;gap:4px}
-.ai-tips{background:#fff;border:.5px solid var(--gold);border-radius:10px;padding:.9rem;margin-top:16px}
-.ai-tips-tit{font-family:'Shippori Mincho',serif;font-size:12px;font-weight:600;color:var(--red-d);margin-bottom:6px;display:flex;align-items:center;gap:5px}
-.ai-tips-txt{font-size:11px;color:#666;line-height:1.7}
-.ai-result-actions{display:flex;gap:8px;margin-top:14px}
-.ai-act-btn{flex:1;padding:11px;border-radius:8px;font-size:12px;font-family:'Noto Serif JP',serif;font-weight:600;cursor:pointer;border:.5px solid var(--gold)}
-.ai-act-primary{background:var(--red-d);color:#fff;border-color:var(--red-d)}
-.ai-act-secondary{background:#fff;color:var(--red-d)}
+/* AIルート結果ページ（マップ＋下部カード式） */
+#pgAiResult{display:none;flex-direction:column;position:fixed;inset:0;z-index:100;background:#e8e4dc}
+.ai-result-map{flex:1;width:100%;min-height:0;background:#e8e4dc;position:relative}
+#aiMapCanvas{width:100%;height:100%;background:#e8e4dc}
+.ai-map-overlay{position:absolute;top:10px;left:10px;right:10px;background:rgba(255,255,255,.95);border:.5px solid var(--gold);border-radius:10px;padding:.55rem .85rem;display:flex;align-items:center;gap:10px;box-shadow:0 2px 10px rgba(0,0,0,.12);backdrop-filter:blur(6px);z-index:5}
+.ai-map-overlay-en{font-family:'Shippori Mincho',serif;font-size:8px;letter-spacing:.2em;color:#8b6f3f;line-height:1}
+.ai-map-overlay-tit{font-family:'Shippori Mincho',serif;font-size:13px;font-weight:600;color:var(--red-d);line-height:1.2;margin-top:2px}
+.ai-map-overlay-meta{font-size:10px;color:#8b6f3f;margin-top:2px}
+.ai-map-overlay-body{flex:1;min-width:0}
+.ai-map-noapi{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(135deg,#f0ece4,#e8e4dc);padding:2rem;text-align:center}
+.ai-map-noapi-tit{font-family:'Shippori Mincho',serif;font-size:14px;font-weight:600;color:#8b6f3f;margin-bottom:6px}
+.ai-map-noapi-sub{font-size:11px;color:#aaa;line-height:1.6}
+/* 下部シート（横スクロールカード） */
+.ai-sheet{background:var(--washi);border-top-left-radius:18px;border-top-right-radius:18px;box-shadow:0 -4px 20px rgba(0,0,0,.12);padding:0 0 .9rem;flex-shrink:0;max-height:50vh;display:flex;flex-direction:column;border-top:.5px solid var(--gold)}
+.ai-sheet-handle{width:36px;height:4px;background:#d0c8b8;border-radius:2px;margin:8px auto 4px}
+.ai-sheet-hd{padding:.4rem 1rem .5rem;display:flex;align-items:center;justify-content:space-between;border-bottom:.5px solid var(--kara)}
+.ai-sheet-tit{font-family:'Shippori Mincho',serif;font-size:13px;font-weight:600;color:var(--red-d)}
+.ai-sheet-count{font-size:11px;color:#8b6f3f}
+.ai-cards{display:flex;gap:10px;overflow-x:auto;overflow-y:hidden;padding:.75rem 1rem;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
+.ai-cards::-webkit-scrollbar{height:0;display:none}
+.ai-card{flex:0 0 auto;width:240px;background:#fff;border:.5px solid var(--gold);border-radius:12px;overflow:hidden;scroll-snap-align:start;box-shadow:0 1px 3px rgba(60,40,20,.06),0 6px 16px -8px rgba(60,40,20,.15);cursor:pointer;transition:transform .18s var(--ease)}
+.ai-card:active{transform:scale(.98)}
+.ai-card-img{width:100%;aspect-ratio:16/10;background:linear-gradient(135deg,#f0ece4,#e8e0d0);position:relative;overflow:hidden}
+.ai-card-img img{width:100%;height:100%;object-fit:cover;display:block}
+.ai-card-num{position:absolute;top:8px;left:8px;width:26px;height:26px;border-radius:50%;background:var(--red-d);color:var(--washi);font-family:'Shippori Mincho',serif;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 5px rgba(0,0,0,.25)}
+.ai-card-time{position:absolute;top:8px;right:8px;background:rgba(0,0,0,.55);color:#fff;font-size:10px;padding:2px 8px;border-radius:10px}
+.ai-card-body{padding:.6rem .7rem .7rem}
+.ai-card-name{font-family:'Shippori Mincho',serif;font-weight:600;font-size:13px;color:var(--ma);line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ai-card-meta{font-size:10px;color:#8b6f3f;margin-top:4px;display:flex;align-items:center;gap:8px}
+.ai-card-tag{display:inline-block;background:var(--red-l);color:var(--red-d);font-size:9px;padding:1px 7px;border-radius:8px;margin-top:5px;border:.5px solid #e8c4bc}
+.ai-card-move{font-size:10px;color:#8b6f3f;margin-top:5px;padding-top:5px;border-top:.5px dashed var(--kara);display:flex;align-items:center;gap:3px}
+/* シート下部：コツ・操作 */
+.ai-sheet-foot{padding:.5rem 1rem 0;display:flex;gap:8px}
+.ai-foot-btn{flex:1;padding:9px;border-radius:8px;font-size:11px;font-family:'Noto Serif JP',serif;font-weight:600;cursor:pointer;border:.5px solid var(--gold)}
+.ai-foot-primary{background:var(--red-d);color:#fff;border-color:var(--red-d)}
+.ai-foot-secondary{background:#fff;color:var(--red-d)}
+.ai-tips-mini{padding:.55rem 1rem .25rem;font-size:10px;color:#8b6f3f;line-height:1.6;background:#faf7f0;border-top:.5px solid var(--kara)}
+.ai-tips-mini b{color:var(--red-d);font-weight:600}
 .fnav{display:flex;border-top:.5px solid var(--kara);background:var(--washi);padding:.65rem 0 .5rem;margin-top:1.25rem}
 .ni{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer}
 .nl{font-size:9px;letter-spacing:.08em}
@@ -339,8 +370,21 @@
         <input type="text" class="ai-input" id="aiStart" placeholder="例：東京駅" value="東京駅">
       </div>
       <div class="ai-field">
-        <label class="ai-label">巡りたいエリア</label>
-        <input type="text" class="ai-input" id="aiArea" placeholder="例：鎌倉" value="鎌倉">
+        <div class="ai-label-row">
+          <label class="ai-label" style="margin-bottom:0">巡りたい神社仏閣（最大5社）</label>
+        </div>
+        <div id="shrineList">
+          <div class="shrine-row">
+            <input type="text" class="ai-input shrine-inp" placeholder="例：鶴岡八幡宮">
+            <div class="shrine-del" onclick="removeShrine(this)" style="visibility:hidden">×</div>
+          </div>
+        </div>
+        <button type="button" class="shrine-add" id="shrineAddBtn" onclick="addShrine()">＋ 神社・お寺を追加</button>
+        <div class="ai-hint">空欄でもOK。指定がなければエリアからおすすめを提案します</div>
+      </div>
+      <div class="ai-field">
+        <label class="ai-label">巡るエリア（任意）</label>
+        <input type="text" class="ai-input" id="aiArea" placeholder="例：鎌倉、京都、奈良など" value="鎌倉">
       </div>
       <div class="ai-field">
         <label class="ai-label">欲しいご利益</label>
@@ -351,6 +395,27 @@
           <span class="ai-tag" data-b="gakumon">学問</span>
           <span class="ai-tag" data-b="kenko">健康</span>
           <span class="ai-tag" data-b="shobai">商売繁盛</span>
+        </div>
+      </div>
+      <div class="ai-field">
+        <label class="ai-label">交通手段</label>
+        <div class="ai-transport" id="aiTransport">
+          <div class="ai-tr-btn on" data-tr="walk">
+            <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="4" r="2" stroke="#8b6f3f" stroke-width="1.5"/><path d="M8 22l3-8 2 3 4 5M14 9l-4 2-2 5M10 11l2-4 3 2 3-1" stroke="#8b6f3f" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            徒歩
+          </div>
+          <div class="ai-tr-btn" data-tr="train">
+            <svg viewBox="0 0 24 24" fill="none"><rect x="5" y="3" width="14" height="16" rx="2" stroke="#8b6f3f" stroke-width="1.5"/><line x1="5" y1="13" x2="19" y2="13" stroke="#8b6f3f" stroke-width="1.5"/><circle cx="9" cy="16" r="1" fill="#8b6f3f"/><circle cx="15" cy="16" r="1" fill="#8b6f3f"/><line x1="8" y1="20" x2="6" y2="22" stroke="#8b6f3f" stroke-width="1.5" stroke-linecap="round"/><line x1="16" y1="20" x2="18" y2="22" stroke="#8b6f3f" stroke-width="1.5" stroke-linecap="round"/></svg>
+            電車
+          </div>
+          <div class="ai-tr-btn" data-tr="car">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M3 13l2-5h14l2 5v6H3v-6z" stroke="#8b6f3f" stroke-width="1.5" stroke-linejoin="round"/><circle cx="7" cy="17" r="1.5" fill="#8b6f3f"/><circle cx="17" cy="17" r="1.5" fill="#8b6f3f"/></svg>
+            車
+          </div>
+          <div class="ai-tr-btn" data-tr="bus">
+            <svg viewBox="0 0 24 24" fill="none"><rect x="5" y="3" width="14" height="14" rx="2" stroke="#8b6f3f" stroke-width="1.5"/><line x1="5" y1="11" x2="19" y2="11" stroke="#8b6f3f" stroke-width="1.5"/><line x1="9" y1="3" x2="9" y2="11" stroke="#8b6f3f" stroke-width="1"/><line x1="15" y1="3" x2="15" y2="11" stroke="#8b6f3f" stroke-width="1"/><circle cx="8" cy="14" r="1" fill="#8b6f3f"/><circle cx="16" cy="14" r="1" fill="#8b6f3f"/><line x1="8" y1="18" x2="6" y2="20" stroke="#8b6f3f" stroke-width="1.5" stroke-linecap="round"/><line x1="16" y1="18" x2="18" y2="20" stroke="#8b6f3f" stroke-width="1.5" stroke-linecap="round"/></svg>
+            バス
+          </div>
         </div>
       </div>
       <div class="ai-field">
@@ -366,32 +431,39 @@
   </div>
 </div>
 
-<!-- AIルート結果ページ（巻物式タイムライン） -->
-<div id="pgAiResult" style="display:none;flex-direction:column;position:fixed;inset:0;z-index:100;background:var(--washi);overflow-y:auto">
+<!-- AIルート結果ページ（マップ＋下部横スクロールカード） -->
+<div id="pgAiResult">
   <div class="ai-page-hd">
     <div class="ai-back" onclick="backToAiForm()">‹</div>
     <div class="ai-page-tit">巡礼ルート提案</div>
     <div style="width:60px"></div>
   </div>
-  <div class="ai-result">
-    <div class="ai-result-card">
-      <div class="ai-result-hd">
-        <div class="ai-result-en">PILGRIMAGE ROUTE</div>
-        <div class="ai-result-tit" id="aiResultTitle">鎌倉・縁結びの道</div>
-        <div class="ai-result-meta" id="aiResultMeta">所要 約4時間 ・ 3社巡り</div>
+  <div class="ai-result-map">
+    <div id="aiMapCanvas"></div>
+    <div class="ai-map-noapi" id="aiMapNoApi" style="display:none">
+      <svg width="40" height="40" viewBox="0 0 40 40" fill="none" style="margin-bottom:10px"><path d="M20 5C13 5 8 10 8 17c0 9 12 18 12 18s12-9 12-18c0-7-5-12-12-12z" stroke="#c9a84c" stroke-width="1.5"/><circle cx="20" cy="17" r="4" stroke="#c9a84c" stroke-width="1.5"/></svg>
+      <div class="ai-map-noapi-tit">マップ表示には APIキー設定が必要です</div>
+      <div class="ai-map-noapi-sub">マイページの設定欄からAPIキーを<br>入力するとマップが表示されます</div>
+    </div>
+    <div class="ai-map-overlay">
+      <div class="ai-map-overlay-body">
+        <div class="ai-map-overlay-en">PILGRIMAGE ROUTE</div>
+        <div class="ai-map-overlay-tit" id="aiResultTitle">鎌倉・縁結びの道</div>
+        <div class="ai-map-overlay-meta" id="aiResultMeta">所要 約4時間 ・ 3社巡り ・ 徒歩</div>
       </div>
-      <div class="ai-timeline" id="aiTimeline"></div>
-      <div class="ai-tips">
-        <div class="ai-tips-tit">
-          <svg width="11" height="11" viewBox="0 0 12 12"><circle cx="6" cy="6" r="5" fill="none" stroke="#9b2a1a" stroke-width="1"/><text x="6" y="9" text-anchor="middle" font-size="8" fill="#9b2a1a">!</text></svg>
-          巡り方のコツ
-        </div>
-        <div class="ai-tips-txt" id="aiTipsTxt">朝一番に最大の社へ参拝するのが古来の作法です。最後の社では御朱印帳を整え、感謝を込めてお参りください。</div>
-      </div>
-      <div class="ai-result-actions">
-        <button class="ai-act-btn ai-act-secondary" onclick="backToAiForm()">条件を変える</button>
-        <button class="ai-act-btn ai-act-primary" onclick="saveRoute()">いつか訪れたいに保存</button>
-      </div>
+    </div>
+  </div>
+  <div class="ai-sheet">
+    <div class="ai-sheet-handle"></div>
+    <div class="ai-sheet-hd">
+      <div class="ai-sheet-tit">巡る順</div>
+      <div class="ai-sheet-count" id="aiSheetCount">3社</div>
+    </div>
+    <div class="ai-cards" id="aiCards"></div>
+    <div class="ai-tips-mini"><b>巡り方のコツ：</b><span id="aiTipsTxt">朝一番の参拝が古来の作法です。</span></div>
+    <div class="ai-sheet-foot">
+      <button class="ai-foot-btn ai-foot-secondary" onclick="backToAiForm()">条件を変える</button>
+      <button class="ai-foot-btn ai-foot-primary" onclick="saveRoute()">いつか訪れたいに保存</button>
     </div>
   </div>
 </div>
@@ -1286,7 +1358,42 @@ function closeAiLimit(){
   document.getElementById('aiLimitModal').classList.remove('on');
 }
 
-// タグ・所要時間ボタンの切り替え
+// 神社入力欄の追加・削除
+function addShrine(){
+  var list = document.getElementById('shrineList');
+  var rows = list.querySelectorAll('.shrine-row');
+  if (rows.length >= 5) return;
+  var row = document.createElement('div');
+  row.className = 'shrine-row';
+  row.innerHTML = '<input type="text" class="ai-input shrine-inp" placeholder="例：銭洗弁財天">' +
+                  '<div class="shrine-del" onclick="removeShrine(this)">×</div>';
+  list.appendChild(row);
+  updateShrineUi();
+}
+function removeShrine(btn){
+  var list = document.getElementById('shrineList');
+  var rows = list.querySelectorAll('.shrine-row');
+  if (rows.length <= 1) return;
+  btn.parentElement.remove();
+  updateShrineUi();
+}
+function updateShrineUi(){
+  var list = document.getElementById('shrineList');
+  var rows = list.querySelectorAll('.shrine-row');
+  rows.forEach(function(r, i){
+    var del = r.querySelector('.shrine-del');
+    if (rows.length === 1) {
+      del.style.visibility = 'hidden';
+    } else {
+      del.style.visibility = 'visible';
+    }
+  });
+  var addBtn = document.getElementById('shrineAddBtn');
+  addBtn.disabled = (rows.length >= 5);
+  addBtn.textContent = (rows.length >= 5) ? '上限5社まで' : '＋ 神社・お寺を追加';
+}
+
+// タグ・交通手段・所要時間の切り替え
 document.addEventListener('click', function(e){
   if (e.target.classList.contains('ai-tag')) {
     document.querySelectorAll('#aiBenefits .ai-tag').forEach(t => t.classList.remove('on'));
@@ -1296,71 +1403,77 @@ document.addEventListener('click', function(e){
     document.querySelectorAll('#aiTime .ai-time-btn').forEach(t => t.classList.remove('on'));
     e.target.classList.add('on');
   }
+  // 交通手段：クリック対象が子要素（SVGなど）の場合も親まで遡って判定
+  var trBtn = e.target.closest && e.target.closest('.ai-tr-btn');
+  if (trBtn) {
+    document.querySelectorAll('#aiTransport .ai-tr-btn').forEach(t => t.classList.remove('on'));
+    trBtn.classList.add('on');
+  }
 });
 
-// サンプルルート（デモ版）
+// 交通手段ラベル変換
+var TRANSPORT_LABEL = { walk:'徒歩', train:'電車', car:'車', bus:'バス' };
+
+// サンプルルート（デモ版）- 鎌倉エリアを想定した座標付き
 var AI_DEMO_ROUTES = {
   'enmusubi': {
-    title: 'エリア・縁結びの道',
-    meta: '所要 約4時間 ・ 3社巡り',
+    title: 'AREA・縁結びの道',
     stops: [
-      { num: '壱', time: '09:00', name: '鶴岡八幡宮', stay: '滞在 約45分', tag: '縁結び', move: '徒歩 約15分' },
-      { num: '弐', time: '10:30', name: '銭洗弁財天宇賀福神社', stay: '滞在 約30分', tag: '金運も', move: 'バス 約20分' },
-      { num: '参', time: '12:00', name: '葛原岡神社', stay: '滞在 約30分', tag: '縁結び', move: '' }
+      { num: '壱', time: '09:00', name: '鶴岡八幡宮', stay: '滞在 約45分', tag: '縁結び', moveMin: 15, lat: 35.3258, lng: 139.5564 },
+      { num: '弐', time: '10:30', name: '銭洗弁財天宇賀福神社', stay: '滞在 約30分', tag: '金運も', moveMin: 20, lat: 35.3245, lng: 139.5448 },
+      { num: '参', time: '12:00', name: '葛原岡神社', stay: '滞在 約30分', tag: '縁結び', moveMin: 0, lat: 35.3296, lng: 139.5439 }
     ],
-    tips: '縁結びは午前中の参拝が古来の作法です。最後の葛原岡神社では「縁結び石」に願いを込めて。御朱印は各社で頂けます。'
+    tips: '縁結びは午前中の参拝が古来の作法。最後の葛原岡神社では「縁結び石」に願いを込めて。'
   },
   'kinun': {
-    title: 'エリア・金運招福の道',
-    meta: '所要 約4時間 ・ 3社巡り',
+    title: 'AREA・金運招福の道',
     stops: [
-      { num: '壱', time: '09:00', name: '銭洗弁財天宇賀福神社', stay: '滞在 約40分', tag: '金運', move: '徒歩 約20分' },
-      { num: '弐', time: '10:30', name: '佐助稲荷神社', stay: '滞在 約30分', tag: '商売繁盛', move: 'バス 約25分' },
-      { num: '参', time: '12:00', name: '鶴岡八幡宮', stay: '滞在 約40分', tag: '総合運', move: '' }
+      { num: '壱', time: '09:00', name: '銭洗弁財天宇賀福神社', stay: '滞在 約40分', tag: '金運', moveMin: 20, lat: 35.3245, lng: 139.5448 },
+      { num: '弐', time: '10:30', name: '佐助稲荷神社', stay: '滞在 約30分', tag: '商売繁盛', moveMin: 25, lat: 35.3204, lng: 139.5476 },
+      { num: '参', time: '12:00', name: '鶴岡八幡宮', stay: '滞在 約40分', tag: '総合運', moveMin: 0, lat: 35.3258, lng: 139.5564 }
     ],
-    tips: 'お金を洗う際は、五円玉や紙幣をザルに入れて霊水でそっと清めます。洗ったお金は早めに使うことで運気が巡るとされています。'
+    tips: 'お金を洗う際は五円玉や紙幣をザルに入れ、霊水でそっと清めます。早めに使うと運気が巡るとされます。'
   },
   'kaiun': {
-    title: 'エリア・開運招福の道',
-    meta: '所要 約4時間 ・ 3社巡り',
+    title: 'AREA・開運招福の道',
     stops: [
-      { num: '壱', time: '09:00', name: '鶴岡八幡宮', stay: '滞在 約45分', tag: '総合運', move: '徒歩 約15分' },
-      { num: '弐', time: '10:30', name: '荏柄天神社', stay: '滞在 約25分', tag: '厄除け', move: 'バス 約20分' },
-      { num: '参', time: '11:45', name: '佐助稲荷神社', stay: '滞在 約30分', tag: '開運', move: '' }
+      { num: '壱', time: '09:00', name: '鶴岡八幡宮', stay: '滞在 約45分', tag: '総合運', moveMin: 15, lat: 35.3258, lng: 139.5564 },
+      { num: '弐', time: '10:30', name: '荏柄天神社', stay: '滞在 約25分', tag: '厄除け', moveMin: 20, lat: 35.3267, lng: 139.5599 },
+      { num: '参', time: '11:45', name: '佐助稲荷神社', stay: '滞在 約30分', tag: '開運', moveMin: 0, lat: 35.3204, lng: 139.5476 }
     ],
-    tips: '開運祈願は朝一番の清々しい時間帯がおすすめ。各社で授与所の方に「開運の御朱印」とお伝えすると特別な御朱印を頂ける場合があります。'
+    tips: '開運祈願は朝一番がおすすめ。授与所で「開運の御朱印」とお伝えすると特別な御朱印を頂ける場合があります。'
   },
   'gakumon': {
-    title: 'エリア・学問成就の道',
-    meta: '所要 約3時間 ・ 3社巡り',
+    title: 'AREA・学問成就の道',
     stops: [
-      { num: '壱', time: '09:00', name: '荏柄天神社', stay: '滞在 約35分', tag: '学問', move: '徒歩 約12分' },
-      { num: '弐', time: '10:15', name: '鎌倉宮', stay: '滞在 約30分', tag: '志を貫く', move: '徒歩 約15分' },
-      { num: '参', time: '11:15', name: '鶴岡八幡宮', stay: '滞在 約35分', tag: '総合運', move: '' }
+      { num: '壱', time: '09:00', name: '荏柄天神社', stay: '滞在 約35分', tag: '学問', moveMin: 12, lat: 35.3267, lng: 139.5599 },
+      { num: '弐', time: '10:15', name: '鎌倉宮', stay: '滞在 約30分', tag: '志を貫く', moveMin: 15, lat: 35.3287, lng: 139.5615 },
+      { num: '参', time: '11:15', name: '鶴岡八幡宮', stay: '滞在 約35分', tag: '総合運', moveMin: 0, lat: 35.3258, lng: 139.5564 }
     ],
-    tips: '学問の神様・菅原道真公をお祀りする荏柄天神社は、合格祈願の絵馬で有名。試験前日には参拝後の御朱印帳を枕元に置くと良いと言われます。'
+    tips: '学問の神様・菅原道真公の荏柄天神社は合格祈願で有名。御朱印帳を試験前日に枕元に置くと良いとも。'
   },
   'kenko': {
-    title: 'エリア・健康長寿の道',
-    meta: '所要 約4時間 ・ 3社巡り',
+    title: 'AREA・健康長寿の道',
     stops: [
-      { num: '壱', time: '09:00', name: '長谷寺', stay: '滞在 約50分', tag: '健康', move: '徒歩 約8分' },
-      { num: '弐', time: '10:30', name: '御霊神社', stay: '滞在 約25分', tag: '厄除け', move: 'バス 約25分' },
-      { num: '参', time: '11:45', name: '鶴岡八幡宮', stay: '滞在 約35分', tag: '総合運', move: '' }
+      { num: '壱', time: '09:00', name: '長谷寺', stay: '滞在 約50分', tag: '健康', moveMin: 8, lat: 35.3122, lng: 139.5363 },
+      { num: '弐', time: '10:30', name: '御霊神社', stay: '滞在 約25分', tag: '厄除け', moveMin: 25, lat: 35.3107, lng: 139.5359 },
+      { num: '参', time: '11:45', name: '鶴岡八幡宮', stay: '滞在 約35分', tag: '総合運', moveMin: 0, lat: 35.3258, lng: 139.5564 }
     ],
-    tips: '長谷寺の十一面観音は厄除け・病気平癒の御利益で有名。参拝前に水鉢で手と口を清め、ゆっくり呼吸を整えてからお参りしましょう。'
+    tips: '長谷寺の十一面観音は厄除け・病気平癒で有名。水鉢で手と口を清め、ゆっくり呼吸を整えてからお参りを。'
   },
   'shobai': {
-    title: 'エリア・商売繁盛の道',
-    meta: '所要 約4時間 ・ 3社巡り',
+    title: 'AREA・商売繁盛の道',
     stops: [
-      { num: '壱', time: '09:00', name: '佐助稲荷神社', stay: '滞在 約40分', tag: '商売繁盛', move: '徒歩 約20分' },
-      { num: '弐', time: '10:30', name: '銭洗弁財天宇賀福神社', stay: '滞在 約30分', tag: '金運', move: 'バス 約20分' },
-      { num: '参', time: '12:00', name: '鶴岡八幡宮', stay: '滞在 約40分', tag: '総合運', move: '' }
+      { num: '壱', time: '09:00', name: '佐助稲荷神社', stay: '滞在 約40分', tag: '商売繁盛', moveMin: 20, lat: 35.3204, lng: 139.5476 },
+      { num: '弐', time: '10:30', name: '銭洗弁財天宇賀福神社', stay: '滞在 約30分', tag: '金運', moveMin: 20, lat: 35.3245, lng: 139.5448 },
+      { num: '参', time: '12:00', name: '鶴岡八幡宮', stay: '滞在 約40分', tag: '総合運', moveMin: 0, lat: 35.3258, lng: 139.5564 }
     ],
-    tips: '佐助稲荷の白い鳥居をくぐる際は、商売の発展を具体的に念じると良いとされます。事業者の方は名刺を奉納する習わしも。'
+    tips: '佐助稲荷の白い鳥居をくぐる際は、商売の発展を具体的に念じると良いとされます。'
   }
 };
+
+// 現在のルートデータ（マップから参照）
+var currentAiRoute = null;
 
 function generateRoute(){
   // 利用回数チェック
@@ -1374,31 +1487,86 @@ function generateRoute(){
   var area = document.getElementById('aiArea').value.trim() || '鎌倉';
   var benefit = document.querySelector('#aiBenefits .ai-tag.on');
   var benefitKey = benefit ? benefit.getAttribute('data-b') : 'enmusubi';
+  var transport = document.querySelector('#aiTransport .ai-tr-btn.on');
+  var transportKey = transport ? transport.getAttribute('data-tr') : 'walk';
+  var transportLabel = TRANSPORT_LABEL[transportKey] || '徒歩';
+
+  // ユーザー指定の神社
+  var userShrines = Array.from(document.querySelectorAll('.shrine-inp'))
+    .map(function(i){ return i.value.trim(); })
+    .filter(function(v){ return v.length > 0; });
 
   // サンプルルートを取得
   var route = AI_DEMO_ROUTES[benefitKey] || AI_DEMO_ROUTES['enmusubi'];
+  // ディープコピー
+  route = JSON.parse(JSON.stringify(route));
+
+  // ユーザー指定神社をルートの先頭に組み込む（最大3社まで反映）
+  if (userShrines.length > 0) {
+    var userStops = userShrines.slice(0, 3).map(function(name, i){
+      var nums = ['壱','弐','参','肆','伍'];
+      return {
+        num: nums[i],
+        time: ['09:00','10:30','12:00','13:30','15:00'][i],
+        name: name,
+        stay: '滞在 約40分',
+        tag: 'ご指定',
+        moveMin: 15,
+        lat: 35.3258 + (i * 0.005),
+        lng: 139.5564 + (i * 0.005)
+      };
+    });
+    // 残り枠におすすめ神社を足す
+    var slotsLeft = Math.max(0, 3 - userStops.length);
+    for (var i = 0; i < slotsLeft; i++) {
+      if (route.stops[i]) {
+        var s = route.stops[i];
+        s.num = ['壱','弐','参','肆','伍'][userStops.length + i];
+        s.time = ['09:00','10:30','12:00','13:30','15:00'][userStops.length + i];
+        userStops.push(s);
+      }
+    }
+    // 最後の停止地点の移動時間を0に
+    userStops[userStops.length - 1].moveMin = 0;
+    route.stops = userStops;
+  }
 
   // タイトルのエリア名を入力に合わせる
-  var title = route.title.replace('エリア', area);
+  var title = route.title.replace('AREA', area);
   document.getElementById('aiResultTitle').textContent = title;
-  document.getElementById('aiResultMeta').textContent = route.meta;
+  document.getElementById('aiResultMeta').textContent = '所要 約' + (route.stops.length * 1.5) + '時間 ・ ' + route.stops.length + '社巡り ・ ' + transportLabel;
+  document.getElementById('aiSheetCount').textContent = route.stops.length + '社';
   document.getElementById('aiTipsTxt').textContent = route.tips;
 
-  // タイムラインを構築
-  var html = '';
+  // 横スクロールカードを構築
+  var cardsHtml = '';
   route.stops.forEach(function(s, i){
-    html += '<div class="ai-stop">';
-    html += '<div class="ai-stop-num">' + s.num + '</div>';
-    html += '<div class="ai-stop-time">' + s.time + ' 参拝</div>';
-    html += '<div class="ai-stop-name">' + s.name + '</div>';
-    html += '<div class="ai-stop-stay">' + s.stay + '</div>';
-    html += '<div><span class="ai-stop-tag">' + s.tag + '</span></div>';
-    html += '</div>';
-    if (s.move) {
-      html += '<div class="ai-move">↓ ' + s.move + '</div>';
+    var shrinePhoto = findShrinePhoto(s.name);
+    var imgHtml = shrinePhoto
+      ? '<img src="' + shrinePhoto + '" alt="' + s.name + '" onerror="this.style.display=\'none\';this.parentElement.innerHTML+=\'<div style=&quot;position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#c9a84c&quot;><svg width=&quot;32&quot; height=&quot;32&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot;><path d=&quot;M3 9l9-6 9 6v11H3V9z&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;1.5&quot;/></svg></div>\'">'
+      : '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#c9a84c"><svg width="32" height="32" viewBox="0 0 24 24" fill="none"><path d="M3 9l9-6 9 6v11H3V9z" stroke="currentColor" stroke-width="1.5"/></svg></div>';
+
+    cardsHtml += '<div class="ai-card">';
+    cardsHtml += '<div class="ai-card-img">';
+    cardsHtml += '<div class="ai-card-num">' + s.num + '</div>';
+    cardsHtml += '<div class="ai-card-time">' + s.time + '</div>';
+    cardsHtml += imgHtml;
+    cardsHtml += '</div>';
+    cardsHtml += '<div class="ai-card-body">';
+    cardsHtml += '<div class="ai-card-name">' + s.name + '</div>';
+    cardsHtml += '<div class="ai-card-meta"><span>' + s.stay + '</span></div>';
+    cardsHtml += '<div><span class="ai-card-tag">' + s.tag + '</span></div>';
+    if (s.moveMin > 0) {
+      cardsHtml += '<div class="ai-card-move">→ 次の社まで ' + transportLabel + ' 約' + s.moveMin + '分</div>';
+    } else {
+      cardsHtml += '<div class="ai-card-move">✦ 巡礼ゴール</div>';
     }
+    cardsHtml += '</div></div>';
   });
-  document.getElementById('aiTimeline').innerHTML = html;
+  document.getElementById('aiCards').innerHTML = cardsHtml;
+
+  // ルートデータを保存
+  currentAiRoute = route;
 
   // 利用回数を加算
   localStorage.setItem(u.key, String(u.count + 1));
@@ -1406,7 +1574,115 @@ function generateRoute(){
   // 結果ページを表示
   document.getElementById('pgAiRoute').style.display = 'none';
   document.getElementById('pgAiResult').style.display = 'flex';
-  window.scrollTo(0, 0);
+
+  // マップを描画
+  setTimeout(function(){ renderAiMap(route); }, 200);
+}
+
+// 既存のSHRINESデータから写真URLを探す
+function findShrinePhoto(name){
+  if (typeof SHRINES === 'undefined') return null;
+  for (var i = 0; i < SHRINES.length; i++) {
+    if (SHRINES[i].name === name || name.indexOf(SHRINES[i].name) !== -1 || SHRINES[i].name.indexOf(name) !== -1) {
+      if (SHRINES[i].photos && SHRINES[i].photos.length > 0) {
+        return SHRINES[i].photos[0];
+      }
+    }
+  }
+  return null;
+}
+
+// AI結果ページのマップ描画
+var aiMapInstance = null;
+var aiMapMarkers = [];
+var aiMapPolyline = null;
+
+function renderAiMap(route){
+  var canvas = document.getElementById('aiMapCanvas');
+  var noApi = document.getElementById('aiMapNoApi');
+
+  // APIキーがない場合
+  if (!window.google || !window.google.maps) {
+    canvas.style.display = 'none';
+    noApi.style.display = 'flex';
+    return;
+  }
+  canvas.style.display = 'block';
+  noApi.style.display = 'none';
+
+  var positions = route.stops.map(function(s){
+    return { lat: s.lat, lng: s.lng };
+  });
+
+  // 中心座標（全停留所の平均）
+  var centerLat = positions.reduce(function(a,p){return a+p.lat;}, 0) / positions.length;
+  var centerLng = positions.reduce(function(a,p){return a+p.lng;}, 0) / positions.length;
+
+  if (!aiMapInstance) {
+    aiMapInstance = new google.maps.Map(canvas, {
+      center: { lat: centerLat, lng: centerLng },
+      zoom: 14,
+      disableDefaultUI: true,
+      zoomControl: true,
+      styles: [
+        { featureType: 'poi.business', stylers: [{ visibility: 'off' }] },
+        { featureType: 'transit', stylers: [{ visibility: 'simplified' }] }
+      ]
+    });
+  } else {
+    aiMapInstance.setCenter({ lat: centerLat, lng: centerLng });
+    aiMapInstance.setZoom(14);
+  }
+
+  // 既存マーカー・線を削除
+  aiMapMarkers.forEach(function(m){ m.setMap(null); });
+  aiMapMarkers = [];
+  if (aiMapPolyline) aiMapPolyline.setMap(null);
+
+  // 新しいマーカー
+  positions.forEach(function(p, i){
+    var marker = new google.maps.Marker({
+      position: p,
+      map: aiMapInstance,
+      label: {
+        text: route.stops[i].num,
+        color: '#faf8f3',
+        fontFamily: 'Shippori Mincho, serif',
+        fontWeight: '800',
+        fontSize: '13px'
+      },
+      icon: {
+        path: google.maps.SymbolPath.CIRCLE,
+        scale: 16,
+        fillColor: '#9b2a1a',
+        fillOpacity: 1,
+        strokeColor: '#c9a84c',
+        strokeWeight: 2
+      },
+      title: route.stops[i].name
+    });
+    aiMapMarkers.push(marker);
+  });
+
+  // ルート線（点線）
+  aiMapPolyline = new google.maps.Polyline({
+    path: positions,
+    geodesic: true,
+    strokeColor: '#9b2a1a',
+    strokeOpacity: 0,
+    icons: [{
+      icon: { path: 'M 0,-1 0,1', strokeOpacity: 1, scale: 3, strokeColor: '#9b2a1a' },
+      offset: '0',
+      repeat: '10px'
+    }],
+    map: aiMapInstance
+  });
+
+  // マップサイズ調整
+  setTimeout(function(){
+    google.maps.event.trigger(aiMapInstance, 'resize');
+    aiMapInstance.setCenter({ lat: centerLat, lng: centerLng });
+  }, 100);
 }
 
 function saveRoute(){
