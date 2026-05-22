@@ -86,6 +86,19 @@
 .ni{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer}
 .nl{font-size:9px;letter-spacing:.08em}
 .pg{display:none}.pg.on{display:block}
+  /* 地図エリア */
+.maparea{position:relative;width:100%;height:340px;background:#e8e4d8;border-bottom:1px solid var(--kara);overflow:hidden}
+.maparea.hidden{display:none}
+#mapCanvas{width:100%;height:100%}
+.map-loc-btn{position:absolute;bottom:14px;right:14px;width:44px;height:44px;border-radius:50%;background:#fff;border:1px solid var(--kara);box-shadow:0 2px 8px rgba(0,0,0,.18);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:5}
+.map-loc-btn:active{transform:scale(.94)}
+.map-info-card{position:absolute;left:10px;right:10px;bottom:10px;background:#fff;border:1px solid var(--kara);border-radius:12px;box-shadow:0 6px 20px -4px rgba(60,40,20,.25);padding:10px;display:none;align-items:center;gap:10px;z-index:6}
+.map-info-card.on{display:flex}
+.map-info-thumb{width:64px;height:64px;border-radius:8px;background:#f0ece4;object-fit:cover;flex-shrink:0}
+.map-info-body{flex:1;min-width:0}
+.map-info-name{font-family:'Shippori Mincho',serif;font-size:13px;font-weight:600;color:var(--ma);line-height:1.3;margin-bottom:3px}
+.map-info-addr{font-size:10px;color:#888;line-height:1.4;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.map-info-close{position:absolute;top:6px;right:8px;width:20px;height:20px;background:none;border:none;font-size:16px;color:#999;cursor:pointer;line-height:1}
 </style>
 </head>
 <body>
@@ -115,7 +128,7 @@
         <svg viewBox="0 0 30 30" fill="none"><path d="M9 5h12v20l-6-4-6 4V5z" stroke="#c9a84c" stroke-width="1.2" stroke-linejoin="round"/><circle cx="15" cy="12" r="2.5" stroke="#c9a84c" stroke-width="1"/></svg>
         <div class="acnt">5</div><div class="albl">いつか訪れたい</div>
       </div>
-      <div class="abtn">
+      <div class="abtn" onclick="searchNearby()">
         <svg viewBox="0 0 30 30" fill="none"><circle cx="15" cy="13" r="5" stroke="#c9a84c" stroke-width="1.2"/><circle cx="15" cy="13" r="1.5" fill="#c9a84c"/><line x1="15" y1="3" x2="15" y2="6" stroke="#c9a84c" stroke-width="1.2" stroke-linecap="round"/><line x1="15" y1="20" x2="15" y2="23" stroke="#c9a84c" stroke-width="1.2" stroke-linecap="round"/><line x1="4" y1="13" x2="7" y2="13" stroke="#c9a84c" stroke-width="1.2" stroke-linecap="round"/><line x1="23" y1="13" x2="26" y2="13" stroke="#c9a84c" stroke-width="1.2" stroke-linecap="round"/></svg>
         <div class="acnt" style="font-size:10px;opacity:.85">GPS</div><div class="albl">周辺の社を探す</div>
       </div>
@@ -192,6 +205,21 @@
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5" stroke="#fff" stroke-width="1.5"/><line x1="11" y1="11" x2="15" y2="15" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
     この条件で検索する
   </button>
+  <!-- 地図エリア（初期は非表示） -->
+<div class="maparea hidden" id="mapArea">
+  <div id="mapCanvas"></div>
+  <div class="map-loc-btn" onclick="centerToMyLocation()">
+    <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M11 2L4 19l7-3 7 3-7-17z" stroke="#4a9a4a" stroke-width="1.6" stroke-linejoin="round" fill="none"/></svg>
+  </div>
+  <div class="map-info-card" id="mapInfoCard">
+    <button class="map-info-close" onclick="closeMapCard()">×</button>
+    <img class="map-info-thumb" id="mapInfoThumb" src="" alt="">
+    <div class="map-info-body">
+      <div class="map-info-name" id="mapInfoName"></div>
+      <div class="map-info-addr" id="mapInfoAddr"></div>
+    </div>
+  </div>
+</div>
   <div class="rmeta" id="rmeta">全国 <span>5件</span> のおすすめ神社</div>
   <div id="list"></div>
 </div>
@@ -832,6 +860,108 @@ function goDetail(s){
   try { if (s && s.map) window.open(s.map, '_blank', 'noopener'); } catch(e){}
 }
 
+// ─── 地図関連の変数 ───────────────────────────────────────────
+var mapInstance = null;
+var mapMarkers = [];
+var currentMapShrines = [];
+
+// ─── 地図エリアの表示・非表示 ─────────────────────────────────
+function showMapArea(){
+  document.getElementById('mapArea').classList.remove('hidden');
+}
+function hideMapArea(){
+  document.getElementById('mapArea').classList.add('hidden');
+}
+function closeMapCard(){
+  document.getElementById('mapInfoCard').classList.remove('on');
+}
+
+// ─── 地図の初期化（最初の1回だけ） ────────────────────────────
+function initMap(centerLat, centerLng){
+  if (mapInstance) {
+    mapInstance.setCenter({ lat: centerLat, lng: centerLng });
+    return Promise.resolve(mapInstance);
+  }
+  return loadGoogleMapsSDK(API_KEY).then(function(){
+    mapInstance = new google.maps.Map(document.getElementById('mapCanvas'), {
+      center: { lat: centerLat, lng: centerLng },
+      zoom: 13,
+      disableDefaultUI: true,
+      zoomControl: true,
+      gestureHandling: 'greedy'
+    });
+    return mapInstance;
+  });
+}
+
+// ─── 古いピンをすべて消す ────────────────────────────────────
+function clearMarkers(){
+  for (var i = 0; i < mapMarkers.length; i++) {
+    mapMarkers[i].setMap(null);
+  }
+  mapMarkers = [];
+}
+
+// ─── 神社リストにピンを立てる ────────────────────────────────
+function placePins(shrines){
+  clearMarkers();
+  if (!mapInstance || !shrines.length) return;
+
+  var bounds = new google.maps.LatLngBounds();
+
+  shrines.forEach(function(s){
+    if (!s.lat || !s.lng) return;
+    var marker = new google.maps.Marker({
+      position: { lat: s.lat, lng: s.lng },
+      map: mapInstance,
+      title: s.name,
+      icon: {
+        path: google.maps.SymbolPath.CIRCLE,
+        fillColor: '#9b2a1a',
+        fillOpacity: 1,
+        strokeColor: '#fff',
+        strokeWeight: 2,
+        scale: 9
+      }
+    });
+    marker.addListener('click', function(){
+      showMapCard(s);
+      mapInstance.panTo({ lat: s.lat, lng: s.lng });
+    });
+    mapMarkers.push(marker);
+    bounds.extend({ lat: s.lat, lng: s.lng });
+  });
+
+  if (mapMarkers.length > 1) {
+    mapInstance.fitBounds(bounds, 60);
+  }
+  currentMapShrines = shrines;
+}
+
+// ─── ピンタップ時の小カード表示 ───────────────────────────────
+function showMapCard(s){
+  document.getElementById('mapInfoName').textContent = s.name;
+  document.getElementById('mapInfoAddr').textContent = s.addr || '';
+  var thumb = document.getElementById('mapInfoThumb');
+  var photos = photoCache[s.name];
+  if (photos && photos.length) {
+    thumb.src = photos[0];
+    thumb.style.display = 'block';
+  } else {
+    thumb.style.display = 'none';
+  }
+  document.getElementById('mapInfoCard').classList.add('on');
+}
+
+// ─── 現在地ボタン ────────────────────────────────────────────
+function centerToMyLocation(){
+  if (!navigator.geolocation || !mapInstance) return;
+  navigator.geolocation.getCurrentPosition(function(pos){
+    mapInstance.panTo({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+    mapInstance.setZoom(13);
+  });
+}
+
 // ─── 周辺の神社（現在地から50km以内）──────────────────────────
 function searchNearby(){
   var areaSel = document.getElementById('areaSel');
@@ -848,9 +978,12 @@ function searchNearby(){
 
   showToast('📍 現在地を取得しています…');
   navigator.geolocation.getCurrentPosition(function(pos){
+    var lat = pos.coords.latitude;
+    var lng = pos.coords.longitude;
+
     loadGoogleMapsSDK(API_KEY).then(function(){
       initPlacesService();
-      var loc = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
+      var loc = new google.maps.LatLng(lat, lng);
       placesService.nearbySearch(
         { location: loc, radius: 50000, keyword: '神社', type: 'place_of_worship', language: 'ja' },
         function(results, status){
@@ -869,13 +1002,24 @@ function searchNearby(){
               addr: r.vicinity || '',
               map: 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(r.name),
               area: 'nearby', rating: r.rating || 0,
-              rev: r.user_ratings_total || 0, visited: false, tags: ['goshuin']
+              rev: r.user_ratings_total || 0, visited: false, tags: ['goshuin'],
+              lat: r.geometry && r.geometry.location ? r.geometry.location.lat() : null,
+              lng: r.geometry && r.geometry.location ? r.geometry.location.lng() : null
             };
           });
+
+          // リスト更新
           document.getElementById('resCount').textContent = '周辺 ' + list.length + '件';
           document.getElementById('rmeta').innerHTML = '周辺 <span>' + list.length + '件</span> の神社';
           document.getElementById('list').innerHTML =
             list.map(function(s, i){ return renderCard(s, i + 1); }).join('');
+
+          // 地図表示＋ピン立て
+          showMapArea();
+          initMap(lat, lng).then(function(){
+            placePins(list);
+          });
+
           showToast('📍 周辺の神社を表示しました');
         }
       );
@@ -888,7 +1032,6 @@ function searchNearby(){
     back();
   }, { enableHighAccuracy: false, timeout: 10000 });
 }
-
 // ─── 起動 ─────────────────────────────────────────────────────
 (function init() {
   const saved = localStorage.getItem('gplaces_key');
