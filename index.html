@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>御参拝録</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;600&family=Shippori+Mincho:wght@400;600;800&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--red:#9b2a1a;--gold:#c9a84c;--washi:#faf8f3;--kara:#e8e0d0;--ma:#0a1a0f;--gold-l:#f5efd6;--red-l:#f5ebe8;--red-d:#5a1208;--gold-d:#a98a38;--ease:cubic-bezier(.22,.61,.36,1)}
+.app{max-width:390px;margin:0 auto;background:var(--washi);font-family:'Noto Serif JP',serif}
+.hero{position:relative;height:260px;overflow:hidden;background:#1a2a1a}
+.hero-img{width:100%;height:100%;object-fit:cover;object-position:center 35%;display:block}
+.hero-ov{position:absolute;inset:0;background:rgba(5,12,5,0.42)}
+.hero-ct{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;padding:1rem 1.25rem 0}
+.hero-top{display:flex;align-items:center;justify-content:space-between}
+.hero-title{font-family:'Shippori Mincho',serif;font-size:21px;font-weight:800;color:#fff;letter-spacing:.15em;text-shadow:0 1px 6px rgba(0,0,0,.65)}
+.hero-sub{font-size:9px;color:var(--gold);letter-spacing:.35em;margin-top:3px;text-shadow:0 1px 3px rgba(0,0,0,.5)}
+.prof-btn{width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.15);border:1.5px solid rgba(201,168,76,.55);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.btns{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:.875rem 0}
+.abtn{background:linear-gradient(180deg,rgba(255,255,255,.16),rgba(255,255,255,.08));border:.5px solid rgba(201,168,76,.4);border-radius:13px;padding:.78rem .25rem .68rem;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;backdrop-filter:blur(2px);transition:transform .18s var(--ease),background .25s var(--ease),border-color .25s var(--ease)}
+.abtn:hover{background:linear-gradient(180deg,rgba(255,255,255,.24),rgba(255,255,255,.13));border-color:rgba(201,168,76,.65)}
+.abtn:active{transform:scale(.96)}
+.abtn svg{width:30px;height:30px}
+.acnt{font-size:16px;font-weight:800;color:var(--gold);font-family:'Shippori Mincho',serif;line-height:1}
+.albl{font-family:'Shippori Mincho',serif;font-size:10px;font-weight:600;color:#fff;letter-spacing:.04em;text-align:center;line-height:1.3}
+.tagbar{background:var(--red);padding:.6rem 1.25rem .7rem}
+.tagrow{display:flex;gap:6px;flex-wrap:wrap}
+.tag{display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.13);border:.5px solid rgba(255,255,255,.28);border-radius:20px;padding:5px 13px;font-size:11px;color:rgba(255,255,255,.92);cursor:pointer;font-family:'Noto Serif JP',serif;white-space:nowrap;transition:all .2s var(--ease)}
+.tag:hover{background:rgba(255,255,255,.22)}
+.tag:active{transform:scale(.95)}
+.btn-search:hover{box-shadow:inset 0 0 0 1px rgba(201,168,76,.55),0 6px 20px -4px rgba(155,42,26,.65)}
+.btn-search:active{transform:scale(.985)}
+.tag.on{background:linear-gradient(180deg,rgba(201,168,76,.32),rgba(201,168,76,.18));border-color:var(--gold);color:#fff7e2;box-shadow:0 0 0 1px rgba(201,168,76,.35),0 2px 8px rgba(201,168,76,.25);font-weight:600}
+.sec{padding:1.25rem 1.25rem .25rem}
+.sechd{display:flex;align-items:center;gap:8px;margin-bottom:.75rem}
+.secln{width:3px;height:15px;background:var(--red);border-radius:2px}
+.sectit{font-family:'Shippori Mincho',serif;font-size:13px;font-weight:600;color:var(--ma);letter-spacing:.1em}
+.seccnt{font-size:11px;color:#999;margin-left:auto}
+.selwrap{display:flex;gap:8px;margin-bottom:1rem}
+.sel{flex:1;background:#fff;border:.5px solid var(--kara);border-radius:8px;padding:.5rem .75rem;font-family:'Noto Serif JP',serif;font-size:12px;color:var(--ma);cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23999'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:28px}
+.rmeta{font-size:11px;color:#888;margin-bottom:.875rem}
+.rmeta span{color:var(--red);font-weight:600}
+.api-banner{background:#fff8e8;border:.5px solid #e8d5a3;border-radius:10px;padding:.875rem 1rem;margin-bottom:1rem;display:flex;flex-direction:column;gap:.5rem}
+.api-banner-title{font-family:'Shippori Mincho',serif;font-size:12px;font-weight:600;color:#7a4a10;display:flex;align-items:center;gap:5px}
+.api-input-row{display:flex;gap:6px}
+.api-input{flex:1;border:.5px solid #e8d5a3;border-radius:7px;padding:.45rem .75rem;font-size:12px;font-family:'Noto Serif JP',serif;color:var(--ma);outline:none;background:#fff}
+.api-btn{background:var(--red);color:#fff;border:none;border-radius:7px;padding:.45rem .875rem;font-size:11px;font-family:'Shippori Mincho',serif;font-weight:600;cursor:pointer;white-space:nowrap}
+.api-note{font-size:10px;color:#aaa;line-height:1.6}
+.api-applied{background:#f0faf0;border:.5px solid #a8d5a3;border-radius:10px;padding:.6rem 1rem;margin-bottom:.875rem;display:none;align-items:center;justify-content:space-between;gap:8px}
+.api-applied-text{font-size:11px;color:#2a6a2a;font-family:'Noto Serif JP',serif;display:flex;align-items:center;gap:5px}
+.api-small-btn{background:transparent;border:.5px solid #a8d5a3;border-radius:6px;padding:2px 9px;font-size:10px;color:#2a6a2a;cursor:pointer;font-family:'Noto Serif JP',serif}
+.rcard{background:#fff;border:1px solid #ddd0b6;border-radius:14px;overflow:hidden;margin-bottom:1rem;box-shadow:0 1px 2px rgba(60,40,20,.05),0 6px 18px -8px rgba(60,40,20,.12);transition:transform .22s var(--ease),box-shadow .22s var(--ease)}
+.rcard:hover{transform:translateY(-2px);box-shadow:0 2px 4px rgba(60,40,20,.06),0 14px 30px -10px rgba(60,40,20,.18)}
+.rcard.r1{border:1.5px solid var(--gold);box-shadow:0 0 0 1px rgba(201,168,76,.25),0 4px 20px -6px rgba(201,168,76,.4);background:linear-gradient(180deg,#fffdf6,#fff)}
+.rcard.r1:hover{box-shadow:0 0 0 1px rgba(201,168,76,.35),0 10px 30px -8px rgba(201,168,76,.5)}
+.rhd{display:flex;align-items:flex-start;gap:10px;padding:.75rem .875rem .5rem}
+.rbdg{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Shippori Mincho',serif;font-size:13px;font-weight:800;flex-shrink:0;margin-top:2px}
+.b1{background:linear-gradient(135deg,#e3c879,#c9a84c 55%,#a98a38);color:#3a2800;box-shadow:0 1px 3px rgba(169,138,56,.5)}.b2{background:linear-gradient(135deg,#c2c8ce,#a0a8b0);color:#2a2e35}.b3{background:linear-gradient(135deg,#d8954f,#c47c3a);color:#3a1a00}.b4{background:#ece4d4;color:#5a4a3a;font-size:12px}
+.nblk{flex:1;min-width:0}
+.nrow{display:flex;align-items:baseline;gap:6px;flex-wrap:wrap}
+.rname{font-family:'Shippori Mincho',serif;font-size:14px;font-weight:600;color:var(--ma);line-height:1.35}
+.deity{font-size:10px;color:#7a4a10;background:var(--gold-l);border:.5px solid #e8d5a3;border-radius:4px;padding:1px 6px;white-space:nowrap}
+.alink{display:inline-flex;align-items:center;gap:3px;font-size:11px;color:#2563a8;text-decoration:none;margin-top:3px}
+.rarow{color:#ccc;font-size:14px;flex-shrink:0;cursor:pointer}
+/* 写真ギャラリー */
+.pgallery{width:100%;display:block;background:#c9a84c;padding:2px;border-radius:6px;border:2px solid #c9a84c;box-shadow:0 2px 8px rgba(201,168,76,.3)}
+.pgallery-main{width:100%;aspect-ratio:4/3;overflow:hidden;position:relative;background:#f0ece4;border-radius:3px 3px 0 0}
+.pgallery-sub{display:none}
+.pgallery-main img{width:100%;height:100%;object-fit:cover;object-position:center 30%;display:block}.pthumb img{width:100%;height:100%;object-fit:cover;display:block}
+.photo-count{position:absolute;bottom:5px;right:5px;background:rgba(0,0,0,.55);color:#fff;font-size:9px;padding:2px 7px;border-radius:10px}
+.pstrip{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;background:#c9a84c;padding:2px}
+.pthumb{aspect-ratio:1;overflow:hidden;background:#f5f2ed;position:relative}
+/* スケルトン */
+.skel{background:linear-gradient(90deg,#f0ece4 25%,#e4e0d8 50%,#f0ece4 75%);background-size:200% 100%;animation:sk 1.4s infinite}
+@keyframes sk{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.ph-icon{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:.2}
+.rftr{display:flex;align-items:center;justify-content:space-between;padding:.5rem .875rem .625rem}
+.stars{display:flex;gap:2px;align-items:center}
+.sf{color:var(--gold);font-size:12px}.se{color:#ddd;font-size:12px}
+.rnum{font-size:12px;font-weight:600;color:var(--ma);margin-left:4px}
+.rcnt{font-size:11px;color:#aaa}
+.bv{font-size:9px;background:var(--gold);color:#3a2800;padding:2px 8px;border-radius:20px}
+.bn{font-size:9px;background:var(--red-l);color:var(--red-d);padding:2px 8px;border-radius:20px;border:.5px solid #e8c4bc}
+.fnav{display:flex;border-top:.5px solid var(--kara);background:var(--washi);padding:.65rem 0 .5rem;margin-top:1.25rem}
+.ni{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer}
+.nl{font-size:9px;letter-spacing:.08em}
+.pg{display:none}.pg.on{display:block}
+/* 地図全画面ページ */
+.maparea{display:none!important}
+#pgMap{display:none;flex-direction:column;position:fixed;inset:0;z-index:100;background:#fff}
+#mapCanvas{flex:1;width:100%;min-height:0;background:#e8e4dc}
+.map-loc-btn{position:absolute;bottom:20px;right:10px;background:#fff;border:1px solid var(--gold);border-radius:20px;padding:5px 12px;font-size:11px;font-family:'Noto Serif JP',serif;color:var(--ma);cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.15);display:flex;align-items:center;gap:4px;z-index:5}
+.map-info-card{position:absolute;bottom:60px;left:10px;right:10px;background:#fff;border-radius:10px;box-shadow:0 4px 16px rgba(0,0,0,.18);padding:.6rem .75rem;display:none;align-items:center;gap:8px;border:.5px solid var(--kara);z-index:5}
+.map-info-card.on{display:flex}
+.map-info-thumb{width:44px;height:44px;border-radius:7px;object-fit:cover;background:#f0ece4;flex-shrink:0}
+.map-info-body{flex:1;min-width:0}
+.map-info-name{font-family:'Shippori Mincho',serif;font-size:12px;font-weight:600;color:var(--ma);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.map-info-addr{font-size:10px;color:#999;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.map-info-close{width:22px;height:22px;border-radius:50%;background:#f0ece4;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;font-size:12px;color:#999}
+/* 検索ページ */
+.srch-bar{display:flex;align-items:center;gap:8px;background:#fff;border:.5px solid var(--kara);border-radius:10px;padding:.6rem .875rem;margin-bottom:.875rem}
+.srch-bar input{flex:1;border:none;outline:none;font-family:'Noto Serif JP',serif;font-size:13px;color:var(--ma);background:transparent}
+.srch-bar input::placeholder{color:#bbb}
+.srch-section{margin-bottom:1.25rem}
+.srch-section-title{font-family:'Shippori Mincho',serif;font-size:12px;font-weight:600;color:#888;letter-spacing:.08em;margin-bottom:.6rem;display:flex;align-items:center;gap:5px}
+.srch-chips{display:flex;flex-wrap:wrap;gap:6px}
+.srch-chip{display:inline-flex;align-items:center;gap:4px;border:.5px solid var(--kara);border-radius:20px;padding:5px 13px;font-size:11px;color:var(--ma);cursor:pointer;background:#fff;font-family:'Noto Serif JP',serif;transition:all .18s}
+.srch-chip:active{transform:scale(.95)}
+.srch-chip.on{background:var(--red-l);border-color:var(--red);color:var(--red-d);font-weight:600}
+.srch-btn{width:100%;background:linear-gradient(180deg,#a83320,#8a2417);color:#fff;border:1px solid var(--gold);border-radius:12px;padding:.95rem;font-family:'Shippori Mincho',serif;font-size:14px;font-weight:600;letter-spacing:.1em;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;box-shadow:inset 0 0 0 1px rgba(201,168,76,.35),0 4px 14px -4px rgba(155,42,26,.55);margin-top:.5rem}
+.srch-pref{width:100%;background:#fff;border:.5px solid var(--kara);border-radius:8px;padding:.6rem .875rem;font-family:'Noto Serif JP',serif;font-size:12px;color:var(--ma);cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23999'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:30px;margin-bottom:.875rem}
+</style>
+</head>
+<body>
+<div class="app">
+
+<div class="pg on" id="pgHome">
+<div class="hero">
+  <img class="hero-img" src="https://raw.githubusercontent.com/SIMBA3838/shrine-app/main/ai.jinjya.jpg" alt="神社の風景">
+  <div class="hero-ov"></div>
+  <div class="hero-ct">
+    <div class="hero-top">
+      <div onclick="go('pgSearch')" style="width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.15);border:1.5px solid rgba(201,168,76,.55);display:flex;align-items:center;justify-content:center;cursor:pointer">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="8" cy="8" r="5" stroke="#c9a84c" stroke-width="1.5"/><line x1="12" y1="12" x2="16" y2="16" stroke="#c9a84c" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center">
+        <div class="hero-title">御参拝録</div>
+        <div class="hero-sub">PILGRIMAGE JOURNAL</div>
+      </div>
+      <div class="prof-btn" onclick="go('pgProfile')">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="7" r="4" stroke="#c9a84c" stroke-width="1.5"/><path d="M3 18c0-4 14-4 14 0" stroke="#c9a84c" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </div>
+    </div>
+    <div class="btns">
+      <div class="abtn" onclick="go('pgVisits')">
+        <svg viewBox="0 0 30 30" fill="none"><rect x="5" y="7" width="20" height="16" rx="2" stroke="#c9a84c" stroke-width="1.2"/><line x1="5" y1="11" x2="25" y2="11" stroke="#c9a84c" stroke-width="1"/><line x1="9" y1="7" x2="9" y2="5" stroke="#c9a84c" stroke-width="1.2" stroke-linecap="round"/><line x1="21" y1="7" x2="21" y2="5" stroke="#c9a84c" stroke-width="1.2" stroke-linecap="round"/><path d="M10 17.5l2.5 2.5 5.5-5" stroke="#c9a84c" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div class="acnt" id="vcTop">3</div><div class="albl">参拝の記録</div>
+      </div>
+      <div class="abtn" onclick="go('pgBmk')">
+        <svg viewBox="0 0 30 30" fill="none"><path d="M9 5h12v20l-6-4-6 4V5z" stroke="#c9a84c" stroke-width="1.2" stroke-linejoin="round"/><circle cx="15" cy="12" r="2.5" stroke="#c9a84c" stroke-width="1"/></svg>
+        <div class="acnt">5</div><div class="albl">いつか訪れたい</div>
+      </div>
+      <div class="abtn" onclick="searchNearby()">
+        <svg viewBox="0 0 30 30" fill="none"><circle cx="15" cy="13" r="5" stroke="#c9a84c" stroke-width="1.2"/><circle cx="15" cy="13" r="1.5" fill="#c9a84c"/><line x1="15" y1="3" x2="15" y2="6" stroke="#c9a84c" stroke-width="1.2" stroke-linecap="round"/><line x1="15" y1="20" x2="15" y2="23" stroke="#c9a84c" stroke-width="1.2" stroke-linecap="round"/><line x1="4" y1="13" x2="7" y2="13" stroke="#c9a84c" stroke-width="1.2" stroke-linecap="round"/><line x1="23" y1="13" x2="26" y2="13" stroke="#c9a84c" stroke-width="1.2" stroke-linecap="round"/></svg>
+        <div class="acnt" style="font-size:10px;opacity:.85">GPS</div><div class="albl">周辺の社を探す</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="tagbar">
+  <div class="tagrow">
+    <span class="tag on" onclick="setTag(this,'all')"><svg width="11" height="11" viewBox="0 0 11 11"><circle cx="5.5" cy="5.5" r="4.5" fill="none" stroke="currentColor" stroke-width="1"/><circle cx="5.5" cy="5.5" r="1.5" fill="currentColor"/></svg>すべて</span>
+    <span class="tag" onclick="setTag(this,'goshuin')">御朱印</span>
+    <span class="tag" onclick="setTag(this,'enmusubi')">縁結び</span>
+    <span class="tag" onclick="setTag(this,'kaiun')">開運</span>
+    <span class="tag" onclick="setTag(this,'gakumon')">学問</span>
+    <span class="tag" onclick="setTag(this,'kenko')">健康</span>
+    <span class="tag" onclick="setTag(this,'shizen')">自然・景観</span>
+    <span class="tag" onclick="setTag(this,'rekishi')">歴史・文化財</span>
+  </div>
+</div>
+
+<div class="sec">
+  <div class="sechd"><div class="secln"></div><span class="sectit">おすすめ神社ランキング</span><span class="seccnt" id="resCount">全国 5件</span></div>
+
+  <!-- APIキー入力バナー -->
+  <div class="api-banner" id="apiBanner">
+    <div class="api-banner-title">
+      <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5.5" stroke="#c9a84c" stroke-width="1"/><path d="M6.5 5.5v4M6.5 4h.01" stroke="#c9a84c" stroke-width="1.2" stroke-linecap="round"/></svg>
+      APIキーを入力すると神社の写真が表示されます
+    </div>
+    <div class="api-input-row">
+      <input class="api-input" id="apiKeyInput" type="text" placeholder="AIzaSy...を貼り付けてください">
+      <button class="api-btn" onclick="applyApiKey()">読み込む</button>
+    </div>
+    <div style="display:flex;gap:6px">
+      <button class="api-btn" id="undoBtn" onclick="undoApiKey()" style="background:#999;display:none">↩ 元に戻す</button>
+    </div>
+    <div class="api-note">
+      ① コピーしたAPIキーを上の枠に貼り付ける（Cmd+V）<br>
+      ② 「読み込む」ボタンを押す<br>
+      ③ 自動で5社の写真が読み込まれます
+    </div>
+  </div>
+
+  <!-- 設定済みバー -->
+  <div class="api-applied" id="apiAppliedBar">
+    <div class="api-applied-text">
+      <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5.5" stroke="#4a9a4a" stroke-width="1"/><path d="M4 6.5l2 2 3-3" stroke="#4a9a4a" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      APIキー設定済み：<span id="apiKeyMask" style="font-family:monospace;font-size:10px;color:#555"></span>
+    </div>
+    <div style="display:flex;gap:5px">
+      <button class="api-small-btn" onclick="showApiBanner()">変更</button>
+      <button class="api-small-btn" id="undoBarBtn" onclick="undoApiKey()" style="display:none">↩ 戻す</button>
+    </div>
+  </div>
+
+  <div class="selwrap">
+    <select class="sel" id="areaSel" onchange="">
+      <option value="all">全国</option>
+      <option value="nearby">📍 周辺の神社（50km以内）</option>
+      <option value="hokkaido">北海道・東北</option>
+      <option value="kanto">関東</option>
+      <option value="chubu">中部・北陸</option>
+      <option value="kinki">近畿</option>
+      <option value="chugoku">中国・四国</option>
+      <option value="kyushu">九州・沖縄</option>
+    </select>
+    <select class="sel" id="sortSel" onchange="">
+      <option value="rank">人気順</option>
+      <option value="rating">評価順</option>
+      <option value="visited">参拝済のみ</option>
+    </select>
+  </div>
+  <button onclick="filter()" class="btn-search" style="width:100%;background:linear-gradient(180deg,#a83320,#8a2417);color:#fff;border:1px solid var(--gold);border-radius:12px;padding:.95rem;font-family:'Shippori Mincho',serif;font-size:14px;font-weight:600;letter-spacing:.1em;cursor:pointer;margin-bottom:1rem;display:flex;align-items:center;justify-content:center;gap:7px;box-shadow:inset 0 0 0 1px rgba(201,168,76,.35),0 4px 14px -4px rgba(155,42,26,.55);transition:transform .16s var(--ease),box-shadow .2s var(--ease)">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5" stroke="#fff" stroke-width="1.5"/><line x1="11" y1="11" x2="15" y2="15" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
+    この条件で検索する
+  </button>
+  <div class="rmeta" id="rmeta">全国 <span>5件</span> のおすすめ神社</div>
+  <div id="list"></div>
+</div>
+
+<div id="toast" style="display:none;position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--red);color:#fff;padding:.6rem 1.5rem;border-radius:30px;font-size:12px;text-align:center;border:1px solid rgba(201,168,76,.4);z-index:200;white-space:nowrap"></div>
+
+<div class="fnav">
+  <div class="ni" onclick="go('pgHome')"><svg width="18" height="18" viewBox="0 0 18 18"><path d="M9 2L16 7v9H2V7z" fill="#9b2a1a"/></svg><span class="nl" style="color:var(--red)">ホーム</span></div>
+  <div class="ni" onclick="go('pgSearch')"><svg width="18" height="18" viewBox="0 0 18 18"><circle cx="9" cy="8" r="5" fill="none" stroke="#bbb" stroke-width="1.5"/><line x1="13" y1="13" x2="17" y2="17" stroke="#bbb" stroke-width="1.5" stroke-linecap="round"/></svg><span class="nl" style="color:#bbb">さがす</span></div>
+  <div class="ni" onclick="go('pgVisits')"><svg width="18" height="18" viewBox="0 0 18 18"><rect x="2" y="3" width="14" height="12" rx="1" fill="none" stroke="#bbb" stroke-width="1.5"/><line x1="2" y1="7" x2="16" y2="7" stroke="#bbb" stroke-width="1"/></svg><span class="nl" style="color:#bbb">記録帳</span></div>
+  <div class="ni" onclick="go('pgProfile')"><svg width="18" height="18" viewBox="0 0 18 18"><circle cx="9" cy="6" r="3.5" fill="none" stroke="#bbb" stroke-width="1.5"/><path d="M2 17c0-4 14-4 14 0" stroke="#bbb" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg><span class="nl" style="color:#bbb">マイページ</span></div>
+</div>
+</div>
+
+<!-- 全画面地図ページ -->
+<div id="pgMap" style="display:none;flex-direction:column;position:fixed;inset:0;z-index:100;background:#fff">
+  <div style="background:var(--red);padding:.9rem 1.25rem;display:flex;align-items:center;gap:10px;flex-shrink:0">
+    <div onclick="closeMapPage()" style="cursor:pointer;color:rgba(255,255,255,.8);font-size:24px;line-height:1">‹</div>
+    <div style="font-family:'Shippori Mincho',serif;font-size:15px;font-weight:800;color:#fff;letter-spacing:.1em;flex:1">周辺の社を探す</div>
+    <div onclick="toggleMapSearch()" style="width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.15);border:1.5px solid rgba(201,168,76,.55);display:flex;align-items:center;justify-content:center;cursor:pointer">
+      <svg width="17" height="17" viewBox="0 0 17 17" fill="none"><circle cx="7.5" cy="7.5" r="4.5" stroke="#c9a84c" stroke-width="1.5"/><line x1="11" y1="11" x2="15" y2="15" stroke="#c9a84c" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </div>
+  </div>
+  <!-- 地図内検索バー（トグル） -->
+  <div id="mapSearchBar" style="display:none;background:#fff;padding:.6rem 1rem;border-bottom:.5px solid var(--kara);flex-shrink:0">
+    <div style="display:flex;align-items:center;gap:8px;background:#f5f2ed;border-radius:10px;padding:.55rem .875rem">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4" stroke="#9b2a1a" stroke-width="1.3"/><line x1="9.5" y1="9.5" x2="13" y2="13" stroke="#9b2a1a" stroke-width="1.3" stroke-linecap="round"/></svg>
+      <input id="mapSrchInput" type="text" placeholder="神社名・地名で絞り込む" style="flex:1;border:none;outline:none;font-family:'Noto Serif JP',serif;font-size:12px;color:var(--ma);background:transparent" oninput="filterMapPins(this.value)">
+      <div onclick="clearMapSearch()" style="cursor:pointer;color:#bbb;font-size:14px;line-height:1">✕</div>
+    </div>
+  </div>
+  <div id="mapCanvas" style="flex:1;width:100%;min-height:0;background:#e8e4dc"></div>
+  <div class="map-loc-btn" onclick="centerToMyLocation()">
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="4" stroke="var(--red)" stroke-width="1.2"/><circle cx="6" cy="6" r="1.5" fill="var(--red)"/></svg>
+    現在地に戻る
+  </div>
+  <div class="map-info-card" id="mapInfoCard">
+    <img class="map-info-thumb" id="mapInfoThumb" src="" alt="">
+    <div class="map-info-body">
+      <div class="map-info-name" id="mapInfoName"></div>
+      <div class="map-info-addr" id="mapInfoAddr"></div>
+    </div>
+    <div class="map-info-close" onclick="closeMapCard()">✕</div>
+  </div>
+</div>
+
+<!-- 検索ページ -->
+<div class="pg" id="pgSearch">
+<div style="background:var(--red);padding:1rem 1.25rem 1.25rem">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:.875rem">
+    <div onclick="go('pgHome')" style="cursor:pointer;color:rgba(255,255,255,.8);font-size:22px;line-height:1">‹</div>
+    <div style="font-family:'Shippori Mincho',serif;font-size:15px;font-weight:800;color:#fff;letter-spacing:.1em">神社をさがす</div>
+  </div>
+  <!-- 名前検索バー -->
+  <div style="background:rgba(255,255,255,.95);border-radius:10px;display:flex;align-items:center;gap:8px;padding:.6rem .875rem">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.5" stroke="#9b2a1a" stroke-width="1.5"/><line x1="11" y1="11" x2="15" y2="15" stroke="#9b2a1a" stroke-width="1.5" stroke-linecap="round"/></svg>
+    <input id="srchName" type="text" placeholder="神社・お寺名を入力" style="flex:1;border:none;outline:none;font-family:'Noto Serif JP',serif;font-size:13px;color:var(--ma);background:transparent">
+  </div>
+</div>
+<div style="padding:1rem 1.25rem">
+  <!-- 都道府県 -->
+  <div class="srch-section">
+    <div class="srch-section-title">
+      <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1L10 4v6H1V4z" stroke="#888" stroke-width="1"/></svg>
+      都道府県
+    </div>
+    <select class="srch-pref" id="srchPref">
+      <option value="">すべて</option>
+      <option value="hokkaido">北海道</option><option value="aomori">青森県</option><option value="iwate">岩手県</option><option value="miyagi">宮城県</option><option value="akita">秋田県</option><option value="yamagata">山形県</option><option value="fukushima">福島県</option>
+      <option value="ibaraki">茨城県</option><option value="tochigi">栃木県</option><option value="gunma">群馬県</option><option value="saitama">埼玉県</option><option value="chiba">千葉県</option><option value="tokyo">東京都</option><option value="kanagawa">神奈川県</option>
+      <option value="niigata">新潟県</option><option value="toyama">富山県</option><option value="ishikawa">石川県</option><option value="fukui">福井県</option><option value="yamanashi">山梨県</option><option value="nagano">長野県</option><option value="shizuoka">静岡県</option><option value="aichi">愛知県</option><option value="gifu">岐阜県</option><option value="mie">三重県</option>
+      <option value="shiga">滋賀県</option><option value="kyoto">京都府</option><option value="osaka">大阪府</option><option value="hyogo">兵庫県</option><option value="nara">奈良県</option><option value="wakayama">和歌山県</option>
+      <option value="tottori">鳥取県</option><option value="shimane">島根県</option><option value="okayama">岡山県</option><option value="hiroshima">広島県</option><option value="yamaguchi">山口県</option><option value="tokushima">徳島県</option><option value="kagawa">香川県</option><option value="ehime">愛媛県</option><option value="kochi">高知県</option>
+      <option value="fukuoka">福岡県</option><option value="saga">佐賀県</option><option value="nagasaki">長崎県</option><option value="kumamoto">熊本県</option><option value="oita">大分県</option><option value="miyazaki">宮崎県</option><option value="kagoshima">鹿児島県</option><option value="okinawa">沖縄県</option>
+    </select>
+  </div>
+  <!-- ご利益 -->
+  <div class="srch-section">
+    <div class="srch-section-title">
+      <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><circle cx="5.5" cy="5.5" r="4.5" stroke="#888" stroke-width="1"/><circle cx="5.5" cy="5.5" r="1.5" fill="#888"/></svg>
+      ご利益・特徴
+    </div>
+    <div class="srch-chips">
+      <span class="srch-chip" onclick="toggleChip(this,'goshuin')">🔴 御朱印</span>
+      <span class="srch-chip" onclick="toggleChip(this,'enmusubi')">🌸 縁結び</span>
+      <span class="srch-chip" onclick="toggleChip(this,'kaiun')">🌟 開運</span>
+      <span class="srch-chip" onclick="toggleChip(this,'gakumon')">📚 学問</span>
+      <span class="srch-chip" onclick="toggleChip(this,'kenko')">💪 健康</span>
+      <span class="srch-chip" onclick="toggleChip(this,'shizen')">🌿 自然・景観</span>
+      <span class="srch-chip" onclick="toggleChip(this,'rekishi')">🏯 歴史・文化財</span>
+    </div>
+  </div>
+  <!-- 現在地から探す -->
+  <div class="srch-section">
+    <div class="srch-section-title">
+      <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><circle cx="5.5" cy="5.5" r="3" stroke="#888" stroke-width="1"/><circle cx="5.5" cy="5.5" r="1" fill="#888"/></svg>
+      現在地から探す
+    </div>
+    <button onclick="searchNearby()" style="width:100%;background:#fff;border:.5px solid var(--red);border-radius:10px;padding:.75rem;font-family:'Shippori Mincho',serif;font-size:13px;font-weight:600;color:var(--red);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="6" r="3" stroke="var(--red)" stroke-width="1.2"/><circle cx="7" cy="6" r="1" fill="var(--red)"/><line x1="7" y1="1" x2="7" y2="3" stroke="var(--red)" stroke-width="1.2" stroke-linecap="round"/><line x1="7" y1="9" x2="7" y2="11" stroke="var(--red)" stroke-width="1.2" stroke-linecap="round"/><line x1="1" y1="6" x2="3" y2="6" stroke="var(--red)" stroke-width="1.2" stroke-linecap="round"/><line x1="11" y1="6" x2="13" y2="6" stroke="var(--red)" stroke-width="1.2" stroke-linecap="round"/></svg>
+      地図で周辺の神社を探す
+    </button>
+  </div>
+  <button class="srch-btn" onclick="doSearch()">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5" stroke="#fff" stroke-width="1.5"/><line x1="11" y1="11" x2="15" y2="15" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
+    検索する
+  </button>
+</div>
+<div class="fnav">
+  <div class="ni" onclick="go('pgHome')"><svg width="18" height="18" viewBox="0 0 18 18"><path d="M9 2L16 7v9H2V7z" fill="none" stroke="#bbb" stroke-width="1.5"/></svg><span class="nl" style="color:#bbb">ホーム</span></div>
+  <div class="ni" onclick="go('pgSearch')"><svg width="18" height="18" viewBox="0 0 18 18"><circle cx="9" cy="8" r="5" fill="none" stroke="var(--red)" stroke-width="1.5"/><line x1="13" y1="13" x2="17" y2="17" stroke="var(--red)" stroke-width="1.5" stroke-linecap="round"/></svg><span class="nl" style="color:var(--red)">さがす</span></div>
+  <div class="ni" onclick="go('pgVisits')"><svg width="18" height="18" viewBox="0 0 18 18"><rect x="2" y="3" width="14" height="12" rx="1" fill="none" stroke="#bbb" stroke-width="1.5"/><line x1="2" y1="7" x2="16" y2="7" stroke="#bbb" stroke-width="1"/></svg><span class="nl" style="color:#bbb">記録帳</span></div>
+  <div class="ni" onclick="go('pgProfile')"><svg width="18" height="18" viewBox="0 0 18 18"><circle cx="9" cy="6" r="3.5" fill="none" stroke="#bbb" stroke-width="1.5"/><path d="M2 17c0-4 14-4 14 0" stroke="#bbb" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg><span class="nl" style="color:#bbb">マイページ</span></div>
+</div>
+</div>
+
+<!-- PROFILE -->
+<div class="pg" id="pgProfile">
+<div style="background:var(--red);padding:1.25rem 1.25rem 2rem">
+  <div style="display:flex;align-items:center;gap:10px"><div style="cursor:pointer;color:rgba(255,255,255,.7);font-size:20px" onclick="go('pgHome')">‹</div><div style="font-family:'Shippori Mincho',serif;font-size:15px;font-weight:800;color:#fff;letter-spacing:.1em">マイページ</div></div>
+  <div style="display:flex;flex-direction:column;align-items:center;margin-top:1.25rem">
+    <div style="width:72px;height:72px;border-radius:50%;background:rgba(255,255,255,.18);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;margin-bottom:.75rem"><svg width="36" height="36" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="13" r="7" stroke="#c9a84c" stroke-width="1.5"/><path d="M5 33c0-7 26-7 26 0" stroke="#c9a84c" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+    <div style="font-family:'Shippori Mincho',serif;font-size:17px;font-weight:800;color:#fff">参拝者　太郎</div>
+    <div style="font-size:10px;color:var(--gold);margin-top:3px;letter-spacing:.2em">PILGRIM LEVEL ★★★☆☆</div>
+  </div>
+</div>
+<div style="background:#fff;margin:0 1.25rem;margin-top:-1rem;border-radius:12px;border:.5px solid var(--kara);padding:1rem 1.25rem;position:relative;z-index:2">
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);text-align:center">
+    <div style="border-right:.5px solid var(--kara);padding:0 .5rem"><div style="font-family:'Shippori Mincho',serif;font-size:22px;font-weight:800;color:var(--red)" id="pVisits">3</div><div style="font-size:10px;color:#999;margin-top:2px">参拝数</div></div>
+    <div style="border-right:.5px solid var(--kara);padding:0 .5rem"><div style="font-family:'Shippori Mincho',serif;font-size:22px;font-weight:800;color:var(--red)">5</div><div style="font-size:10px;color:#999;margin-top:2px">行きたい</div></div>
+    <div style="padding:0 .5rem"><div style="font-family:'Shippori Mincho',serif;font-size:22px;font-weight:800;color:var(--red)">7</div><div style="font-size:10px;color:#999;margin-top:2px">御朱印</div></div>
+  </div>
+</div>
+<div style="padding:1rem 1.25rem"><div style="font-family:'Shippori Mincho',serif;font-size:12px;font-weight:600;color:var(--ma);letter-spacing:.1em;margin-bottom:.75rem;display:flex;align-items:center;gap:6px"><div style="width:3px;height:14px;background:var(--red);border-radius:2px"></div>最近の参拝</div><div id="pRecent"></div></div>
+<div class="fnav">
+  <div class="ni" onclick="go('pgHome')"><svg width="18" height="18" viewBox="0 0 18 18"><path d="M9 2L16 7v9H2V7z" fill="none" stroke="#bbb" stroke-width="1.5"/></svg><span class="nl" style="color:#bbb">ホーム</span></div>
+  <div class="ni"><svg width="18" height="18" viewBox="0 0 18 18"><circle cx="9" cy="8" r="5" fill="none" stroke="#bbb" stroke-width="1.5"/></svg><span class="nl" style="color:#bbb">さがす</span></div>
+  <div class="ni" onclick="go('pgVisits')"><svg width="18" height="18" viewBox="0 0 18 18"><rect x="2" y="3" width="14" height="12" rx="1" fill="none" stroke="#bbb" stroke-width="1.5"/></svg><span class="nl" style="color:#bbb">記録帳</span></div>
+  <div class="ni" onclick="go('pgProfile')"><svg width="18" height="18" viewBox="0 0 18 18"><circle cx="9" cy="6" r="3.5" fill="#9b2a1a"/><path d="M2 17c0-4 14-4 14 0" stroke="#9b2a1a" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg><span class="nl" style="color:var(--red)">マイページ</span></div>
+</div>
+</div>
+
+<!-- VISITS -->
+<div class="pg" id="pgVisits">
+<div style="background:var(--red);padding:1.25rem 1.25rem 1.5rem">
+  <div style="display:flex;align-items:center;gap:10px">
+    <div style="cursor:pointer;color:rgba(255,255,255,.7);font-size:20px" onclick="go('pgHome')">‹</div>
+    <div style="font-family:'Shippori Mincho',serif;font-size:15px;font-weight:800;color:#fff;letter-spacing:.1em">参拝の記録</div>
+    <div style="margin-left:auto"><button onclick="openModal()" style="background:rgba(255,255,255,.2);color:#fff;border:.5px solid rgba(201,168,76,.5);border-radius:20px;padding:4px 14px;font-size:11px;font-family:'Noto Serif JP',serif;cursor:pointer">＋ 追加</button></div>
+  </div>
+</div>
+<div style="padding:1rem 1.25rem" id="vList"></div>
+<div class="fnav">
+  <div class="ni" onclick="go('pgHome')"><svg width="18" height="18" viewBox="0 0 18 18"><path d="M9 2L16 7v9H2V7z" fill="none" stroke="#bbb" stroke-width="1.5"/></svg><span class="nl" style="color:#bbb">ホーム</span></div>
+  <div class="ni"><svg width="18" height="18" viewBox="0 0 18 18"><circle cx="9" cy="8" r="5" fill="none" stroke="#bbb" stroke-width="1.5"/></svg><span class="nl" style="color:#bbb">さがす</span></div>
+  <div class="ni" onclick="go('pgVisits')"><svg width="18" height="18" viewBox="0 0 18 18"><rect x="2" y="3" width="14" height="12" rx="1" fill="#9b2a1a" stroke="#9b2a1a" stroke-width="1"/><line x1="2" y1="7" x2="16" y2="7" stroke="#fff" stroke-width="1"/></svg><span class="nl" style="color:var(--red)">記録帳</span></div>
+  <div class="ni" onclick="go('pgProfile')"><svg width="18" height="18" viewBox="0 0 18 18"><circle cx="9" cy="6" r="3.5" fill="none" stroke="#bbb" stroke-width="1.5"/><path d="M2 17c0-4 14-4 14 0" stroke="#bbb" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg><span class="nl" style="color:#bbb">マイページ</span></div>
+</div>
+</div>
+
+<!-- BOOKMARK -->
+<div class="pg" id="pgBmk">
+<div style="background:var(--red);padding:1.25rem 1.25rem 1.5rem">
+  <div style="display:flex;align-items:center;gap:10px"><div style="cursor:pointer;color:rgba(255,255,255,.7);font-size:20px" onclick="go('pgHome')">‹</div><div style="font-family:'Shippori Mincho',serif;font-size:15px;font-weight:800;color:#fff;letter-spacing:.1em">いつか訪れたい</div></div>
+</div>
+<div style="padding:2rem;text-align:center;color:#aaa;font-size:12px">ランキングカードからブックマーク追加できます</div>
+<div class="fnav">
+  <div class="ni" onclick="go('pgHome')"><svg width="18" height="18" viewBox="0 0 18 18"><path d="M9 2L16 7v9H2V7z" fill="none" stroke="#bbb" stroke-width="1.5"/></svg><span class="nl" style="color:#bbb">ホーム</span></div>
+  <div class="ni"><svg width="18" height="18" viewBox="0 0 18 18"><circle cx="9" cy="8" r="5" fill="none" stroke="#bbb" stroke-width="1.5"/></svg><span class="nl" style="color:#bbb">さがす</span></div>
+  <div class="ni" onclick="go('pgVisits')"><svg width="18" height="18" viewBox="0 0 18 18"><rect x="2" y="3" width="14" height="12" rx="1" fill="none" stroke="#bbb" stroke-width="1.5"/></svg><span class="nl" style="color:#bbb">記録帳</span></div>
+  <div class="ni" onclick="go('pgProfile')"><svg width="18" height="18" viewBox="0 0 18 18"><circle cx="9" cy="6" r="3.5" fill="none" stroke="#bbb" stroke-width="1.5"/><path d="M2 17c0-4 14-4 14 0" stroke="#bbb" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg><span class="nl" style="color:#bbb">マイページ</span></div>
+</div>
+</div>
+
+<!-- DETAIL PAGE -->
+<div class="pg" id="pgDetail">
+<div style="background:var(--red);padding:1.25rem 1.25rem 1.5rem;position:sticky;top:0;z-index:10">
+  <div style="display:flex;align-items:center;gap:10px">
+    <div style="cursor:pointer;color:rgba(255,255,255,.7);font-size:24px;line-height:1" onclick="go('pgHome')">‹</div>
+    <div id="detailTitle" style="font-family:'Shippori Mincho',serif;font-size:15px;font-weight:800;color:#fff;letter-spacing:.1em">神社詳細</div>
+  </div>
+</div>
+<div id="detailBody" style="padding:1.25rem"></div>
+<div class="fnav">
+  <div class="ni" onclick="go('pgHome')"><svg width="18" height="18" viewBox="0 0 18 18"><path d="M9 2L16 7v9H2V7z" fill="none" stroke="#bbb" stroke-width="1.5"/></svg><span class="nl" style="color:#bbb">ホーム</span></div>
+  <div class="ni"><svg width="18" height="18" viewBox="0 0 18 18"><circle cx="9" cy="8" r="5" fill="none" stroke="#bbb" stroke-width="1.5"/></svg><span class="nl" style="color:#bbb">さがす</span></div>
+  <div class="ni" onclick="go('pgVisits')"><svg width="18" height="18" viewBox="0 0 18 18"><rect x="2" y="3" width="14" height="12" rx="1" fill="none" stroke="#bbb" stroke-width="1.5"/></svg><span class="nl" style="color:#bbb">記録帳</span></div>
+  <div class="ni" onclick="go('pgProfile')"><svg width="18" height="18" viewBox="0 0 18 18"><circle cx="9" cy="6" r="3.5" fill="none" stroke="#bbb" stroke-width="1.5"/><path d="M2 17c0-4 14-4 14 0" stroke="#bbb" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg><span class="nl" style="color:#bbb">マイページ</span></div>
+</div>
+</div>
+
+<!-- 御朱印投稿モーダル -->
+<div id="goshuinModal" style="position:fixed;inset:0;background:rgba(10,26,15,.72);display:none;align-items:flex-end;justify-content:center;z-index:200">
+  <div style="background:var(--washi);border-radius:20px 20px 0 0;padding:1.5rem 1.5rem 2.5rem;width:100%;max-width:390px">
+    <div style="width:34px;height:3px;background:#e8e0d0;border-radius:2px;margin:0 auto 1.25rem"></div>
+    <div style="font-family:'Shippori Mincho',serif;font-size:16px;font-weight:800;color:var(--ma);text-align:center;margin-bottom:.4rem">
+      御朱印を登録する
+    </div>
+    <div id="goshuinFormShrine" style="font-size:12px;color:#aaa;text-align:center;margin-bottom:1.25rem"></div>
+    <div style="background:var(--gold-l);border:.5px solid #c9a84c;border-radius:10px;padding:1rem;margin-bottom:1.25rem;font-size:12px;color:#7a4a10;line-height:1.7;font-family:'Noto Serif JP',serif">
+      🙏 この神社の御朱印を最初に登録しませんか？<br>
+      現在は管理者（TREN公式）のみ登録できます。<br>
+      将来的にはどなたでも投稿できるようになります！
+    </div>
+    <button onclick="closeGoshuinModal()" style="width:100%;background:var(--red);color:#fff;border:none;border-radius:10px;padding:.875rem;font-family:'Shippori Mincho',serif;font-size:14px;font-weight:600;cursor:pointer">
+      閉じる
+    </button>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div id="modalVp" style="position:fixed;inset:0;background:rgba(10,26,15,.72);display:none;align-items:flex-end;justify-content:center;z-index:100">
+  <div style="background:var(--washi);border-radius:20px 20px 0 0;padding:1.5rem 1.5rem 2rem;width:100%;max-width:390px">
+    <div style="width:34px;height:3px;background:#e8e0d0;border-radius:2px;margin:0 auto 1.25rem"></div>
+    <div style="font-family:'Shippori Mincho',serif;font-size:16px;font-weight:800;color:var(--ma);text-align:center;margin-bottom:4px">神社への参拝を記録</div>
+    <input id="mPlace" type="text" placeholder="神社名" style="width:100%;border:.5px solid #e8e0d0;border-radius:8px;padding:.7rem 1rem;font-family:'Noto Serif JP',serif;font-size:14px;background:#fff;color:var(--ma);margin-bottom:.75rem;outline:none;display:block">
+    <input id="mDate" type="date" style="width:100%;border:.5px solid #e8e0d0;border-radius:8px;padding:.7rem 1rem;font-family:'Noto Serif JP',serif;font-size:14px;background:#fff;color:var(--ma);margin-bottom:.75rem;outline:none;display:block">
+    <button onclick="saveVisit()" style="width:100%;background:#9b2a1a;color:#fff;border:none;border-radius:10px;padding:.875rem;font-family:'Shippori Mincho',serif;font-size:14px;font-weight:600;letter-spacing:.1em;cursor:pointer;display:block">記録を保存する</button>
+    <button onclick="closeModal()" style="width:100%;background:transparent;color:#999;border:none;padding:.7rem;font-size:13px;cursor:pointer;display:block;margin-top:4px">キャンセル</button>
+  </div>
+</div>
+
+</div><!-- /app -->
+
+<!-- Google Maps JS SDK (Places library) をAPIキー確定後に動的ロード -->
+<div id="gmap-loader"></div>
+
+<script>
+const SHRINES = [
+  // 近畿
+  {rank:1,  name:'伏見稲荷大社',   deity:'宇迦之御魂神',         addr:'京都府京都市伏見区深草薮之内町68',       map:'https://www.google.com/maps/search/?api=1&query=伏見稲荷大社',      area:'kinki',    rating:4.7, rev:12840, visited:true,  tags:['goshuin','kaiun','rekishi']},
+  {rank:4,  name:'住吉大社',       deity:'住吉三神',              addr:'大阪府大阪市住吉区住吉2丁目9-89',        map:'https://www.google.com/maps/search/?api=1&query=住吉大社',           area:'kinki',    rating:4.3, rev:5640,  visited:false, tags:['goshuin','kaiun','kenko','rekishi']},
+  {rank:13, name:'春日大社',       deity:'天児屋根命',            addr:'奈良県奈良市春日野町160',                map:'https://www.google.com/maps/search/?api=1&query=春日大社',           area:'kinki',    rating:4.5, rev:7820,  visited:false, tags:['goshuin','gakumon','rekishi','shizen']},
+  {rank:14, name:'厳島神社',       deity:'市杵島姫命',            addr:'広島県廿日市市宮島町1-1',                map:'https://www.google.com/maps/search/?api=1&query=厳島神社',           area:'kinki',    rating:4.6, rev:9340,  visited:false, tags:['goshuin','enmusubi','shizen','rekishi']},
+  {rank:15, name:'賀茂別雷神社',   deity:'賀茂別雷大神',          addr:'京都府京都市北区上賀茂本山339',           map:'https://www.google.com/maps/search/?api=1&query=上賀茂神社',         area:'kinki',    rating:4.4, rev:4210,  visited:false, tags:['goshuin','kaiun','rekishi']},
+  {rank:16, name:'八坂神社',       deity:'素戔嗚尊',              addr:'京都府京都市東山区祇園町北側625',         map:'https://www.google.com/maps/search/?api=1&query=八坂神社',           area:'kinki',    rating:4.3, rev:8930,  visited:false, tags:['goshuin','kenko','rekishi']},
+  {rank:17, name:'熊野那智大社',   deity:'熊野夫須美大神',        addr:'和歌山県東牟婁郡那智勝浦町那智山1',      map:'https://www.google.com/maps/search/?api=1&query=熊野那智大社',        area:'kinki',    rating:4.6, rev:3120,  visited:false, tags:['goshuin','kenko','shizen','rekishi']},
+  {rank:19, name:'平野神社',       deity:'今木神',                addr:'京都府京都市北区平野宮本町1',             map:'https://www.google.com/maps/search/?api=1&query=平野神社京都',        area:'kinki',    rating:4.3, rev:2180,  visited:false, tags:['goshuin','shizen','rekishi']},
+  {rank:20, name:'石清水八幡宮',   deity:'誉田別命',              addr:'京都府八幡市八幡高坊30',                  map:'https://www.google.com/maps/search/?api=1&query=石清水八幡宮',        area:'kinki',    rating:4.4, rev:3560,  visited:false, tags:['goshuin','kaiun','rekishi']},
+  {rank:29, name:'伏見稲荷大社奥社', deity:'宇迦之御魂神',        addr:'京都府京都市伏見区深草薮之内町68',        map:'https://www.google.com/maps/search/?api=1&query=伏見稲荷大社',        area:'kinki',    rating:4.5, rev:3210,  visited:false, tags:['goshuin','kaiun','shizen']},
+  // 関東
+  {rank:3,  name:'日光東照宮',     deity:'徳川家康公',            addr:'栃木県日光市山内2301',                   map:'https://www.google.com/maps/search/?api=1&query=日光東照宮',          area:'kanto',    rating:4.5, rev:9870,  visited:false, tags:['goshuin','rekishi','shizen']},
+  {rank:4,  name:'明治神宮',       deity:'明治天皇・昭憲皇太后',  addr:'東京都渋谷区代々木神園町1-1',             map:'https://www.google.com/maps/search/?api=1&query=明治神宮',            area:'kanto',    rating:4.4, rev:15200, visited:false, tags:['goshuin','kaiun','shizen','rekishi']},
+  {rank:21, name:'鶴岡八幡宮',     deity:'応神天皇',              addr:'神奈川県鎌倉市雪ノ下2-1-31',             map:'https://www.google.com/maps/search/?api=1&query=鶴岡八幡宮',          area:'kanto',    rating:4.4, rev:11230, visited:false, tags:['goshuin','kaiun','rekishi']},
+  {rank:22, name:'浅草神社',       deity:'土師真中知命',          addr:'東京都台東区浅草2-3-1',                  map:'https://www.google.com/maps/search/?api=1&query=浅草神社',            area:'kanto',    rating:4.3, rev:6780,  visited:false, tags:['goshuin','kaiun','rekishi']},
+  {rank:23, name:'神田明神',       deity:'大己貴命',              addr:'東京都千代田区外神田2-16-2',              map:'https://www.google.com/maps/search/?api=1&query=神田明神',            area:'kanto',    rating:4.3, rev:8920,  visited:false, tags:['goshuin','kaiun','enmusubi']},
+  {rank:24, name:'日枝神社',       deity:'大山咋神',              addr:'東京都千代田区永田町2-10-5',              map:'https://www.google.com/maps/search/?api=1&query=日枝神社',            area:'kanto',    rating:4.3, rev:5430,  visited:false, tags:['goshuin','kaiun','rekishi']},
+  {rank:25, name:'箱根神社',       deity:'瓊瓊杵尊',              addr:'神奈川県足柄下郡箱根町元箱根80-1',        map:'https://www.google.com/maps/search/?api=1&query=箱根神社',            area:'kanto',    rating:4.4, rev:7650,  visited:false, tags:['goshuin','enmusubi','shizen','kaiun']},
+  {rank:26, name:'大宮氷川神社',   deity:'須佐之男命',            addr:'埼玉県さいたま市大宮区高鼻町1-407',       map:'https://www.google.com/maps/search/?api=1&query=大宮氷川神社',        area:'kanto',    rating:4.4, rev:6320,  visited:false, tags:['goshuin','enmusubi','kaiun']},
+  {rank:27, name:'成田山新勝寺',   deity:'不動明王',              addr:'千葉県成田市成田1',                       map:'https://www.google.com/maps/search/?api=1&query=成田山新勝寺',        area:'kanto',    rating:4.4, rev:9870,  visited:false, tags:['goshuin','kaiun','kenko','rekishi']},
+  {rank:28, name:'富士山本宮浅間大社', deity:'木花之佐久夜毘売命', addr:'静岡県富士宮市宮町1-1',                map:'https://www.google.com/maps/search/?api=1&query=富士山本宮浅間大社',  area:'kanto',    rating:4.5, rev:5430,  visited:false, tags:['goshuin','enmusubi','shizen','rekishi']},
+  {rank:30, name:'江島神社',       deity:'江島大神',              addr:'神奈川県藤沢市江の島2-3-8',              map:'https://www.google.com/maps/search/?api=1&query=江島神社',            area:'kanto',    rating:4.3, rev:7230,  visited:false, tags:['goshuin','enmusubi','kaiun','shizen']},
+  // 中国・四国
+  {rank:2,  name:'出雲大社',       deity:'大国主大神',            addr:'島根県出雲市大社町杵築東195',             map:'https://www.google.com/maps/search/?api=1&query=出雲大社',            area:'chugoku',  rating:4.6, rev:8320,  visited:true,  tags:['goshuin','enmusubi','rekishi','kaiun']},
+  {rank:31, name:'吉備津神社',     deity:'大吉備津彦命',          addr:'岡山県岡山市北区吉備津931',               map:'https://www.google.com/maps/search/?api=1&query=吉備津神社',          area:'chugoku',  rating:4.4, rev:2340,  visited:false, tags:['goshuin','kaiun','rekishi']},
+  {rank:33, name:'金刀比羅宮',     deity:'大物主神',              addr:'香川県仲多度郡琴平町892-1',               map:'https://www.google.com/maps/search/?api=1&query=金刀比羅宮',          area:'chugoku',  rating:4.4, rev:4560,  visited:false, tags:['goshuin','kaiun','kenko','rekishi']},
+  {rank:34, name:'大山祇神社',     deity:'大山積神',              addr:'愛媛県今治市大三島町宮浦3327',            map:'https://www.google.com/maps/search/?api=1&query=大山祇神社',          area:'chugoku',  rating:4.5, rev:2890,  visited:false, tags:['goshuin','kaiun','shizen','rekishi']},
+  {rank:35, name:'美保神社',       deity:'事代主神',              addr:'島根県松江市美保関町美保関608',           map:'https://www.google.com/maps/search/?api=1&query=美保神社',            area:'chugoku',  rating:4.4, rev:1980,  visited:false, tags:['goshuin','enmusubi','kaiun']},
+  {rank:36, name:'津山神社',       deity:'建速須佐之男命',        addr:'岡山県津山市山下98-1',                   map:'https://www.google.com/maps/search/?api=1&query=津山神社',            area:'chugoku',  rating:4.2, rev:870,   visited:false, tags:['goshuin','kaiun']},
+  {rank:37, name:'伊曽乃神社',     deity:'天照大御神',            addr:'愛媛県西条市中野甲1649',                 map:'https://www.google.com/maps/search/?api=1&query=伊曽乃神社',          area:'chugoku',  rating:4.3, rev:1230,  visited:false, tags:['goshuin','kaiun']},
+  {rank:38, name:'土佐神社',       deity:'味鋤高彦根神',          addr:'高知県高知市一宮しなね2-16-1',            map:'https://www.google.com/maps/search/?api=1&query=土佐神社',            area:'chugoku',  rating:4.3, rev:980,   visited:false, tags:['goshuin','kaiun','rekishi']},
+  {rank:39, name:'速谷神社',       deity:'飛鳥大神',              addr:'広島県廿日市市上平良308',                map:'https://www.google.com/maps/search/?api=1&query=速谷神社',            area:'chugoku',  rating:4.3, rev:760,   visited:false, tags:['goshuin','kaiun']},
+  {rank:40, name:'粟嶋神社',       deity:'少彦名命',              addr:'香川県三豊市三野町大見甲701',             map:'https://www.google.com/maps/search/?api=1&query=粟嶋神社',            area:'chugoku',  rating:4.3, rev:890,   visited:false, tags:['goshuin','kenko','enmusubi']},
+  // 北海道・東北
+  {rank:41, name:'北海道神宮',     deity:'大国魂神',              addr:'北海道札幌市中央区宮ケ丘474',             map:'https://www.google.com/maps/search/?api=1&query=北海道神宮',          area:'hokkaido', rating:4.4, rev:6780,  visited:false, tags:['goshuin','kaiun','shizen','rekishi']},
+  {rank:42, name:'塩竈神社',       deity:'鹽土老翁神',            addr:'宮城県塩竈市一森山1-1',                  map:'https://www.google.com/maps/search/?api=1&query=塩竈神社',            area:'hokkaido', rating:4.4, rev:3210,  visited:false, tags:['goshuin','kaiun','rekishi']},
+  {rank:43, name:'大崎八幡宮',     deity:'応神天皇',              addr:'宮城県仙台市青葉区八幡4-6-1',             map:'https://www.google.com/maps/search/?api=1&query=大崎八幡宮',          area:'hokkaido', rating:4.4, rev:2870,  visited:false, tags:['goshuin','kaiun','rekishi']},
+  {rank:45, name:'出羽三山神社',   deity:'伊氐波神',              addr:'山形県鶴岡市羽黒町手向字羽黒山33',        map:'https://www.google.com/maps/search/?api=1&query=出羽三山神社',        area:'hokkaido', rating:4.5, rev:2340,  visited:false, tags:['goshuin','kenko','shizen','rekishi']},
+  {rank:46, name:'熊野大社',       deity:'素戔嗚尊',              addr:'山形県南陽市宮内3476-1',                 map:'https://www.google.com/maps/search/?api=1&query=熊野大社山形',        area:'hokkaido', rating:4.3, rev:980,   visited:false, tags:['goshuin','kenko','rekishi']},
+  {rank:47, name:'弘前八幡宮',     deity:'誉田別命',              addr:'青森県弘前市八幡町1-1-1',                map:'https://www.google.com/maps/search/?api=1&query=弘前八幡宮',          area:'hokkaido', rating:4.2, rev:760,   visited:false, tags:['goshuin','kaiun']},
+  {rank:48, name:'都々古別神社',   deity:'味耜高彦根命',          addr:'福島県東白川郡棚倉町棚倉馬場39',          map:'https://www.google.com/maps/search/?api=1&query=都々古別神社',        area:'hokkaido', rating:4.3, rev:870,   visited:false, tags:['goshuin','kaiun','rekishi']},
+  {rank:49, name:'志波彦神社',     deity:'志波彦神',              addr:'宮城県塩竈市一森山1-1',                  map:'https://www.google.com/maps/search/?api=1&query=志波彦神社',          area:'hokkaido', rating:4.3, rev:1230,  visited:false, tags:['goshuin','kaiun']},
+  {rank:50, name:'函館護国神社',   deity:'護国の英霊',            addr:'北海道函館市青柳町9-23',                 map:'https://www.google.com/maps/search/?api=1&query=函館護国神社',        area:'hokkaido', rating:4.3, rev:1450,  visited:false, tags:['goshuin','rekishi']},
+  {rank:50, name:'富良野神社',     deity:'天照大御神',            addr:'北海道富良野市弥生町2-20',                map:'https://www.google.com/maps/search/?api=1&query=富良野神社',          area:'hokkaido', rating:4.2, rev:980,   visited:false, tags:['goshuin','shizen','kaiun']},
+  // 中部・北陸
+  {rank:51, name:'伊勢神宮（内宮）', deity:'天照大御神',          addr:'三重県伊勢市宇治館町1',                  map:'https://www.google.com/maps/search/?api=1&query=伊勢神宮内宮',        area:'chubu',    rating:4.7, rev:18920, visited:false, tags:['goshuin','kaiun','rekishi','shizen']},
+  {rank:52, name:'諏訪大社',       deity:'建御名方神',            addr:'長野県諏訪市中洲宮山1',                  map:'https://www.google.com/maps/search/?api=1&query=諏訪大社上社本宮',   area:'chubu',    rating:4.5, rev:4560,  visited:false, tags:['goshuin','kaiun','rekishi','shizen']},
+  {rank:53, name:'熱田神宮',       deity:'熱田大神',              addr:'愛知県名古屋市熱田区神宮1-1-1',           map:'https://www.google.com/maps/search/?api=1&query=熱田神宮',            area:'chubu',    rating:4.5, rev:7830,  visited:false, tags:['goshuin','kaiun','rekishi']},
+  {rank:54, name:'白山比咩神社',   deity:'菊理媛尊',              addr:'石川県白山市三宮町二105-1',               map:'https://www.google.com/maps/search/?api=1&query=白山比咩神社',        area:'chubu',    rating:4.5, rev:3210,  visited:false, tags:['goshuin','enmusubi','kenko','shizen']},
+  {rank:55, name:'気多大社',       deity:'大己貴命',              addr:'石川県羽咋市寺家町ク1-1',                map:'https://www.google.com/maps/search/?api=1&query=気多大社',            area:'chubu',    rating:4.4, rev:2340,  visited:false, tags:['goshuin','enmusubi','kaiun']},
+  {rank:56, name:'富士山本宮浅間大社', deity:'木花之佐久夜毘売命', addr:'静岡県富士宮市宮町1-1',               map:'https://www.google.com/maps/search/?api=1&query=富士山本宮浅間大社',  area:'chubu',    rating:4.5, rev:5430,  visited:false, tags:['goshuin','enmusubi','shizen','rekishi']},
+  {rank:57, name:'真清田神社',     deity:'天火明命',              addr:'愛知県一宮市真清田1-2-1',                map:'https://www.google.com/maps/search/?api=1&query=真清田神社',          area:'chubu',    rating:4.3, rev:2180,  visited:false, tags:['goshuin','kaiun']},
+  {rank:58, name:'三嶋大社',       deity:'三嶋大明神',            addr:'静岡県三島市大宮町2-1-5',                map:'https://www.google.com/maps/search/?api=1&query=三嶋大社',            area:'chubu',    rating:4.4, rev:3210,  visited:false, tags:['goshuin','enmusubi','kaiun']},
+  {rank:59, name:'射水神社',       deity:'二上大神',              addr:'富山県高岡市古城1-1',                    map:'https://www.google.com/maps/search/?api=1&query=射水神社',            area:'chubu',    rating:4.3, rev:1870,  visited:false, tags:['goshuin','kaiun','rekishi']},
+  {rank:60, name:'椿大神社',       deity:'猿田彦大本神',          addr:'三重県鈴鹿市山本町1871',                 map:'https://www.google.com/maps/search/?api=1&query=椿大神社',            area:'chubu',    rating:4.4, rev:2340,  visited:false, tags:['goshuin','kaiun','enmusubi']},
+  // 九州・沖縄
+  {rank:61, name:'太宰府天満宮',   deity:'菅原道真公',            addr:'福岡県太宰府市宰府4-7-1',                map:'https://www.google.com/maps/search/?api=1&query=太宰府天満宮',        area:'kyushu',   rating:4.4, rev:12340, visited:false, tags:['goshuin','gakumon','rekishi','kaiun']},
+  {rank:62, name:'宗像大社',       deity:'田心姫神',              addr:'福岡県宗像市田島2331',                   map:'https://www.google.com/maps/search/?api=1&query=宗像大社',            area:'kyushu',   rating:4.5, rev:4560,  visited:false, tags:['goshuin','enmusubi','rekishi','shizen']},
+  {rank:63, name:'霧島神宮',       deity:'天饒石国饒石天津日高彦火瓊瓊杵尊', addr:'鹿児島県霧島市霧島田口2608-5', map:'https://www.google.com/maps/search/?api=1&query=霧島神宮',           area:'kyushu',   rating:4.5, rev:3210,  visited:false, tags:['goshuin','kaiun','shizen','rekishi']},
+  {rank:64, name:'住吉神社',       deity:'底筒男命',              addr:'福岡県福岡市博多区住吉3-1-51',            map:'https://www.google.com/maps/search/?api=1&query=住吉神社博多',        area:'kyushu',   rating:4.3, rev:2870,  visited:false, tags:['goshuin','kaiun','rekishi']},
+  {rank:65, name:'阿蘇神社',       deity:'健磐龍命',              addr:'熊本県阿蘇市一の宮町宮地3083-1',          map:'https://www.google.com/maps/search/?api=1&query=阿蘇神社',            area:'kyushu',   rating:4.4, rev:3450,  visited:false, tags:['goshuin','shizen','rekishi']},
+  {rank:66, name:'高千穂神社',     deity:'三毛入野命',            addr:'宮崎県西臼杵郡高千穂町三田井1037',        map:'https://www.google.com/maps/search/?api=1&query=高千穂神社',          area:'kyushu',   rating:4.5, rev:4320,  visited:false, tags:['goshuin','shizen','rekishi','kaiun']},
+  {rank:67, name:'筥崎宮',         deity:'応神天皇',              addr:'福岡県福岡市東区箱崎1-22-1',              map:'https://www.google.com/maps/search/?api=1&query=筥崎宮',              area:'kyushu',   rating:4.3, rev:3210,  visited:false, tags:['goshuin','kaiun','rekishi']},
+  {rank:68, name:'波上宮',         deity:'伊弉册尊',              addr:'沖縄県那覇市若狭1-25-11',                map:'https://www.google.com/maps/search/?api=1&query=波上宮',              area:'kyushu',   rating:4.3, rev:3870,  visited:false, tags:['goshuin','kaiun','shizen']},
+  {rank:69, name:'鵜戸神宮',       deity:'鵜葺草葺不合命',        addr:'宮崎県日南市宮浦3232',                   map:'https://www.google.com/maps/search/?api=1&query=鵜戸神宮',            area:'kyushu',   rating:4.5, rev:2340,  visited:false, tags:['goshuin','enmusubi','shizen','rekishi']},
+  {rank:70, name:'英彦山神宮',     deity:'正勝吾勝勝速日天之忍穂耳命', addr:'福岡県田川郡添田町英彦山1',         map:'https://www.google.com/maps/search/?api=1&query=英彦山神宮',          area:'kyushu',   rating:4.3, rev:1560,  visited:false, tags:['goshuin','kenko','shizen','rekishi']},
+];
+let visits = [
+  {name:'伏見稲荷大社', date:'2025-03-15'},
+  {name:'出雲大社',     date:'2024-11-22'},
+  {name:'明治神宮',     date:'2024-01-01'},
+];
+
+let currentTag = 'all';
+let API_KEY = '';
+
+// ══════════════════════════════════════════════════════════════
+//  御朱印リスト（将来はSupabaseに移行予定）
+//  imageUrl: GitHubの画像パス or null（募集中）
+// ══════════════════════════════════════════════════════════════
+const goshuinList = [
+  { shrine:'伊勢神宮（内宮）', imageUrl:'./伊勢神宮.png',  author:'TREN公式' },
+  { shrine:'伏見稲荷大社',     imageUrl: null,               author:'' },
+  { shrine:'出雲大社',         imageUrl: null,               author:'' },
+  { shrine:'日光東照宮',       imageUrl: null,               author:'' },
+  { shrine:'明治神宮',         imageUrl: null,               author:'' },
+  { shrine:'住吉大社',         imageUrl: null,               author:'' },
+  { shrine:'春日大社',         imageUrl: null,               author:'' },
+  { shrine:'厳島神社',         imageUrl: null,               author:'' },
+  { shrine:'太宰府天満宮',     imageUrl: null,               author:'' },
+  { shrine:'熱田神宮',         imageUrl: null,               author:'' },
+  { shrine:'諏訪大社',         imageUrl: null,               author:'' },
+  { shrine:'鶴岡八幡宮',       imageUrl: null,               author:'' },
+  { shrine:'箱根神社',         imageUrl: null,               author:'' },
+  { shrine:'高千穂神社',       imageUrl: null,               author:'' },
+  { shrine:'宗像大社',         imageUrl: null,               author:'' },
+];
+
+// 御朱印データを神社名で引く
+function getGoshuinData(shrineName) {
+  return goshuinList.find(g => g.shrine === shrineName) || null;
+}
+const photoCache = {};  // name → [url, ...]
+let placesService = null;
+
+// ─── Google Maps JS SDKを動的に読み込む ───────────────────────
+function loadGoogleMapsSDK(key) {
+  return new Promise((resolve, reject) => {
+    if (window.google && window.google.maps) { resolve(); return; }
+    window.__googleMapsReady = resolve;
+    const s = document.createElement('script');
+    s.src = `https://maps.googleapis.com/maps/api/js?key=${key}&libraries=places&language=ja&callback=__googleMapsReady`;
+    s.onerror = reject;
+    document.head.appendChild(s);
+  });
+}
+
+// ─── Places API (旧SDK) で写真取得 ───────────────────────────
+function initPlacesService() {
+  // PlacesServiceはDOMノードが必要
+  const div = document.getElementById('gmap-loader');
+  placesService = new google.maps.places.PlacesService(div);
+}
+
+function fetchShrinePhotos(shrine) {
+  return new Promise((resolve) => {
+    if (photoCache[shrine.name] !== undefined) { resolve(); return; }
+    photoCache[shrine.name] = [];  // ロード中マーク
+
+    placesService.textSearch(
+      { query: shrine.name + ' ' + shrine.addr, language: 'ja' },
+      (results, status) => {
+        if (status !== google.maps.places.PlacesServiceStatus.OK || !results.length) {
+          resolve(); return;
+        }
+        const placeId = results[0].place_id;
+        placesService.getDetails(
+          { placeId, fields: ['photos'], language: 'ja' },
+          (place, st2) => {
+            if (st2 === google.maps.places.PlacesServiceStatus.OK && place.photos) {
+              photoCache[shrine.name] = place.photos.slice(0, 6).map(p =>
+                p.getUrl({ maxWidth: 800, maxHeight: 600 })
+              );
+            }
+            resolve();
+          }
+        );
+      }
+    );
+  });
+}
+
+async function loadAllPhotos() {
+  try {
+    await loadGoogleMapsSDK(API_KEY);
+    initPlacesService();
+    // 全5社を並列取得
+    await Promise.all(SHRINES.map(s => fetchShrinePhotos(s)));
+    filter();  // 写真が揃ったら再描画
+    showToast('✅ 全神社の写真を読み込みました！');
+  } catch(e) {
+    console.error(e);
+    showToast('⚠️ 写真の読み込みに失敗しました。APIキーを確認してください。');
+  }
+}
+
+// ─── APIキー管理 ──────────────────────────────────────────────
+function applyApiKey() {
+  const v = document.getElementById('apiKeyInput').value.trim();
+  if (!v.startsWith('AIza')) {
+    alert('正しいAPIキーを入力してください（AIzaSy で始まる文字列です）');
+    return;
+  }
+  const prev = localStorage.getItem('gplaces_key');
+  if (prev && prev !== v) localStorage.setItem('gplaces_key_prev', prev);
+  API_KEY = v;
+  localStorage.setItem('gplaces_key', v);
+  Object.keys(photoCache).forEach(k => delete photoCache[k]);
+  placesService = null;
+  showAppliedBar();
+  showToast('🔄 写真を読み込んでいます…しばらくお待ちください');
+  filter();
+  loadAllPhotos();
+}
+
+function showAppliedBar() {
+  document.getElementById('apiBanner').style.display = 'none';
+  const bar = document.getElementById('apiAppliedBar');
+  bar.style.display = 'flex';
+  const k = API_KEY;
+  document.getElementById('apiKeyMask').textContent = k.slice(0,8) + '…' + k.slice(-4);
+  const hasPrev = !!localStorage.getItem('gplaces_key_prev');
+  document.getElementById('undoBarBtn').style.display = hasPrev ? 'inline-block' : 'none';
+}
+
+function showApiBanner() {
+  document.getElementById('apiAppliedBar').style.display = 'none';
+  document.getElementById('apiBanner').style.display = 'flex';
+  document.getElementById('apiKeyInput').value = API_KEY;
+  document.getElementById('apiKeyInput').focus();
+}
+
+function undoApiKey() {
+  const prev = localStorage.getItem('gplaces_key_prev');
+  if (!prev) { showToast('戻せる履歴がありません'); return; }
+  localStorage.setItem('gplaces_key_prev', API_KEY);
+  API_KEY = prev;
+  localStorage.setItem('gplaces_key', prev);
+  document.getElementById('apiKeyInput').value = prev;
+  Object.keys(photoCache).forEach(k => delete photoCache[k]);
+  placesService = null;
+  showAppliedBar();
+  showToast('↩ 前のAPIキーに戻しました。再読み込み中…');
+  filter();
+  loadAllPhotos();
+}
+
+// ─── カード描画 ───────────────────────────────────────────────
+function stars(r) {
+  return Array.from({length:5},(_,i)=>`<span class="${i<Math.round(r)?'sf':'se'}">★</span>`).join('');
+}
+
+// ══════════════════════════════════════════════════════════════
+//  御朱印：ファイル名から自動表示（コード書き換え不要システム）
+//  使い方：GitHubのリポジトリ直下に「神社名.png」を置くだけ
+//  例）伏見稲荷大社.png / 出雲大社.jpg
+//  伊勢神宮（内宮）→「伊勢神宮.png」でもOK（カッコ部分は省略可）
+// ══════════════════════════════════════════════════════════════
+
+// 投稿者名を変えたい神社だけ、ここに足す（任意・空でOK）
+const goshuinAuthors = {
+  // '伊勢神宮（内宮）': '伊勢 太郎',
+};
+
+// 神社名 → 英語(ローマ字)ファイル名 の対応表
+// 英語名で画像を上げたい神社だけ、ここに1行足せばOK（拡張子は書かない）
+// 例）'出雲大社': 'izumo_taisha'
+const goshuinRomaji = {
+  '伊勢神宮（内宮）': 'ise_jingu',
+  '伊勢神宮': 'ise_jingu',
+  '伏見稲荷大社': 'fushimi_inari',
+  '出雲大社': 'izumo_taisha',
+  '日光東照宮': 'nikko_toshogu',
+  '明治神宮': 'meiji_jingu',
+  '住吉大社': 'sumiyoshi_taisha',
+  '春日大社': 'kasuga_taisha',
+  '厳島神社': 'itsukushima',
+  '太宰府天満宮': 'dazaifu_tenmangu',
+  '熱田神宮': 'atsuta_jingu',
+  '諏訪大社': 'suwa_taisha',
+  '鶴岡八幡宮': 'tsurugaoka_hachimangu',
+  '箱根神社': 'hakone',
+  '高千穂神社': 'takachiho',
+  '宗像大社': 'munakata_taisha',
+};
+
+// name -> url文字列(あり) / false(なし) / '__loading'(確認中) / 未定義(未確認)
+const goshuinFileCache = {};
+
+// 1つの神社名から、試すファイル名候補を自動生成
+// ① 英語(ローマ字)名 → ② 日本語名 の順で探す（英語名運用を優先）
+function gCandidates(name){
+  var trim = name.replace(/[（(].*$/, '').trim();   // カッコ前まで
+  var exts = ['png','PNG','jpg','JPG','jpeg','JPEG'];
+  var out = [], seen = {};
+  function add(fname){
+    exts.forEach(function(ext){
+      var u = './' + encodeURIComponent(fname) + '.' + ext;
+      if (!seen[u]) { seen[u] = 1; out.push(u); }
+    });
+  }
+  // ① ローマ字名（対応表にあれば最優先で探す）
+  var r = goshuinRomaji[name] || (trim && goshuinRomaji[trim]);
+  if (r) add(r);
+  // ② 日本語名（フルネーム＋カッコ前、濁点2パターン）
+  var bases = [name];
+  if (trim && trim !== name) bases.push(trim);
+  bases.forEach(function(b){
+    var forms = [];
+    try { forms.push(b.normalize('NFC')); } catch(e){ forms.push(b); }
+    try { var d = b.normalize('NFD'); if (forms.indexOf(d) < 0) forms.push(d); } catch(e){}
+    forms.forEach(add);
+  });
+  return out;
+}
+
+// 候補を1つずつ裏で読み込み、最初に成功したURLを採用（壊れ画像を出さない）
+function resolveGoshuin(name){
+  if (goshuinFileCache[name] !== undefined) return;  // 開始済み or 確定済み
+  goshuinFileCache[name] = '__loading';
+  var cands = gCandidates(name), i = 0;
+  (function tryNext(){
+    if (i >= cands.length) {
+      goshuinFileCache[name] = false;
+      if (currentTag === 'goshuin') filter();
+      return;
+    }
+    var url = cands[i++];
+    var im = new Image();
+    im.onload  = function(){ goshuinFileCache[name] = url; if (currentTag === 'goshuin') filter(); };
+    im.onerror = function(){ tryNext(); };
+    im.src = url;
+  })();
+}
+
+const PLACEHOLDER_IMG = 'https://placehold.jp/24/333333/ffffff/400x400.png?text=%E5%BE%A1%E6%9C%B1%E5%8D%B0%E5%8B%9F%E9%9B%86%E4%B8%AD%EF%BC%81';
+
+function goshuinPH(name){
+  var n = String(name).replace(/'/g, "\\'");
+  return '<div style="position:relative;cursor:pointer" onclick="showGoshuinForm(\'' + n + '\')">'
+    + '<img src="' + PLACEHOLDER_IMG + '" loading="lazy" style="width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:8px;border:1px solid #e8d5a3;display:block;opacity:.85">'
+    + '<div style="position:absolute;bottom:8px;left:0;right:0;text-align:center">'
+    + '<span style="background:var(--red);color:#fff;font-size:10px;padding:3px 12px;border-radius:20px;font-family:\'Shippori Mincho\',serif">📸 タップして御朱印を登録</span>'
+    + '</div></div>';
+}
+
+function goshuinBlock(s){
+  var c = goshuinFileCache[s.name];
+  if (c === undefined) { resolveGoshuin(s.name); c = '__loading'; }
+
+  // 画像が見つかった → 表示
+  if (typeof c === 'string' && c !== '__loading') {
+    var author = (goshuinAuthors && goshuinAuthors[s.name]) ? goshuinAuthors[s.name] : 'TREN公式';
+    return '<div style="padding:.625rem .875rem"><div style="position:relative;width:100%">'
+      + '<img src="' + c + '" loading="lazy" style="width:100%;height:300px;object-fit:cover;object-position:center;border-radius:10px;border:1px solid var(--gold);box-shadow:0 0 0 4px #fff,0 2px 12px -2px rgba(169,138,56,.45);display:block;background:#faf8f3">'
+      + '<div style="margin-top:.4rem;font-size:10px;color:#aaa;text-align:right">📷 投稿者：' + author + '</div>'
+      + '</div></div>';
+  }
+
+  // 確認中 → 読み込みスケルトン
+  if (c === '__loading') {
+    return '<div style="padding:.625rem .875rem">'
+      + '<div class="skel" style="width:100%;aspect-ratio:1/1;border-radius:8px;border:1px solid #e8d5a3"></div>'
+      + '</div>';
+  }
+
+  // 画像なし → 募集中プレースホルダー
+  return '<div style="padding:.625rem .875rem">' + goshuinPH(s.name) + '</div>';
+}
+
+// ── 御朱印投稿フォーム ────────────────────────────────────
+function showGoshuinForm(shrineName) {
+  document.getElementById('goshuinFormShrine').textContent = shrineName;
+  document.getElementById('goshuinModal').style.display = 'flex';
+}
+function closeGoshuinModal() {
+  document.getElementById('goshuinModal').style.display = 'none';
+}
+
+// ── 御朱印写真をキャッシュ ─────────────────────────────────
+const goshuinCache = {};
+
+function fetchGoshuinPhotos(shrine) {
+  if (goshuinCache[shrine.name] !== undefined) return;
+  goshuinCache[shrine.name] = null; // 取得中マーク
+
+  placesService.textSearch(
+    { query: shrine.name + ' 御朱印', language: 'ja' },
+    (results, status) => {
+      if (status !== google.maps.places.PlacesServiceStatus.OK || !results.length) {
+        goshuinCache[shrine.name] = [];
+        if (currentTag === 'goshuin') filter();
+        return;
+      }
+      const placeId = results[0].place_id;
+      placesService.getDetails(
+        { placeId, fields: ['photos'], language: 'ja' },
+        (place, st2) => {
+          if (st2 === google.maps.places.PlacesServiceStatus.OK && place.photos && place.photos.length > 0) {
+            goshuinCache[shrine.name] = place.photos.slice(0, 3).map(p =>
+              p.getUrl({ maxWidth: 600, maxHeight: 800 })
+            );
+          } else {
+            goshuinCache[shrine.name] = [];
+          }
+          if (currentTag === 'goshuin') filter();
+        }
+      );
+    }
+  );
+}
+
+function galleryHtml(urls) {
+  if (!urls || urls.length === 0) {
+    return `<div class="pgallery">
+      <div class="pgallery-main skel"></div>
+    </div>
+    <div class="pstrip">
+      ${Array(5).fill('<div class="pthumb skel"></div>').join('')}
+    </div>`;
+  }
+  // 上段：1枚大きく表示
+  // 下段：2枚目以降を最大5枚表示
+  const stripHtml = Array(5).fill(0).map((_,i) => urls[i+1]
+    ? `<div class="pthumb"><img src="${urls[i+1]}" loading="lazy"></div>`
+    : `<div class="pthumb" style="background:#f0ece4;display:none"></div>`
+  ).join('');
+  return `<div class="pgallery">
+    <div class="pgallery-main">
+      <img src="${urls[0]}" loading="lazy">
+      <div class="photo-count">📷 ${urls.length}枚</div>
+    </div>
+  </div>
+  <div class="pstrip">${stripHtml}</div>`;
+}
+
+function renderCard(s, dr) {
+  const bc = dr<=3 ? `b${dr}` : 'b4';
+  const cls = dr===1 ? 'rcard r1' : 'rcard';
+  const badge = s.visited ? '<span class="bv">参拝済</span>' : '<span class="bn">未参拝</span>';
+  // 御朱印タグ時：御朱印写真を直接表示
+  let gallery = '';
+  if (currentTag === 'goshuin') {
+    gallery = goshuinBlock(s);
+  } else if (API_KEY) {
+    gallery = galleryHtml(photoCache[s.name]);
+  }
+  return `<div class="${cls}">
+    <div class="rhd">
+      <div class="rbdg ${bc}">${dr}</div>
+      <div class="nblk">
+        <div class="nrow"><span class="rname" onclick="goDetail(${JSON.stringify(s)})" style="cursor:pointer">${s.name}</span><span class="deity">祭神：${s.deity}</span></div>
+        <a class="alink" href="${s.map}" target="_blank" rel="noopener">
+          <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><circle cx="5.5" cy="4.5" r="2.2" stroke="#2563a8" stroke-width="1"/><path d="M5.5 6.7L5.5 10" stroke="#2563a8" stroke-width="1"/></svg>
+          ${s.addr}
+        </a>
+      </div>
+      <div class="rarow">›</div>
+    </div>
+    ${gallery}
+    <div class="rftr">
+      <div><div class="stars">${stars(s.rating)}<span class="rnum">${s.rating.toFixed(1)}</span></div><div class="rcnt">${s.rev.toLocaleString()}件のクチコミ</div></div>
+      ${badge}
+    </div>
+  </div>`;
+}
+
+// ─── フィルター ───────────────────────────────────────────────
+function filter() {
+  const area = document.getElementById('areaSel').value;
+  const sort = document.getElementById('sortSel').value;
+  if (area === 'nearby') {
+    searchNearby();
+    return;
+  }
+  let f = SHRINES.slice();
+  if (area !== 'all') f = f.filter(s => s.area === area);
+  if (currentTag !== 'all') f = f.filter(s => s.tags && s.tags.includes(currentTag));
+  if (sort === 'visited') f = f.filter(s => s.visited);
+  if (sort === 'rating') f.sort((a,b) => b.rating - a.rating);
+  const lbl = document.getElementById('areaSel').options[document.getElementById('areaSel').selectedIndex].text;
+  const top10 = f.slice(0, 10);
+  document.getElementById('resCount').textContent = `${lbl} ${top10.length}件`;
+  document.getElementById('rmeta').innerHTML = `${lbl} <span>${top10.length}件</span> のおすすめ神社`;
+  document.getElementById('list').innerHTML = top10.length
+    ? top10.map((s,i) => renderCard(s, i+1)).join('')
+    : '<div style="text-align:center;color:#aaa;padding:2rem 0;font-size:13px">このエリアの神社はまだありません</div>';
+}
+
+// ─── その他 ───────────────────────────────────────────────────
+function go(id) {
+  document.querySelectorAll('.pg').forEach(p => p.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  if (id === 'pgVisits') renderVList();
+  if (id === 'pgProfile') renderProfile();
+}
+function toggleChip(el, tag) {
+  el.classList.toggle('on');
+}
+function doSearch() {
+  var name = document.getElementById('srchName').value.trim().toLowerCase();
+  var pref = document.getElementById('srchPref').value;
+  var chips = Array.from(document.querySelectorAll('.srch-chip.on')).map(c => c.getAttribute('onclick').match(/'([^']+)'/)[1]);
+  var prefMap = { hokkaido:'北海道・東北', aomori:'北海道・東北', iwate:'北海道・東北', miyagi:'北海道・東北', akita:'北海道・東北', yamagata:'北海道・東北', fukushima:'北海道・東北', ibaraki:'関東', tochigi:'関東', gunma:'関東', saitama:'関東', chiba:'関東', tokyo:'関東', kanagawa:'関東', niigata:'中部・北陸', toyama:'中部・北陸', ishikawa:'中部・北陸', fukui:'中部・北陸', yamanashi:'中部・北陸', nagano:'中部・北陸', shizuoka:'中部・北陸', aichi:'中部・北陸', gifu:'中部・北陸', mie:'中部・北陸', shiga:'近畿', kyoto:'近畿', osaka:'近畿', hyogo:'近畿', nara:'近畿', wakayama:'近畿', tottori:'中国・四国', shimane:'中国・四国', okayama:'中国・四国', hiroshima:'中国・四国', yamaguchi:'中国・四国', tokushima:'中国・四国', kagawa:'中国・四国', ehime:'中国・四国', kochi:'中国・四国', fukuoka:'九州・沖縄', saga:'九州・沖縄', nagasaki:'九州・沖縄', kumamoto:'九州・沖縄', oita:'九州・沖縄', miyazaki:'九州・沖縄', kagoshima:'九州・沖縄', okinawa:'九州・沖縄' };
+  var areaFilter = pref ? prefMap[pref] : null;
+  var f = SHRINES.slice();
+  if (name) f = f.filter(s => s.name.toLowerCase().includes(name));
+  if (areaFilter) f = f.filter(s => s.area === areaFilter);
+  if (chips.length) f = f.filter(s => chips.some(t => s.tags && s.tags.includes(t)));
+  var top = f.slice(0, 10);
+  document.getElementById('resCount').textContent = top.length + '件';
+  document.getElementById('rmeta').innerHTML = '<span>' + top.length + '件</span> の検索結果';
+  document.getElementById('list').innerHTML = top.length
+    ? top.map((s,i) => renderCard(s, i+1)).join('')
+    : '<div style="text-align:center;color:#aaa;padding:2rem 0;font-size:13px">該当する神社が見つかりませんでした</div>';
+  go('pgHome');
+}
+function setTag(el, tag) {
+  document.querySelectorAll('.tag').forEach(t => t.classList.remove('on'));
+  el.classList.add('on');
+  currentTag = tag;
+  filter();
+}
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.style.display = 'block';
+  setTimeout(() => t.style.display = 'none', 3500);
+}
+function renderVList() {
+  const el = document.getElementById('vList');
+  el.innerHTML = visits.length ? visits.map((v,i) => `
+    <div style="background:#fff;border:.5px solid #e8e0d0;border-radius:10px;padding:.75rem 1rem;margin-bottom:.625rem;display:flex;align-items:center;gap:10px">
+      <div style="width:32px;height:32px;border-radius:50%;background:#f5ebe8;display:flex;align-items:center;justify-content:center;font-family:'Shippori Mincho',serif;font-size:13px;font-weight:800;color:#9b2a1a">${i+1}</div>
+      <div style="flex:1"><div style="font-size:13px;font-family:'Shippori Mincho',serif;color:#0a1a0f">${v.name}</div><div style="font-size:10px;color:#aaa;margin-top:2px">${v.date}</div></div>
+      <div style="font-size:9px;background:#f5efd6;color:#7a4a10;border:.5px solid #e8d5a3;border-radius:10px;padding:2px 8px">参拝済</div>
+    </div>`).join('') : '<div style="color:#aaa;font-size:12px;text-align:center;padding:2rem 0">まだ記録がありません</div>';
+}
+function renderProfile() {
+  document.getElementById('pVisits').textContent = visits.length;
+  document.getElementById('pRecent').innerHTML = visits.slice(0,3).map(v => `
+    <div style="display:flex;align-items:center;gap:10px;padding:.6rem 0;border-bottom:.5px solid #f0ece4">
+      <div style="width:34px;height:34px;border-radius:50%;background:#f5ebe8;display:flex;align-items:center;justify-content:center"><svg width="16" height="16" viewBox="0 0 16 16"><rect x="2" y="4" width="12" height="10" rx="1" fill="none" stroke="#9b2a1a" stroke-width="1"/><line x1="2" y1="7" x2="14" y2="7" stroke="#9b2a1a" stroke-width="0.8"/></svg></div>
+      <div style="flex:1"><div style="font-size:13px;color:#0a1a0f;font-family:'Shippori Mincho',serif">${v.name}</div><div style="font-size:10px;color:#aaa">${v.date}</div></div>
+      <div style="font-size:9px;background:#f5efd6;color:#7a4a10;border:.5px solid #e8d5a3;border-radius:10px;padding:2px 8px">参拝済</div>
+    </div>`).join('');
+}
+function openModal() { document.getElementById('modalVp').style.display='flex'; document.getElementById('mDate').value=new Date().toISOString().split('T')[0]; }
+function closeModal() { document.getElementById('modalVp').style.display='none'; document.getElementById('mPlace').value=''; }
+function saveVisit() {
+  const n = document.getElementById('mPlace').value.trim();
+  const d = document.getElementById('mDate').value;
+  if (!n) { document.getElementById('mPlace').focus(); return; }
+  visits.unshift({name:n, date:d});
+  closeModal();
+  document.getElementById('vcTop').textContent = visits.length;
+  showToast('✓ ' + n + ' を記録しました');
+}
+
+// ─── 神社の詳細（名前タップ）→ Googleマップを開く ──────────────
+function goDetail(s){
+  try { if (s && s.map) window.open(s.map, '_blank', 'noopener'); } catch(e){}
+}
+
+// ─── 地図 状態管理 ───────────────────────────────────────────
+var mapInstance = null;
+var mapMarkers = [];
+var currentMapShrines = [];
+var myLatLng = null;
+
+function showMapArea(){
+  var mp = document.getElementById('pgMap');
+  mp.style.display = 'flex';
+  setTimeout(function(){ if(mapInstance) google.maps.event.trigger(mapInstance,'resize'); }, 300);
+}
+function hideMapArea(){ document.getElementById('pgMap').style.display='none'; }
+function closeMapPage(){ hideMapArea(); }
+function toggleMapSearch(){
+  var bar = document.getElementById('mapSearchBar');
+  var input = document.getElementById('mapSrchInput');
+  if(bar.style.display === 'none'){
+    bar.style.display = 'block';
+    setTimeout(function(){ input.focus(); }, 100);
+  } else {
+    bar.style.display = 'none';
+    input.value = '';
+    filterMapPins('');
+  }
+}
+function clearMapSearch(){
+  document.getElementById('mapSrchInput').value = '';
+  filterMapPins('');
+}
+function filterMapPins(keyword){
+  var kw = keyword.trim().toLowerCase();
+  mapMarkers.forEach(function(m){
+    if(!kw || m.getTitle().toLowerCase().includes(kw)){
+      m.setVisible(true);
+    } else {
+      m.setVisible(false);
+    }
+  });
+}
+function closeMapCard(){ document.getElementById('mapInfoCard').classList.remove('on'); }
+
+function clearMarkers(){
+  mapMarkers.forEach(function(m){ m.setMap(null); });
+  mapMarkers = [];
+}
+
+function initMap(lat, lng){
+  var center = { lat: lat, lng: lng };
+  if (!mapInstance) {
+    mapInstance = new google.maps.Map(document.getElementById('mapCanvas'), {
+      center: center, zoom: 13,
+      mapTypeControl: false, streetViewControl: false, fullscreenControl: false,
+      zoomControl: true
+    });
+  } else {
+    mapInstance.setCenter(center);
+    mapInstance.setZoom(13);
+  }
+  setTimeout(function(){ google.maps.event.trigger(mapInstance,'resize'); mapInstance.setCenter(center); }, 400);
+}
+
+function placePins(shrines){
+  clearMarkers();
+  shrines.forEach(function(s){
+    if (!s.lat || !s.lng) return;
+    var marker = new google.maps.Marker({
+      position: { lat: s.lat, lng: s.lng },
+      map: mapInstance,
+      title: s.name,
+      icon: {
+        path: google.maps.SymbolPath.CIRCLE,
+        fillColor: '#9b2a1a', fillOpacity: 1,
+        strokeColor: '#c9a84c', strokeWeight: 1.5, scale: 8
+      }
+    });
+    marker.addListener('click', function(){ showMapCard(s); });
+    mapMarkers.push(marker);
+  });
+}
+
+function showMapCard(s){
+  document.getElementById('mapInfoName').textContent = s.name;
+  document.getElementById('mapInfoAddr').textContent = s.addr || '';
+  var thumb = document.getElementById('mapInfoThumb');
+  var photos = photoCache[s.name];
+  if (photos && photos.length) { thumb.src = photos[0]; thumb.style.display='block'; }
+  else { thumb.style.display='none'; }
+  document.getElementById('mapInfoCard').classList.add('on');
+  if (s.lat && s.lng) mapInstance.panTo({ lat: s.lat, lng: s.lng });
+}
+
+function centerToMyLocation(){
+  if (myLatLng && mapInstance) {
+    mapInstance.panTo(myLatLng);
+    mapInstance.setZoom(13);
+  }
+}
+
+// ─── 周辺の神社（現在地から50km以内）──────────────────────────
+function searchNearby(){
+  var areaSel = document.getElementById('areaSel');
+  function back(){ areaSel.value = 'all'; filter(); }
+
+  if (!API_KEY) {
+    showToast('📍 周辺検索はAPIキー設定後に使えます');
+    back(); return;
+  }
+  if (!navigator.geolocation) {
+    showToast('この端末では位置情報が使えません');
+    back(); return;
+  }
+
+  showToast('📍 現在地を取得しています…');
+  navigator.geolocation.getCurrentPosition(function(pos){
+    var lat = pos.coords.latitude;
+    var lng = pos.coords.longitude;
+    myLatLng = { lat: lat, lng: lng };
+
+    loadGoogleMapsSDK(API_KEY).then(function(){
+      initPlacesService();
+      var loc = new google.maps.LatLng(lat, lng);
+      placesService.nearbySearch(
+        { location: loc, radius: 50000, keyword: '神社', type: 'place_of_worship', language: 'ja' },
+        function(results, status){
+          if (status !== google.maps.places.PlacesServiceStatus.OK || !results || !results.length) {
+            showToast('周辺50km以内に神社が見つかりませんでした');
+            back(); return;
+          }
+          var list = results.slice(0, 10).map(function(r, idx){
+            if (r.photos && r.photos.length) {
+              photoCache[r.name] = r.photos.slice(0, 6).map(function(ph){
+                return ph.getUrl({ maxWidth: 800, maxHeight: 600 });
+              });
+            }
+            var rlat = r.geometry && r.geometry.location ? r.geometry.location.lat() : null;
+            var rlng = r.geometry && r.geometry.location ? r.geometry.location.lng() : null;
+            return {
+              rank: idx + 1, name: r.name, deity: '—',
+              addr: r.vicinity || '',
+              map: 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(r.name),
+              area: 'nearby', rating: r.rating || 0,
+              rev: r.user_ratings_total || 0, visited: false, tags: ['goshuin'],
+              lat: rlat, lng: rlng
+            };
+          });
+
+          // 地図を表示してピンを立てる
+          showMapArea();
+          initMap(lat, lng);
+          placePins(list);
+
+          document.getElementById('resCount').textContent = '周辺 ' + list.length + '件';
+          document.getElementById('rmeta').innerHTML = '周辺 <span>' + list.length + '件</span> の神社';
+          document.getElementById('list').innerHTML =
+            list.map(function(s, i){ return renderCard(s, i + 1); }).join('');
+          showToast('📍 周辺の神社を表示しました');
+        }
+      );
+    }).catch(function(){
+      showToast('地図サービスの読み込みに失敗しました');
+      back();
+    });
+  }, function(){
+    showToast('位置情報の利用が許可されませんでした');
+    back();
+  }, { enableHighAccuracy: false, timeout: 10000 });
+}
+
+// ─── 起動 ─────────────────────────────────────────────────────
+(function init() {
+  const saved = localStorage.getItem('gplaces_key');
+  if (saved) {
+    document.getElementById('apiKeyInput').value = saved;
+  }
+  // バナーは必ず表示
+  document.getElementById('apiBanner').style.display = 'flex';
+  document.getElementById('apiAppliedBar').style.display = 'none';
+  filter();
+})();
+</script>
+</body>
+</html>
