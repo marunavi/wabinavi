@@ -82,6 +82,75 @@
 .rcnt{font-size:11px;color:#aaa}
 .bv{font-size:9px;background:var(--gold);color:#3a2800;padding:2px 8px;border-radius:20px}
 .bn{font-size:9px;background:var(--red-l);color:var(--red-d);padding:2px 8px;border-radius:20px;border:.5px solid #e8c4bc}
+/* AIルート生成ボタン（ホーム画面） */
+.ai-route-banner{margin:0 1.25rem;background:linear-gradient(135deg,#4a1b0c 0%,#5a1208 60%,#7a2818 100%);border:1px solid var(--gold);border-radius:14px;padding:.95rem 1rem;display:flex;align-items:center;gap:12px;cursor:pointer;box-shadow:0 4px 16px -4px rgba(74,27,12,.45),0 0 0 1px rgba(201,168,76,.18);transition:transform .2s var(--ease),box-shadow .2s var(--ease);position:relative;overflow:hidden}
+.ai-route-banner:hover{transform:translateY(-1px);box-shadow:0 8px 22px -6px rgba(74,27,12,.55),0 0 0 1px rgba(201,168,76,.35)}
+.ai-route-banner:active{transform:scale(.985)}
+.ai-route-banner::before{content:"";position:absolute;top:-20px;right:-20px;width:80px;height:80px;background:radial-gradient(circle,rgba(201,168,76,.25),transparent 70%);pointer-events:none}
+.ai-icon{width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#e3c879,#c9a84c 60%,#a98a38);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 6px rgba(201,168,76,.4)}
+.ai-route-body{flex:1;min-width:0;z-index:1}
+.ai-crown{font-size:9px;color:var(--gold);letter-spacing:.18em;font-weight:600;display:flex;align-items:center;gap:4px;margin-bottom:2px}
+.ai-route-title{font-family:'Shippori Mincho',serif;font-size:14px;font-weight:800;color:#fff;letter-spacing:.05em;line-height:1.3}
+.ai-route-sub{font-size:10px;color:rgba(255,255,255,.7);margin-top:3px;line-height:1.4}
+.ai-arrow{color:var(--gold);font-size:18px;z-index:1}
+/* AIルート入力ページ */
+.ai-page-hd{background:linear-gradient(180deg,#4a1b0c,#5a1208);padding:.9rem 1.25rem;display:flex;align-items:center;gap:10px;flex-shrink:0}
+.ai-back{cursor:pointer;color:rgba(255,255,255,.85);font-size:24px;line-height:1}
+.ai-page-tit{font-family:'Shippori Mincho',serif;font-size:15px;font-weight:800;color:#fff;letter-spacing:.1em;flex:1}
+.ai-counter{font-size:10px;color:var(--gold);background:rgba(0,0,0,.25);border:.5px solid rgba(201,168,76,.4);padding:3px 9px;border-radius:12px;letter-spacing:.05em}
+.ai-form{padding:1.25rem;background:var(--washi)}
+.ai-form-card{background:#faf7f0;border:1px solid var(--gold);border-radius:14px;padding:1.25rem;box-shadow:0 2px 10px -4px rgba(74,27,12,.15)}
+.ai-form-hd{text-align:center;padding-bottom:14px;border-bottom:1px solid var(--gold);margin-bottom:16px}
+.ai-form-en{font-family:'Shippori Mincho',serif;font-size:10px;letter-spacing:.3em;color:#8b6f3f}
+.ai-form-jp{font-family:'Shippori Mincho',serif;font-size:18px;color:var(--red-d);margin-top:4px;font-weight:600}
+.ai-field{margin-bottom:14px}
+.ai-label{display:block;font-size:11px;color:#8b6f3f;margin-bottom:6px;font-weight:600;letter-spacing:.05em}
+.ai-input{width:100%;background:#fff;border:.5px solid var(--gold);border-radius:8px;padding:.6rem .75rem;font-size:13px;font-family:'Noto Serif JP',serif;color:var(--ma);outline:none}
+.ai-input:focus{border-color:var(--red);box-shadow:0 0 0 2px rgba(155,42,26,.12)}
+.ai-tags{display:flex;gap:6px;flex-wrap:wrap}
+.ai-tag{background:#fff;color:#8b6f3f;font-size:12px;padding:6px 13px;border-radius:18px;border:.5px solid var(--gold);cursor:pointer;font-family:'Noto Serif JP',serif;transition:all .18s var(--ease)}
+.ai-tag.on{background:var(--red);color:#fff;border-color:var(--red);box-shadow:0 2px 6px rgba(155,42,26,.3)}
+.ai-time{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.ai-time-btn{background:#fff;color:#8b6f3f;font-size:12px;padding:9px;border-radius:8px;text-align:center;border:.5px solid var(--gold);cursor:pointer;font-family:'Noto Serif JP',serif;transition:all .18s var(--ease)}
+.ai-time-btn.on{background:var(--red);color:#fff;border-color:var(--red)}
+.ai-submit{width:100%;background:var(--red-d);color:#fff;border:none;padding:14px;border-radius:10px;font-size:14px;font-family:'Shippori Mincho',serif;font-weight:600;letter-spacing:.1em;cursor:pointer;margin-top:6px;box-shadow:0 4px 12px -2px rgba(74,27,12,.4);transition:transform .15s var(--ease)}
+.ai-submit:hover{background:var(--red)}
+.ai-submit:active{transform:scale(.985)}
+.ai-submit:disabled{background:#bbb;cursor:not-allowed;box-shadow:none}
+/* 月2回制限の警告 */
+.ai-limit-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:300;align-items:center;justify-content:center;padding:1.5rem}
+.ai-limit-modal.on{display:flex}
+.ai-limit-card{background:var(--washi);border:1px solid var(--gold);border-radius:16px;padding:1.5rem;max-width:340px;width:100%;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,.3)}
+.ai-limit-icon{width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#e3c879,#c9a84c,#a98a38);margin:0 auto 14px;display:flex;align-items:center;justify-content:center;font-size:28px}
+.ai-limit-tit{font-family:'Shippori Mincho',serif;font-size:16px;font-weight:800;color:var(--red-d);margin-bottom:8px}
+.ai-limit-msg{font-size:12px;color:#666;line-height:1.7;margin-bottom:16px}
+.ai-limit-btns{display:flex;gap:8px}
+.ai-limit-btn{flex:1;padding:11px;border-radius:8px;font-size:12px;font-family:'Noto Serif JP',serif;font-weight:600;cursor:pointer;border:none}
+.ai-limit-btn.primary{background:var(--red-d);color:#fff}
+.ai-limit-btn.secondary{background:#fff;color:#666;border:.5px solid #ccc}
+/* AIルート結果ページ（巻物式タイムライン） */
+.ai-result{padding:1.25rem;background:var(--washi);min-height:100%}
+.ai-result-card{background:#faf7f0;border:1px solid var(--gold);border-radius:14px;padding:1.25rem;box-shadow:0 2px 10px -4px rgba(74,27,12,.15)}
+.ai-result-hd{text-align:center;padding-bottom:14px;border-bottom:1px solid var(--gold);margin-bottom:18px}
+.ai-result-en{font-family:'Shippori Mincho',serif;font-size:10px;letter-spacing:.3em;color:#8b6f3f}
+.ai-result-tit{font-family:'Shippori Mincho',serif;font-size:18px;color:var(--red-d);margin-top:5px;font-weight:600}
+.ai-result-meta{font-size:11px;color:#8b6f3f;margin-top:5px}
+.ai-timeline{position:relative;padding-left:30px}
+.ai-timeline::before{content:"";position:absolute;left:10px;top:6px;bottom:6px;width:1px;background:var(--gold)}
+.ai-stop{position:relative;margin-bottom:18px}
+.ai-stop-num{position:absolute;left:-30px;top:0;width:22px;height:22px;border-radius:50%;background:var(--red-d);color:var(--washi);font-family:'Shippori Mincho',serif;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center}
+.ai-stop-time{font-size:11px;color:#8b6f3f;margin-bottom:2px}
+.ai-stop-name{font-family:'Shippori Mincho',serif;font-weight:600;font-size:15px;color:var(--red-d);line-height:1.3}
+.ai-stop-stay{font-size:11px;color:#8b6f3f;margin-top:4px}
+.ai-stop-tag{display:inline-block;background:var(--red);color:#fff;font-size:10px;padding:2px 9px;border-radius:10px;margin-top:6px}
+.ai-move{font-size:11px;color:#8b6f3f;margin-bottom:8px;padding-left:4px;display:flex;align-items:center;gap:4px}
+.ai-tips{background:#fff;border:.5px solid var(--gold);border-radius:10px;padding:.9rem;margin-top:16px}
+.ai-tips-tit{font-family:'Shippori Mincho',serif;font-size:12px;font-weight:600;color:var(--red-d);margin-bottom:6px;display:flex;align-items:center;gap:5px}
+.ai-tips-txt{font-size:11px;color:#666;line-height:1.7}
+.ai-result-actions{display:flex;gap:8px;margin-top:14px}
+.ai-act-btn{flex:1;padding:11px;border-radius:8px;font-size:12px;font-family:'Noto Serif JP',serif;font-weight:600;cursor:pointer;border:.5px solid var(--gold)}
+.ai-act-primary{background:var(--red-d);color:#fff;border-color:var(--red-d)}
+.ai-act-secondary{background:#fff;color:var(--red-d)}
 .fnav{display:flex;border-top:.5px solid var(--kara);background:var(--washi);padding:.65rem 0 .5rem;margin-top:1.25rem}
 .ni{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer}
 .nl{font-size:9px;letter-spacing:.08em}
@@ -147,6 +216,26 @@
       </div>
     </div>
   </div>
+</div>
+
+<!-- AIルート生成バナー（ホーム画面・有料機能） -->
+<div style="padding:1rem 0 .25rem">
+<div class="ai-route-banner" onclick="openAiRoute()">
+  <div class="ai-icon">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+      <path d="M12 2L14 8L20 9L15.5 13L17 19L12 16L7 19L8.5 13L4 9L10 8L12 2Z" fill="#4a1b0c" stroke="#4a1b0c" stroke-width="0.5" stroke-linejoin="round"/>
+    </svg>
+  </div>
+  <div class="ai-route-body">
+    <div class="ai-crown">
+      <svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M1 4l2 3 3-5 3 5 2-3v6H1V4z" fill="#c9a84c"/></svg>
+      PREMIUM ・ 月2回まで無料
+    </div>
+    <div class="ai-route-title">AI御朱印巡りルート</div>
+    <div class="ai-route-sub">出発地と願いを伝えるだけで、最適な巡り順を提案</div>
+  </div>
+  <div class="ai-arrow">›</div>
+</div>
 </div>
 
 <div class="tagbar">
@@ -232,7 +321,95 @@
 </div>
 </div>
 
-<!-- 全画面地図ページ -->
+<!-- AIルート生成・入力ページ -->
+<div id="pgAiRoute" style="display:none;flex-direction:column;position:fixed;inset:0;z-index:100;background:var(--washi);overflow-y:auto">
+  <div class="ai-page-hd">
+    <div class="ai-back" onclick="closeAiRoute()">‹</div>
+    <div class="ai-page-tit">AI御朱印巡りルート</div>
+    <div class="ai-counter" id="aiCounter">今月 残り2回</div>
+  </div>
+  <div class="ai-form">
+    <div class="ai-form-card">
+      <div class="ai-form-hd">
+        <div class="ai-form-en">AI PILGRIMAGE ROUTE</div>
+        <div class="ai-form-jp">願いを込めて、巡る道を</div>
+      </div>
+      <div class="ai-field">
+        <label class="ai-label">出発地</label>
+        <input type="text" class="ai-input" id="aiStart" placeholder="例：東京駅" value="東京駅">
+      </div>
+      <div class="ai-field">
+        <label class="ai-label">巡りたいエリア</label>
+        <input type="text" class="ai-input" id="aiArea" placeholder="例：鎌倉" value="鎌倉">
+      </div>
+      <div class="ai-field">
+        <label class="ai-label">欲しいご利益</label>
+        <div class="ai-tags" id="aiBenefits">
+          <span class="ai-tag on" data-b="enmusubi">縁結び</span>
+          <span class="ai-tag" data-b="kinun">金運</span>
+          <span class="ai-tag" data-b="kaiun">開運</span>
+          <span class="ai-tag" data-b="gakumon">学問</span>
+          <span class="ai-tag" data-b="kenko">健康</span>
+          <span class="ai-tag" data-b="shobai">商売繁盛</span>
+        </div>
+      </div>
+      <div class="ai-field">
+        <label class="ai-label">所要時間</label>
+        <div class="ai-time" id="aiTime">
+          <span class="ai-time-btn on" data-t="half">半日</span>
+          <span class="ai-time-btn" data-t="full">1日</span>
+          <span class="ai-time-btn" data-t="two">2日</span>
+        </div>
+      </div>
+      <button class="ai-submit" onclick="generateRoute()">✦ ルートを生成する</button>
+    </div>
+  </div>
+</div>
+
+<!-- AIルート結果ページ（巻物式タイムライン） -->
+<div id="pgAiResult" style="display:none;flex-direction:column;position:fixed;inset:0;z-index:100;background:var(--washi);overflow-y:auto">
+  <div class="ai-page-hd">
+    <div class="ai-back" onclick="backToAiForm()">‹</div>
+    <div class="ai-page-tit">巡礼ルート提案</div>
+    <div style="width:60px"></div>
+  </div>
+  <div class="ai-result">
+    <div class="ai-result-card">
+      <div class="ai-result-hd">
+        <div class="ai-result-en">PILGRIMAGE ROUTE</div>
+        <div class="ai-result-tit" id="aiResultTitle">鎌倉・縁結びの道</div>
+        <div class="ai-result-meta" id="aiResultMeta">所要 約4時間 ・ 3社巡り</div>
+      </div>
+      <div class="ai-timeline" id="aiTimeline"></div>
+      <div class="ai-tips">
+        <div class="ai-tips-tit">
+          <svg width="11" height="11" viewBox="0 0 12 12"><circle cx="6" cy="6" r="5" fill="none" stroke="#9b2a1a" stroke-width="1"/><text x="6" y="9" text-anchor="middle" font-size="8" fill="#9b2a1a">!</text></svg>
+          巡り方のコツ
+        </div>
+        <div class="ai-tips-txt" id="aiTipsTxt">朝一番に最大の社へ参拝するのが古来の作法です。最後の社では御朱印帳を整え、感謝を込めてお参りください。</div>
+      </div>
+      <div class="ai-result-actions">
+        <button class="ai-act-btn ai-act-secondary" onclick="backToAiForm()">条件を変える</button>
+        <button class="ai-act-btn ai-act-primary" onclick="saveRoute()">いつか訪れたいに保存</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 月2回制限・モーダル -->
+<div class="ai-limit-modal" id="aiLimitModal">
+  <div class="ai-limit-card">
+    <div class="ai-limit-icon">
+      <svg width="28" height="28" viewBox="0 0 28 28"><path d="M3 11l4 6 6-10 6 10 4-6v11H3V11z" fill="#4a1b0c"/></svg>
+    </div>
+    <div class="ai-limit-tit">今月のご利用上限です</div>
+    <div class="ai-limit-msg">AI巡りルート生成は月2回まで無料でご利用いただけます。次回更新は<span id="nextReset">来月1日</span>です。<br><br>会員登録で無制限に。</div>
+    <div class="ai-limit-btns">
+      <button class="ai-limit-btn secondary" onclick="closeAiLimit()">閉じる</button>
+      <button class="ai-limit-btn primary" onclick="closeAiLimit()">会員になる（準備中）</button>
+    </div>
+  </div>
+</div>
 <div id="pgMap" style="display:none;flex-direction:column;position:fixed;inset:0;z-index:100;background:#fff">
   <div style="background:var(--red);padding:.9rem 1.25rem;display:flex;align-items:center;gap:10px;flex-shrink:0">
     <div onclick="closeMapPage()" style="cursor:pointer;color:rgba(255,255,255,.8);font-size:24px;line-height:1">‹</div>
@@ -1077,6 +1254,163 @@ function centerToMyLocation(){
     mapInstance.panTo(myLatLng);
     mapInstance.setZoom(13);
   }
+}
+
+// ─── AI御朱印巡りルート ───────────────────────────────────
+// 月2回の無料利用カウンタ（localStorage管理）
+function getAiUsage(){
+  var d = new Date();
+  var key = 'aiRoute_' + d.getFullYear() + '_' + (d.getMonth()+1);
+  var n = parseInt(localStorage.getItem(key) || '0', 10);
+  return { key: key, count: n, remaining: Math.max(0, 2 - n) };
+}
+function updateAiCounter(){
+  var u = getAiUsage();
+  var el = document.getElementById('aiCounter');
+  if (el) el.textContent = '今月 残り' + u.remaining + '回';
+}
+function openAiRoute(){
+  updateAiCounter();
+  document.getElementById('pgAiRoute').style.display = 'flex';
+  window.scrollTo(0, 0);
+}
+function closeAiRoute(){
+  document.getElementById('pgAiRoute').style.display = 'none';
+}
+function backToAiForm(){
+  document.getElementById('pgAiResult').style.display = 'none';
+  document.getElementById('pgAiRoute').style.display = 'flex';
+  window.scrollTo(0, 0);
+}
+function closeAiLimit(){
+  document.getElementById('aiLimitModal').classList.remove('on');
+}
+
+// タグ・所要時間ボタンの切り替え
+document.addEventListener('click', function(e){
+  if (e.target.classList.contains('ai-tag')) {
+    document.querySelectorAll('#aiBenefits .ai-tag').forEach(t => t.classList.remove('on'));
+    e.target.classList.add('on');
+  }
+  if (e.target.classList.contains('ai-time-btn')) {
+    document.querySelectorAll('#aiTime .ai-time-btn').forEach(t => t.classList.remove('on'));
+    e.target.classList.add('on');
+  }
+});
+
+// サンプルルート（デモ版）
+var AI_DEMO_ROUTES = {
+  'enmusubi': {
+    title: 'エリア・縁結びの道',
+    meta: '所要 約4時間 ・ 3社巡り',
+    stops: [
+      { num: '壱', time: '09:00', name: '鶴岡八幡宮', stay: '滞在 約45分', tag: '縁結び', move: '徒歩 約15分' },
+      { num: '弐', time: '10:30', name: '銭洗弁財天宇賀福神社', stay: '滞在 約30分', tag: '金運も', move: 'バス 約20分' },
+      { num: '参', time: '12:00', name: '葛原岡神社', stay: '滞在 約30分', tag: '縁結び', move: '' }
+    ],
+    tips: '縁結びは午前中の参拝が古来の作法です。最後の葛原岡神社では「縁結び石」に願いを込めて。御朱印は各社で頂けます。'
+  },
+  'kinun': {
+    title: 'エリア・金運招福の道',
+    meta: '所要 約4時間 ・ 3社巡り',
+    stops: [
+      { num: '壱', time: '09:00', name: '銭洗弁財天宇賀福神社', stay: '滞在 約40分', tag: '金運', move: '徒歩 約20分' },
+      { num: '弐', time: '10:30', name: '佐助稲荷神社', stay: '滞在 約30分', tag: '商売繁盛', move: 'バス 約25分' },
+      { num: '参', time: '12:00', name: '鶴岡八幡宮', stay: '滞在 約40分', tag: '総合運', move: '' }
+    ],
+    tips: 'お金を洗う際は、五円玉や紙幣をザルに入れて霊水でそっと清めます。洗ったお金は早めに使うことで運気が巡るとされています。'
+  },
+  'kaiun': {
+    title: 'エリア・開運招福の道',
+    meta: '所要 約4時間 ・ 3社巡り',
+    stops: [
+      { num: '壱', time: '09:00', name: '鶴岡八幡宮', stay: '滞在 約45分', tag: '総合運', move: '徒歩 約15分' },
+      { num: '弐', time: '10:30', name: '荏柄天神社', stay: '滞在 約25分', tag: '厄除け', move: 'バス 約20分' },
+      { num: '参', time: '11:45', name: '佐助稲荷神社', stay: '滞在 約30分', tag: '開運', move: '' }
+    ],
+    tips: '開運祈願は朝一番の清々しい時間帯がおすすめ。各社で授与所の方に「開運の御朱印」とお伝えすると特別な御朱印を頂ける場合があります。'
+  },
+  'gakumon': {
+    title: 'エリア・学問成就の道',
+    meta: '所要 約3時間 ・ 3社巡り',
+    stops: [
+      { num: '壱', time: '09:00', name: '荏柄天神社', stay: '滞在 約35分', tag: '学問', move: '徒歩 約12分' },
+      { num: '弐', time: '10:15', name: '鎌倉宮', stay: '滞在 約30分', tag: '志を貫く', move: '徒歩 約15分' },
+      { num: '参', time: '11:15', name: '鶴岡八幡宮', stay: '滞在 約35分', tag: '総合運', move: '' }
+    ],
+    tips: '学問の神様・菅原道真公をお祀りする荏柄天神社は、合格祈願の絵馬で有名。試験前日には参拝後の御朱印帳を枕元に置くと良いと言われます。'
+  },
+  'kenko': {
+    title: 'エリア・健康長寿の道',
+    meta: '所要 約4時間 ・ 3社巡り',
+    stops: [
+      { num: '壱', time: '09:00', name: '長谷寺', stay: '滞在 約50分', tag: '健康', move: '徒歩 約8分' },
+      { num: '弐', time: '10:30', name: '御霊神社', stay: '滞在 約25分', tag: '厄除け', move: 'バス 約25分' },
+      { num: '参', time: '11:45', name: '鶴岡八幡宮', stay: '滞在 約35分', tag: '総合運', move: '' }
+    ],
+    tips: '長谷寺の十一面観音は厄除け・病気平癒の御利益で有名。参拝前に水鉢で手と口を清め、ゆっくり呼吸を整えてからお参りしましょう。'
+  },
+  'shobai': {
+    title: 'エリア・商売繁盛の道',
+    meta: '所要 約4時間 ・ 3社巡り',
+    stops: [
+      { num: '壱', time: '09:00', name: '佐助稲荷神社', stay: '滞在 約40分', tag: '商売繁盛', move: '徒歩 約20分' },
+      { num: '弐', time: '10:30', name: '銭洗弁財天宇賀福神社', stay: '滞在 約30分', tag: '金運', move: 'バス 約20分' },
+      { num: '参', time: '12:00', name: '鶴岡八幡宮', stay: '滞在 約40分', tag: '総合運', move: '' }
+    ],
+    tips: '佐助稲荷の白い鳥居をくぐる際は、商売の発展を具体的に念じると良いとされます。事業者の方は名刺を奉納する習わしも。'
+  }
+};
+
+function generateRoute(){
+  // 利用回数チェック
+  var u = getAiUsage();
+  if (u.count >= 2) {
+    document.getElementById('aiLimitModal').classList.add('on');
+    return;
+  }
+
+  // 入力値取得
+  var area = document.getElementById('aiArea').value.trim() || '鎌倉';
+  var benefit = document.querySelector('#aiBenefits .ai-tag.on');
+  var benefitKey = benefit ? benefit.getAttribute('data-b') : 'enmusubi';
+
+  // サンプルルートを取得
+  var route = AI_DEMO_ROUTES[benefitKey] || AI_DEMO_ROUTES['enmusubi'];
+
+  // タイトルのエリア名を入力に合わせる
+  var title = route.title.replace('エリア', area);
+  document.getElementById('aiResultTitle').textContent = title;
+  document.getElementById('aiResultMeta').textContent = route.meta;
+  document.getElementById('aiTipsTxt').textContent = route.tips;
+
+  // タイムラインを構築
+  var html = '';
+  route.stops.forEach(function(s, i){
+    html += '<div class="ai-stop">';
+    html += '<div class="ai-stop-num">' + s.num + '</div>';
+    html += '<div class="ai-stop-time">' + s.time + ' 参拝</div>';
+    html += '<div class="ai-stop-name">' + s.name + '</div>';
+    html += '<div class="ai-stop-stay">' + s.stay + '</div>';
+    html += '<div><span class="ai-stop-tag">' + s.tag + '</span></div>';
+    html += '</div>';
+    if (s.move) {
+      html += '<div class="ai-move">↓ ' + s.move + '</div>';
+    }
+  });
+  document.getElementById('aiTimeline').innerHTML = html;
+
+  // 利用回数を加算
+  localStorage.setItem(u.key, String(u.count + 1));
+
+  // 結果ページを表示
+  document.getElementById('pgAiRoute').style.display = 'none';
+  document.getElementById('pgAiResult').style.display = 'flex';
+  window.scrollTo(0, 0);
+}
+
+function saveRoute(){
+  showToast('「いつか訪れたい」に保存しました');
 }
 
 // ─── 周辺の神社（現在地から50km以内）──────────────────────────
