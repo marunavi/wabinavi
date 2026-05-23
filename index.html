@@ -809,7 +809,30 @@ const SHRINE_COORDS = {
   '宗像大社':{lat:33.8273,lng:130.5159}, '宮地嶽神社':{lat:33.8013,lng:130.4827},
   '宇佐神宮':{lat:33.5247,lng:131.3743}, '霧島神宮':{lat:31.8597,lng:130.8722},
   '鵜戸神宮':{lat:31.7044,lng:131.4651}, '英彦山神宮':{lat:33.4818,lng:130.9001},
-  '阿蘇神社':{lat:32.9536,lng:131.1158}, '青島神社':{lat:31.8042,lng:131.4787}
+  '阿蘇神社':{lat:32.9536,lng:131.1158}, '青島神社':{lat:31.8042,lng:131.4787},
+  // 長野・甲信越
+  '善光寺':{lat:36.6618,lng:138.1872}, '戸隠神社中社':{lat:36.7569,lng:138.0816},
+  '戸隠神社奥社':{lat:36.7644,lng:138.0764}, '戸隠神社宝光社':{lat:36.7474,lng:138.0894},
+  '穂高神社':{lat:36.3358,lng:137.8783}, '善光寺大本願':{lat:36.6615,lng:138.1869},
+  '善光寺大勧進':{lat:36.6612,lng:138.1881}, '北向観音':{lat:36.4015,lng:138.2519},
+  '生島足島神社':{lat:36.3744,lng:138.2536}, '別所温泉北向観音':{lat:36.4015,lng:138.2519},
+  // 関東補強
+  '川崎大師':{lat:35.5350,lng:139.7298}, '成田山新勝寺':{lat:35.7864,lng:140.3193},
+  '高幡不動尊':{lat:35.6594,lng:139.4119}, '川越氷川神社':{lat:35.9244,lng:139.4885},
+  '三峯神社':{lat:35.9134,lng:138.9234}, '秩父神社':{lat:35.9921,lng:139.0844},
+  '大山阿夫利神社':{lat:35.4406,lng:139.2419}, '鎌倉大仏（高徳院）':{lat:35.3168,lng:139.5358},
+  '建長寺':{lat:35.3349,lng:139.5546}, '円覚寺':{lat:35.3389,lng:139.5476},
+  // 関西補強
+  '醍醐寺':{lat:34.9514,lng:135.8194}, '東寺':{lat:34.9809,lng:135.7475},
+  '金閣寺':{lat:35.0394,lng:135.7292}, '銀閣寺':{lat:35.0271,lng:135.7980},
+  '南禅寺':{lat:35.0117,lng:135.7942}, '高野山金剛峯寺':{lat:34.2150,lng:135.5826},
+  '比叡山延暦寺':{lat:35.0700,lng:135.8408}, '石山寺':{lat:34.9614,lng:135.9050},
+  '長谷寺（奈良）':{lat:34.5360,lng:135.9078}, '吉野水分神社':{lat:34.3658,lng:135.8753},
+  // 東北
+  '中尊寺':{lat:38.9920,lng:141.0989}, '毛越寺':{lat:38.9881,lng:141.1085},
+  '瑞巌寺':{lat:38.3697,lng:141.0586}, '塩竈神社':{lat:38.3239,lng:141.0218},
+  '山寺立石寺':{lat:38.3119,lng:140.4358}, '出羽三山神社':{lat:38.6997,lng:139.9794},
+  '盛岡八幡宮':{lat:39.6921,lng:141.1660}, '櫛引八幡宮':{lat:40.4881,lng:141.4406}
 };
 
 // SHRINES配列にlat/lngを自動的に紐付け
@@ -1398,6 +1421,45 @@ window.setAdmin = function(on){
   if (typeof updateAiCounter === 'function') updateAiCounter();
 };
 
+// 神社名から座標を解決（DB→Geocoding APIの順）
+function resolveShrineCoord(name, callback){
+  // 1. 完全一致でDBから検索
+  if (SHRINE_COORDS[name]) {
+    callback({ lat: SHRINE_COORDS[name].lat, lng: SHRINE_COORDS[name].lng, source: 'db' });
+    return;
+  }
+  // 2. 部分一致でDBから検索
+  var keys = Object.keys(SHRINE_COORDS);
+  for (var i = 0; i < keys.length; i++) {
+    if (name.indexOf(keys[i]) !== -1 || keys[i].indexOf(name) !== -1) {
+      callback({ lat: SHRINE_COORDS[keys[i]].lat, lng: SHRINE_COORDS[keys[i]].lng, source: 'db-partial' });
+      return;
+    }
+  }
+  // 3. Geocoding APIで取得（APIキーが必要）
+  if (window.google && window.google.maps && window.google.maps.Geocoder) {
+    var geocoder = new google.maps.Geocoder();
+    geocoder.geocode({ address: name + ' 神社', region: 'jp', language: 'ja' }, function(results, status){
+      if (status === 'OK' && results && results.length > 0) {
+        var loc = results[0].geometry.location;
+        callback({ lat: loc.lat(), lng: loc.lng(), source: 'geocoder' });
+      } else {
+        // 寺で再検索
+        geocoder.geocode({ address: name + ' 寺', region: 'jp', language: 'ja' }, function(r2, s2){
+          if (s2 === 'OK' && r2 && r2.length > 0) {
+            var l2 = r2[0].geometry.location;
+            callback({ lat: l2.lat(), lng: l2.lng(), source: 'geocoder' });
+          } else {
+            callback(null);
+          }
+        });
+      }
+    });
+  } else {
+    callback(null);
+  }
+}
+
 // 月2回の無料利用カウンタ（localStorage管理）
 function getAiUsage(){
   var d = new Date();
@@ -1577,10 +1639,9 @@ function generateRoute(){
   }
 
   // 入力値取得
-  var area = document.getElementById('aiArea').value.trim() || '鎌倉';
+  var area = document.getElementById('aiArea').value.trim();
   var selectedBenefits = Array.from(document.querySelectorAll('#aiBenefits .ai-tag.on'))
     .map(function(t){ return t.getAttribute('data-b'); });
-  // ベースルート選択：お任せまたは未選択なら「開運」、複数選択なら先頭の具体的なご利益を採用
   var primaryBenefit = selectedBenefits.find(function(b){ return b !== 'omakase'; }) || 'kaiun';
   var benefitKey = (selectedBenefits.includes('omakase') || selectedBenefits.length === 0) ? 'kaiun' : primaryBenefit;
   var transport = document.querySelector('#aiTransport .ai-tr-btn.on');
@@ -1592,42 +1653,98 @@ function generateRoute(){
     .map(function(i){ return i.value.trim(); })
     .filter(function(v){ return v.length > 0; });
 
-  // サンプルルートを取得
-  var route = AI_DEMO_ROUTES[benefitKey] || AI_DEMO_ROUTES['enmusubi'];
-  // ディープコピー
-  route = JSON.parse(JSON.stringify(route));
+  // ご利益ラベル
+  var BENEFIT_LABEL = { omakase:'お任せ', enmusubi:'縁結び', kinun:'金運', kaiun:'開運', gakumon:'学問', kenko:'健康', shobai:'商売繁盛' };
+  var benefitTagText = selectedBenefits.includes('omakase') || selectedBenefits.length === 0
+    ? 'お任せ'
+    : BENEFIT_LABEL[primaryBenefit];
 
-  // ユーザー指定神社をルートの先頭に組み込む（最大3社まで反映）
+  // 「生成中…」表示
+  showToast('🗺️ ルートを生成しています…');
+
+  // ユーザーが神社を指定している場合 → 座標を解決してルート作成
   if (userShrines.length > 0) {
-    var userStops = userShrines.slice(0, 3).map(function(name, i){
-      var nums = ['壱','弐','参','肆','伍'];
-      return {
-        num: nums[i],
-        time: ['09:00','10:30','12:00','13:30','15:00'][i],
-        name: name,
-        stay: '滞在 約40分',
-        tag: 'ご指定',
-        moveMin: 15,
-        lat: 35.3258 + (i * 0.005),
-        lng: 139.5564 + (i * 0.005)
-      };
-    });
-    // 残り枠におすすめ神社を足す
-    var slotsLeft = Math.max(0, 3 - userStops.length);
-    for (var i = 0; i < slotsLeft; i++) {
-      if (route.stops[i]) {
-        var s = route.stops[i];
-        s.num = ['壱','弐','参','肆','伍'][userStops.length + i];
-        s.time = ['09:00','10:30','12:00','13:30','15:00'][userStops.length + i];
-        userStops.push(s);
-      }
-    }
-    // 最後の停止地点の移動時間を0に
-    userStops[userStops.length - 1].moveMin = 0;
-    route.stops = userStops;
+    buildRouteFromUserShrines(userShrines, transportLabel, benefitTagText, selectedBenefits, area);
+    return;
   }
 
-  // タイトルのエリア名を入力に合わせる
+  // ユーザー指定なし → サンプルルートを使用（鎌倉ベース）
+  var route = JSON.parse(JSON.stringify(AI_DEMO_ROUTES[benefitKey] || AI_DEMO_ROUTES['kaiun']));
+  var titleArea = area || '鎌倉';
+  finalizeAndShowRoute(route, titleArea, transportLabel, selectedBenefits);
+}
+
+// ユーザー指定の神社から座標を非同期に解決してルートを作る
+function buildRouteFromUserShrines(names, transportLabel, benefitTag, selectedBenefits, area){
+  var nums = ['壱','弐','参','肆','伍'];
+  var times = ['09:00','10:30','12:00','13:30','15:00'];
+  var stays = ['滞在 約40分','滞在 約35分','滞在 約30分','滞在 約30分','滞在 約30分'];
+  var stops = new Array(names.length);
+  var pending = names.length;
+
+  // 座標解決と並行して暫定座標を埋める
+  names.slice(0, 5).forEach(function(name, i){
+    resolveShrineCoord(name, function(coord){
+      stops[i] = {
+        num: nums[i],
+        time: times[i],
+        name: name,
+        stay: stays[i],
+        tag: 'ご指定',
+        moveMin: (i === Math.min(names.length, 5) - 1) ? 0 : 20,
+        lat: coord ? coord.lat : null,
+        lng: coord ? coord.lng : null,
+        resolved: !!coord
+      };
+      pending--;
+      if (pending === 0) {
+        // すべて解決後の処理
+        finishUserRoute(stops, names, transportLabel, benefitTag, selectedBenefits, area);
+      }
+    });
+  });
+}
+
+// ユーザー指定ルートを最終化
+function finishUserRoute(stops, names, transportLabel, benefitTag, selectedBenefits, area){
+  // 座標が取れなかった神社を警告
+  var unresolved = stops.filter(function(s){ return !s.resolved; });
+  if (unresolved.length === stops.length) {
+    showToast('⚠️ すべての神社の場所を特定できませんでした。正式名称でお試しください');
+    return;
+  }
+  if (unresolved.length > 0) {
+    showToast('一部の神社の場所が不明です（' + unresolved.map(function(s){return s.name;}).join('、') + '）');
+  }
+
+  // 解決済みのみ採用
+  var validStops = stops.filter(function(s){ return s.resolved; });
+  // 番号と時刻を振り直し
+  var nums = ['壱','弐','参','肆','伍'];
+  var times = ['09:00','10:30','12:00','13:30','15:00'];
+  validStops.forEach(function(s, i){
+    s.num = nums[i];
+    s.time = times[i];
+    s.moveMin = (i === validStops.length - 1) ? 0 : 20;
+  });
+
+  // ご利益タグを反映
+  validStops.forEach(function(s){
+    s.tag = benefitTag === 'お任せ' ? 'ご指定' : benefitTag;
+  });
+
+  // タイトル（エリア空欄なら最初の神社名から都道府県を推測しないので「指定の道」）
+  var titleArea = area || (validStops[0] ? validStops[0].name : '');
+  var route = {
+    stops: validStops,
+    tips: validStops[0].name + 'から始まる' + benefitTag + 'の巡礼。各社の御朱印をお忘れなく。'
+  };
+  finalizeAndShowRoute(route, titleArea, transportLabel, selectedBenefits);
+}
+
+// 結果ページを表示（共通処理）
+function finalizeAndShowRoute(route, area, transportLabel, selectedBenefits){
+  // ご利益ラベル
   var BENEFIT_LABEL = { omakase:'お任せ', enmusubi:'縁結び', kinun:'金運', kaiun:'開運', gakumon:'学問', kenko:'健康', shobai:'商売繁盛' };
   var benefitLabels = selectedBenefits.includes('omakase') || selectedBenefits.length === 0
     ? 'お任せ'
@@ -1638,12 +1755,12 @@ function generateRoute(){
   document.getElementById('aiSheetCount').textContent = route.stops.length + '社';
   document.getElementById('aiTipsTxt').textContent = route.tips;
 
-  // 横スクロールカードを構築
+  // 横スクロールカード
   var cardsHtml = '';
   route.stops.forEach(function(s, i){
     var shrinePhoto = findShrinePhoto(s.name);
     var imgHtml = shrinePhoto
-      ? '<img src="' + shrinePhoto + '" alt="' + s.name + '" onerror="this.style.display=\'none\';this.parentElement.innerHTML+=\'<div style=&quot;position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#c9a84c&quot;><svg width=&quot;32&quot; height=&quot;32&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot;><path d=&quot;M3 9l9-6 9 6v11H3V9z&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;1.5&quot;/></svg></div>\'">'
+      ? '<img src="' + shrinePhoto + '" alt="' + s.name + '" onerror="this.style.display=\'none\'">'
       : '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#c9a84c"><svg width="32" height="32" viewBox="0 0 24 24" fill="none"><path d="M3 9l9-6 9 6v11H3V9z" stroke="currentColor" stroke-width="1.5"/></svg></div>';
 
     cardsHtml += '<div class="ai-card">';
@@ -1665,10 +1782,9 @@ function generateRoute(){
   });
   document.getElementById('aiCards').innerHTML = cardsHtml;
 
-  // ルートデータを保存
   currentAiRoute = route;
 
-  // 利用回数を加算（管理者は加算しない）
+  // 利用回数加算（管理者は加算しない）
   if (!isAdmin()) {
     var u2 = getAiUsage();
     localStorage.setItem(u2.key, String(u2.count + 1));
@@ -1678,8 +1794,8 @@ function generateRoute(){
   document.getElementById('pgAiRoute').style.display = 'none';
   document.getElementById('pgAiResult').style.display = 'flex';
 
-  // マップを描画
-  setTimeout(function(){ renderAiMap(route); }, 200);
+  // マップ描画（少し遅らせて DOM 描画後に）
+  setTimeout(function(){ renderAiMap(route); }, 300);
 }
 
 // 既存のSHRINESデータから写真URLを探す
@@ -1699,10 +1815,32 @@ function findShrinePhoto(name){
 var aiMapInstance = null;
 var aiMapMarkers = [];
 var aiMapPolyline = null;
+var aiDirectionsRenderer = null;
+var aiDirectionsService = null;
+
+// 交通手段→DirectionsServiceの travelMode 変換
+function getTravelMode(transportKey){
+  if (!window.google || !window.google.maps) return null;
+  switch (transportKey) {
+    case 'walk': return google.maps.TravelMode.WALKING;
+    case 'train': return google.maps.TravelMode.TRANSIT;
+    case 'bus': return google.maps.TravelMode.TRANSIT;
+    case 'car': return google.maps.TravelMode.DRIVING;
+    default: return google.maps.TravelMode.WALKING;
+  }
+}
 
 function renderAiMap(route){
   var canvas = document.getElementById('aiMapCanvas');
   var noApi = document.getElementById('aiMapNoApi');
+
+  // 座標が有効な停留所のみ
+  var validStops = route.stops.filter(function(s){ return s.lat && s.lng; });
+  if (validStops.length === 0) {
+    canvas.style.display = 'none';
+    noApi.style.display = 'flex';
+    return;
+  }
 
   // APIキーがない場合
   if (!window.google || !window.google.maps) {
@@ -1713,18 +1851,19 @@ function renderAiMap(route){
   canvas.style.display = 'block';
   noApi.style.display = 'none';
 
-  var positions = route.stops.map(function(s){
+  var positions = validStops.map(function(s){
     return { lat: s.lat, lng: s.lng };
   });
 
-  // 中心座標（全停留所の平均）
-  var centerLat = positions.reduce(function(a,p){return a+p.lat;}, 0) / positions.length;
-  var centerLng = positions.reduce(function(a,p){return a+p.lng;}, 0) / positions.length;
+  // バウンディングボックスを計算
+  var bounds = new google.maps.LatLngBounds();
+  positions.forEach(function(p){ bounds.extend(p); });
 
+  // マップ初期化
   if (!aiMapInstance) {
     aiMapInstance = new google.maps.Map(canvas, {
-      center: { lat: centerLat, lng: centerLng },
-      zoom: 14,
+      center: bounds.getCenter(),
+      zoom: 13,
       disableDefaultUI: true,
       zoomControl: true,
       styles: [
@@ -1732,23 +1871,21 @@ function renderAiMap(route){
         { featureType: 'transit', stylers: [{ visibility: 'simplified' }] }
       ]
     });
-  } else {
-    aiMapInstance.setCenter({ lat: centerLat, lng: centerLng });
-    aiMapInstance.setZoom(14);
   }
 
-  // 既存マーカー・線を削除
+  // 既存マーカー・線・経路を削除
   aiMapMarkers.forEach(function(m){ m.setMap(null); });
   aiMapMarkers = [];
-  if (aiMapPolyline) aiMapPolyline.setMap(null);
+  if (aiMapPolyline) { aiMapPolyline.setMap(null); aiMapPolyline = null; }
+  if (aiDirectionsRenderer) { aiDirectionsRenderer.setMap(null); aiDirectionsRenderer = null; }
 
-  // 新しいマーカー
-  positions.forEach(function(p, i){
+  // マーカーを設置
+  validStops.forEach(function(s, i){
     var marker = new google.maps.Marker({
-      position: p,
+      position: { lat: s.lat, lng: s.lng },
       map: aiMapInstance,
       label: {
-        text: route.stops[i].num,
+        text: s.num,
         color: '#faf8f3',
         fontFamily: 'Shippori Mincho, serif',
         fontWeight: '800',
@@ -1762,30 +1899,73 @@ function renderAiMap(route){
         strokeColor: '#c9a84c',
         strokeWeight: 2
       },
-      title: route.stops[i].name
+      title: s.name
     });
     aiMapMarkers.push(marker);
   });
 
-  // ルート線（点線）
-  aiMapPolyline = new google.maps.Polyline({
-    path: positions,
-    geodesic: true,
-    strokeColor: '#9b2a1a',
-    strokeOpacity: 0,
-    icons: [{
-      icon: { path: 'M 0,-1 0,1', strokeOpacity: 1, scale: 3, strokeColor: '#9b2a1a' },
-      offset: '0',
-      repeat: '10px'
-    }],
-    map: aiMapInstance
-  });
+  // 表示範囲をルート全体に合わせる
+  aiMapInstance.fitBounds(bounds, { top: 80, bottom: 60, left: 40, right: 40 });
 
-  // マップサイズ調整
   setTimeout(function(){
     google.maps.event.trigger(aiMapInstance, 'resize');
-    aiMapInstance.setCenter({ lat: centerLat, lng: centerLng });
+    aiMapInstance.fitBounds(bounds, { top: 80, bottom: 60, left: 40, right: 40 });
   }, 100);
+
+  // 2地点以上ある場合のみルート線描画
+  if (validStops.length < 2) return;
+
+  // 交通手段を取得
+  var transport = document.querySelector('#aiTransport .ai-tr-btn.on');
+  var transportKey = transport ? transport.getAttribute('data-tr') : 'walk';
+  var travelMode = getTravelMode(transportKey);
+
+  // Directions Serviceで道沿いルートを取得
+  if (!aiDirectionsService) aiDirectionsService = new google.maps.DirectionsService();
+
+  // waypoints（経由地）：先頭と末尾を除いた中間地点
+  var origin = positions[0];
+  var destination = positions[positions.length - 1];
+  var waypoints = positions.slice(1, -1).map(function(p){
+    return { location: p, stopover: true };
+  });
+
+  // Directions Renderer 準備（マーカー非表示・青いルート線）
+  aiDirectionsRenderer = new google.maps.DirectionsRenderer({
+    map: aiMapInstance,
+    suppressMarkers: true,
+    preserveViewport: true,
+    polylineOptions: {
+      strokeColor: '#1d72e8',
+      strokeOpacity: 0.85,
+      strokeWeight: 5
+    }
+  });
+
+  aiDirectionsService.route({
+    origin: origin,
+    destination: destination,
+    waypoints: waypoints,
+    travelMode: travelMode,
+    region: 'jp'
+  }, function(result, status){
+    if (status === 'OK') {
+      aiDirectionsRenderer.setDirections(result);
+    } else {
+      // 経路取得失敗 → フォールバック：青い直線
+      console.warn('Directions failed:', status, '→ fallback to straight line');
+      aiDirectionsRenderer.setMap(null);
+      aiDirectionsRenderer = null;
+      aiMapPolyline = new google.maps.Polyline({
+        path: positions,
+        geodesic: true,
+        strokeColor: '#1d72e8',
+        strokeOpacity: 0.8,
+        strokeWeight: 4,
+        map: aiMapInstance
+      });
+    }
+  });
 }
 
 function saveRoute(){
