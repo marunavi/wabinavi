@@ -243,7 +243,7 @@
       </div>
       <div class="abtn" onclick="searchNearby()">
         <svg viewBox="0 0 30 30" fill="none"><circle cx="15" cy="13" r="5" stroke="#c9a84c" stroke-width="1.2"/><circle cx="15" cy="13" r="1.5" fill="#c9a84c"/><line x1="15" y1="3" x2="15" y2="6" stroke="#c9a84c" stroke-width="1.2" stroke-linecap="round"/><line x1="15" y1="20" x2="15" y2="23" stroke="#c9a84c" stroke-width="1.2" stroke-linecap="round"/><line x1="4" y1="13" x2="7" y2="13" stroke="#c9a84c" stroke-width="1.2" stroke-linecap="round"/><line x1="23" y1="13" x2="26" y2="13" stroke="#c9a84c" stroke-width="1.2" stroke-linecap="round"/></svg>
-        <div class="acnt" style="font-size:10px;opacity:.85">GPS</div><div class="albl">周辺の社を探す</div>
+        <div class="acnt" style="font-size:10px;opacity:.85">GPS</div><div class="albl">お社を探す</div>
       </div>
     </div>
   </div>
@@ -320,7 +320,7 @@
   <div class="selwrap">
     <select class="sel" id="areaSel" onchange="">
       <option value="all">全国</option>
-      <option value="nearby">📍 周辺の神社（50km以内）</option>
+      <option value="nearby">📍 お社を探す（現在地周辺）</option>
       <option value="hokkaido">北海道・東北</option>
       <option value="kanto">関東</option>
       <option value="chubu">中部・北陸</option>
@@ -387,9 +387,12 @@
         <input type="text" class="ai-input" id="aiArea" placeholder="例：鎌倉、京都、奈良など" value="鎌倉">
       </div>
       <div class="ai-field">
-        <label class="ai-label">欲しいご利益</label>
+        <div class="ai-label-row">
+          <label class="ai-label" style="margin-bottom:0">欲しいご利益（複数選択可）</label>
+        </div>
         <div class="ai-tags" id="aiBenefits">
-          <span class="ai-tag on" data-b="enmusubi">縁結び</span>
+          <span class="ai-tag on" data-b="omakase">お任せ</span>
+          <span class="ai-tag" data-b="enmusubi">縁結び</span>
           <span class="ai-tag" data-b="kinun">金運</span>
           <span class="ai-tag" data-b="kaiun">開運</span>
           <span class="ai-tag" data-b="gakumon">学問</span>
@@ -485,7 +488,7 @@
 <div id="pgMap" style="display:none;flex-direction:column;position:fixed;inset:0;z-index:100;background:#fff">
   <div style="background:var(--red);padding:.9rem 1.25rem;display:flex;align-items:center;gap:10px;flex-shrink:0">
     <div onclick="closeMapPage()" style="cursor:pointer;color:rgba(255,255,255,.8);font-size:24px;line-height:1">‹</div>
-    <div style="font-family:'Shippori Mincho',serif;font-size:15px;font-weight:800;color:#fff;letter-spacing:.1em;flex:1">周辺の社を探す</div>
+    <div style="font-family:'Shippori Mincho',serif;font-size:15px;font-weight:800;color:#fff;letter-spacing:.1em;flex:1">お社を探す</div>
     <div onclick="toggleMapSearch()" style="width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.15);border:1.5px solid rgba(201,168,76,.55);display:flex;align-items:center;justify-content:center;cursor:pointer">
       <svg width="17" height="17" viewBox="0 0 17 17" fill="none"><circle cx="7.5" cy="7.5" r="4.5" stroke="#c9a84c" stroke-width="1.5"/><line x1="11" y1="11" x2="15" y2="15" stroke="#c9a84c" stroke-width="1.5" stroke-linecap="round"/></svg>
     </div>
@@ -499,6 +502,11 @@
     </div>
   </div>
   <div id="mapCanvas" style="flex:1;width:100%;min-height:0;background:#e8e4dc"></div>
+  <!-- この場所で再検索ボタン（マップ上中央上部にフロート） -->
+  <div id="reSearchBtn" onclick="reSearchAtMapCenter()" style="position:absolute;top:62px;left:50%;transform:translateX(-50%);z-index:50;background:#fff;border:.5px solid var(--gold);border-radius:20px;padding:.5rem 1.1rem;font-family:'Noto Serif JP',serif;font-size:12px;font-weight:600;color:var(--red-d);cursor:pointer;box-shadow:0 3px 12px rgba(0,0,0,.18);display:flex;align-items:center;gap:6px">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7a4 4 0 1 1 1.5 3.1" stroke="#9b2a1a" stroke-width="1.5" stroke-linecap="round" fill="none"/><polyline points="2 4 2 7 5 7" stroke="#9b2a1a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+    この場所で再検索
+  </div>
   <div class="map-loc-btn" onclick="centerToMyLocation()">
     <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="4" stroke="var(--red)" stroke-width="1.2"/><circle cx="6" cy="6" r="1.5" fill="var(--red)"/></svg>
     現在地に戻る
@@ -567,7 +575,7 @@
     </div>
     <button onclick="searchNearby()" style="width:100%;background:#fff;border:.5px solid var(--red);border-radius:10px;padding:.75rem;font-family:'Shippori Mincho',serif;font-size:13px;font-weight:600;color:var(--red);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px">
       <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="6" r="3" stroke="var(--red)" stroke-width="1.2"/><circle cx="7" cy="6" r="1" fill="var(--red)"/><line x1="7" y1="1" x2="7" y2="3" stroke="var(--red)" stroke-width="1.2" stroke-linecap="round"/><line x1="7" y1="9" x2="7" y2="11" stroke="var(--red)" stroke-width="1.2" stroke-linecap="round"/><line x1="1" y1="6" x2="3" y2="6" stroke="var(--red)" stroke-width="1.2" stroke-linecap="round"/><line x1="11" y1="6" x2="13" y2="6" stroke="var(--red)" stroke-width="1.2" stroke-linecap="round"/></svg>
-      地図で周辺の神社を探す
+      お社を地図で探す
     </button>
   </div>
   <button class="srch-btn" onclick="doSearch()">
@@ -764,6 +772,51 @@ const SHRINES = [
   {rank:69, name:'鵜戸神宮',       deity:'鵜葺草葺不合命',        addr:'宮崎県日南市宮浦3232',                   map:'https://www.google.com/maps/search/?api=1&query=鵜戸神宮',            area:'kyushu',   rating:4.5, rev:2340,  visited:false, tags:['goshuin','enmusubi','shizen','rekishi']},
   {rank:70, name:'英彦山神宮',     deity:'正勝吾勝勝速日天之忍穂耳命', addr:'福岡県田川郡添田町英彦山1',         map:'https://www.google.com/maps/search/?api=1&query=英彦山神宮',          area:'kyushu',   rating:4.3, rev:1560,  visited:false, tags:['goshuin','kenko','shizen','rekishi']},
 ];
+
+// 主要神社の座標データ（マップピン表示用）
+const SHRINE_COORDS = {
+  '伏見稲荷大社':{lat:34.9671,lng:135.7727}, '住吉大社':{lat:34.6126,lng:135.4928},
+  '春日大社':{lat:34.6814,lng:135.8484}, '厳島神社':{lat:34.2960,lng:132.3199},
+  '賀茂別雷神社':{lat:35.0606,lng:135.7526}, '八坂神社':{lat:35.0036,lng:135.7785},
+  '上賀茂神社':{lat:35.0606,lng:135.7526}, '下鴨神社':{lat:35.0394,lng:135.7733},
+  '北野天満宮':{lat:35.0314,lng:135.7350}, '貴船神社':{lat:35.1219,lng:135.7625},
+  '平安神宮':{lat:35.0162,lng:135.7821}, '清水寺':{lat:34.9949,lng:135.7850},
+  '東大寺':{lat:34.6890,lng:135.8398}, '法隆寺':{lat:34.6147,lng:135.7344},
+  '橿原神宮':{lat:34.4881,lng:135.7866}, '熊野本宮大社':{lat:33.8403,lng:135.7727},
+  '熊野速玉大社':{lat:33.7322,lng:135.9939}, '熊野那智大社':{lat:33.6695,lng:135.8893},
+  '伊勢神宮':{lat:34.4548,lng:136.7252}, '出雲大社':{lat:35.4022,lng:132.6857},
+  '明治神宮':{lat:35.6764,lng:139.6993}, '靖国神社':{lat:35.6940,lng:139.7437},
+  '東京大神宮':{lat:35.7008,lng:139.7458}, '日枝神社':{lat:35.6741,lng:139.7395},
+  '神田明神':{lat:35.7019,lng:139.7679}, '湯島天満宮':{lat:35.7081,lng:139.7682},
+  '浅草神社':{lat:35.7148,lng:139.7967}, '浅草寺':{lat:35.7148,lng:139.7967},
+  '愛宕神社':{lat:35.6648,lng:139.7470}, '富岡八幡宮':{lat:35.6717,lng:139.7991},
+  '亀戸天神社':{lat:35.7012,lng:139.8189}, '寛永寺':{lat:35.7227,lng:139.7740},
+  '増上寺':{lat:35.6574,lng:139.7484}, '築地本願寺':{lat:35.6664,lng:139.7711},
+  '高尾山薬王院':{lat:35.6253,lng:139.2434}, '深大寺':{lat:35.6597,lng:139.5462},
+  '武蔵御嶽神社':{lat:35.7820,lng:139.1486}, '大宮氷川神社':{lat:35.9173,lng:139.6296},
+  '寒川神社':{lat:35.3781,lng:139.3865}, '鶴岡八幡宮':{lat:35.3258,lng:139.5564},
+  '銭洗弁財天宇賀福神社':{lat:35.3245,lng:139.5448}, '葛原岡神社':{lat:35.3296,lng:139.5439},
+  '佐助稲荷神社':{lat:35.3204,lng:139.5476}, '荏柄天神社':{lat:35.3267,lng:139.5599},
+  '鎌倉宮':{lat:35.3287,lng:139.5615}, '長谷寺':{lat:35.3122,lng:139.5363},
+  '御霊神社':{lat:35.3107,lng:139.5359}, '江島神社':{lat:35.2989,lng:139.4801},
+  '箱根神社':{lat:35.2046,lng:139.0238}, '日光東照宮':{lat:36.7581,lng:139.5990},
+  '香取神宮':{lat:35.8898,lng:140.5290}, '鹿島神宮':{lat:35.9690,lng:140.6336},
+  '榛名神社':{lat:36.4633,lng:138.8580}, '彌彦神社':{lat:37.7066,lng:138.8265},
+  '戸隠神社':{lat:36.7569,lng:138.0816}, '諏訪大社':{lat:36.0820,lng:138.1196},
+  '富士山本宮浅間大社':{lat:35.2256,lng:138.6101}, '熱田神宮':{lat:35.1278,lng:136.9081},
+  '多賀大社':{lat:35.2261,lng:136.2918}, '気多大社':{lat:36.9080,lng:136.7758},
+  '白山比咩神社':{lat:36.4602,lng:136.6324}, '太宰府天満宮':{lat:33.5215,lng:130.5350},
+  '宗像大社':{lat:33.8273,lng:130.5159}, '宮地嶽神社':{lat:33.8013,lng:130.4827},
+  '宇佐神宮':{lat:33.5247,lng:131.3743}, '霧島神宮':{lat:31.8597,lng:130.8722},
+  '鵜戸神宮':{lat:31.7044,lng:131.4651}, '英彦山神宮':{lat:33.4818,lng:130.9001},
+  '阿蘇神社':{lat:32.9536,lng:131.1158}, '青島神社':{lat:31.8042,lng:131.4787}
+};
+
+// SHRINES配列にlat/lngを自動的に紐付け
+SHRINES.forEach(function(s){
+  var c = SHRINE_COORDS[s.name];
+  if (c) { s.lat = c.lat; s.lng = c.lng; }
+});
 let visits = [
   {name:'伏見稲荷大社', date:'2025-03-15'},
   {name:'出雲大社',     date:'2024-11-22'},
@@ -1329,6 +1382,22 @@ function centerToMyLocation(){
 }
 
 // ─── AI御朱印巡りルート ───────────────────────────────────
+// 管理者モード（SIMBA用・無制限利用）
+function isAdmin(){
+  return localStorage.getItem('aiAdminMode') === 'on';
+}
+// コンソールから window.setAdmin(true) で管理者になれる
+window.setAdmin = function(on){
+  if (on) {
+    localStorage.setItem('aiAdminMode', 'on');
+    console.log('✓ 管理者モードON：AIルート無制限利用');
+  } else {
+    localStorage.removeItem('aiAdminMode');
+    console.log('✗ 管理者モードOFF');
+  }
+  if (typeof updateAiCounter === 'function') updateAiCounter();
+};
+
 // 月2回の無料利用カウンタ（localStorage管理）
 function getAiUsage(){
   var d = new Date();
@@ -1337,9 +1406,16 @@ function getAiUsage(){
   return { key: key, count: n, remaining: Math.max(0, 2 - n) };
 }
 function updateAiCounter(){
-  var u = getAiUsage();
   var el = document.getElementById('aiCounter');
-  if (el) el.textContent = '今月 残り' + u.remaining + '回';
+  if (!el) return;
+  if (isAdmin()) {
+    el.textContent = '管理者・無制限';
+    el.style.background = 'rgba(201,168,76,.25)';
+    el.style.color = '#fff';
+    return;
+  }
+  var u = getAiUsage();
+  el.textContent = '今月 残り' + u.remaining + '回';
 }
 function openAiRoute(){
   updateAiCounter();
@@ -1396,8 +1472,23 @@ function updateShrineUi(){
 // タグ・交通手段・所要時間の切り替え
 document.addEventListener('click', function(e){
   if (e.target.classList.contains('ai-tag')) {
-    document.querySelectorAll('#aiBenefits .ai-tag').forEach(t => t.classList.remove('on'));
-    e.target.classList.add('on');
+    var clicked = e.target;
+    var b = clicked.getAttribute('data-b');
+    // 「お任せ」は他とは排他
+    if (b === 'omakase') {
+      document.querySelectorAll('#aiBenefits .ai-tag').forEach(t => t.classList.remove('on'));
+      clicked.classList.add('on');
+    } else {
+      // 他のタグ：お任せがONなら外す
+      document.querySelectorAll('#aiBenefits .ai-tag[data-b="omakase"]').forEach(t => t.classList.remove('on'));
+      // クリックでトグル
+      clicked.classList.toggle('on');
+      // すべて外れたら「お任せ」をON
+      var anyOn = document.querySelector('#aiBenefits .ai-tag.on');
+      if (!anyOn) {
+        document.querySelector('#aiBenefits .ai-tag[data-b="omakase"]').classList.add('on');
+      }
+    }
   }
   if (e.target.classList.contains('ai-time-btn')) {
     document.querySelectorAll('#aiTime .ai-time-btn').forEach(t => t.classList.remove('on'));
@@ -1476,17 +1567,22 @@ var AI_DEMO_ROUTES = {
 var currentAiRoute = null;
 
 function generateRoute(){
-  // 利用回数チェック
-  var u = getAiUsage();
-  if (u.count >= 2) {
-    document.getElementById('aiLimitModal').classList.add('on');
-    return;
+  // 利用回数チェック（管理者は無制限）
+  if (!isAdmin()) {
+    var u = getAiUsage();
+    if (u.count >= 2) {
+      document.getElementById('aiLimitModal').classList.add('on');
+      return;
+    }
   }
 
   // 入力値取得
   var area = document.getElementById('aiArea').value.trim() || '鎌倉';
-  var benefit = document.querySelector('#aiBenefits .ai-tag.on');
-  var benefitKey = benefit ? benefit.getAttribute('data-b') : 'enmusubi';
+  var selectedBenefits = Array.from(document.querySelectorAll('#aiBenefits .ai-tag.on'))
+    .map(function(t){ return t.getAttribute('data-b'); });
+  // ベースルート選択：お任せまたは未選択なら「開運」、複数選択なら先頭の具体的なご利益を採用
+  var primaryBenefit = selectedBenefits.find(function(b){ return b !== 'omakase'; }) || 'kaiun';
+  var benefitKey = (selectedBenefits.includes('omakase') || selectedBenefits.length === 0) ? 'kaiun' : primaryBenefit;
   var transport = document.querySelector('#aiTransport .ai-tr-btn.on');
   var transportKey = transport ? transport.getAttribute('data-tr') : 'walk';
   var transportLabel = TRANSPORT_LABEL[transportKey] || '徒歩';
@@ -1532,7 +1628,11 @@ function generateRoute(){
   }
 
   // タイトルのエリア名を入力に合わせる
-  var title = route.title.replace('AREA', area);
+  var BENEFIT_LABEL = { omakase:'お任せ', enmusubi:'縁結び', kinun:'金運', kaiun:'開運', gakumon:'学問', kenko:'健康', shobai:'商売繁盛' };
+  var benefitLabels = selectedBenefits.includes('omakase') || selectedBenefits.length === 0
+    ? 'お任せ'
+    : selectedBenefits.map(function(b){ return BENEFIT_LABEL[b] || b; }).join('・');
+  var title = area + '・' + benefitLabels + 'の道';
   document.getElementById('aiResultTitle').textContent = title;
   document.getElementById('aiResultMeta').textContent = '所要 約' + (route.stops.length * 1.5) + '時間 ・ ' + route.stops.length + '社巡り ・ ' + transportLabel;
   document.getElementById('aiSheetCount').textContent = route.stops.length + '社';
@@ -1568,8 +1668,11 @@ function generateRoute(){
   // ルートデータを保存
   currentAiRoute = route;
 
-  // 利用回数を加算
-  localStorage.setItem(u.key, String(u.count + 1));
+  // 利用回数を加算（管理者は加算しない）
+  if (!isAdmin()) {
+    var u2 = getAiUsage();
+    localStorage.setItem(u2.key, String(u2.count + 1));
+  }
 
   // 結果ページを表示
   document.getElementById('pgAiRoute').style.display = 'none';
@@ -1689,18 +1792,15 @@ function saveRoute(){
   showToast('「いつか訪れたい」に保存しました');
 }
 
-// ─── 周辺の神社（現在地から50km以内）──────────────────────────
+// ─── お社を探す（現在地周辺＋全国DB表示） ──────────────────────
 function searchNearby(){
   var areaSel = document.getElementById('areaSel');
   function back(){ areaSel.value = 'all'; filter(); }
 
-  if (!API_KEY) {
-    showToast('📍 周辺検索はAPIキー設定後に使えます');
-    back(); return;
-  }
+  // 位置情報が取れない・GPS未対応でも、DBデータで全国マップを開く
   if (!navigator.geolocation) {
-    showToast('この端末では位置情報が使えません');
-    back(); return;
+    showAllShrinesOnMap();
+    return;
   }
 
   showToast('📍 現在地を取得しています…');
@@ -1709,54 +1809,188 @@ function searchNearby(){
     var lng = pos.coords.longitude;
     myLatLng = { lat: lat, lng: lng };
 
-    loadGoogleMapsSDK(API_KEY).then(function(){
-      initPlacesService();
-      var loc = new google.maps.LatLng(lat, lng);
-      placesService.nearbySearch(
-        { location: loc, radius: 50000, keyword: '神社', type: 'place_of_worship', language: 'ja' },
-        function(results, status){
-          if (status !== google.maps.places.PlacesServiceStatus.OK || !results || !results.length) {
-            showToast('周辺50km以内に神社が見つかりませんでした');
-            back(); return;
-          }
-          var list = results.slice(0, 10).map(function(r, idx){
-            if (r.photos && r.photos.length) {
-              photoCache[r.name] = r.photos.slice(0, 6).map(function(ph){
-                return ph.getUrl({ maxWidth: 800, maxHeight: 600 });
+    // 現在地周辺のDB神社を即表示
+    showShrinesNearLocation(lat, lng);
+
+    // APIキーがあれば、Google Places でも検索して補強
+    if (API_KEY) {
+      loadGoogleMapsSDK(API_KEY).then(function(){
+        initPlacesService();
+        var loc = new google.maps.LatLng(lat, lng);
+        placesService.nearbySearch(
+          { location: loc, radius: 50000, keyword: '神社', type: 'place_of_worship', language: 'ja' },
+          function(results, status){
+            if (status === google.maps.places.PlacesServiceStatus.OK && results && results.length) {
+              var list = results.slice(0, 20).map(function(r, idx){
+                if (r.photos && r.photos.length) {
+                  photoCache[r.name] = r.photos.slice(0, 6).map(function(ph){
+                    return ph.getUrl({ maxWidth: 800, maxHeight: 600 });
+                  });
+                }
+                var rlat = r.geometry && r.geometry.location ? r.geometry.location.lat() : null;
+                var rlng = r.geometry && r.geometry.location ? r.geometry.location.lng() : null;
+                return {
+                  rank: idx + 1, name: r.name, deity: '—',
+                  addr: r.vicinity || '',
+                  map: 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(r.name),
+                  area: 'nearby', rating: r.rating || 0,
+                  rev: r.user_ratings_total || 0, visited: false, tags: ['goshuin'],
+                  lat: rlat, lng: rlng
+                };
               });
+              // 既存のDBピンに追加で表示
+              addPinsToMap(list);
+              showToast('📍 お社を表示しました（API検索結果も追加）');
             }
-            var rlat = r.geometry && r.geometry.location ? r.geometry.location.lat() : null;
-            var rlng = r.geometry && r.geometry.location ? r.geometry.location.lng() : null;
-            return {
-              rank: idx + 1, name: r.name, deity: '—',
-              addr: r.vicinity || '',
-              map: 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(r.name),
-              area: 'nearby', rating: r.rating || 0,
-              rev: r.user_ratings_total || 0, visited: false, tags: ['goshuin'],
-              lat: rlat, lng: rlng
-            };
-          });
-
-          // 地図を表示してピンを立てる
-          showMapArea();
-          initMap(lat, lng);
-          placePins(list);
-
-          document.getElementById('resCount').textContent = '周辺 ' + list.length + '件';
-          document.getElementById('rmeta').innerHTML = '周辺 <span>' + list.length + '件</span> の神社';
-          document.getElementById('list').innerHTML =
-            list.map(function(s, i){ return renderCard(s, i + 1); }).join('');
-          showToast('📍 周辺の神社を表示しました');
-        }
-      );
-    }).catch(function(){
-      showToast('地図サービスの読み込みに失敗しました');
-      back();
-    });
+          }
+        );
+      });
+    }
   }, function(){
-    showToast('位置情報の利用が許可されませんでした');
-    back();
+    // 位置情報拒否 → 全国DBで表示
+    showAllShrinesOnMap();
   }, { enableHighAccuracy: false, timeout: 10000 });
+}
+
+// 全国の神社をマップ表示（座標DBあるもの）
+function showAllShrinesOnMap(){
+  var list = SHRINES.filter(function(s){ return s.lat && s.lng; });
+  showMapArea();
+  // 日本の中心あたりにフォーカス
+  initMap(36.2048, 138.2529);
+  if (mapInstance) mapInstance.setZoom(6);
+  placePins(list);
+  document.getElementById('resCount').textContent = '全国 ' + list.length + '件';
+  document.getElementById('rmeta').innerHTML = '全国の主要お社 <span>' + list.length + '件</span>';
+  document.getElementById('list').innerHTML =
+    list.map(function(s, i){ return renderCard(s, i + 1); }).join('');
+  showToast('お社を地図に表示しました');
+}
+
+// 現在地周辺のDB神社を表示（半径50km）
+function showShrinesNearLocation(lat, lng){
+  var list = SHRINES.filter(function(s){
+    if (!s.lat || !s.lng) return false;
+    var d = haversineDistance(lat, lng, s.lat, s.lng);
+    return d <= 50;
+  });
+
+  showMapArea();
+  initMap(lat, lng);
+  if (mapInstance) mapInstance.setZoom(11);
+
+  if (list.length === 0) {
+    // 周辺にDBデータがない場合は全国表示
+    showAllShrinesOnMap();
+    showToast('近くに登録お社がないため全国を表示');
+    return;
+  }
+
+  placePins(list);
+  // 現在地マーカー
+  if (mapInstance && window.google) {
+    new google.maps.Marker({
+      position: { lat: lat, lng: lng },
+      map: mapInstance,
+      title: '現在地',
+      icon: {
+        path: google.maps.SymbolPath.CIRCLE,
+        fillColor: '#4285F4', fillOpacity: 1,
+        strokeColor: '#fff', strokeWeight: 2, scale: 7
+      }
+    });
+  }
+  document.getElementById('resCount').textContent = '周辺 ' + list.length + '件';
+  document.getElementById('rmeta').innerHTML = '周辺のお社 <span>' + list.length + '件</span>';
+  document.getElementById('list').innerHTML =
+    list.map(function(s, i){ return renderCard(s, i + 1); }).join('');
+  showToast('お社を表示しました');
+}
+
+// 「この場所で再検索」用：既存マーカーに追加
+function addPinsToMap(shrines){
+  shrines.forEach(function(s){
+    if (!s.lat || !s.lng) return;
+    var marker = new google.maps.Marker({
+      position: { lat: s.lat, lng: s.lng },
+      map: mapInstance,
+      title: s.name,
+      icon: {
+        path: google.maps.SymbolPath.CIRCLE,
+        fillColor: '#d97706', fillOpacity: 1,
+        strokeColor: '#fff', strokeWeight: 1.5, scale: 7
+      }
+    });
+    marker.addListener('click', function(){ showMapCard(s); });
+    mapMarkers.push(marker);
+  });
+}
+
+// 「この場所で再検索」ボタン用：現在のマップ中心でAPI検索
+function reSearchAtMapCenter(){
+  if (!mapInstance) return;
+  var center = mapInstance.getCenter();
+  if (!center) return;
+  var lat = center.lat();
+  var lng = center.lng();
+
+  // DBから周辺神社を再表示
+  clearMarkers();
+  var dbList = SHRINES.filter(function(s){
+    if (!s.lat || !s.lng) return false;
+    return haversineDistance(lat, lng, s.lat, s.lng) <= 30;
+  });
+  placePins(dbList);
+
+  // APIキーがあれば追加検索
+  if (API_KEY && window.google && window.google.maps) {
+    initPlacesService();
+    var loc = new google.maps.LatLng(lat, lng);
+    showToast('🔍 この場所で検索中…');
+    placesService.nearbySearch(
+      { location: loc, radius: 5000, keyword: '神社', type: 'place_of_worship', language: 'ja' },
+      function(results, status){
+        if (status !== google.maps.places.PlacesServiceStatus.OK || !results || !results.length) {
+          showToast('この場所のAPI検索結果なし（DB ' + dbList.length + '件表示中）');
+          return;
+        }
+        var list = results.slice(0, 20).map(function(r, idx){
+          if (r.photos && r.photos.length) {
+            photoCache[r.name] = r.photos.slice(0, 6).map(function(ph){
+              return ph.getUrl({ maxWidth: 800, maxHeight: 600 });
+            });
+          }
+          var rlat = r.geometry && r.geometry.location ? r.geometry.location.lat() : null;
+          var rlng = r.geometry && r.geometry.location ? r.geometry.location.lng() : null;
+          return {
+            rank: idx + 1, name: r.name, deity: '—',
+            addr: r.vicinity || '',
+            map: 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(r.name),
+            area: 'nearby', rating: r.rating || 0,
+            rev: r.user_ratings_total || 0, visited: false, tags: ['goshuin'],
+            lat: rlat, lng: rlng
+          };
+        });
+        addPinsToMap(list);
+        showToast('🔍 ' + list.length + '件のお社を発見');
+      }
+    );
+  } else if (dbList.length > 0) {
+    showToast('🔍 周辺 ' + dbList.length + '件のお社を表示');
+  } else {
+    showToast('この場所にDB登録お社なし。APIキー設定で追加検索できます');
+  }
+}
+
+// 距離計算（ハバーサイン）
+function haversineDistance(lat1, lng1, lat2, lng2){
+  var R = 6371;
+  var dLat = (lat2 - lat1) * Math.PI / 180;
+  var dLng = (lng2 - lng1) * Math.PI / 180;
+  var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+          Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+          Math.sin(dLng/2) * Math.sin(dLng/2);
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 }
 
 // ─── 起動 ─────────────────────────────────────────────────────
