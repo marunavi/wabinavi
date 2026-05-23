@@ -1796,10 +1796,38 @@ function finalizeAndShowRoute(route, area, transportLabel, selectedBenefits){
 
   // マップ描画（少し遅らせて DOM 描画後に）
   setTimeout(function(){ renderAiMap(route); }, 300);
+
+  // 各カードの写真をPlaces APIから自動取得
+  setTimeout(function(){
+    route.stops.forEach(function(s, i){
+      // 既に写真があるカードはスキップ
+      if (findShrinePhoto(s.name)) return;
+      // APIキーがあれば取得を試みる
+      if (typeof API_KEY !== 'undefined' && API_KEY && window.google && window.google.maps && window.google.maps.places) {
+        fetchAndApplyShrinePhoto(s.name, s.lat, s.lng, i);
+      }
+    });
+  }, 500);
 }
 
-// 既存のSHRINESデータから写真URLを探す
+// 既存のSHRINESデータ・photoCacheから写真URLを探す
 function findShrinePhoto(name){
+  // 1. photoCache（searchNearbyで取得済み）から検索
+  if (typeof photoCache !== 'undefined') {
+    if (photoCache[name] && photoCache[name].length > 0) {
+      return photoCache[name][0];
+    }
+    // 部分一致
+    var keys = Object.keys(photoCache);
+    for (var i = 0; i < keys.length; i++) {
+      if (keys[i].indexOf(name) !== -1 || name.indexOf(keys[i]) !== -1) {
+        if (photoCache[keys[i]] && photoCache[keys[i]].length > 0) {
+          return photoCache[keys[i]][0];
+        }
+      }
+    }
+  }
+  // 2. SHRINESデータから検索
   if (typeof SHRINES === 'undefined') return null;
   for (var i = 0; i < SHRINES.length; i++) {
     if (SHRINES[i].name === name || name.indexOf(SHRINES[i].name) !== -1 || SHRINES[i].name.indexOf(name) !== -1) {
@@ -1809,6 +1837,72 @@ function findShrinePhoto(name){
     }
   }
   return null;
+}
+
+// Places APIで神社の写真を取得し、カードに自動反映
+function fetchAndApplyShrinePhoto(name, lat, lng, cardIndex){
+  if (!window.google || !window.google.maps || !window.google.maps.places) return;
+  if (!placesService) {
+    var div = document.createElement('div');
+    placesService = new google.maps.places.PlacesService(div);
+  }
+  // テキスト検索でPlace IDを取得
+  placesService.findPlaceFromQuery({
+    query: name + ' 神社',
+    locationBias: lat && lng ? { lat: lat, lng: lng } : undefined,
+    fields: ['place_id', 'name']
+  }, function(results, status){
+    if (status !== google.maps.places.PlacesServiceStatus.OK || !results || !results.length) {
+      // 「寺」でも試す
+      placesService.findPlaceFromQuery({
+        query: name + ' 寺',
+        locationBias: lat && lng ? { lat: lat, lng: lng } : undefined,
+        fields: ['place_id', 'name']
+      }, function(r2, s2){
+        if (s2 === google.maps.places.PlacesServiceStatus.OK && r2 && r2.length) {
+          getPhotoFromPlaceId(r2[0].place_id, name, cardIndex);
+        }
+      });
+      return;
+    }
+    getPhotoFromPlaceId(results[0].place_id, name, cardIndex);
+  });
+}
+
+// Place IDから写真を取得してカードに適用
+function getPhotoFromPlaceId(placeId, name, cardIndex){
+  if (!placesService) return;
+  placesService.getDetails({
+    placeId: placeId,
+    fields: ['photos', 'name']
+  }, function(place, status){
+    if (status !== google.maps.places.PlacesServiceStatus.OK || !place || !place.photos || !place.photos.length) return;
+    var photoUrl = place.photos[0].getUrl({ maxWidth: 600, maxHeight: 400 });
+    // photoCacheに保存
+    if (typeof photoCache !== 'undefined') {
+      photoCache[name] = [photoUrl];
+    }
+    // 該当カードのimgを更新
+    var cards = document.querySelectorAll('#aiCards .ai-card');
+    if (cards[cardIndex]) {
+      var imgContainer = cards[cardIndex].querySelector('.ai-card-img');
+      if (imgContainer) {
+        var existingImg = imgContainer.querySelector('img');
+        if (existingImg) {
+          existingImg.src = photoUrl;
+        } else {
+          // 家アイコンを写真に差し替え
+          var fallbackDiv = imgContainer.querySelector('div[style*="position:absolute"]');
+          if (fallbackDiv) fallbackDiv.style.display = 'none';
+          var img = document.createElement('img');
+          img.src = photoUrl;
+          img.alt = name;
+          img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block';
+          imgContainer.appendChild(img);
+        }
+      }
+    }
+  });
 }
 
 // AI結果ページのマップ描画
@@ -1930,40 +2024,71 @@ function renderAiMap(route){
     return { location: p, stopover: true };
   });
 
-  // Directions Renderer 準備（マーカー非表示・青いルート線）
+  // Directions Renderer 準備（マーカー非表示・からし色ルート線）
   aiDirectionsRenderer = new google.maps.DirectionsRenderer({
     map: aiMapInstance,
     suppressMarkers: true,
     preserveViewport: true,
     polylineOptions: {
-      strokeColor: '#1d72e8',
-      strokeOpacity: 0.85,
-      strokeWeight: 5
+      strokeColor: '#c9a84c',
+      strokeOpacity: 0.95,
+      strokeWeight: 6
     }
   });
 
+  // 経路取得：徒歩・車・公共交通の順でフォールバック
+  var modes = [];
+  if (travelMode === google.maps.TravelMode.WALKING) {
+    modes = [google.maps.TravelMode.WALKING, google.maps.TravelMode.DRIVING];
+  } else if (travelMode === google.maps.TravelMode.TRANSIT) {
+    modes = [google.maps.TravelMode.TRANSIT, google.maps.TravelMode.DRIVING];
+  } else {
+    modes = [google.maps.TravelMode.DRIVING, google.maps.TravelMode.WALKING];
+  }
+
+  tryDirectionsWithModes(origin, destination, waypoints, modes, 0, positions);
+}
+
+// 複数モードで順次経路取得を試みる
+function tryDirectionsWithModes(origin, destination, waypoints, modes, idx, positions){
+  if (idx >= modes.length) {
+    // すべて失敗 → 直線フォールバック（からし色・点線）
+    console.warn('All Directions modes failed → using dashed line fallback');
+    if (aiDirectionsRenderer) { aiDirectionsRenderer.setMap(null); aiDirectionsRenderer = null; }
+    aiMapPolyline = new google.maps.Polyline({
+      path: positions,
+      geodesic: true,
+      strokeColor: '#c9a84c',
+      strokeOpacity: 0,
+      icons: [{
+        icon: { path: 'M 0,-1 0,1', strokeOpacity: 1, scale: 4, strokeColor: '#c9a84c' },
+        offset: '0',
+        repeat: '12px'
+      }],
+      map: aiMapInstance
+    });
+    showToast('⚠️ 道沿いルート取得不可。地図上は概略線で表示中');
+    return;
+  }
+  var mode = modes[idx];
   aiDirectionsService.route({
     origin: origin,
     destination: destination,
     waypoints: waypoints,
-    travelMode: travelMode,
+    travelMode: mode,
     region: 'jp'
   }, function(result, status){
     if (status === 'OK') {
       aiDirectionsRenderer.setDirections(result);
+      // 成功した時のモード名で通知
+      var modeName = mode === google.maps.TravelMode.WALKING ? '徒歩' :
+                     mode === google.maps.TravelMode.TRANSIT ? '公共交通' :
+                     mode === google.maps.TravelMode.DRIVING ? '車' : '';
+      if (idx > 0) showToast('道沿いルートを表示しました（' + modeName + 'で計算）');
     } else {
-      // 経路取得失敗 → フォールバック：青い直線
-      console.warn('Directions failed:', status, '→ fallback to straight line');
-      aiDirectionsRenderer.setMap(null);
-      aiDirectionsRenderer = null;
-      aiMapPolyline = new google.maps.Polyline({
-        path: positions,
-        geodesic: true,
-        strokeColor: '#1d72e8',
-        strokeOpacity: 0.8,
-        strokeWeight: 4,
-        map: aiMapInstance
-      });
+      // 次のモードを試す
+      console.warn('Directions ' + mode + ' failed:', status);
+      tryDirectionsWithModes(origin, destination, waypoints, modes, idx + 1, positions);
     }
   });
 }
