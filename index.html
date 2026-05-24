@@ -185,6 +185,49 @@
 .ai-sheet-route-btn:hover{box-shadow:0 5px 14px rgba(26,115,232,.4)}
 .ai-sheet-route-btn:active{transform:scale(.985)}
 .ai-sheet-route-btn svg{width:14px;height:14px;flex-shrink:0}
+
+/* 新規登録・ログインページ */
+.reg-bg{background:linear-gradient(180deg,#3a1408 0%,#4a1b0c 40%,#5a1208 100%);min-height:100vh;color:#fff}
+.reg-hd{padding:1rem 1.25rem;display:flex;align-items:center;gap:10px}
+.reg-back{cursor:pointer;color:rgba(255,255,255,.85);font-size:24px;line-height:1}
+.reg-hd-tit{font-family:'Shippori Mincho',serif;font-size:15px;font-weight:800;color:#fff;letter-spacing:.1em;flex:1}
+.reg-cont{padding:1.5rem 1.25rem 2rem;max-width:420px;margin:0 auto}
+.reg-logo{text-align:center;margin-bottom:2rem}
+.reg-logo-ja{font-family:'Shippori Mincho',serif;font-size:28px;font-weight:800;color:#fff;letter-spacing:.15em;line-height:1.2}
+.reg-logo-en{font-family:'Shippori Mincho',serif;font-size:10px;letter-spacing:.4em;color:var(--gold);margin-top:6px}
+.reg-tagline{text-align:center;color:rgba(255,255,255,.75);font-size:12px;margin:1.25rem 0 2rem;line-height:1.7}
+.reg-tagline b{color:var(--gold)}
+.reg-btn{width:100%;padding:13px;border-radius:10px;font-size:14px;font-family:'Noto Serif JP',serif;font-weight:600;cursor:pointer;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:10px;border:none;transition:transform .15s var(--ease),box-shadow .2s var(--ease)}
+.reg-btn:active{transform:scale(.98)}
+.reg-btn-line{background:#06c755;color:#fff;box-shadow:0 4px 12px rgba(6,199,85,.35)}
+.reg-btn-line:hover{box-shadow:0 6px 16px rgba(6,199,85,.5)}
+.reg-btn-google{background:#fff;color:#3c4043;border:1px solid #dadce0}
+.reg-btn-google:hover{box-shadow:0 4px 12px rgba(0,0,0,.15)}
+.reg-btn-mail{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(201,168,76,.4)}
+.reg-btn-mail:hover{background:rgba(255,255,255,.15);border-color:var(--gold)}
+.reg-btn svg{width:18px;height:18px;flex-shrink:0}
+.reg-divider{display:flex;align-items:center;gap:10px;margin:1.25rem 0;color:rgba(255,255,255,.4);font-size:10px;letter-spacing:.2em}
+.reg-divider::before,.reg-divider::after{content:"";flex:1;height:.5px;background:rgba(201,168,76,.3)}
+.reg-toggle{text-align:center;margin-top:1.5rem;font-size:12px;color:rgba(255,255,255,.6)}
+.reg-toggle a{color:var(--gold);text-decoration:underline;cursor:pointer}
+.reg-benefits{background:rgba(255,255,255,.06);border:.5px solid rgba(201,168,76,.3);border-radius:12px;padding:1.1rem 1.25rem;margin-top:2rem}
+.reg-benefits-tit{font-family:'Shippori Mincho',serif;font-size:13px;font-weight:600;color:var(--gold);margin-bottom:.75rem;letter-spacing:.05em;display:flex;align-items:center;gap:6px}
+.reg-benefits-list{list-style:none;padding:0;margin:0}
+.reg-benefits-list li{font-size:12px;color:rgba(255,255,255,.85);margin-bottom:.55rem;padding-left:18px;position:relative;line-height:1.6}
+.reg-benefits-list li::before{content:"✦";position:absolute;left:0;top:0;color:var(--gold);font-size:10px}
+.reg-terms{font-size:10px;color:rgba(255,255,255,.5);text-align:center;margin-top:1.5rem;line-height:1.7}
+.reg-terms a{color:var(--gold);text-decoration:underline;cursor:pointer}
+
+/* 追従マップFAB（フローティングアクションボタン） */
+.fab-map{position:fixed;right:14px;bottom:78px;width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,#9b2a1a,#7a1f10);box-shadow:0 4px 14px rgba(0,0,0,.3),0 0 0 1px rgba(201,168,76,.4) inset;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:80;transition:transform .2s var(--ease),box-shadow .2s var(--ease);border:none}
+.fab-map:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(0,0,0,.4),0 0 0 1px rgba(201,168,76,.7) inset}
+.fab-map:active{transform:scale(.94)}
+.fab-map svg{width:24px;height:24px;color:var(--gold)}
+.fab-map-label{position:absolute;bottom:-14px;left:50%;transform:translateX(-50%);font-size:9px;color:#8b6f3f;font-family:'Shippori Mincho',serif;font-weight:600;white-space:nowrap;background:var(--washi);padding:1px 6px;border-radius:6px;letter-spacing:.05em;border:.5px solid rgba(201,168,76,.4)}
+/* マップページ表示中・登録ページ中は非表示 */
+#pgMap.shown ~ .fab-map,
+#pgRegister[style*="flex"] ~ .fab-map,
+.hide-fab .fab-map{display:none}
 /* シート下部：コツ・操作 */
 .ai-sheet-foot{padding:.5rem 1rem 0;display:flex;gap:8px}
 .ai-foot-btn{flex:1;padding:9px;border-radius:8px;font-size:11px;font-family:'Noto Serif JP',serif;font-weight:600;cursor:pointer;border:.5px solid var(--gold)}
@@ -231,8 +274,8 @@
   <div class="hero-ov"></div>
   <div class="hero-ct">
     <div class="hero-top">
-      <div onclick="go('pgSearch')" style="width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.15);border:1.5px solid rgba(201,168,76,.55);display:flex;align-items:center;justify-content:center;cursor:pointer">
-        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="8" cy="8" r="5" stroke="#c9a84c" stroke-width="1.5"/><line x1="12" y1="12" x2="16" y2="16" stroke="#c9a84c" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <div onclick="openRegister()" style="width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.15);border:1.5px solid rgba(201,168,76,.55);display:flex;align-items:center;justify-content:center;cursor:pointer" title="新規登録・ログイン">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="6" r="3" stroke="#c9a84c" stroke-width="1.5"/><path d="M3 17c0-4 12-4 12 0" stroke="#c9a84c" stroke-width="1.5" stroke-linecap="round" fill="none"/><circle cx="14" cy="3.5" r="2.5" fill="#c9a84c"/><path d="M14 2v3M12.5 3.5h3" stroke="#4a1b0c" stroke-width="0.8" stroke-linecap="round"/></svg>
       </div>
       <div style="display:flex;flex-direction:column;align-items:center">
         <div class="hero-title">御参拝録</div>
@@ -361,6 +404,70 @@
   <div class="ni" onclick="go('pgProfile')"><svg width="18" height="18" viewBox="0 0 18 18"><circle cx="9" cy="6" r="3.5" fill="none" stroke="#bbb" stroke-width="1.5"/><path d="M2 17c0-4 14-4 14 0" stroke="#bbb" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg><span class="nl" style="color:#bbb">マイページ</span></div>
 </div>
 </div>
+
+<!-- 新規登録・ログインページ -->
+<div id="pgRegister" style="display:none;flex-direction:column;position:fixed;inset:0;z-index:100;overflow-y:auto" class="reg-bg">
+  <div class="reg-hd">
+    <div class="reg-back" onclick="closeRegister()">‹</div>
+    <div class="reg-hd-tit">会員登録・ログイン</div>
+    <div style="width:24px"></div>
+  </div>
+  <div class="reg-cont">
+    <div class="reg-logo">
+      <div class="reg-logo-ja">御参拝録</div>
+      <div class="reg-logo-en">PILGRIMAGE JOURNAL</div>
+    </div>
+
+    <div class="reg-tagline">
+      ご縁を記す、<b>あなただけの巡礼帳</b>。<br>
+      参拝記録・御朱印・AIルートをすべて保存できます。
+    </div>
+
+    <button class="reg-btn reg-btn-line" onclick="regWithProvider('LINE')">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 5.78 2 10.43c0 4.18 3.49 7.69 8.21 8.36.32.07.75.21.86.49.1.25.06.64.03.89l-.14.84c-.04.25-.19.97.85.53 1.04-.44 5.6-3.3 7.64-5.65 1.41-1.55 2.08-3.12 2.08-4.93C21.83 5.78 17.35 2 12 2zm-3.06 11.39H7.4c-.22 0-.41-.18-.41-.41V9.45c0-.22.18-.41.41-.41h.16c.22 0 .41.18.41.41v3.12h1.97c.22 0 .41.18.41.41v.16c-.16.13-.34.25-.41.25zM12 12.98c0 .22-.18.41-.41.41h-.16c-.22 0-.41-.18-.41-.41V9.45c0-.22.18-.41.41-.41h.16c.22 0 .41.18.41.41v3.53zm4.27 0c0 .18-.11.33-.28.38-.04.01-.08.02-.13.02-.13 0-.25-.07-.32-.16l-1.61-2.19v1.95c0 .22-.18.41-.41.41h-.16c-.22 0-.41-.18-.41-.41V9.45c0-.18.11-.33.28-.38.04-.01.08-.02.13-.02.13 0 .25.07.32.16l1.61 2.19V9.45c0-.22.18-.41.41-.41h.16c.22 0 .41.18.41.41v3.53zm-7.96-3.12v.16c0 .22-.18.41-.41.41H6.43v.53h1.47c.22 0 .41.18.41.41v.16c0 .22-.18.41-.41.41H6.43v.53h1.47c.22 0 .41.18.41.41v.16c0 .22-.18.41-.41.41H5.85c-.22 0-.41-.18-.41-.41V9.45c0-.22.18-.41.41-.41H7.9c.22 0 .41.18.41.42z"/></svg>
+      LINEで登録・ログイン
+    </button>
+
+    <button class="reg-btn reg-btn-google" onclick="regWithProvider('Google')">
+      <svg viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+      Googleで登録・ログイン
+    </button>
+
+    <div class="reg-divider">または</div>
+
+    <button class="reg-btn reg-btn-mail" onclick="regWithProvider('メール')">
+      <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M3 7l9 7 9-7" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+      メールアドレスで登録
+    </button>
+
+    <div class="reg-toggle">
+      すでにアカウントをお持ちの方は<br><a onclick="regToggleMode()">ログインはこちら</a>
+    </div>
+
+    <div class="reg-benefits">
+      <div class="reg-benefits-tit">
+        <svg width="11" height="11" viewBox="0 0 12 12"><path d="M1 4l2 3 3-5 3 5 2-3v6H1V4z" fill="#c9a84c"/></svg>
+        会員になると
+      </div>
+      <ul class="reg-benefits-list">
+        <li>AI御朱印巡りルートが<b>無制限</b>に</li>
+        <li>参拝記録・御朱印を<b>クラウド保存</b></li>
+        <li>「いつか訪れたい」を<b>複数端末</b>で共有</li>
+        <li>限定・特別御朱印の<b>通知</b></li>
+        <li>プレミアム解説記事の<b>閲覧</b></li>
+      </ul>
+    </div>
+
+    <div class="reg-terms">
+      登録することで<a>利用規約</a>と<a>プライバシーポリシー</a>に同意したものとみなされます。
+    </div>
+  </div>
+</div>
+
+<!-- 追従マップFAB（フローティングボタン） -->
+<button class="fab-map" id="fabMap" onclick="openMapFromFab()" title="マップで探す">
+  <svg viewBox="0 0 24 24" fill="none"><path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2V6z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><line x1="9" y1="4" x2="9" y2="18" stroke="currentColor" stroke-width="1.4"/><line x1="15" y1="6" x2="15" y2="20" stroke="currentColor" stroke-width="1.4"/></svg>
+</button>
 
 <!-- AIルート生成・入力ページ -->
 <div id="pgAiRoute" style="display:none;flex-direction:column;position:fixed;inset:0;z-index:100;background:var(--washi);overflow-y:auto">
@@ -1419,6 +1526,71 @@ function centerToMyLocation(){
   }
 }
 
+// ─── 新規登録・ログインページ ────────────────────────────
+function openRegister(){
+  document.getElementById('pgRegister').style.display = 'flex';
+  document.getElementById('fabMap').style.display = 'none';
+  window.scrollTo(0, 0);
+}
+function closeRegister(){
+  document.getElementById('pgRegister').style.display = 'none';
+  updateFabVisibility();
+}
+function regWithProvider(provider){
+  showToast(provider + 'での登録は現在準備中です。近日公開予定です');
+}
+var regIsLogin = false;
+function regToggleMode(){
+  regIsLogin = !regIsLogin;
+  // タイトルとトグルテキストを切り替え
+  var hd = document.querySelector('#pgRegister .reg-hd-tit');
+  var toggle = document.querySelector('#pgRegister .reg-toggle');
+  if (regIsLogin) {
+    hd.textContent = 'ログイン';
+    toggle.innerHTML = 'まだアカウントをお持ちでない方は<br><a onclick="regToggleMode()">新規登録はこちら</a>';
+  } else {
+    hd.textContent = '会員登録・ログイン';
+    toggle.innerHTML = 'すでにアカウントをお持ちの方は<br><a onclick="regToggleMode()">ログインはこちら</a>';
+  }
+}
+
+// ─── 追従マップFAB ───────────────────────────────────────
+function openMapFromFab(){
+  // 「お社を探す」機能を呼び出す
+  searchNearby();
+}
+// 表示・非表示の自動制御（go()関数で他ページに遷移したときも考慮）
+function updateFabVisibility(){
+  var fab = document.getElementById('fabMap');
+  if (!fab) return;
+  // 各種オーバーレイページが開いている場合は非表示
+  var hidePages = ['pgRegister','pgAiRoute','pgAiResult','pgMap'];
+  var anyOpen = hidePages.some(function(id){
+    var el = document.getElementById(id);
+    return el && el.style.display === 'flex';
+  });
+  fab.style.display = anyOpen ? 'none' : 'flex';
+}
+// 既存のgo()関数の後にフックして表示制御
+(function(){
+  var origGo = window.go;
+  if (typeof origGo === 'function') {
+    window.go = function(id){
+      var ret = origGo.apply(this, arguments);
+      setTimeout(updateFabVisibility, 50);
+      return ret;
+    };
+  }
+  // ページロード直後にも反映
+  if (document.readyState !== 'loading') {
+    setTimeout(updateFabVisibility, 200);
+  } else {
+    document.addEventListener('DOMContentLoaded', function(){
+      setTimeout(updateFabVisibility, 200);
+    });
+  }
+})();
+
 // ─── AI御朱印巡りルート ───────────────────────────────────
 // 管理者モード（SIMBA用・無制限利用）
 function isAdmin(){
@@ -1497,10 +1669,12 @@ function updateAiCounter(){
 function openAiRoute(){
   updateAiCounter();
   document.getElementById('pgAiRoute').style.display = 'flex';
+  if (typeof updateFabVisibility === 'function') updateFabVisibility();
   window.scrollTo(0, 0);
 }
 function closeAiRoute(){
   document.getElementById('pgAiRoute').style.display = 'none';
+  if (typeof updateFabVisibility === 'function') updateFabVisibility();
 }
 function backToAiForm(){
   document.getElementById('pgAiResult').style.display = 'none';
