@@ -175,6 +175,16 @@
 .ai-card-meta{font-size:10px;color:#8b6f3f;margin-top:4px;display:flex;align-items:center;gap:8px}
 .ai-card-tag{display:inline-block;background:var(--red-l);color:var(--red-d);font-size:9px;padding:1px 7px;border-radius:8px;margin-top:5px;border:.5px solid #e8c4bc}
 .ai-card-move{font-size:10px;color:#8b6f3f;margin-top:5px;padding-top:5px;border-top:.5px dashed var(--kara);display:flex;align-items:center;gap:3px}
+/* カード内ナビボタン */
+.ai-card-nav{display:flex;align-items:center;justify-content:center;gap:4px;background:#fff;border:.5px solid var(--gold);color:var(--red-d);font-size:10px;font-family:'Noto Serif JP',serif;font-weight:600;padding:6px 10px;border-radius:14px;margin-top:8px;cursor:pointer;width:100%;transition:all .15s var(--ease)}
+.ai-card-nav:hover{background:var(--gold-l);border-color:var(--red)}
+.ai-card-nav:active{transform:scale(.97)}
+.ai-card-nav svg{width:11px;height:11px}
+/* シート最下部の「Googleマップで全体を開く」 */
+.ai-sheet-route-btn{margin:.5rem 1rem 0;background:linear-gradient(135deg,#1a73e8 0%,#1557b0 100%);color:#fff;border:none;padding:11px;border-radius:10px;font-size:12px;font-family:'Noto Serif JP',serif;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;box-shadow:0 3px 10px rgba(26,115,232,.3);width:calc(100% - 2rem);transition:transform .15s var(--ease)}
+.ai-sheet-route-btn:hover{box-shadow:0 5px 14px rgba(26,115,232,.4)}
+.ai-sheet-route-btn:active{transform:scale(.985)}
+.ai-sheet-route-btn svg{width:14px;height:14px;flex-shrink:0}
 /* シート下部：コツ・操作 */
 .ai-sheet-foot{padding:.5rem 1rem 0;display:flex;gap:8px}
 .ai-foot-btn{flex:1;padding:9px;border-radius:8px;font-size:11px;font-family:'Noto Serif JP',serif;font-weight:600;cursor:pointer;border:.5px solid var(--gold)}
@@ -463,6 +473,11 @@
       <div class="ai-sheet-count" id="aiSheetCount">3社</div>
     </div>
     <div class="ai-cards" id="aiCards"></div>
+    <!-- Googleマップでルート全体を開くボタン -->
+    <button class="ai-sheet-route-btn" onclick="openFullRouteInGoogleMaps()">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M12 2C7 2 3 6 3 11c0 7 9 11 9 11s9-4 9-11c0-5-4-9-9-9z" stroke="#fff" stroke-width="1.5"/><circle cx="12" cy="11" r="3" stroke="#fff" stroke-width="1.5"/></svg>
+      Googleマップでルート全体を開く
+    </button>
     <div class="ai-tips-mini"><b>巡り方のコツ：</b><span id="aiTipsTxt">朝一番の参拝が古来の作法です。</span></div>
     <div class="ai-sheet-foot">
       <button class="ai-foot-btn ai-foot-secondary" onclick="backToAiForm()">条件を変える</button>
@@ -1778,6 +1793,11 @@ function finalizeAndShowRoute(route, area, transportLabel, selectedBenefits){
     } else {
       cardsHtml += '<div class="ai-card-move">✦ 巡礼ゴール</div>';
     }
+    // ここへナビボタン
+    cardsHtml += '<button class="ai-card-nav" onclick="openSingleNav(\'' + encodeURIComponent(s.name) + '\',' + (s.lat||'null') + ',' + (s.lng||'null') + ');event.stopPropagation()">';
+    cardsHtml += '<svg viewBox="0 0 24 24" fill="none"><path d="M12 2L8 8H10V14H14V8H16L12 2Z" fill="currentColor"/><path d="M5 14V20H19V14" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>';
+    cardsHtml += 'ここへナビ';
+    cardsHtml += '</button>';
     cardsHtml += '</div></div>';
   });
   document.getElementById('aiCards').innerHTML = cardsHtml;
@@ -2091,6 +2111,83 @@ function tryDirectionsWithModes(origin, destination, waypoints, modes, idx, posi
       tryDirectionsWithModes(origin, destination, waypoints, modes, idx + 1, positions);
     }
   });
+}
+
+// 単一神社へナビ（Googleマップで開く）
+function openSingleNav(encodedName, lat, lng){
+  var name = decodeURIComponent(encodedName);
+  var url;
+  if (lat && lng && lat !== 'null' && lng !== 'null') {
+    // 座標がある場合：現在地→指定座標のナビゲーション
+    url = 'https://www.google.com/maps/dir/?api=1&destination=' + lat + ',' + lng + '&destination_place_id=&travelmode=driving';
+  } else {
+    // 座標がない場合：名前で検索
+    url = 'https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(name) + '&travelmode=driving';
+  }
+  // 交通手段に合わせる
+  var transport = document.querySelector('#aiTransport .ai-tr-btn.on');
+  if (transport) {
+    var key = transport.getAttribute('data-tr');
+    var mode = key === 'walk' ? 'walking' :
+               key === 'train' ? 'transit' :
+               key === 'bus' ? 'transit' : 'driving';
+    url = url.replace('travelmode=driving', 'travelmode=' + mode);
+  }
+  window.open(url, '_blank');
+}
+
+// ルート全体をGoogleマップで開く
+function openFullRouteInGoogleMaps(){
+  if (!currentAiRoute || !currentAiRoute.stops || currentAiRoute.stops.length === 0) {
+    showToast('ルートデータがありません');
+    return;
+  }
+  var stops = currentAiRoute.stops.filter(function(s){ return s.lat && s.lng; });
+  if (stops.length === 0) {
+    showToast('座標情報がないためマップで開けません');
+    return;
+  }
+
+  // 出発地（フォームから）
+  var startVal = document.getElementById('aiStart').value.trim();
+  var origin = startVal || (stops[0].lat + ',' + stops[0].lng);
+  // origin が神社名と同じなら、出発地は最初の社の1つ前として扱い、最初の社を経由地に
+  var firstStopUsedAsOrigin = !startVal;
+  var routeStops = firstStopUsedAsOrigin ? stops.slice(1) : stops;
+
+  if (routeStops.length === 0) {
+    // 出発地＝最初の社しかない → ナビ無理なので地点表示のみ
+    var single = stops[0];
+    window.open('https://www.google.com/maps/search/?api=1&query=' + single.lat + ',' + single.lng, '_blank');
+    return;
+  }
+
+  var destination = routeStops[routeStops.length - 1];
+  var destStr = destination.lat + ',' + destination.lng;
+  var waypoints = routeStops.slice(0, -1).map(function(s){
+    return s.lat + ',' + s.lng;
+  });
+
+  // 交通手段
+  var transport = document.querySelector('#aiTransport .ai-tr-btn.on');
+  var mode = 'driving';
+  if (transport) {
+    var key = transport.getAttribute('data-tr');
+    mode = key === 'walk' ? 'walking' :
+           key === 'train' ? 'transit' :
+           key === 'bus' ? 'transit' : 'driving';
+  }
+
+  var url = 'https://www.google.com/maps/dir/?api=1' +
+            '&origin=' + encodeURIComponent(origin) +
+            '&destination=' + destStr +
+            '&travelmode=' + mode;
+  if (waypoints.length > 0) {
+    url += '&waypoints=' + waypoints.map(encodeURIComponent).join('|');
+  }
+
+  window.open(url, '_blank');
+  showToast('Googleマップを開きました');
 }
 
 function saveRoute(){
