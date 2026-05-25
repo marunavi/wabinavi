@@ -64,12 +64,12 @@
 .alink{display:inline-flex;align-items:center;gap:3px;font-size:11px;color:#2563a8;text-decoration:none;margin-top:3px}
 .rarow{color:#ccc;font-size:14px;flex-shrink:0;cursor:pointer}
 /* 写真ギャラリー */
-.pgallery{width:100%;display:block;background:#c9a84c;padding:2px;border-radius:6px;border:2px solid #c9a84c;box-shadow:0 2px 8px rgba(201,168,76,.3)}
-.pgallery-main{width:100%;aspect-ratio:4/3;overflow:hidden;position:relative;background:#f0ece4;border-radius:3px 3px 0 0}
+.pgallery{width:100%;display:block;background:#d8d2c4;padding:1px;border-radius:6px;border:1px solid #d8d2c4;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.pgallery-main{width:100%;aspect-ratio:4/3;overflow:hidden;position:relative;background:#f0ece4;border-radius:5px 5px 0 0}
 .pgallery-sub{display:none}
 .pgallery-main img{width:100%;height:100%;object-fit:cover;object-position:center 30%;display:block}.pthumb img{width:100%;height:100%;object-fit:cover;display:block}
 .photo-count{position:absolute;bottom:5px;right:5px;background:rgba(0,0,0,.55);color:#fff;font-size:9px;padding:2px 7px;border-radius:10px}
-.pstrip{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;background:#c9a84c;padding:2px}
+.pstrip{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:#d8d2c4;padding:1px}
 .pthumb{aspect-ratio:1;overflow:hidden;background:#f5f2ed;position:relative}
 /* スケルトン */
 .skel{background:linear-gradient(90deg,#f0ece4 25%,#e4e0d8 50%,#f0ece4 75%);background-size:200% 100%;animation:sk 1.4s infinite}
@@ -217,6 +217,52 @@
 .reg-benefits-list li::before{content:"✦";position:absolute;left:0;top:0;color:var(--gold);font-size:10px}
 .reg-terms{font-size:10px;color:rgba(255,255,255,.5);text-align:center;margin-top:1.5rem;line-height:1.7}
 .reg-terms a{color:var(--gold);text-decoration:underline;cursor:pointer}
+
+/* 神社詳細ページ */
+.sd-bg{background:var(--washi);min-height:100vh;padding-bottom:5rem}
+.sd-hd{position:sticky;top:0;background:linear-gradient(180deg,#4a1b0c,#5a1208);padding:.85rem 1.25rem;display:flex;align-items:center;gap:10px;z-index:20;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.sd-back{cursor:pointer;color:rgba(255,255,255,.85);font-size:24px;line-height:1}
+.sd-hd-tit{font-family:'Shippori Mincho',serif;font-size:14px;font-weight:800;color:#fff;letter-spacing:.08em;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sd-share{cursor:pointer;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.12);border:.5px solid rgba(201,168,76,.4);display:flex;align-items:center;justify-content:center;color:var(--gold)}
+.sd-hero{width:100%;aspect-ratio:16/10;background:#e8e4dc;position:relative;overflow:hidden}
+.sd-hero img{width:100%;height:100%;object-fit:cover;display:block}
+.sd-hero-ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#c9a84c}
+.sd-hero-badge{position:absolute;top:12px;left:12px;background:rgba(74,27,12,.85);color:var(--gold);font-family:'Shippori Mincho',serif;font-size:11px;padding:4px 10px;border-radius:14px;border:.5px solid rgba(201,168,76,.5)}
+.sd-main{padding:1.25rem}
+.sd-tit{font-family:'Shippori Mincho',serif;font-size:22px;font-weight:800;color:var(--red-d);line-height:1.3;letter-spacing:.04em}
+.sd-yomi{font-size:11px;color:#8b6f3f;margin-top:4px;letter-spacing:.1em}
+.sd-deity{font-size:11px;color:#666;margin-top:8px;background:#faf5e8;padding:6px 10px;border-radius:6px;border-left:2px solid var(--gold)}
+.sd-rating{display:flex;align-items:center;gap:12px;margin-top:14px;padding-bottom:14px;border-bottom:.5px solid var(--kara)}
+.sd-rating-num{font-family:'Shippori Mincho',serif;font-size:22px;font-weight:800;color:var(--red-d)}
+.sd-rating-stars{color:var(--gold);font-size:13px;letter-spacing:.1em}
+.sd-rating-cnt{font-size:11px;color:#8b6f3f}
+.sd-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
+.sd-act-btn{padding:11px;border-radius:10px;font-size:12px;font-family:'Noto Serif JP',serif;font-weight:600;cursor:pointer;border:.5px solid var(--gold);background:#fff;color:var(--red-d);display:flex;align-items:center;justify-content:center;gap:6px;transition:transform .12s var(--ease)}
+.sd-act-btn:active{transform:scale(.97)}
+.sd-act-btn.go{background:var(--red-d);color:#fff;border-color:var(--red-d)}
+.sd-act-btn svg{width:14px;height:14px}
+.sd-sec{margin-top:1.5rem}
+.sd-sec-tit{font-family:'Shippori Mincho',serif;font-size:14px;font-weight:600;color:var(--red-d);margin-bottom:.65rem;padding-bottom:6px;border-bottom:.5px solid var(--gold);display:flex;align-items:center;gap:6px;letter-spacing:.05em}
+.sd-sec-tit svg{width:13px;height:13px}
+.sd-info-tbl{font-size:12px;line-height:1.8;color:#444}
+.sd-info-tbl .row{display:flex;gap:10px;padding:5px 0;border-bottom:.5px dashed #e5dccb}
+.sd-info-tbl .row:last-child{border-bottom:none}
+.sd-info-tbl .lbl{flex-shrink:0;width:78px;color:#8b6f3f;font-weight:600}
+.sd-info-tbl .val{flex:1;color:#444}
+.sd-yurai{font-size:13px;line-height:1.9;color:#444;background:#fff;border:.5px solid var(--gold);border-radius:8px;padding:1rem;font-family:'Shippori Mincho',serif}
+.sd-yurai b{color:var(--red-d);font-weight:600}
+.sd-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:.5rem}
+.sd-tag-chip{background:var(--red-l);color:var(--red-d);font-size:11px;padding:3px 10px;border-radius:12px;border:.5px solid #e8c4bc;font-family:'Noto Serif JP',serif}
+.sd-goshuin{background:#fff;border:.5px solid var(--gold);border-radius:8px;padding:.9rem 1rem;font-size:12px;line-height:1.8;color:#444}
+.sd-goshuin .item{display:flex;gap:10px;padding:3px 0}
+.sd-goshuin .item .k{color:#8b6f3f;font-weight:600;width:80px;flex-shrink:0}
+.sd-review-empty{text-align:center;padding:1.5rem 1rem;background:#fff;border:.5px dashed #d4c8a8;border-radius:8px;color:#999;font-size:12px;font-family:'Noto Serif JP',serif}
+.sd-review-empty .ico{width:36px;height:36px;border-radius:50%;background:#faf5e8;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;color:var(--gold)}
+.sd-review-btn{margin-top:10px;background:var(--red-d);color:#fff;border:none;padding:9px 18px;border-radius:8px;font-size:11px;font-family:'Noto Serif JP',serif;font-weight:600;cursor:pointer}
+.sd-map-mini{width:100%;aspect-ratio:16/9;border-radius:8px;overflow:hidden;border:.5px solid var(--gold);background:#e8e4dc}
+.sd-map-mini iframe{width:100%;height:100%;border:none;display:block}
+.sd-map-link{display:flex;align-items:center;justify-content:center;gap:6px;background:#fff;border:.5px solid var(--gold);color:var(--red-d);padding:9px;border-radius:8px;font-size:12px;font-family:'Noto Serif JP',serif;font-weight:600;cursor:pointer;margin-top:8px}
+.sd-map-link svg{width:13px;height:13px}
 
 /* 追従マップFAB（フローティングアクションボタン） */
 .fab-map{position:fixed;right:14px;bottom:78px;width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,#9b2a1a,#7a1f10);box-shadow:0 4px 14px rgba(0,0,0,.3),0 0 0 1px rgba(201,168,76,.4) inset;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:80;transition:transform .2s var(--ease),box-shadow .2s var(--ease);border:none}
@@ -403,6 +449,106 @@
   <div class="ni" onclick="go('pgVisits')"><svg width="18" height="18" viewBox="0 0 18 18"><rect x="2" y="3" width="14" height="12" rx="1" fill="none" stroke="#bbb" stroke-width="1.5"/><line x1="2" y1="7" x2="16" y2="7" stroke="#bbb" stroke-width="1"/></svg><span class="nl" style="color:#bbb">記録帳</span></div>
   <div class="ni" onclick="go('pgProfile')"><svg width="18" height="18" viewBox="0 0 18 18"><circle cx="9" cy="6" r="3.5" fill="none" stroke="#bbb" stroke-width="1.5"/><path d="M2 17c0-4 14-4 14 0" stroke="#bbb" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg><span class="nl" style="color:#bbb">マイページ</span></div>
 </div>
+</div>
+
+<!-- 神社詳細ページ（仮ページ・動的に内容を差し込み） -->
+<div id="pgShrineDetail" style="display:none;flex-direction:column;position:fixed;inset:0;z-index:100;overflow-y:auto" class="sd-bg">
+  <div class="sd-hd">
+    <div class="sd-back" onclick="closeShrineDetail()">‹</div>
+    <div class="sd-hd-tit" id="sdHdTit">神社詳細</div>
+    <div class="sd-share" onclick="shareShrine()" title="共有">
+      <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><circle cx="3" cy="7" r="2" stroke="currentColor" stroke-width="1.2"/><circle cx="11" cy="3" r="2" stroke="currentColor" stroke-width="1.2"/><circle cx="11" cy="11" r="2" stroke="currentColor" stroke-width="1.2"/><line x1="5" y1="6" x2="9" y2="4" stroke="currentColor" stroke-width="1.2"/><line x1="5" y1="8" x2="9" y2="10" stroke="currentColor" stroke-width="1.2"/></svg>
+    </div>
+  </div>
+  <div class="sd-hero" id="sdHero"></div>
+  <div class="sd-main">
+    <div class="sd-tit" id="sdTit"></div>
+    <div class="sd-yomi" id="sdYomi"></div>
+    <div id="sdDeityWrap"><div class="sd-deity" id="sdDeity"></div></div>
+    <div class="sd-rating">
+      <div class="sd-rating-num" id="sdRatingNum">—</div>
+      <div>
+        <div class="sd-rating-stars" id="sdRatingStars"></div>
+        <div class="sd-rating-cnt" id="sdRatingCnt"></div>
+      </div>
+    </div>
+    <div class="sd-actions">
+      <button class="sd-act-btn" onclick="sdBookmark()">
+        <svg viewBox="0 0 14 14" fill="none"><path d="M3 1h8v12l-4-3-4 3V1z" stroke="currentColor" stroke-width="1.3"/></svg>
+        いつか訪れたい
+      </button>
+      <button class="sd-act-btn go" onclick="sdVisited()">
+        <svg viewBox="0 0 14 14" fill="none"><path d="M1 8l3 3 9-9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+        参拝済にする
+      </button>
+    </div>
+
+    <div class="sd-sec">
+      <div class="sd-sec-tit">
+        <svg viewBox="0 0 14 14" fill="none"><rect x="2" y="2" width="10" height="10" rx="1" stroke="currentColor" stroke-width="1.2"/><line x1="4" y1="5" x2="10" y2="5" stroke="currentColor" stroke-width="1"/><line x1="4" y1="8" x2="10" y2="8" stroke="currentColor" stroke-width="1"/></svg>
+        ご由緒
+      </div>
+      <div class="sd-yurai" id="sdYurai"></div>
+    </div>
+
+    <div class="sd-sec">
+      <div class="sd-sec-tit">
+        <svg viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.2"/><path d="M7 4v3l2 2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        基本情報
+      </div>
+      <div class="sd-info-tbl" id="sdInfoTbl"></div>
+    </div>
+
+    <div class="sd-sec">
+      <div class="sd-sec-tit">
+        <svg viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="3" stroke="currentColor" stroke-width="1.2"/><text x="7" y="9" text-anchor="middle" font-size="5" fill="currentColor">印</text></svg>
+        御朱印情報
+      </div>
+      <div class="sd-goshuin" id="sdGoshuin"></div>
+    </div>
+
+    <div class="sd-sec">
+      <div class="sd-sec-tit">
+        <svg viewBox="0 0 14 14" fill="none"><path d="M2 4l4-2 4 2 2-1v9l-2 1-4-2-4 2V4z" stroke="currentColor" stroke-width="1.2"/></svg>
+        アクセス
+      </div>
+      <div id="sdMapBox"></div>
+      <button class="sd-map-link" id="sdMapLink" onclick="sdOpenGmaps()">
+        <svg viewBox="0 0 13 13" fill="none"><path d="M6.5 1C4 1 2 3 2 5.5c0 4 4.5 7 4.5 7s4.5-3 4.5-7C11 3 9 1 6.5 1z" stroke="currentColor" stroke-width="1.2"/><circle cx="6.5" cy="5.5" r="1.5" stroke="currentColor" stroke-width="1.2"/></svg>
+        Googleマップで開く
+      </button>
+    </div>
+
+    <div class="sd-sec">
+      <div class="sd-sec-tit">
+        <svg viewBox="0 0 14 14" fill="none"><path d="M2 3h10v7l-3-1-3 2-3-2-1 1V3z" stroke="currentColor" stroke-width="1.2"/></svg>
+        参拝の記録・口コミ
+      </div>
+      <div class="sd-review-empty">
+        <div class="ico">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 4h12v8l-3-1-3 2-3-2-3 1V4z" stroke="currentColor" stroke-width="1.3"/></svg>
+        </div>
+        <div>まだ口コミがありません</div>
+        <div style="font-size:10px;margin-top:6px;color:#bbb">最初の記録を残しませんか？</div>
+        <button class="sd-review-btn" onclick="sdWriteReview()">参拝記録を投稿する</button>
+      </div>
+    </div>
+
+    <div class="sd-sec">
+      <div class="sd-sec-tit">
+        <svg viewBox="0 0 14 14" fill="none"><path d="M7 1L9 5L13 5.5L10 8L11 12L7 10L3 12L4 8L1 5.5L5 5L7 1Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
+        ご利益
+      </div>
+      <div class="sd-tags" id="sdTags"></div>
+    </div>
+
+    <div class="sd-sec">
+      <button class="sd-act-btn" style="width:100%;background:linear-gradient(135deg,#4a1b0c,#5a1208);color:#fff;border-color:var(--gold);padding:14px;font-size:13px" onclick="sdAddToAiRoute()">
+        <svg viewBox="0 0 14 14" fill="none"><path d="M7 1L8 5L12 5.5L9 8L10 12L7 10L4 12L5 8L2 5.5L6 5L7 1Z" fill="#c9a84c"/></svg>
+        AI御朱印巡りルートに追加
+      </button>
+    </div>
+  </div>
 </div>
 
 <!-- 新規登録・ログインページ -->
@@ -1312,20 +1458,21 @@ function renderCard(s, dr) {
   } else if (API_KEY) {
     gallery = galleryHtml(photoCache[s.name]);
   }
+  const sJson = JSON.stringify(s).replace(/"/g, '&quot;');
   return `<div class="${cls}">
     <div class="rhd">
       <div class="rbdg ${bc}">${dr}</div>
       <div class="nblk">
-        <div class="nrow"><span class="rname" onclick="goDetail(${JSON.stringify(s)})" style="cursor:pointer">${s.name}</span><span class="deity">祭神：${s.deity}</span></div>
-        <a class="alink" href="${s.map}" target="_blank" rel="noopener">
+        <div class="nrow"><span class="rname" onclick='openShrineDetail(${JSON.stringify(s)})' style="cursor:pointer">${s.name}</span><span class="deity">祭神：${s.deity}</span></div>
+        <a class="alink" href="${s.map}" target="_blank" rel="noopener" onclick="event.stopPropagation()">
           <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><circle cx="5.5" cy="4.5" r="2.2" stroke="#2563a8" stroke-width="1"/><path d="M5.5 6.7L5.5 10" stroke="#2563a8" stroke-width="1"/></svg>
           ${s.addr}
         </a>
       </div>
-      <div class="rarow">›</div>
+      <div class="rarow" onclick='openShrineDetail(${JSON.stringify(s)})' style="cursor:pointer">›</div>
     </div>
     ${gallery}
-    <div class="rftr">
+    <div class="rftr" onclick='openShrineDetail(${JSON.stringify(s)})' style="cursor:pointer">
       <div><div class="stars">${stars(s.rating)}<span class="rnum">${s.rating.toFixed(1)}</span></div><div class="rcnt">${s.rev.toLocaleString()}件のクチコミ</div></div>
       ${badge}
     </div>
@@ -1425,7 +1572,14 @@ function saveVisit() {
 
 // ─── 神社の詳細（名前タップ）→ Googleマップを開く ──────────────
 function goDetail(s){
-  try { if (s && s.map) window.open(s.map, '_blank', 'noopener'); } catch(e){}
+  // 神社詳細ページを開く（以前はGoogleマップを直接開いていた）
+  try {
+    if (typeof openShrineDetail === 'function') {
+      openShrineDetail(s);
+    } else if (s && s.map) {
+      window.open(s.map, '_blank', 'noopener');
+    }
+  } catch(e){ console.warn('goDetail error', e); }
 }
 
 // ─── 地図 状態管理 ───────────────────────────────────────────
@@ -1526,6 +1680,155 @@ function centerToMyLocation(){
   }
 }
 
+// ─── 神社詳細ページ ─────────────────────────────────────
+var currentSdShrine = null;
+function openShrineDetail(shrine){
+  currentSdShrine = shrine;
+  document.getElementById('pgShrineDetail').style.display = 'flex';
+  if (document.getElementById('fabMap')) document.getElementById('fabMap').style.display = 'none';
+  window.scrollTo(0, 0);
+  populateShrineDetail(shrine);
+}
+function closeShrineDetail(){
+  document.getElementById('pgShrineDetail').style.display = 'none';
+  if (typeof updateFabVisibility === 'function') updateFabVisibility();
+}
+function populateShrineDetail(s){
+  document.getElementById('sdHdTit').textContent = s.name;
+  var hero = document.getElementById('sdHero');
+  var photo = (typeof findShrinePhoto === 'function' && findShrinePhoto(s.name))
+    || (s.photos && s.photos[0])
+    || (typeof photoCache !== 'undefined' && photoCache[s.name] && photoCache[s.name][0])
+    || null;
+  if (photo) {
+    hero.innerHTML = '<img src="' + photo + '" alt="' + s.name + '"><div class="sd-hero-badge">PILGRIMAGE</div>';
+  } else {
+    hero.innerHTML = '<div class="sd-hero-ph"><svg width="56" height="56" viewBox="0 0 24 24" fill="none"><path d="M3 9l9-6 9 6v11H3V9z" stroke="currentColor" stroke-width="1.3"/></svg></div><div class="sd-hero-badge">PILGRIMAGE</div>';
+  }
+  document.getElementById('sdTit').textContent = s.name;
+  document.getElementById('sdYomi').textContent = getReading(s.name);
+  document.getElementById('sdDeity').textContent = '主祭神：' + (s.deity || '—');
+  if (!s.deity || s.deity === '—') document.getElementById('sdDeityWrap').style.display = 'none';
+  else document.getElementById('sdDeityWrap').style.display = '';
+
+  var rating = s.rating || 0;
+  document.getElementById('sdRatingNum').textContent = rating > 0 ? rating.toFixed(1) : '—';
+  document.getElementById('sdRatingStars').textContent = renderStars(rating);
+  document.getElementById('sdRatingCnt').textContent = s.rev ? s.rev.toLocaleString() + '件のクチコミ' : 'クチコミなし';
+
+  document.getElementById('sdYurai').innerHTML = generateYurai(s);
+
+  var infoHtml = '';
+  infoHtml += '<div class="row"><div class="lbl">住所</div><div class="val">' + (s.addr || '不明') + '</div></div>';
+  infoHtml += '<div class="row"><div class="lbl">創建</div><div class="val">伝承による（詳細は確認中）</div></div>';
+  infoHtml += '<div class="row"><div class="lbl">開門時間</div><div class="val">6:00〜18:00（季節により変動）</div></div>';
+  infoHtml += '<div class="row"><div class="lbl">拝観料</div><div class="val">無料（一部有料区域あり）</div></div>';
+  infoHtml += '<div class="row"><div class="lbl">参拝目安</div><div class="val">30〜60分</div></div>';
+  document.getElementById('sdInfoTbl').innerHTML = infoHtml;
+
+  var hasGoshuin = s.tags && s.tags.indexOf('goshuin') !== -1;
+  var gosHtml = '';
+  if (hasGoshuin) {
+    gosHtml += '<div class="item"><div class="k">授与</div><div>あり（書置き・直書き）</div></div>';
+    gosHtml += '<div class="item"><div class="k">初穂料</div><div>500円〜</div></div>';
+    gosHtml += '<div class="item"><div class="k">授与所</div><div>社務所</div></div>';
+    gosHtml += '<div class="item"><div class="k">受付時間</div><div>9:00〜16:30</div></div>';
+    gosHtml += '<div class="item"><div class="k">限定</div><div>季節・例祭限定の特別御朱印あり</div></div>';
+  } else {
+    gosHtml = '<div style="color:#999;font-size:12px;text-align:center;padding:8px">御朱印情報は確認中です</div>';
+  }
+  document.getElementById('sdGoshuin').innerHTML = gosHtml;
+
+  var mapBox = document.getElementById('sdMapBox');
+  if (s.lat && s.lng) {
+    var src = 'https://maps.google.com/maps?q=' + s.lat + ',' + s.lng + '&z=16&output=embed';
+    mapBox.innerHTML = '<div class="sd-map-mini"><iframe src="' + src + '" loading="lazy"></iframe></div>';
+  } else {
+    var q = encodeURIComponent(s.name);
+    mapBox.innerHTML = '<div class="sd-map-mini"><iframe src="https://maps.google.com/maps?q=' + q + '&z=15&output=embed" loading="lazy"></iframe></div>';
+  }
+
+  var tagsHtml = '';
+  var TAG_LABEL = { goshuin:'御朱印', enmusubi:'縁結び', kaiun:'開運', gakumon:'学問', kenko:'健康', shizen:'自然・景観', rekishi:'歴史・文化財', shobai:'商売繁盛', kinun:'金運' };
+  (s.tags || []).forEach(function(t){
+    var lbl = TAG_LABEL[t] || t;
+    tagsHtml += '<span class="sd-tag-chip">' + lbl + '</span>';
+  });
+  if (!tagsHtml) tagsHtml = '<span style="color:#999;font-size:11px">ご利益情報なし</span>';
+  document.getElementById('sdTags').innerHTML = tagsHtml;
+}
+function getReading(name){
+  var dict = {
+    '伏見稲荷大社':'ふしみいなりたいしゃ', '住吉大社':'すみよしたいしゃ',
+    '春日大社':'かすがたいしゃ', '厳島神社':'いつくしまじんじゃ',
+    '明治神宮':'めいじじんぐう', '靖国神社':'やすくにじんじゃ',
+    '伊勢神宮':'いせじんぐう', '出雲大社':'いずもおおやしろ',
+    '鶴岡八幡宮':'つるがおかはちまんぐう', '善光寺':'ぜんこうじ',
+    '戸隠神社':'とがくしじんじゃ', '太宰府天満宮':'だざいふてんまんぐう',
+    '北野天満宮':'きたのてんまんぐう', '貴船神社':'きふねじんじゃ',
+    '熱田神宮':'あつたじんぐう', '日光東照宮':'にっこうとうしょうぐう',
+    '浅草神社':'あさくさじんじゃ', '神田明神':'かんだみょうじん',
+    '東京大神宮':'とうきょうだいじんぐう', '湯島天満宮':'ゆしまてんまんぐう',
+    '長谷寺':'はせでら', '東大寺':'とうだいじ', '法隆寺':'ほうりゅうじ',
+    '清水寺':'きよみずでら', '金閣寺':'きんかくじ', '銀閣寺':'ぎんかくじ'
+  };
+  return dict[name] || '';
+}
+function renderStars(r){
+  var f = Math.floor(r);
+  var s = '';
+  for (var i = 0; i < 5; i++) s += i < f ? '★' : '☆';
+  return s;
+}
+function generateYurai(s){
+  var deity = s.deity && s.deity !== '—' ? s.deity : 'ご祭神';
+  var name = s.name;
+  var first = '<b>' + name + '</b>は、' + deity + 'をお祀りする由緒ある社です。';
+  var tags = s.tags || [];
+  var middle = '';
+  if (tags.indexOf('enmusubi') !== -1) middle += '古くより縁結びの神として広く信仰を集めてきました。';
+  if (tags.indexOf('gakumon') !== -1) middle += '学問成就の御利益で名高く、受験生をはじめ多くの参拝者が訪れます。';
+  if (tags.indexOf('kinun') !== -1 || tags.indexOf('shobai') !== -1) middle += '金運・商売繁盛のご利益で知られ、事業者からも厚い信仰を受けています。';
+  if (tags.indexOf('kaiun') !== -1) middle += '開運招福の社として親しまれ、人生の節目に多くの方が参拝に訪れます。';
+  if (tags.indexOf('kenko') !== -1) middle += '健康・長寿の御利益でも知られています。';
+  if (tags.indexOf('shizen') !== -1) middle += '境内は四季折々の自然に彩られ、参拝者の心を癒しています。';
+  if (tags.indexOf('rekishi') !== -1) middle += '歴史的価値の高い建造物や文化財を多く有し、訪れる方を悠久の時へと誘います。';
+  if (!middle) middle = '長きにわたり地域の人々の心の拠り所として親しまれてきた由緒ある社です。';
+  var last = '<br><br>静かに手を合わせ、心を整える一刻をぜひお過ごしください。';
+  return first + middle + last + '<br><br><span style="font-size:10px;color:#999">※このご由緒は仮テキストです。正式な情報は各社の公式情報をご確認ください。</span>';
+}
+function shareShrine(){
+  if (!currentSdShrine) return;
+  if (navigator.share) {
+    navigator.share({ title: currentSdShrine.name + ' - 御参拝録', text: currentSdShrine.name + 'の参拝情報', url: location.href }).catch(function(){});
+  } else {
+    if (typeof showToast === 'function') showToast('リンクをコピーしました');
+    try { navigator.clipboard.writeText(location.href); } catch(e){}
+  }
+}
+function sdBookmark(){ if (typeof showToast === 'function') showToast('「いつか訪れたい」に追加しました'); }
+function sdVisited(){ if (typeof showToast === 'function') showToast('参拝済に記録しました'); }
+function sdWriteReview(){ if (typeof showToast === 'function') showToast('参拝記録の投稿機能は現在準備中です'); }
+function sdOpenGmaps(){
+  if (!currentSdShrine) return;
+  var s = currentSdShrine;
+  var url = (s.lat && s.lng) ? 'https://www.google.com/maps/search/?api=1&query=' + s.lat + ',' + s.lng
+                              : 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(s.name);
+  window.open(url, '_blank');
+}
+function sdAddToAiRoute(){
+  if (!currentSdShrine) return;
+  closeShrineDetail();
+  openAiRoute();
+  setTimeout(function(){
+    var firstInp = document.querySelector('.shrine-inp');
+    if (firstInp) {
+      firstInp.value = currentSdShrine.name;
+      if (typeof showToast === 'function') showToast('「' + currentSdShrine.name + '」をルートに追加しました');
+    }
+  }, 200);
+}
+
 // ─── 新規登録・ログインページ ────────────────────────────
 function openRegister(){
   document.getElementById('pgRegister').style.display = 'flex';
@@ -1564,7 +1867,7 @@ function updateFabVisibility(){
   var fab = document.getElementById('fabMap');
   if (!fab) return;
   // 各種オーバーレイページが開いている場合は非表示
-  var hidePages = ['pgRegister','pgAiRoute','pgAiResult','pgMap'];
+  var hidePages = ['pgRegister','pgAiRoute','pgAiResult','pgMap','pgShrineDetail'];
   var anyOpen = hidePages.some(function(id){
     var el = document.getElementById(id);
     return el && el.style.display === 'flex';
@@ -2453,7 +2756,7 @@ function showShrinesNearLocation(lat, lng){
 
   showMapArea();
   initMap(lat, lng);
-  if (mapInstance) mapInstance.setZoom(11);
+  if (mapInstance) mapInstance.setZoom(14);
 
   if (list.length === 0) {
     // 周辺にDBデータがない場合は全国表示
