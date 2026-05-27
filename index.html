@@ -264,6 +264,85 @@
 .sd-map-link{display:flex;align-items:center;justify-content:center;gap:6px;background:#fff;border:.5px solid var(--gold);color:var(--red-d);padding:9px;border-radius:8px;font-size:12px;font-family:'Noto Serif JP',serif;font-weight:600;cursor:pointer;margin-top:8px}
 .sd-map-link svg{width:13px;height:13px}
 
+/* 6県エリアカード（ホーム画面） */
+.area-section{padding:1.25rem 1.25rem .5rem}
+.area-sec-hd{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:.75rem}
+.area-sec-tit{font-family:'Shippori Mincho',serif;font-size:14px;font-weight:600;color:var(--ma);letter-spacing:.08em}
+.area-sec-link{font-size:11px;color:var(--red);cursor:pointer;text-decoration:none;font-family:'Noto Serif JP',serif}
+.area-nearby{width:100%;aspect-ratio:5/1;border-radius:12px;overflow:hidden;background:#e8e0d0;position:relative;margin-bottom:8px;cursor:pointer;border:.5px solid var(--gold);transition:transform .15s var(--ease)}
+.area-nearby:active{transform:scale(.98)}
+.area-nearby::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(42,18,74,.15) 0%,rgba(42,18,74,.45) 100%)}
+.area-nearby-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.area-nearby-tit{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;font-family:'Shippori Mincho',serif;text-shadow:0 1px 3px rgba(0,0,0,.5);z-index:2}
+.area-nearby-tit .main{font-size:16px;font-weight:800;letter-spacing:.1em}
+.area-nearby-tit .sub{font-size:10px;opacity:.85;margin-top:3px;letter-spacing:.05em}
+.area-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.area-card{aspect-ratio:1;border-radius:10px;overflow:hidden;position:relative;background:#e8e0d0;cursor:pointer;border:.5px solid var(--gold);transition:transform .15s var(--ease)}
+.area-card:hover{transform:translateY(-2px)}
+.area-card:active{transform:scale(.96)}
+.area-card-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.area-card::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(42,18,74,.05) 0%,rgba(42,18,74,.65) 100%)}
+.area-card-name{position:absolute;left:0;right:0;bottom:0;padding:.6rem;color:#fff;font-family:'Shippori Mincho',serif;font-size:14px;font-weight:800;text-align:center;text-shadow:0 1px 2px rgba(0,0,0,.6);z-index:2;letter-spacing:.08em}
+
+/* エリア検索ページ */
+.area-pg-bg{background:var(--washi);min-height:100vh;padding-bottom:5rem}
+.area-pg-hd{position:sticky;top:0;background:linear-gradient(180deg,var(--red-d),#3a1d5d);padding:.85rem 1.25rem;display:flex;align-items:center;gap:10px;z-index:20;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.area-pg-back{cursor:pointer;color:rgba(255,255,255,.85);font-size:24px;line-height:1}
+.area-pg-tit{font-family:'Shippori Mincho',serif;font-size:14px;font-weight:800;color:#fff;letter-spacing:.08em;flex:1}
+.area-search-box{padding:1rem 1.25rem;background:var(--washi);border-bottom:.5px solid var(--kara)}
+.area-search-field{display:flex;align-items:center;gap:8px;background:#fff;border:.5px solid var(--gold);border-radius:8px;padding:.65rem .85rem;margin-bottom:8px}
+.area-search-field svg{flex-shrink:0;color:var(--red);width:14px;height:14px}
+.area-search-field input{flex:1;border:none;outline:none;font-size:13px;font-family:'Noto Serif JP',serif;color:var(--ma);background:transparent}
+.area-search-field input::placeholder{color:#aaa}
+.area-posts-hd{padding:1rem 1.25rem .5rem;display:flex;justify-content:space-between;align-items:baseline}
+.area-posts-tit{font-family:'Shippori Mincho',serif;font-size:13px;font-weight:600;color:var(--ma);letter-spacing:.08em}
+.area-posts-meta{font-size:11px;color:#8b6f3f}
+.posts-grid{padding:0 1.25rem;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.post-card{aspect-ratio:9/16;border-radius:10px;overflow:hidden;background:#e8e0d0;cursor:pointer;position:relative;border:.5px solid #d8d2c4;transition:transform .15s var(--ease);box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.post-card:active{transform:scale(.98)}
+.post-card-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.post-card-img-ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#3a1d5d,#5d3a8a);color:#c9a84c}
+.post-card::after{content:"";position:absolute;left:0;right:0;bottom:0;height:60%;background:linear-gradient(180deg,transparent 0%,rgba(0,0,0,.7) 100%);pointer-events:none}
+.post-card-info{position:absolute;left:0;right:0;bottom:0;padding:.5rem .6rem;color:#fff;z-index:2}
+.post-card-user{display:flex;align-items:center;gap:5px;margin-bottom:3px}
+.post-card-avatar{width:18px;height:18px;border-radius:50%;background:linear-gradient(135deg,#c9a84c,#e3c879);border:1px solid #fff;color:#2a124a;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700}
+.post-card-uname{font-size:10px;font-weight:600;opacity:.95;text-shadow:0 1px 2px rgba(0,0,0,.5)}
+.post-card-name{font-family:'Shippori Mincho',serif;font-size:11px;font-weight:600;line-height:1.3;text-shadow:0 1px 2px rgba(0,0,0,.5)}
+.post-card-meta{display:flex;gap:8px;margin-top:4px;font-size:9px;opacity:.85}
+.post-card-meta span{display:flex;align-items:center;gap:2px}
+.post-card-badge{position:absolute;top:6px;right:6px;background:rgba(255,255,255,.95);color:var(--red);font-size:9px;padding:1px 6px;border-radius:8px;font-weight:600;font-family:'Noto Serif JP',serif;backdrop-filter:blur(4px);z-index:2}
+
+/* 投稿詳細ページ */
+.post-detail-bg{background:#000;min-height:100vh;color:#fff}
+.post-detail-hd{position:sticky;top:0;background:linear-gradient(180deg,rgba(0,0,0,.85),transparent);padding:.85rem 1.25rem;display:flex;align-items:center;gap:10px;z-index:20}
+.post-detail-back{cursor:pointer;color:#fff;font-size:24px;line-height:1}
+.post-detail-hd-tit{font-family:'Shippori Mincho',serif;font-size:13px;font-weight:800;color:#fff;letter-spacing:.08em;flex:1}
+.post-detail-img{width:100%;aspect-ratio:1;background:#1a1a1a;position:relative;overflow:hidden}
+.post-detail-img img{width:100%;height:100%;object-fit:cover;display:block}
+.post-detail-img-ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#3a1d5d,#5d3a8a);color:#c9a84c}
+.post-detail-main{padding:1.25rem;background:#1a1a1a;color:#fff}
+.post-detail-user{display:flex;align-items:center;gap:10px;margin-bottom:1rem}
+.post-detail-avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#c9a84c,#e3c879);color:#2a124a;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;font-family:'Shippori Mincho',serif}
+.post-detail-uname{font-size:13px;font-weight:600;color:#fff}
+.post-detail-udate{font-size:10px;color:#888;margin-top:2px}
+.post-detail-follow{margin-left:auto;background:var(--red);color:#fff;border:none;padding:6px 16px;border-radius:14px;font-size:11px;font-family:'Noto Serif JP',serif;font-weight:600;cursor:pointer}
+.post-detail-shrine{background:#252525;border:.5px solid #3a3a3a;border-radius:8px;padding:.7rem .85rem;margin-bottom:1rem;display:flex;align-items:center;gap:8px;cursor:pointer}
+.post-detail-shrine .ico{width:30px;height:30px;border-radius:50%;background:var(--gold);color:#2a124a;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Shippori Mincho',serif;font-size:13px;font-weight:700}
+.post-detail-shrine .body{flex:1;min-width:0}
+.post-detail-shrine .name{font-family:'Shippori Mincho',serif;font-size:13px;font-weight:600;color:#fff}
+.post-detail-shrine .addr{font-size:10px;color:#999;margin-top:2px}
+.post-detail-shrine .arrow{color:#666;font-size:18px}
+.post-detail-text{font-size:13px;line-height:1.85;color:#ddd;font-family:'Noto Serif JP',serif;margin-bottom:1.5rem;white-space:pre-line}
+.post-detail-actions{display:flex;gap:8px;padding-top:1rem;border-top:.5px solid #333}
+.post-detail-act{flex:1;background:transparent;border:.5px solid #444;color:#fff;padding:9px;border-radius:8px;font-size:11px;font-family:'Noto Serif JP',serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px}
+.post-detail-act.liked{background:var(--red);border-color:var(--red);color:#fff}
+.post-detail-comments-hd{padding:1.25rem 1.25rem .75rem;background:#1a1a1a;color:#fff;font-family:'Shippori Mincho',serif;font-size:13px;font-weight:600;letter-spacing:.05em;border-top:.5px solid #333}
+.post-detail-comment{padding:.7rem 1.25rem;background:#1a1a1a;border-bottom:.5px solid #2a2a2a;display:flex;gap:10px}
+.post-detail-comment .av{width:30px;height:30px;border-radius:50%;background:#3a1d5d;color:#c9a84c;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+.post-detail-comment .ctxt{flex:1;font-size:12px;color:#ddd;line-height:1.5}
+.post-detail-comment .cuser{font-size:11px;font-weight:600;color:#c9a84c;margin-bottom:2px}
+.post-detail-comment .cdate{font-size:9px;color:#666;margin-top:3px}
+
 /* 追従マップFAB（フローティングアクションボタン） */
 .fab-map{position:fixed;right:14px;bottom:78px;width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,#3a1d5d,#3a1d5d);box-shadow:0 4px 14px rgba(0,0,0,.3),0 0 0 1px rgba(201,168,76,.4) inset;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:80;transition:transform .2s var(--ease),box-shadow .2s var(--ease);border:none}
 .fab-map:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(0,0,0,.4),0 0 0 1px rgba(201,168,76,.7) inset}
@@ -368,6 +447,47 @@
 </div>
 </div>
 
+<!-- エリアから探す（6県カード） -->
+<div class="area-section">
+  <div class="area-sec-hd">
+    <div class="area-sec-tit">エリアから探す</div>
+    <div class="area-sec-link" onclick="openAreaSearch('all')">エリア一覧 ›</div>
+  </div>
+  <div class="area-nearby" onclick="searchNearby()">
+    <img class="area-nearby-bg" src="https://images.unsplash.com/photo-1545569310-f55c5cf01d9a?w=800&q=80&auto=format&fit=crop" alt="現在地周辺" loading="lazy">
+    <div class="area-nearby-tit">
+      <div class="main">現在地周辺</div>
+      <div class="sub">📍 GPSで近くのお社を探す</div>
+    </div>
+  </div>
+  <div class="area-grid">
+    <div class="area-card" onclick="openAreaSearch('東京')">
+      <img class="area-card-bg" src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&q=80&auto=format&fit=crop" alt="東京" loading="lazy">
+      <div class="area-card-name">東京</div>
+    </div>
+    <div class="area-card" onclick="openAreaSearch('神奈川')">
+      <img class="area-card-bg" src="https://images.unsplash.com/photo-1570459027562-4a916cb31413?w=600&q=80&auto=format&fit=crop" alt="神奈川" loading="lazy">
+      <div class="area-card-name">神奈川</div>
+    </div>
+    <div class="area-card" onclick="openAreaSearch('愛知')">
+      <img class="area-card-bg" src="https://images.unsplash.com/photo-1583416750470-487f15a96d6e?w=600&q=80&auto=format&fit=crop" alt="愛知" loading="lazy">
+      <div class="area-card-name">愛知</div>
+    </div>
+    <div class="area-card" onclick="openAreaSearch('大阪')">
+      <img class="area-card-bg" src="https://images.unsplash.com/photo-1590559899731-a382839e5549?w=600&q=80&auto=format&fit=crop" alt="大阪" loading="lazy">
+      <div class="area-card-name">大阪</div>
+    </div>
+    <div class="area-card" onclick="openAreaSearch('京都')">
+      <img class="area-card-bg" src="https://images.unsplash.com/photo-1493997181344-712f2f19d87a?w=600&q=80&auto=format&fit=crop" alt="京都" loading="lazy">
+      <div class="area-card-name">京都</div>
+    </div>
+    <div class="area-card" onclick="openAreaSearch('福岡')">
+      <img class="area-card-bg" src="https://images.unsplash.com/photo-1620025773180-1e09e83b6e1f?w=600&q=80&auto=format&fit=crop" alt="福岡" loading="lazy">
+      <div class="area-card-name">福岡</div>
+    </div>
+  </div>
+</div>
+
 <div class="tagbar">
   <div class="tagrow">
     <span class="tag on" onclick="setTag(this,'all')"><svg width="11" height="11" viewBox="0 0 11 11"><circle cx="5.5" cy="5.5" r="4.5" fill="none" stroke="currentColor" stroke-width="1"/><circle cx="5.5" cy="5.5" r="1.5" fill="currentColor"/></svg>すべて</span>
@@ -449,6 +569,78 @@
   <div class="ni" onclick="go('pgVisits')"><svg width="18" height="18" viewBox="0 0 18 18"><rect x="2" y="3" width="14" height="12" rx="1" fill="none" stroke="#bbb" stroke-width="1.5"/><line x1="2" y1="7" x2="16" y2="7" stroke="#bbb" stroke-width="1"/></svg><span class="nl" style="color:#bbb">記録帳</span></div>
   <div class="ni" onclick="go('pgProfile')"><svg width="18" height="18" viewBox="0 0 18 18"><circle cx="9" cy="6" r="3.5" fill="none" stroke="#bbb" stroke-width="1.5"/><path d="M2 17c0-4 14-4 14 0" stroke="#bbb" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg><span class="nl" style="color:#bbb">マイページ</span></div>
 </div>
+</div>
+
+<!-- エリア検索ページ -->
+<div id="pgAreaSearch" style="display:none;flex-direction:column;position:fixed;inset:0;z-index:100;overflow-y:auto" class="area-pg-bg">
+  <div class="area-pg-hd">
+    <div class="area-pg-back" onclick="closeAreaSearch()">‹</div>
+    <div class="area-pg-tit" id="areaPgTit">エリアから探す</div>
+    <div style="width:24px"></div>
+  </div>
+  <div class="area-search-box">
+    <div class="area-search-field">
+      <svg viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4" stroke="currentColor" stroke-width="1.5"/><line x1="9" y1="9" x2="12.5" y2="12.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <input type="text" id="areaSearchShrine" placeholder="神社・お寺名を入力">
+    </div>
+    <div class="area-search-field">
+      <svg viewBox="0 0 14 14" fill="none"><path d="M7 1L13 4L7 13L1 4L7 1Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+      <input type="text" id="areaSearchPlace" placeholder="エリア・地名を入力">
+    </div>
+  </div>
+  <div class="area-posts-hd">
+    <div class="area-posts-tit" id="areaPostsTit">参拝者の投稿</div>
+    <div class="area-posts-meta">人気順 ↓</div>
+  </div>
+  <div class="posts-grid" id="postsGrid"></div>
+</div>
+
+<!-- 投稿詳細ページ -->
+<div id="pgPostDetail" style="display:none;flex-direction:column;position:fixed;inset:0;z-index:101;overflow-y:auto" class="post-detail-bg">
+  <div class="post-detail-hd">
+    <div class="post-detail-back" onclick="closePostDetail()">‹</div>
+    <div class="post-detail-hd-tit">参拝記録</div>
+    <div style="width:24px"></div>
+  </div>
+  <div class="post-detail-img" id="postDetailImg"></div>
+  <div class="post-detail-main">
+    <div class="post-detail-user">
+      <div class="post-detail-avatar" id="postDetailAvatar">？</div>
+      <div>
+        <div class="post-detail-uname" id="postDetailUname">ユーザー名</div>
+        <div class="post-detail-udate" id="postDetailUdate">投稿日</div>
+      </div>
+      <button class="post-detail-follow" onclick="postFollow()">フォロー</button>
+    </div>
+    <div class="post-detail-shrine" id="postDetailShrineBox" onclick="postOpenShrine()">
+      <div class="ico">⛩</div>
+      <div class="body">
+        <div class="name" id="postDetailShrineName">神社名</div>
+        <div class="addr" id="postDetailShrineAddr">住所</div>
+      </div>
+      <div class="arrow">›</div>
+    </div>
+    <div class="post-detail-text" id="postDetailText"></div>
+    <div class="post-detail-actions">
+      <button class="post-detail-act" id="postLikeBtn" onclick="postLike()">
+        <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M7 12s-5-3.5-5-7a2.5 2.5 0 0 1 5-1 2.5 2.5 0 0 1 5 1c0 3.5-5 7-5 7z" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+        <span id="postLikeCnt">128</span>
+      </button>
+      <button class="post-detail-act" onclick="postComment()">
+        <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 3h10v7l-3-1-3 2-3-2-1 1V3z" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+        コメント
+      </button>
+      <button class="post-detail-act" onclick="postShare()">
+        <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><circle cx="3" cy="7" r="2" stroke="currentColor" stroke-width="1.2"/><circle cx="11" cy="3" r="2" stroke="currentColor" stroke-width="1.2"/><circle cx="11" cy="11" r="2" stroke="currentColor" stroke-width="1.2"/><line x1="5" y1="6" x2="9" y2="4" stroke="currentColor" stroke-width="1.2"/><line x1="5" y1="8" x2="9" y2="10" stroke="currentColor" stroke-width="1.2"/></svg>
+        シェア
+      </button>
+    </div>
+  </div>
+  <div class="post-detail-comments-hd">コメント <span id="postCommentsCnt" style="color:#888;font-weight:normal;font-size:11px">3件</span></div>
+  <div id="postCommentsList"></div>
+  <div style="background:#1a1a1a;padding:1rem;text-align:center;color:#666;font-size:11px;border-top:.5px solid #333">
+    コメント投稿機能は現在準備中です
+  </div>
 </div>
 
 <!-- 神社詳細ページ（仮ページ・動的に内容を差し込み） -->
@@ -1679,6 +1871,291 @@ function centerToMyLocation(){
     mapInstance.setZoom(13);
   }
 }
+
+// ─── エリア検索ページ ─────────────────────────────────────
+// 仮ユーザー投稿データ（8件）
+var USER_POSTS = [
+  {
+    id: 'p1',
+    user: '咲耶',
+    avatar: '咲',
+    date: '3日前',
+    shrine: '鶴岡八幡宮',
+    addr: '神奈川県鎌倉市',
+    area: '神奈川',
+    img: 'https://images.unsplash.com/photo-1610144572947-37b89e7af45f?w=600&q=80&auto=format&fit=crop',
+    text: '初秋の鶴岡八幡宮、参道を歩くだけで心が洗われました。御朱印もとても美しく、書いていただいた方の所作にも感動。\n\n午前中の早い時間がおすすめです。',
+    likes: 234,
+    comments: [
+      { user:'みき', av:'み', text:'素敵な写真ですね！来週行ってみます', date:'2日前' },
+      { user:'タロウ', av:'タ', text:'御朱印見せていただきたいです', date:'1日前' },
+      { user:'参拝太郎', av:'参', text:'私も先月行きました。心が落ち着く場所ですね', date:'10時間前' }
+    ]
+  },
+  {
+    id: 'p2',
+    user: '巡礼の旅人',
+    avatar: '巡',
+    date: '5日前',
+    shrine: '伏見稲荷大社',
+    addr: '京都府京都市伏見区',
+    area: '京都',
+    img: 'https://images.unsplash.com/photo-1583321500900-82807e458f3c?w=600&q=80&auto=format&fit=crop',
+    text: '千本鳥居の朱色が紫の空に映える夕暮れ時。山頂まで往復約2時間でしたが、達成感がありました。\n\n途中の茶屋で頂いたきつねうどんも絶品。',
+    likes: 412,
+    comments: [
+      { user:'カナ', av:'カ', text:'夕暮れの千本鳥居、絵になりますね', date:'4日前' },
+      { user:'ヒロ', av:'ヒ', text:'山頂までの所要時間、参考になります', date:'3日前' }
+    ]
+  },
+  {
+    id: 'p3',
+    user: '神社めぐり',
+    avatar: '神',
+    date: '1週間前',
+    shrine: '明治神宮',
+    addr: '東京都渋谷区代々木神園町',
+    area: '東京',
+    img: 'https://images.unsplash.com/photo-1583077874340-79db6564672e?w=600&q=80&auto=format&fit=crop',
+    text: '都心とは思えない静寂と緑。明治神宮の鎮守の杜は、いつ訪れても新たな発見があります。\n\n御朱印は記念に大切に保管しています。',
+    likes: 567,
+    comments: [
+      { user:'ユウ', av:'ユ', text:'明治神宮、本当に都心とは思えませんよね', date:'5日前' },
+      { user:'ナオ', av:'ナ', text:'御朱印帳、何冊目ですか？', date:'4日前' },
+      { user:'けん', av:'け', text:'今度ご一緒できたら嬉しいです', date:'2日前' }
+    ]
+  },
+  {
+    id: 'p4',
+    user: 'みやび',
+    avatar: 'み',
+    date: '4日前',
+    shrine: '清水寺',
+    addr: '京都府京都市東山区',
+    area: '京都',
+    img: 'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=80&auto=format&fit=crop',
+    text: '紅葉の清水寺。舞台から眺める京都の街並みは、何度訪れても息を呑む美しさ。\n\n今回は音羽の滝で延命の水を頂いてきました。',
+    likes: 891,
+    comments: [
+      { user:'あい', av:'あ', text:'紅葉の時期は混みますよね、お疲れさまでした', date:'3日前' },
+      { user:'参拝者', av:'参', text:'写真の角度が素晴らしい！', date:'1日前' }
+    ]
+  },
+  {
+    id: 'p5',
+    user: '御朱印女子',
+    avatar: '御',
+    date: '2日前',
+    shrine: '熱田神宮',
+    addr: '愛知県名古屋市熱田区',
+    area: '愛知',
+    img: 'https://images.unsplash.com/photo-1599582909646-2caf931a8849?w=600&q=80&auto=format&fit=crop',
+    text: '三種の神器の一つ、草薙の剣を祀る熱田神宮。境内の楠の巨木の前で、自然の力強さを感じました。\n\n御朱印もシンプルで美しい墨字でした。',
+    likes: 178,
+    comments: [
+      { user:'まこと', av:'ま', text:'楠の木、すごい迫力ですよね', date:'1日前' }
+    ]
+  },
+  {
+    id: 'p6',
+    user: '神様にご縁',
+    avatar: '神',
+    date: '6日前',
+    shrine: '住吉大社',
+    addr: '大阪府大阪市住吉区',
+    area: '大阪',
+    img: 'https://images.unsplash.com/photo-1554188248-986adbb73be4?w=600&q=80&auto=format&fit=crop',
+    text: '住吉大社の太鼓橋を渡ると、心が洗われる気がします。海の神様にお参りして、新しい一歩を踏み出す勇気をいただきました。',
+    likes: 245,
+    comments: [
+      { user:'ゆきこ', av:'ゆ', text:'太鼓橋、傾斜がすごいですよね', date:'4日前' },
+      { user:'ハル', av:'ハ', text:'海の神様、いいですね', date:'3日前' }
+    ]
+  },
+  {
+    id: 'p7',
+    user: '九州巡礼',
+    avatar: '九',
+    date: '1日前',
+    shrine: '太宰府天満宮',
+    addr: '福岡県太宰府市',
+    area: '福岡',
+    img: 'https://images.unsplash.com/photo-1542640244-7e672d6cef4e?w=600&q=80&auto=format&fit=crop',
+    text: '学問の神様、菅原道真公をお祀りする太宰府天満宮。\n\n境内の梅の木は飛梅伝説で有名。受験生の友人のために絵馬を奉納してきました。',
+    likes: 156,
+    comments: [
+      { user:'みゆき', av:'み', text:'飛梅伝説、ロマンチックですね', date:'18時間前' }
+    ]
+  },
+  {
+    id: 'p8',
+    user: '都の参拝者',
+    avatar: '都',
+    date: '8時間前',
+    shrine: '神田明神',
+    addr: '東京都千代田区外神田',
+    area: '東京',
+    img: 'https://images.unsplash.com/photo-1480796927426-f609979314bd?w=600&q=80&auto=format&fit=crop',
+    text: '江戸総鎮守・神田明神。IT情報安全祈願でも知られています。\n\n仕事で疲れた時に立ち寄ると不思議と元気が出ます。',
+    likes: 89,
+    comments: []
+  }
+];
+
+var currentAreaFilter = 'all';
+function openAreaSearch(area){
+  currentAreaFilter = area;
+  document.getElementById('pgAreaSearch').style.display = 'flex';
+  if (typeof updateFabVisibility === 'function') updateFabVisibility();
+  document.getElementById('areaPgTit').textContent = area === 'all' ? 'エリアから探す' : area + 'の参拝記録';
+  // 検索欄に地名を初期セット
+  var placeInp = document.getElementById('areaSearchPlace');
+  placeInp.value = area === 'all' ? '' : area;
+  // 投稿を絞り込み・表示
+  renderPostsGrid(area);
+  window.scrollTo(0, 0);
+}
+function closeAreaSearch(){
+  document.getElementById('pgAreaSearch').style.display = 'none';
+  if (typeof updateFabVisibility === 'function') updateFabVisibility();
+}
+function renderPostsGrid(area){
+  var posts = USER_POSTS.filter(function(p){
+    return area === 'all' || p.area === area;
+  });
+  document.getElementById('areaPostsTit').textContent = '参拝者の投稿（' + posts.length + '件）';
+  var html = posts.map(function(p){
+    return '<div class="post-card" onclick="openPostDetail(\'' + p.id + '\')">' +
+           '<img class="post-card-img" src="' + p.img + '" alt="' + p.shrine + '" loading="lazy" onerror="this.style.display=\'none\';this.parentElement.querySelector(\'.post-card-img-ph\').style.display=\'flex\'">' +
+           '<div class="post-card-img-ph" style="display:none"><svg width="32" height="32" viewBox="0 0 24 24" fill="none"><path d="M3 9l9-6 9 6v11H3V9z" stroke="currentColor" stroke-width="1.5"/></svg></div>' +
+           '<div class="post-card-badge">★ ' + (p.likes >= 100 ? '人気' : 'NEW') + '</div>' +
+           '<div class="post-card-info">' +
+           '<div class="post-card-user"><div class="post-card-avatar">' + p.avatar + '</div><div class="post-card-uname">' + p.user + '</div></div>' +
+           '<div class="post-card-name">' + p.shrine + '</div>' +
+           '<div class="post-card-meta"><span>♡ ' + p.likes + '</span><span>💬 ' + p.comments.length + '</span></div>' +
+           '</div></div>';
+  }).join('');
+  if (posts.length === 0) {
+    html = '<div style="grid-column:1/-1;text-align:center;padding:2rem;color:#999;font-size:12px">このエリアの投稿はまだありません</div>';
+  }
+  document.getElementById('postsGrid').innerHTML = html;
+}
+
+// ─── 投稿詳細ページ ────────────────────────────────────
+var currentPost = null;
+function openPostDetail(postId){
+  var post = USER_POSTS.find(function(p){ return p.id === postId; });
+  if (!post) return;
+  currentPost = post;
+  document.getElementById('pgPostDetail').style.display = 'flex';
+  if (typeof updateFabVisibility === 'function') updateFabVisibility();
+
+  // 画像
+  var imgBox = document.getElementById('postDetailImg');
+  imgBox.innerHTML = '<img src="' + post.img + '" alt="' + post.shrine + '" onerror="this.style.display=\'none\';this.parentElement.innerHTML=&quot;<div class=\\&quot;post-detail-img-ph\\&quot;><svg width=\\&quot;56\\&quot; height=\\&quot;56\\&quot; viewBox=\\&quot;0 0 24 24\\&quot; fill=\\&quot;none\\&quot;><path d=\\&quot;M3 9l9-6 9 6v11H3V9z\\&quot; stroke=\\&quot;currentColor\\&quot; stroke-width=\\&quot;1.5\\&quot;/></svg></div>&quot;">';
+
+  // ユーザー情報
+  document.getElementById('postDetailAvatar').textContent = post.avatar;
+  document.getElementById('postDetailUname').textContent = post.user;
+  document.getElementById('postDetailUdate').textContent = post.date + ' に投稿';
+
+  // 神社情報
+  document.getElementById('postDetailShrineName').textContent = post.shrine;
+  document.getElementById('postDetailShrineAddr').textContent = post.addr;
+
+  // 本文
+  document.getElementById('postDetailText').textContent = post.text;
+
+  // いいね数
+  document.getElementById('postLikeCnt').textContent = post.likes;
+  document.getElementById('postLikeBtn').classList.remove('liked');
+
+  // コメント
+  document.getElementById('postCommentsCnt').textContent = post.comments.length + '件';
+  var clHtml = post.comments.map(function(c){
+    return '<div class="post-detail-comment">' +
+           '<div class="av">' + c.av + '</div>' +
+           '<div>' +
+           '<div class="cuser">' + c.user + '</div>' +
+           '<div class="ctxt">' + c.text + '</div>' +
+           '<div class="cdate">' + c.date + '</div>' +
+           '</div></div>';
+  }).join('');
+  if (post.comments.length === 0) {
+    clHtml = '<div style="padding:1.5rem 1.25rem;text-align:center;color:#666;font-size:11px;background:#1a1a1a">まだコメントはありません</div>';
+  }
+  document.getElementById('postCommentsList').innerHTML = clHtml;
+
+  window.scrollTo(0, 0);
+}
+function closePostDetail(){
+  document.getElementById('pgPostDetail').style.display = 'none';
+  if (typeof updateFabVisibility === 'function') updateFabVisibility();
+}
+function postFollow(){
+  if (typeof showToast === 'function') showToast('フォロー機能は現在準備中です');
+}
+function postLike(){
+  var btn = document.getElementById('postLikeBtn');
+  var cnt = document.getElementById('postLikeCnt');
+  if (btn.classList.contains('liked')) {
+    btn.classList.remove('liked');
+    cnt.textContent = parseInt(cnt.textContent) - 1;
+  } else {
+    btn.classList.add('liked');
+    cnt.textContent = parseInt(cnt.textContent) + 1;
+  }
+}
+function postComment(){
+  if (typeof showToast === 'function') showToast('コメント機能は現在準備中です');
+}
+function postShare(){
+  if (typeof showToast === 'function') showToast('シェア機能は現在準備中です');
+}
+function postOpenShrine(){
+  if (!currentPost) return;
+  // SHRINESデータから該当神社を探す
+  var found = (typeof SHRINES !== 'undefined') && SHRINES.find(function(s){
+    return s.name === currentPost.shrine || s.name.indexOf(currentPost.shrine) !== -1 || currentPost.shrine.indexOf(s.name) !== -1;
+  });
+  if (found) {
+    closePostDetail();
+    setTimeout(function(){
+      if (typeof openShrineDetail === 'function') openShrineDetail(found);
+    }, 200);
+  } else {
+    // 仮データから神社詳細ページを開く
+    closePostDetail();
+    setTimeout(function(){
+      var fake = {
+        name: currentPost.shrine,
+        deity: '—',
+        addr: currentPost.addr,
+        map: 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(currentPost.shrine),
+        rating: 4.5,
+        rev: currentPost.likes,
+        tags: ['goshuin'],
+        visited: false
+      };
+      if (typeof openShrineDetail === 'function') openShrineDetail(fake);
+    }, 200);
+  }
+}
+
+// updateFabVisibilityに新ページを追加するフック
+(function(){
+  var origFn = window.updateFabVisibility;
+  window.updateFabVisibility = function(){
+    var fab = document.getElementById('fabMap');
+    if (!fab) return;
+    var hidePages = ['pgRegister','pgAiRoute','pgAiResult','pgMap','pgShrineDetail','pgAreaSearch','pgPostDetail'];
+    var anyOpen = hidePages.some(function(id){
+      var el = document.getElementById(id);
+      return el && el.style.display === 'flex';
+    });
+    fab.style.display = anyOpen ? 'none' : 'flex';
+  };
+})();
 
 // ─── 神社詳細ページ ─────────────────────────────────────
 var currentSdShrine = null;
