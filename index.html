@@ -7,7 +7,7 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;600&family=Shippori+Mincho:wght@400;600;800&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
-:root{--red:#9b2a1a;--gold:#c9a84c;--washi:#faf8f3;--kara:#e8e0d0;--ma:#0a1a0f;--gold-l:#f5efd6;--red-l:#f5ebe8;--red-d:#5a1208;--gold-d:#a98a38;--ease:cubic-bezier(.22,.61,.36,1)}
+:root{--red:#3a1d5d;--gold:#c9a84c;--washi:#faf8f3;--kara:#e8e0d0;--ma:#0a1a0f;--gold-l:#f5efd6;--red-l:#ece4f5;--red-d:#2a124a;--gold-d:#a98a38;--ease:cubic-bezier(.22,.61,.36,1)}
 .app{max-width:390px;margin:0 auto;background:var(--washi);font-family:'Noto Serif JP',serif}
 .hero{position:relative;height:260px;overflow:hidden;background:#1a2a1a}
 .hero-img{width:100%;height:100%;object-fit:cover;object-position:center 35%;display:block}
@@ -29,7 +29,7 @@
 .tag{display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.13);border:.5px solid rgba(255,255,255,.28);border-radius:20px;padding:5px 13px;font-size:11px;color:rgba(255,255,255,.92);cursor:pointer;font-family:'Noto Serif JP',serif;white-space:nowrap;transition:all .2s var(--ease)}
 .tag:hover{background:rgba(255,255,255,.22)}
 .tag:active{transform:scale(.95)}
-.btn-search:hover{box-shadow:inset 0 0 0 1px rgba(201,168,76,.55),0 6px 20px -4px rgba(155,42,26,.65)}
+.btn-search:hover{box-shadow:inset 0 0 0 1px rgba(201,168,76,.55),0 6px 20px -4px rgba(58,29,93,.65)}
 .btn-search:active{transform:scale(.985)}
 .tag.on{background:linear-gradient(180deg,rgba(201,168,76,.32),rgba(201,168,76,.18));border-color:var(--gold);color:#fff7e2;box-shadow:0 0 0 1px rgba(201,168,76,.35),0 2px 8px rgba(201,168,76,.25);font-weight:600}
 .sec{padding:1.25rem 1.25rem .25rem}
@@ -81,10 +81,10 @@
 .rnum{font-size:12px;font-weight:600;color:var(--ma);margin-left:4px}
 .rcnt{font-size:11px;color:#aaa}
 .bv{font-size:9px;background:var(--gold);color:#3a2800;padding:2px 8px;border-radius:20px}
-.bn{font-size:9px;background:var(--red-l);color:var(--red-d);padding:2px 8px;border-radius:20px;border:.5px solid #e8c4bc}
+.bn{font-size:9px;background:var(--red-l);color:var(--red-d);padding:2px 8px;border-radius:20px;border:.5px solid #d4c4e8}
 /* AIルート生成ボタン（ホーム画面） */
-.ai-route-banner{margin:0 1.25rem;background:linear-gradient(135deg,#4a1b0c 0%,#5a1208 60%,#7a2818 100%);border:1px solid var(--gold);border-radius:14px;padding:.95rem 1rem;display:flex;align-items:center;gap:12px;cursor:pointer;box-shadow:0 4px 16px -4px rgba(74,27,12,.45),0 0 0 1px rgba(201,168,76,.18);transition:transform .2s var(--ease),box-shadow .2s var(--ease);position:relative;overflow:hidden}
-.ai-route-banner:hover{transform:translateY(-1px);box-shadow:0 8px 22px -6px rgba(74,27,12,.55),0 0 0 1px rgba(201,168,76,.35)}
+.ai-route-banner{margin:0 1.25rem;background:linear-gradient(135deg,#2a124a 0%,#2a124a 60%,#4d2d75 100%);border:1px solid var(--gold);border-radius:14px;padding:.95rem 1rem;display:flex;align-items:center;gap:12px;cursor:pointer;box-shadow:0 4px 16px -4px rgba(42,18,74,.45),0 0 0 1px rgba(201,168,76,.18);transition:transform .2s var(--ease),box-shadow .2s var(--ease);position:relative;overflow:hidden}
+.ai-route-banner:hover{transform:translateY(-1px);box-shadow:0 8px 22px -6px rgba(42,18,74,.55),0 0 0 1px rgba(201,168,76,.35)}
 .ai-route-banner:active{transform:scale(.985)}
 .ai-route-banner::before{content:"";position:absolute;top:-20px;right:-20px;width:80px;height:80px;background:radial-gradient(circle,rgba(201,168,76,.25),transparent 70%);pointer-events:none}
 .ai-icon{width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#e3c879,#c9a84c 60%,#a98a38);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 6px rgba(201,168,76,.4)}
@@ -94,12 +94,12 @@
 .ai-route-sub{font-size:10px;color:rgba(255,255,255,.7);margin-top:3px;line-height:1.4}
 .ai-arrow{color:var(--gold);font-size:18px;z-index:1}
 /* AIルート入力ページ */
-.ai-page-hd{background:linear-gradient(180deg,#4a1b0c,#5a1208);padding:.9rem 1.25rem;display:flex;align-items:center;gap:10px;flex-shrink:0}
+.ai-page-hd{background:linear-gradient(180deg,#2a124a,#2a124a);padding:.9rem 1.25rem;display:flex;align-items:center;gap:10px;flex-shrink:0}
 .ai-back{cursor:pointer;color:rgba(255,255,255,.85);font-size:24px;line-height:1}
 .ai-page-tit{font-family:'Shippori Mincho',serif;font-size:15px;font-weight:800;color:#fff;letter-spacing:.1em;flex:1}
 .ai-counter{font-size:10px;color:var(--gold);background:rgba(0,0,0,.25);border:.5px solid rgba(201,168,76,.4);padding:3px 9px;border-radius:12px;letter-spacing:.05em}
 .ai-form{padding:1.25rem;background:var(--washi)}
-.ai-form-card{background:#faf7f0;border:1px solid var(--gold);border-radius:14px;padding:1.25rem;box-shadow:0 2px 10px -4px rgba(74,27,12,.15)}
+.ai-form-card{background:#faf7f0;border:1px solid var(--gold);border-radius:14px;padding:1.25rem;box-shadow:0 2px 10px -4px rgba(42,18,74,.15)}
 .ai-form-hd{text-align:center;padding-bottom:14px;border-bottom:1px solid var(--gold);margin-bottom:16px}
 .ai-form-en{font-family:'Shippori Mincho',serif;font-size:10px;letter-spacing:.3em;color:#8b6f3f}
 .ai-form-jp{font-family:'Shippori Mincho',serif;font-size:18px;color:var(--red-d);margin-top:4px;font-weight:600}
@@ -107,11 +107,11 @@
 .ai-label{display:block;font-size:11px;color:#8b6f3f;margin-bottom:6px;font-weight:600;letter-spacing:.05em}
 .ai-label-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
 .ai-input{width:100%;background:#fff;border:.5px solid var(--gold);border-radius:8px;padding:.6rem .75rem;font-size:13px;font-family:'Noto Serif JP',serif;color:var(--ma);outline:none}
-.ai-input:focus{border-color:var(--red);box-shadow:0 0 0 2px rgba(155,42,26,.12)}
+.ai-input:focus{border-color:var(--red);box-shadow:0 0 0 2px rgba(58,29,93,.12)}
 /* 神社入力（複数追加可） */
 .shrine-row{display:flex;gap:6px;margin-bottom:6px;align-items:center}
 .shrine-row .ai-input{flex:1}
-.shrine-del{width:28px;height:28px;border-radius:50%;background:#fff;border:.5px solid #d4a89d;color:var(--red);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;line-height:1}
+.shrine-del{width:28px;height:28px;border-radius:50%;background:#fff;border:.5px solid #c4b4d8;color:var(--red);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;line-height:1}
 .shrine-del:hover{background:var(--red-l)}
 .shrine-add{background:#fff;border:.5px dashed var(--gold);color:#8b6f3f;font-size:12px;padding:8px;border-radius:8px;cursor:pointer;width:100%;font-family:'Noto Serif JP',serif;margin-top:2px;transition:all .18s var(--ease)}
 .shrine-add:hover{background:var(--gold-l);border-style:solid}
@@ -119,7 +119,7 @@
 .ai-hint{font-size:10px;color:#aaa;margin-top:3px;line-height:1.5}
 .ai-tags{display:flex;gap:6px;flex-wrap:wrap}
 .ai-tag{background:#fff;color:#8b6f3f;font-size:12px;padding:6px 13px;border-radius:18px;border:.5px solid var(--gold);cursor:pointer;font-family:'Noto Serif JP',serif;transition:all .18s var(--ease)}
-.ai-tag.on{background:var(--red);color:#fff;border-color:var(--red);box-shadow:0 2px 6px rgba(155,42,26,.3)}
+.ai-tag.on{background:var(--red);color:#fff;border-color:var(--red);box-shadow:0 2px 6px rgba(58,29,93,.3)}
 .ai-time{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
 .ai-time-btn{background:#fff;color:#8b6f3f;font-size:12px;padding:9px;border-radius:8px;text-align:center;border:.5px solid var(--gold);cursor:pointer;font-family:'Noto Serif JP',serif;transition:all .18s var(--ease)}
 .ai-time-btn.on{background:var(--red);color:#fff;border-color:var(--red)}
@@ -129,7 +129,7 @@
 .ai-tr-btn.on{background:var(--red);color:#fff;border-color:var(--red)}
 .ai-tr-btn svg{width:18px;height:18px}
 .ai-tr-btn.on svg path,.ai-tr-btn.on svg circle,.ai-tr-btn.on svg rect,.ai-tr-btn.on svg line{stroke:#fff}
-.ai-submit{width:100%;background:var(--red-d);color:#fff;border:none;padding:14px;border-radius:10px;font-size:14px;font-family:'Shippori Mincho',serif;font-weight:600;letter-spacing:.1em;cursor:pointer;margin-top:6px;box-shadow:0 4px 12px -2px rgba(74,27,12,.4);transition:transform .15s var(--ease)}
+.ai-submit{width:100%;background:var(--red-d);color:#fff;border:none;padding:14px;border-radius:10px;font-size:14px;font-family:'Shippori Mincho',serif;font-weight:600;letter-spacing:.1em;cursor:pointer;margin-top:6px;box-shadow:0 4px 12px -2px rgba(42,18,74,.4);transition:transform .15s var(--ease)}
 .ai-submit:hover{background:var(--red)}
 .ai-submit:active{transform:scale(.985)}
 .ai-submit:disabled{background:#bbb;cursor:not-allowed;box-shadow:none}
@@ -173,7 +173,7 @@
 .ai-card-body{padding:.6rem .7rem .7rem}
 .ai-card-name{font-family:'Shippori Mincho',serif;font-weight:600;font-size:13px;color:var(--ma);line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ai-card-meta{font-size:10px;color:#8b6f3f;margin-top:4px;display:flex;align-items:center;gap:8px}
-.ai-card-tag{display:inline-block;background:var(--red-l);color:var(--red-d);font-size:9px;padding:1px 7px;border-radius:8px;margin-top:5px;border:.5px solid #e8c4bc}
+.ai-card-tag{display:inline-block;background:var(--red-l);color:var(--red-d);font-size:9px;padding:1px 7px;border-radius:8px;margin-top:5px;border:.5px solid #d4c4e8}
 .ai-card-move{font-size:10px;color:#8b6f3f;margin-top:5px;padding-top:5px;border-top:.5px dashed var(--kara);display:flex;align-items:center;gap:3px}
 /* カード内ナビボタン */
 .ai-card-nav{display:flex;align-items:center;justify-content:center;gap:4px;background:#fff;border:.5px solid var(--gold);color:var(--red-d);font-size:10px;font-family:'Noto Serif JP',serif;font-weight:600;padding:6px 10px;border-radius:14px;margin-top:8px;cursor:pointer;width:100%;transition:all .15s var(--ease)}
@@ -187,7 +187,7 @@
 .ai-sheet-route-btn svg{width:14px;height:14px;flex-shrink:0}
 
 /* 新規登録・ログインページ */
-.reg-bg{background:linear-gradient(180deg,#3a1408 0%,#4a1b0c 40%,#5a1208 100%);min-height:100vh;color:#fff}
+.reg-bg{background:linear-gradient(180deg,#3a1408 0%,#2a124a 40%,#2a124a 100%);min-height:100vh;color:#fff}
 .reg-hd{padding:1rem 1.25rem;display:flex;align-items:center;gap:10px}
 .reg-back{cursor:pointer;color:rgba(255,255,255,.85);font-size:24px;line-height:1}
 .reg-hd-tit{font-family:'Shippori Mincho',serif;font-size:15px;font-weight:800;color:#fff;letter-spacing:.1em;flex:1}
@@ -220,14 +220,14 @@
 
 /* 神社詳細ページ */
 .sd-bg{background:var(--washi);min-height:100vh;padding-bottom:5rem}
-.sd-hd{position:sticky;top:0;background:linear-gradient(180deg,#4a1b0c,#5a1208);padding:.85rem 1.25rem;display:flex;align-items:center;gap:10px;z-index:20;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.sd-hd{position:sticky;top:0;background:linear-gradient(180deg,#2a124a,#2a124a);padding:.85rem 1.25rem;display:flex;align-items:center;gap:10px;z-index:20;box-shadow:0 2px 8px rgba(0,0,0,.15)}
 .sd-back{cursor:pointer;color:rgba(255,255,255,.85);font-size:24px;line-height:1}
 .sd-hd-tit{font-family:'Shippori Mincho',serif;font-size:14px;font-weight:800;color:#fff;letter-spacing:.08em;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sd-share{cursor:pointer;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.12);border:.5px solid rgba(201,168,76,.4);display:flex;align-items:center;justify-content:center;color:var(--gold)}
 .sd-hero{width:100%;aspect-ratio:16/10;background:#e8e4dc;position:relative;overflow:hidden}
 .sd-hero img{width:100%;height:100%;object-fit:cover;display:block}
 .sd-hero-ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#c9a84c}
-.sd-hero-badge{position:absolute;top:12px;left:12px;background:rgba(74,27,12,.85);color:var(--gold);font-family:'Shippori Mincho',serif;font-size:11px;padding:4px 10px;border-radius:14px;border:.5px solid rgba(201,168,76,.5)}
+.sd-hero-badge{position:absolute;top:12px;left:12px;background:rgba(42,18,74,.85);color:var(--gold);font-family:'Shippori Mincho',serif;font-size:11px;padding:4px 10px;border-radius:14px;border:.5px solid rgba(201,168,76,.5)}
 .sd-main{padding:1.25rem}
 .sd-tit{font-family:'Shippori Mincho',serif;font-size:22px;font-weight:800;color:var(--red-d);line-height:1.3;letter-spacing:.04em}
 .sd-yomi{font-size:11px;color:#8b6f3f;margin-top:4px;letter-spacing:.1em}
@@ -252,7 +252,7 @@
 .sd-yurai{font-size:13px;line-height:1.9;color:#444;background:#fff;border:.5px solid var(--gold);border-radius:8px;padding:1rem;font-family:'Shippori Mincho',serif}
 .sd-yurai b{color:var(--red-d);font-weight:600}
 .sd-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:.5rem}
-.sd-tag-chip{background:var(--red-l);color:var(--red-d);font-size:11px;padding:3px 10px;border-radius:12px;border:.5px solid #e8c4bc;font-family:'Noto Serif JP',serif}
+.sd-tag-chip{background:var(--red-l);color:var(--red-d);font-size:11px;padding:3px 10px;border-radius:12px;border:.5px solid #d4c4e8;font-family:'Noto Serif JP',serif}
 .sd-goshuin{background:#fff;border:.5px solid var(--gold);border-radius:8px;padding:.9rem 1rem;font-size:12px;line-height:1.8;color:#444}
 .sd-goshuin .item{display:flex;gap:10px;padding:3px 0}
 .sd-goshuin .item .k{color:#8b6f3f;font-weight:600;width:80px;flex-shrink:0}
@@ -265,7 +265,7 @@
 .sd-map-link svg{width:13px;height:13px}
 
 /* 追従マップFAB（フローティングアクションボタン） */
-.fab-map{position:fixed;right:14px;bottom:78px;width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,#9b2a1a,#7a1f10);box-shadow:0 4px 14px rgba(0,0,0,.3),0 0 0 1px rgba(201,168,76,.4) inset;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:80;transition:transform .2s var(--ease),box-shadow .2s var(--ease);border:none}
+.fab-map{position:fixed;right:14px;bottom:78px;width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,#3a1d5d,#3a1d5d);box-shadow:0 4px 14px rgba(0,0,0,.3),0 0 0 1px rgba(201,168,76,.4) inset;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:80;transition:transform .2s var(--ease),box-shadow .2s var(--ease);border:none}
 .fab-map:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(0,0,0,.4),0 0 0 1px rgba(201,168,76,.7) inset}
 .fab-map:active{transform:scale(.94)}
 .fab-map svg{width:24px;height:24px;color:var(--gold)}
@@ -307,7 +307,7 @@
 .srch-chip{display:inline-flex;align-items:center;gap:4px;border:.5px solid var(--kara);border-radius:20px;padding:5px 13px;font-size:11px;color:var(--ma);cursor:pointer;background:#fff;font-family:'Noto Serif JP',serif;transition:all .18s}
 .srch-chip:active{transform:scale(.95)}
 .srch-chip.on{background:var(--red-l);border-color:var(--red);color:var(--red-d);font-weight:600}
-.srch-btn{width:100%;background:linear-gradient(180deg,#a83320,#8a2417);color:#fff;border:1px solid var(--gold);border-radius:12px;padding:.95rem;font-family:'Shippori Mincho',serif;font-size:14px;font-weight:600;letter-spacing:.1em;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;box-shadow:inset 0 0 0 1px rgba(201,168,76,.35),0 4px 14px -4px rgba(155,42,26,.55);margin-top:.5rem}
+.srch-btn{width:100%;background:linear-gradient(180deg,#a83320,#8a2417);color:#fff;border:1px solid var(--gold);border-radius:12px;padding:.95rem;font-family:'Shippori Mincho',serif;font-size:14px;font-weight:600;letter-spacing:.1em;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;box-shadow:inset 0 0 0 1px rgba(201,168,76,.35),0 4px 14px -4px rgba(58,29,93,.55);margin-top:.5rem}
 .srch-pref{width:100%;background:#fff;border:.5px solid var(--kara);border-radius:8px;padding:.6rem .875rem;font-family:'Noto Serif JP',serif;font-size:12px;color:var(--ma);cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23999'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:30px;margin-bottom:.875rem}
 </style>
 </head>
@@ -321,7 +321,7 @@
   <div class="hero-ct">
     <div class="hero-top">
       <div onclick="openRegister()" style="width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.15);border:1.5px solid rgba(201,168,76,.55);display:flex;align-items:center;justify-content:center;cursor:pointer" title="新規登録">
-        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="6" r="3" stroke="#c9a84c" stroke-width="1.5"/><path d="M3 17c0-4 12-4 12 0" stroke="#c9a84c" stroke-width="1.5" stroke-linecap="round" fill="none"/><circle cx="14" cy="3.5" r="2.5" fill="#c9a84c"/><path d="M14 2v3M12.5 3.5h3" stroke="#4a1b0c" stroke-width="0.8" stroke-linecap="round"/></svg>
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="6" r="3" stroke="#c9a84c" stroke-width="1.5"/><path d="M3 17c0-4 12-4 12 0" stroke="#c9a84c" stroke-width="1.5" stroke-linecap="round" fill="none"/><circle cx="14" cy="3.5" r="2.5" fill="#c9a84c"/><path d="M14 2v3M12.5 3.5h3" stroke="#2a124a" stroke-width="0.8" stroke-linecap="round"/></svg>
       </div>
       <div style="display:flex;flex-direction:column;align-items:center">
         <div class="hero-title">御参拝録</div>
@@ -353,7 +353,7 @@
 <div class="ai-route-banner" onclick="openAiRoute()">
   <div class="ai-icon">
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-      <path d="M12 2L14 8L20 9L15.5 13L17 19L12 16L7 19L8.5 13L4 9L10 8L12 2Z" fill="#4a1b0c" stroke="#4a1b0c" stroke-width="0.5" stroke-linejoin="round"/>
+      <path d="M12 2L14 8L20 9L15.5 13L17 19L12 16L7 19L8.5 13L4 9L10 8L12 2Z" fill="#2a124a" stroke="#2a124a" stroke-width="0.5" stroke-linejoin="round"/>
     </svg>
   </div>
   <div class="ai-route-body">
@@ -433,7 +433,7 @@
       <option value="visited">参拝済のみ</option>
     </select>
   </div>
-  <button onclick="filter()" class="btn-search" style="width:100%;background:linear-gradient(180deg,#a83320,#8a2417);color:#fff;border:1px solid var(--gold);border-radius:12px;padding:.95rem;font-family:'Shippori Mincho',serif;font-size:14px;font-weight:600;letter-spacing:.1em;cursor:pointer;margin-bottom:1rem;display:flex;align-items:center;justify-content:center;gap:7px;box-shadow:inset 0 0 0 1px rgba(201,168,76,.35),0 4px 14px -4px rgba(155,42,26,.55);transition:transform .16s var(--ease),box-shadow .2s var(--ease)">
+  <button onclick="filter()" class="btn-search" style="width:100%;background:linear-gradient(180deg,#a83320,#8a2417);color:#fff;border:1px solid var(--gold);border-radius:12px;padding:.95rem;font-family:'Shippori Mincho',serif;font-size:14px;font-weight:600;letter-spacing:.1em;cursor:pointer;margin-bottom:1rem;display:flex;align-items:center;justify-content:center;gap:7px;box-shadow:inset 0 0 0 1px rgba(201,168,76,.35),0 4px 14px -4px rgba(58,29,93,.55);transition:transform .16s var(--ease),box-shadow .2s var(--ease)">
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5" stroke="#fff" stroke-width="1.5"/><line x1="11" y1="11" x2="15" y2="15" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
     この条件で検索する
   </button>
@@ -444,7 +444,7 @@
 <div id="toast" style="display:none;position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--red);color:#fff;padding:.6rem 1.5rem;border-radius:30px;font-size:12px;text-align:center;border:1px solid rgba(201,168,76,.4);z-index:200;white-space:nowrap"></div>
 
 <div class="fnav">
-  <div class="ni" onclick="go('pgHome')"><svg width="18" height="18" viewBox="0 0 18 18"><path d="M9 2L16 7v9H2V7z" fill="#9b2a1a"/></svg><span class="nl" style="color:var(--red)">ホーム</span></div>
+  <div class="ni" onclick="go('pgHome')"><svg width="18" height="18" viewBox="0 0 18 18"><path d="M9 2L16 7v9H2V7z" fill="#3a1d5d"/></svg><span class="nl" style="color:var(--red)">ホーム</span></div>
   <div class="ni" onclick="go('pgSearch')"><svg width="18" height="18" viewBox="0 0 18 18"><circle cx="9" cy="8" r="5" fill="none" stroke="#bbb" stroke-width="1.5"/><line x1="13" y1="13" x2="17" y2="17" stroke="#bbb" stroke-width="1.5" stroke-linecap="round"/></svg><span class="nl" style="color:#bbb">さがす</span></div>
   <div class="ni" onclick="go('pgVisits')"><svg width="18" height="18" viewBox="0 0 18 18"><rect x="2" y="3" width="14" height="12" rx="1" fill="none" stroke="#bbb" stroke-width="1.5"/><line x1="2" y1="7" x2="16" y2="7" stroke="#bbb" stroke-width="1"/></svg><span class="nl" style="color:#bbb">記録帳</span></div>
   <div class="ni" onclick="go('pgProfile')"><svg width="18" height="18" viewBox="0 0 18 18"><circle cx="9" cy="6" r="3.5" fill="none" stroke="#bbb" stroke-width="1.5"/><path d="M2 17c0-4 14-4 14 0" stroke="#bbb" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg><span class="nl" style="color:#bbb">マイページ</span></div>
@@ -543,7 +543,7 @@
     </div>
 
     <div class="sd-sec">
-      <button class="sd-act-btn" style="width:100%;background:linear-gradient(135deg,#4a1b0c,#5a1208);color:#fff;border-color:var(--gold);padding:14px;font-size:13px" onclick="sdAddToAiRoute()">
+      <button class="sd-act-btn" style="width:100%;background:linear-gradient(135deg,#2a124a,#2a124a);color:#fff;border-color:var(--gold);padding:14px;font-size:13px" onclick="sdAddToAiRoute()">
         <svg viewBox="0 0 14 14" fill="none"><path d="M7 1L8 5L12 5.5L9 8L10 12L7 10L4 12L5 8L2 5.5L6 5L7 1Z" fill="#c9a84c"/></svg>
         AI御朱印巡りルートに追加
       </button>
@@ -743,7 +743,7 @@
 <div class="ai-limit-modal" id="aiLimitModal">
   <div class="ai-limit-card">
     <div class="ai-limit-icon">
-      <svg width="28" height="28" viewBox="0 0 28 28"><path d="M3 11l4 6 6-10 6 10 4-6v11H3V11z" fill="#4a1b0c"/></svg>
+      <svg width="28" height="28" viewBox="0 0 28 28"><path d="M3 11l4 6 6-10 6 10 4-6v11H3V11z" fill="#2a124a"/></svg>
     </div>
     <div class="ai-limit-tit">今月のご利用上限です</div>
     <div class="ai-limit-msg">AI巡りルート生成は月2回まで無料でご利用いただけます。次回更新は<span id="nextReset">来月1日</span>です。<br><br>会員登録で無制限に。</div>
@@ -764,7 +764,7 @@
   <!-- 地図内検索バー（トグル） -->
   <div id="mapSearchBar" style="display:none;background:#fff;padding:.6rem 1rem;border-bottom:.5px solid var(--kara);flex-shrink:0">
     <div style="display:flex;align-items:center;gap:8px;background:#f5f2ed;border-radius:10px;padding:.55rem .875rem">
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4" stroke="#9b2a1a" stroke-width="1.3"/><line x1="9.5" y1="9.5" x2="13" y2="13" stroke="#9b2a1a" stroke-width="1.3" stroke-linecap="round"/></svg>
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4" stroke="#3a1d5d" stroke-width="1.3"/><line x1="9.5" y1="9.5" x2="13" y2="13" stroke="#3a1d5d" stroke-width="1.3" stroke-linecap="round"/></svg>
       <input id="mapSrchInput" type="text" placeholder="神社名・地名で絞り込む" style="flex:1;border:none;outline:none;font-family:'Noto Serif JP',serif;font-size:12px;color:var(--ma);background:transparent" oninput="filterMapPins(this.value)">
       <div onclick="clearMapSearch()" style="cursor:pointer;color:#bbb;font-size:14px;line-height:1">✕</div>
     </div>
@@ -772,7 +772,7 @@
   <div id="mapCanvas" style="flex:1;width:100%;min-height:0;background:#e8e4dc"></div>
   <!-- この場所で再検索ボタン（マップ上中央上部にフロート） -->
   <div id="reSearchBtn" onclick="reSearchAtMapCenter()" style="position:absolute;top:62px;left:50%;transform:translateX(-50%);z-index:50;background:#fff;border:.5px solid var(--gold);border-radius:20px;padding:.5rem 1.1rem;font-family:'Noto Serif JP',serif;font-size:12px;font-weight:600;color:var(--red-d);cursor:pointer;box-shadow:0 3px 12px rgba(0,0,0,.18);display:flex;align-items:center;gap:6px">
-    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7a4 4 0 1 1 1.5 3.1" stroke="#9b2a1a" stroke-width="1.5" stroke-linecap="round" fill="none"/><polyline points="2 4 2 7 5 7" stroke="#9b2a1a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7a4 4 0 1 1 1.5 3.1" stroke="#3a1d5d" stroke-width="1.5" stroke-linecap="round" fill="none"/><polyline points="2 4 2 7 5 7" stroke="#3a1d5d" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
     この場所で再検索
   </div>
   <div class="map-loc-btn" onclick="centerToMyLocation()">
@@ -798,7 +798,7 @@
   </div>
   <!-- 名前検索バー -->
   <div style="background:rgba(255,255,255,.95);border-radius:10px;display:flex;align-items:center;gap:8px;padding:.6rem .875rem">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.5" stroke="#9b2a1a" stroke-width="1.5"/><line x1="11" y1="11" x2="15" y2="15" stroke="#9b2a1a" stroke-width="1.5" stroke-linecap="round"/></svg>
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.5" stroke="#3a1d5d" stroke-width="1.5"/><line x1="11" y1="11" x2="15" y2="15" stroke="#3a1d5d" stroke-width="1.5" stroke-linecap="round"/></svg>
     <input id="srchName" type="text" placeholder="神社・お寺名を入力" style="flex:1;border:none;outline:none;font-family:'Noto Serif JP',serif;font-size:13px;color:var(--ma);background:transparent">
   </div>
 </div>
@@ -881,7 +881,7 @@
   <div class="ni" onclick="go('pgHome')"><svg width="18" height="18" viewBox="0 0 18 18"><path d="M9 2L16 7v9H2V7z" fill="none" stroke="#bbb" stroke-width="1.5"/></svg><span class="nl" style="color:#bbb">ホーム</span></div>
   <div class="ni"><svg width="18" height="18" viewBox="0 0 18 18"><circle cx="9" cy="8" r="5" fill="none" stroke="#bbb" stroke-width="1.5"/></svg><span class="nl" style="color:#bbb">さがす</span></div>
   <div class="ni" onclick="go('pgVisits')"><svg width="18" height="18" viewBox="0 0 18 18"><rect x="2" y="3" width="14" height="12" rx="1" fill="none" stroke="#bbb" stroke-width="1.5"/></svg><span class="nl" style="color:#bbb">記録帳</span></div>
-  <div class="ni" onclick="go('pgProfile')"><svg width="18" height="18" viewBox="0 0 18 18"><circle cx="9" cy="6" r="3.5" fill="#9b2a1a"/><path d="M2 17c0-4 14-4 14 0" stroke="#9b2a1a" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg><span class="nl" style="color:var(--red)">マイページ</span></div>
+  <div class="ni" onclick="go('pgProfile')"><svg width="18" height="18" viewBox="0 0 18 18"><circle cx="9" cy="6" r="3.5" fill="#3a1d5d"/><path d="M2 17c0-4 14-4 14 0" stroke="#3a1d5d" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg><span class="nl" style="color:var(--red)">マイページ</span></div>
 </div>
 </div>
 
@@ -898,7 +898,7 @@
 <div class="fnav">
   <div class="ni" onclick="go('pgHome')"><svg width="18" height="18" viewBox="0 0 18 18"><path d="M9 2L16 7v9H2V7z" fill="none" stroke="#bbb" stroke-width="1.5"/></svg><span class="nl" style="color:#bbb">ホーム</span></div>
   <div class="ni"><svg width="18" height="18" viewBox="0 0 18 18"><circle cx="9" cy="8" r="5" fill="none" stroke="#bbb" stroke-width="1.5"/></svg><span class="nl" style="color:#bbb">さがす</span></div>
-  <div class="ni" onclick="go('pgVisits')"><svg width="18" height="18" viewBox="0 0 18 18"><rect x="2" y="3" width="14" height="12" rx="1" fill="#9b2a1a" stroke="#9b2a1a" stroke-width="1"/><line x1="2" y1="7" x2="16" y2="7" stroke="#fff" stroke-width="1"/></svg><span class="nl" style="color:var(--red)">記録帳</span></div>
+  <div class="ni" onclick="go('pgVisits')"><svg width="18" height="18" viewBox="0 0 18 18"><rect x="2" y="3" width="14" height="12" rx="1" fill="#3a1d5d" stroke="#3a1d5d" stroke-width="1"/><line x1="2" y1="7" x2="16" y2="7" stroke="#fff" stroke-width="1"/></svg><span class="nl" style="color:var(--red)">記録帳</span></div>
   <div class="ni" onclick="go('pgProfile')"><svg width="18" height="18" viewBox="0 0 18 18"><circle cx="9" cy="6" r="3.5" fill="none" stroke="#bbb" stroke-width="1.5"/><path d="M2 17c0-4 14-4 14 0" stroke="#bbb" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg><span class="nl" style="color:#bbb">マイページ</span></div>
 </div>
 </div>
@@ -960,7 +960,7 @@
     <div style="font-family:'Shippori Mincho',serif;font-size:16px;font-weight:800;color:var(--ma);text-align:center;margin-bottom:4px">神社への参拝を記録</div>
     <input id="mPlace" type="text" placeholder="神社名" style="width:100%;border:.5px solid #e8e0d0;border-radius:8px;padding:.7rem 1rem;font-family:'Noto Serif JP',serif;font-size:14px;background:#fff;color:var(--ma);margin-bottom:.75rem;outline:none;display:block">
     <input id="mDate" type="date" style="width:100%;border:.5px solid #e8e0d0;border-radius:8px;padding:.7rem 1rem;font-family:'Noto Serif JP',serif;font-size:14px;background:#fff;color:var(--ma);margin-bottom:.75rem;outline:none;display:block">
-    <button onclick="saveVisit()" style="width:100%;background:#9b2a1a;color:#fff;border:none;border-radius:10px;padding:.875rem;font-family:'Shippori Mincho',serif;font-size:14px;font-weight:600;letter-spacing:.1em;cursor:pointer;display:block">記録を保存する</button>
+    <button onclick="saveVisit()" style="width:100%;background:#3a1d5d;color:#fff;border:none;border-radius:10px;padding:.875rem;font-family:'Shippori Mincho',serif;font-size:14px;font-weight:600;letter-spacing:.1em;cursor:pointer;display:block">記録を保存する</button>
     <button onclick="closeModal()" style="width:100%;background:transparent;color:#999;border:none;padding:.7rem;font-size:13px;cursor:pointer;display:block;margin-top:4px">キャンセル</button>
   </div>
 </div>
@@ -1544,7 +1544,7 @@ function renderVList() {
   const el = document.getElementById('vList');
   el.innerHTML = visits.length ? visits.map((v,i) => `
     <div style="background:#fff;border:.5px solid #e8e0d0;border-radius:10px;padding:.75rem 1rem;margin-bottom:.625rem;display:flex;align-items:center;gap:10px">
-      <div style="width:32px;height:32px;border-radius:50%;background:#f5ebe8;display:flex;align-items:center;justify-content:center;font-family:'Shippori Mincho',serif;font-size:13px;font-weight:800;color:#9b2a1a">${i+1}</div>
+      <div style="width:32px;height:32px;border-radius:50%;background:#ece4f5;display:flex;align-items:center;justify-content:center;font-family:'Shippori Mincho',serif;font-size:13px;font-weight:800;color:#3a1d5d">${i+1}</div>
       <div style="flex:1"><div style="font-size:13px;font-family:'Shippori Mincho',serif;color:#0a1a0f">${v.name}</div><div style="font-size:10px;color:#aaa;margin-top:2px">${v.date}</div></div>
       <div style="font-size:9px;background:#f5efd6;color:#7a4a10;border:.5px solid #e8d5a3;border-radius:10px;padding:2px 8px">参拝済</div>
     </div>`).join('') : '<div style="color:#aaa;font-size:12px;text-align:center;padding:2rem 0">まだ記録がありません</div>';
@@ -1553,7 +1553,7 @@ function renderProfile() {
   document.getElementById('pVisits').textContent = visits.length;
   document.getElementById('pRecent').innerHTML = visits.slice(0,3).map(v => `
     <div style="display:flex;align-items:center;gap:10px;padding:.6rem 0;border-bottom:.5px solid #f0ece4">
-      <div style="width:34px;height:34px;border-radius:50%;background:#f5ebe8;display:flex;align-items:center;justify-content:center"><svg width="16" height="16" viewBox="0 0 16 16"><rect x="2" y="4" width="12" height="10" rx="1" fill="none" stroke="#9b2a1a" stroke-width="1"/><line x1="2" y1="7" x2="14" y2="7" stroke="#9b2a1a" stroke-width="0.8"/></svg></div>
+      <div style="width:34px;height:34px;border-radius:50%;background:#ece4f5;display:flex;align-items:center;justify-content:center"><svg width="16" height="16" viewBox="0 0 16 16"><rect x="2" y="4" width="12" height="10" rx="1" fill="none" stroke="#3a1d5d" stroke-width="1"/><line x1="2" y1="7" x2="14" y2="7" stroke="#3a1d5d" stroke-width="0.8"/></svg></div>
       <div style="flex:1"><div style="font-size:13px;color:#0a1a0f;font-family:'Shippori Mincho',serif">${v.name}</div><div style="font-size:10px;color:#aaa">${v.date}</div></div>
       <div style="font-size:9px;background:#f5efd6;color:#7a4a10;border:.5px solid #e8d5a3;border-radius:10px;padding:2px 8px">参拝済</div>
     </div>`).join('');
@@ -1653,7 +1653,7 @@ function placePins(shrines){
       title: s.name,
       icon: {
         path: google.maps.SymbolPath.CIRCLE,
-        fillColor: '#9b2a1a', fillOpacity: 1,
+        fillColor: '#3a1d5d', fillOpacity: 1,
         strokeColor: '#c9a84c', strokeWeight: 1.5, scale: 8
       }
     });
@@ -2485,7 +2485,7 @@ function renderAiMap(route){
       icon: {
         path: google.maps.SymbolPath.CIRCLE,
         scale: 16,
-        fillColor: '#9b2a1a',
+        fillColor: '#3a1d5d',
         fillOpacity: 1,
         strokeColor: '#c9a84c',
         strokeWeight: 2
