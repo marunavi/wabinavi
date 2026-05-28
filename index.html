@@ -61,6 +61,11 @@
 .rbdg{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Shippori Mincho',serif;font-size:13px;font-weight:800;flex-shrink:0;margin-top:2px}
 .b1{background:linear-gradient(135deg,#e3c879,#c9a84c 55%,#a98a38);color:#3a2800;box-shadow:0 1px 3px rgba(169,138,56,.5)}.b2{background:linear-gradient(135deg,#c2c8ce,#a0a8b0);color:#2a2e35}.b3{background:linear-gradient(135deg,#d8954f,#c47c3a);color:#3a1a00}.b4{background:#ece4d4;color:#5a4a3a;font-size:12px}
 .nblk{flex:1;min-width:0}
+/* 格式タグ（badges）：世界遺産・総本社・一宮など */
+.kakushiki{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.kbadge{display:inline-flex;align-items:center;gap:3px;background:linear-gradient(135deg,#f5efd6,#e8d99c);color:#5a3a08;font-size:9px;padding:2px 7px;border-radius:10px;border:.5px solid #c9a84c;font-family:'Shippori Mincho',serif;font-weight:600;letter-spacing:.03em;line-height:1.3}
+.kbadge.heritage{background:linear-gradient(135deg,#d6e8f5,#9cc4e8);color:#08385a;border-color:#4c9ac9}
+.kbadge.top{background:linear-gradient(135deg,#3a1d5d,#2a124a);color:#c9a84c;border-color:#c9a84c}
 .nrow{display:flex;align-items:baseline;gap:6px;flex-wrap:wrap}
 .rname{font-family:'Shippori Mincho',serif;font-size:14px;font-weight:600;color:var(--ma);line-height:1.35}
 .deity{font-size:10px;color:#7a4a10;background:var(--gold-l);border:.5px solid #e8d5a3;border-radius:4px;padding:1px 6px;white-space:nowrap}
@@ -670,6 +675,7 @@
     <div class="sd-tit" id="sdTit"></div>
     <div class="sd-yomi" id="sdYomi"></div>
     <div id="sdDeityWrap"><div class="sd-deity" id="sdDeity"></div></div>
+    <div id="sdBadgesWrap" class="kakushiki" style="margin-top:8px"></div>
     <div class="sd-rating">
       <div class="sd-rating-num" id="sdRatingNum">—</div>
       <div>
@@ -1186,73 +1192,79 @@
 
 <script>
 const SHRINES = [
-  // 近畿
-  {rank:1,  name:'伏見稲荷大社',   deity:'宇迦之御魂神',         addr:'京都府京都市伏見区深草薮之内町68',       map:'https://www.google.com/maps/search/?api=1&query=伏見稲荷大社',      area:'kinki',    rating:4.7, rev:12840, visited:true,  tags:['goshuin','kaiun','rekishi']},
-  {rank:4,  name:'住吉大社',       deity:'住吉三神',              addr:'大阪府大阪市住吉区住吉2丁目9-89',        map:'https://www.google.com/maps/search/?api=1&query=住吉大社',           area:'kinki',    rating:4.3, rev:5640,  visited:false, tags:['goshuin','kaiun','kenko','rekishi']},
-  {rank:13, name:'春日大社',       deity:'天児屋根命',            addr:'奈良県奈良市春日野町160',                map:'https://www.google.com/maps/search/?api=1&query=春日大社',           area:'kinki',    rating:4.5, rev:7820,  visited:false, tags:['goshuin','gakumon','rekishi','shizen']},
-  {rank:14, name:'厳島神社',       deity:'市杵島姫命',            addr:'広島県廿日市市宮島町1-1',                map:'https://www.google.com/maps/search/?api=1&query=厳島神社',           area:'kinki',    rating:4.6, rev:9340,  visited:false, tags:['goshuin','enmusubi','shizen','rekishi']},
-  {rank:15, name:'賀茂別雷神社',   deity:'賀茂別雷大神',          addr:'京都府京都市北区上賀茂本山339',           map:'https://www.google.com/maps/search/?api=1&query=上賀茂神社',         area:'kinki',    rating:4.4, rev:4210,  visited:false, tags:['goshuin','kaiun','rekishi']},
-  {rank:16, name:'八坂神社',       deity:'素戔嗚尊',              addr:'京都府京都市東山区祇園町北側625',         map:'https://www.google.com/maps/search/?api=1&query=八坂神社',           area:'kinki',    rating:4.3, rev:8930,  visited:false, tags:['goshuin','kenko','rekishi']},
-  {rank:17, name:'熊野那智大社',   deity:'熊野夫須美大神',        addr:'和歌山県東牟婁郡那智勝浦町那智山1',      map:'https://www.google.com/maps/search/?api=1&query=熊野那智大社',        area:'kinki',    rating:4.6, rev:3120,  visited:false, tags:['goshuin','kenko','shizen','rekishi']},
-  {rank:19, name:'平野神社',       deity:'今木神',                addr:'京都府京都市北区平野宮本町1',             map:'https://www.google.com/maps/search/?api=1&query=平野神社京都',        area:'kinki',    rating:4.3, rev:2180,  visited:false, tags:['goshuin','shizen','rekishi']},
-  {rank:20, name:'石清水八幡宮',   deity:'誉田別命',              addr:'京都府八幡市八幡高坊30',                  map:'https://www.google.com/maps/search/?api=1&query=石清水八幡宮',        area:'kinki',    rating:4.4, rev:3560,  visited:false, tags:['goshuin','kaiun','rekishi']},
-  {rank:29, name:'伏見稲荷大社奥社', deity:'宇迦之御魂神',        addr:'京都府京都市伏見区深草薮之内町68',        map:'https://www.google.com/maps/search/?api=1&query=伏見稲荷大社',        area:'kinki',    rating:4.5, rev:3210,  visited:false, tags:['goshuin','kaiun','shizen']},
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // TOP20（旅探たびたん2026年版「全国の行ってみたい神社ランキング」準拠）
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  {rank:1,  name:'伊勢神宮（内宮）', deity:'天照大御神',         addr:'三重県伊勢市宇治館町1',                  map:'https://www.google.com/maps/search/?api=1&query=伊勢神宮内宮',        area:'chubu',    rating:4.7, rev:18920, visited:false, tags:['goshuin','kaiun','rekishi','shizen'], badges:['神宮','皇大神宮']},
+  {rank:2,  name:'出雲大社',       deity:'大国主大神',            addr:'島根県出雲市大社町杵築東195',             map:'https://www.google.com/maps/search/?api=1&query=出雲大社',            area:'chugoku',  rating:4.6, rev:8320,  visited:true,  tags:['goshuin','enmusubi','rekishi','kaiun'], badges:['縁結びの総本社']},
+  {rank:3,  name:'日光東照宮',     deity:'徳川家康公',            addr:'栃木県日光市山内2301',                   map:'https://www.google.com/maps/search/?api=1&query=日光東照宮',          area:'kanto',    rating:4.5, rev:9870,  visited:false, tags:['goshuin','rekishi','shizen'], badges:['世界遺産','東照宮総本社']},
+  {rank:4,  name:'熱田神宮',       deity:'熱田大神',              addr:'愛知県名古屋市熱田区神宮1-1-1',           map:'https://www.google.com/maps/search/?api=1&query=熱田神宮',            area:'chubu',    rating:4.5, rev:7830,  visited:false, tags:['goshuin','kaiun','rekishi'], badges:['三種の神器']},
+  {rank:5,  name:'明治神宮',       deity:'明治天皇・昭憲皇太后',  addr:'東京都渋谷区代々木神園町1-1',             map:'https://www.google.com/maps/search/?api=1&query=明治神宮',            area:'kanto',    rating:4.4, rev:15200, visited:false, tags:['goshuin','kaiun','shizen','rekishi'], badges:['初詣参拝者数日本一']},
+  {rank:6,  name:'厳島神社',       deity:'市杵島姫命',            addr:'広島県廿日市市宮島町1-1',                map:'https://www.google.com/maps/search/?api=1&query=厳島神社',           area:'chugoku',  rating:4.6, rev:9340,  visited:false, tags:['goshuin','enmusubi','shizen','rekishi'], badges:['世界遺産','日本三景']},
+  {rank:7,  name:'伏見稲荷大社',   deity:'宇迦之御魂神',         addr:'京都府京都市伏見区深草薮之内町68',       map:'https://www.google.com/maps/search/?api=1&query=伏見稲荷大社',      area:'kinki',    rating:4.7, rev:12840, visited:true,  tags:['goshuin','kaiun','rekishi','shobai'], badges:['稲荷神社総本宮','三大稲荷']},
+  {rank:8,  name:'太宰府天満宮',   deity:'菅原道真公',            addr:'福岡県太宰府市宰府4-7-1',                map:'https://www.google.com/maps/search/?api=1&query=太宰府天満宮',        area:'kyushu',   rating:4.4, rev:12340, visited:false, tags:['goshuin','gakumon','rekishi','kaiun'], badges:['天満宮総本宮']},
+  {rank:9,  name:'北野天満宮',     deity:'菅原道真公',            addr:'京都府京都市上京区馬喰町',                 map:'https://www.google.com/maps/search/?api=1&query=北野天満宮',          area:'kinki',    rating:4.4, rev:6580,  visited:false, tags:['goshuin','gakumon','rekishi'], badges:['天神総本社']},
+  {rank:10, name:'鶴岡八幡宮',     deity:'応神天皇',              addr:'神奈川県鎌倉市雪ノ下2-1-31',             map:'https://www.google.com/maps/search/?api=1&query=鶴岡八幡宮',          area:'kanto',    rating:4.4, rev:11230, visited:false, tags:['goshuin','kaiun','rekishi'], badges:['鎌倉の総鎮守']},
+  {rank:11, name:'八坂神社',       deity:'素戔嗚尊',              addr:'京都府京都市東山区祇園町北側625',         map:'https://www.google.com/maps/search/?api=1&query=八坂神社',           area:'kinki',    rating:4.3, rev:8930,  visited:false, tags:['goshuin','kenko','rekishi'], badges:['祇園信仰総本社']},
+  {rank:12, name:'東京大神宮',     deity:'天照皇大神',            addr:'東京都千代田区富士見2-4-1',               map:'https://www.google.com/maps/search/?api=1&query=東京大神宮',          area:'kanto',    rating:4.5, rev:5680,  visited:false, tags:['goshuin','enmusubi','kaiun'], badges:['東京のお伊勢さま']},
+  {rank:13, name:'下鴨神社',       deity:'賀茂建角身命',          addr:'京都府京都市左京区下鴨泉川町59',           map:'https://www.google.com/maps/search/?api=1&query=下鴨神社',            area:'kinki',    rating:4.5, rev:6420,  visited:false, tags:['goshuin','enmusubi','rekishi','shizen'], badges:['世界遺産','京都最古']},
+  {rank:14, name:'貴船神社',       deity:'高龗神',                addr:'京都府京都市左京区鞍馬貴船町180',          map:'https://www.google.com/maps/search/?api=1&query=貴船神社',            area:'kinki',    rating:4.5, rev:4870,  visited:false, tags:['goshuin','enmusubi','kaiun','shizen'], badges:['水神総本宮']},
+  {rank:15, name:'神田明神',       deity:'大己貴命',              addr:'東京都千代田区外神田2-16-2',              map:'https://www.google.com/maps/search/?api=1&query=神田明神',            area:'kanto',    rating:4.3, rev:8920,  visited:false, tags:['goshuin','kaiun','enmusubi','shobai'], badges:['江戸総鎮守']},
+  {rank:16, name:'春日大社',       deity:'武甕槌命・経津主命・天児屋根命・比売神', addr:'奈良県奈良市春日野町160',                map:'https://www.google.com/maps/search/?api=1&query=春日大社',           area:'kinki',    rating:4.5, rev:7820,  visited:false, tags:['goshuin','gakumon','rekishi','shizen'], badges:['世界遺産','春日神社総本社']},
+  {rank:17, name:'箱根神社',       deity:'瓊瓊杵尊',              addr:'神奈川県足柄下郡箱根町元箱根80-1',        map:'https://www.google.com/maps/search/?api=1&query=箱根神社',            area:'kanto',    rating:4.4, rev:7650,  visited:false, tags:['goshuin','enmusubi','shizen','kaiun'], badges:['関東屈指のパワースポット']},
+  {rank:18, name:'平安神宮',       deity:'桓武天皇・孝明天皇',    addr:'京都府京都市左京区岡崎西天王町',           map:'https://www.google.com/maps/search/?api=1&query=平安神宮',            area:'kinki',    rating:4.4, rev:5230,  visited:false, tags:['goshuin','rekishi'], badges:['京都三大祭']},
+  {rank:19, name:'靖国神社',       deity:'護国の英霊',            addr:'東京都千代田区九段北3-1-1',               map:'https://www.google.com/maps/search/?api=1&query=靖国神社',            area:'kanto',    rating:4.3, rev:4560,  visited:false, tags:['goshuin','rekishi'], badges:['別格官幣社']},
+  {rank:20, name:'住吉大社',       deity:'住吉三神',              addr:'大阪府大阪市住吉区住吉2丁目9-89',        map:'https://www.google.com/maps/search/?api=1&query=住吉大社',           area:'kinki',    rating:4.3, rev:5640,  visited:false, tags:['goshuin','kaiun','kenko','rekishi'], badges:['住吉神社総本社']},
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // 21位以降（格式・歴史的重要度順）
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   // 関東
-  {rank:3,  name:'日光東照宮',     deity:'徳川家康公',            addr:'栃木県日光市山内2301',                   map:'https://www.google.com/maps/search/?api=1&query=日光東照宮',          area:'kanto',    rating:4.5, rev:9870,  visited:false, tags:['goshuin','rekishi','shizen']},
-  {rank:4,  name:'明治神宮',       deity:'明治天皇・昭憲皇太后',  addr:'東京都渋谷区代々木神園町1-1',             map:'https://www.google.com/maps/search/?api=1&query=明治神宮',            area:'kanto',    rating:4.4, rev:15200, visited:false, tags:['goshuin','kaiun','shizen','rekishi']},
-  {rank:21, name:'鶴岡八幡宮',     deity:'応神天皇',              addr:'神奈川県鎌倉市雪ノ下2-1-31',             map:'https://www.google.com/maps/search/?api=1&query=鶴岡八幡宮',          area:'kanto',    rating:4.4, rev:11230, visited:false, tags:['goshuin','kaiun','rekishi']},
-  {rank:22, name:'浅草神社',       deity:'土師真中知命',          addr:'東京都台東区浅草2-3-1',                  map:'https://www.google.com/maps/search/?api=1&query=浅草神社',            area:'kanto',    rating:4.3, rev:6780,  visited:false, tags:['goshuin','kaiun','rekishi']},
-  {rank:23, name:'神田明神',       deity:'大己貴命',              addr:'東京都千代田区外神田2-16-2',              map:'https://www.google.com/maps/search/?api=1&query=神田明神',            area:'kanto',    rating:4.3, rev:8920,  visited:false, tags:['goshuin','kaiun','enmusubi']},
-  {rank:24, name:'日枝神社',       deity:'大山咋神',              addr:'東京都千代田区永田町2-10-5',              map:'https://www.google.com/maps/search/?api=1&query=日枝神社',            area:'kanto',    rating:4.3, rev:5430,  visited:false, tags:['goshuin','kaiun','rekishi']},
-  {rank:25, name:'箱根神社',       deity:'瓊瓊杵尊',              addr:'神奈川県足柄下郡箱根町元箱根80-1',        map:'https://www.google.com/maps/search/?api=1&query=箱根神社',            area:'kanto',    rating:4.4, rev:7650,  visited:false, tags:['goshuin','enmusubi','shizen','kaiun']},
-  {rank:26, name:'大宮氷川神社',   deity:'須佐之男命',            addr:'埼玉県さいたま市大宮区高鼻町1-407',       map:'https://www.google.com/maps/search/?api=1&query=大宮氷川神社',        area:'kanto',    rating:4.4, rev:6320,  visited:false, tags:['goshuin','enmusubi','kaiun']},
-  {rank:27, name:'成田山新勝寺',   deity:'不動明王',              addr:'千葉県成田市成田1',                       map:'https://www.google.com/maps/search/?api=1&query=成田山新勝寺',        area:'kanto',    rating:4.4, rev:9870,  visited:false, tags:['goshuin','kaiun','kenko','rekishi']},
-  {rank:28, name:'富士山本宮浅間大社', deity:'木花之佐久夜毘売命', addr:'静岡県富士宮市宮町1-1',                map:'https://www.google.com/maps/search/?api=1&query=富士山本宮浅間大社',  area:'kanto',    rating:4.5, rev:5430,  visited:false, tags:['goshuin','enmusubi','shizen','rekishi']},
-  {rank:30, name:'江島神社',       deity:'江島大神',              addr:'神奈川県藤沢市江の島2-3-8',              map:'https://www.google.com/maps/search/?api=1&query=江島神社',            area:'kanto',    rating:4.3, rev:7230,  visited:false, tags:['goshuin','enmusubi','kaiun','shizen']},
+  {rank:21, name:'浅草神社',       deity:'土師真中知命',          addr:'東京都台東区浅草2-3-1',                  map:'https://www.google.com/maps/search/?api=1&query=浅草神社',            area:'kanto',    rating:4.3, rev:6780,  visited:false, tags:['goshuin','kaiun','rekishi']},
+  {rank:22, name:'日枝神社',       deity:'大山咋神',              addr:'東京都千代田区永田町2-10-5',              map:'https://www.google.com/maps/search/?api=1&query=日枝神社',            area:'kanto',    rating:4.3, rev:5430,  visited:false, tags:['goshuin','kaiun','rekishi'], badges:['江戸三大祭']},
+  {rank:23, name:'大宮氷川神社',   deity:'須佐之男命',            addr:'埼玉県さいたま市大宮区高鼻町1-407',       map:'https://www.google.com/maps/search/?api=1&query=大宮氷川神社',        area:'kanto',    rating:4.4, rev:6320,  visited:false, tags:['goshuin','enmusubi','kaiun'], badges:['武蔵国一宮']},
+  {rank:24, name:'富士山本宮浅間大社', deity:'木花之佐久夜毘売命', addr:'静岡県富士宮市宮町1-1',                  map:'https://www.google.com/maps/search/?api=1&query=富士山本宮浅間大社',  area:'chubu',    rating:4.5, rev:5430,  visited:false, tags:['goshuin','enmusubi','shizen','rekishi'], badges:['世界遺産','浅間神社総本宮']},
+  {rank:25, name:'成田山新勝寺',   deity:'不動明王',              addr:'千葉県成田市成田1',                       map:'https://www.google.com/maps/search/?api=1&query=成田山新勝寺',        area:'kanto',    rating:4.4, rev:9870,  visited:false, tags:['goshuin','kaiun','kenko','rekishi'], badges:['真言宗智山派大本山']},
+  {rank:26, name:'江島神社',       deity:'江島大神',              addr:'神奈川県藤沢市江の島2-3-8',              map:'https://www.google.com/maps/search/?api=1&query=江島神社',            area:'kanto',    rating:4.3, rev:7230,  visited:false, tags:['goshuin','enmusubi','kaiun','shizen'], badges:['日本三大弁財天']},
+  // 近畿
+  {rank:27, name:'熊野那智大社',   deity:'熊野夫須美大神',        addr:'和歌山県東牟婁郡那智勝浦町那智山1',      map:'https://www.google.com/maps/search/?api=1&query=熊野那智大社',        area:'kinki',    rating:4.6, rev:3120,  visited:false, tags:['goshuin','kenko','shizen','rekishi'], badges:['世界遺産','熊野三山']},
+  {rank:28, name:'石清水八幡宮',   deity:'誉田別命',              addr:'京都府八幡市八幡高坊30',                  map:'https://www.google.com/maps/search/?api=1&query=石清水八幡宮',        area:'kinki',    rating:4.4, rev:3560,  visited:false, tags:['goshuin','kaiun','rekishi'], badges:['国宝本殿']},
+  {rank:29, name:'賀茂別雷神社',   deity:'賀茂別雷大神',          addr:'京都府京都市北区上賀茂本山339',           map:'https://www.google.com/maps/search/?api=1&query=上賀茂神社',         area:'kinki',    rating:4.4, rev:4210,  visited:false, tags:['goshuin','kaiun','rekishi'], badges:['世界遺産','上賀茂神社']},
+  {rank:30, name:'平野神社',       deity:'今木神',                addr:'京都府京都市北区平野宮本町1',             map:'https://www.google.com/maps/search/?api=1&query=平野神社京都',        area:'kinki',    rating:4.3, rev:2180,  visited:false, tags:['goshuin','shizen','rekishi']},
   // 中国・四国
-  {rank:2,  name:'出雲大社',       deity:'大国主大神',            addr:'島根県出雲市大社町杵築東195',             map:'https://www.google.com/maps/search/?api=1&query=出雲大社',            area:'chugoku',  rating:4.6, rev:8320,  visited:true,  tags:['goshuin','enmusubi','rekishi','kaiun']},
-  {rank:31, name:'吉備津神社',     deity:'大吉備津彦命',          addr:'岡山県岡山市北区吉備津931',               map:'https://www.google.com/maps/search/?api=1&query=吉備津神社',          area:'chugoku',  rating:4.4, rev:2340,  visited:false, tags:['goshuin','kaiun','rekishi']},
-  {rank:33, name:'金刀比羅宮',     deity:'大物主神',              addr:'香川県仲多度郡琴平町892-1',               map:'https://www.google.com/maps/search/?api=1&query=金刀比羅宮',          area:'chugoku',  rating:4.4, rev:4560,  visited:false, tags:['goshuin','kaiun','kenko','rekishi']},
-  {rank:34, name:'大山祇神社',     deity:'大山積神',              addr:'愛媛県今治市大三島町宮浦3327',            map:'https://www.google.com/maps/search/?api=1&query=大山祇神社',          area:'chugoku',  rating:4.5, rev:2890,  visited:false, tags:['goshuin','kaiun','shizen','rekishi']},
-  {rank:35, name:'美保神社',       deity:'事代主神',              addr:'島根県松江市美保関町美保関608',           map:'https://www.google.com/maps/search/?api=1&query=美保神社',            area:'chugoku',  rating:4.4, rev:1980,  visited:false, tags:['goshuin','enmusubi','kaiun']},
-  {rank:36, name:'津山神社',       deity:'建速須佐之男命',        addr:'岡山県津山市山下98-1',                   map:'https://www.google.com/maps/search/?api=1&query=津山神社',            area:'chugoku',  rating:4.2, rev:870,   visited:false, tags:['goshuin','kaiun']},
-  {rank:37, name:'伊曽乃神社',     deity:'天照大御神',            addr:'愛媛県西条市中野甲1649',                 map:'https://www.google.com/maps/search/?api=1&query=伊曽乃神社',          area:'chugoku',  rating:4.3, rev:1230,  visited:false, tags:['goshuin','kaiun']},
-  {rank:38, name:'土佐神社',       deity:'味鋤高彦根神',          addr:'高知県高知市一宮しなね2-16-1',            map:'https://www.google.com/maps/search/?api=1&query=土佐神社',            area:'chugoku',  rating:4.3, rev:980,   visited:false, tags:['goshuin','kaiun','rekishi']},
-  {rank:39, name:'速谷神社',       deity:'飛鳥大神',              addr:'広島県廿日市市上平良308',                map:'https://www.google.com/maps/search/?api=1&query=速谷神社',            area:'chugoku',  rating:4.3, rev:760,   visited:false, tags:['goshuin','kaiun']},
-  {rank:40, name:'粟嶋神社',       deity:'少彦名命',              addr:'香川県三豊市三野町大見甲701',             map:'https://www.google.com/maps/search/?api=1&query=粟嶋神社',            area:'chugoku',  rating:4.3, rev:890,   visited:false, tags:['goshuin','kenko','enmusubi']},
+  {rank:31, name:'金刀比羅宮',     deity:'大物主神',              addr:'香川県仲多度郡琴平町892-1',               map:'https://www.google.com/maps/search/?api=1&query=金刀比羅宮',          area:'chugoku',  rating:4.4, rev:4560,  visited:false, tags:['goshuin','kaiun','kenko','rekishi'], badges:['こんぴらさん']},
+  {rank:32, name:'吉備津神社',     deity:'大吉備津彦命',          addr:'岡山県岡山市北区吉備津931',               map:'https://www.google.com/maps/search/?api=1&query=吉備津神社',          area:'chugoku',  rating:4.4, rev:2340,  visited:false, tags:['goshuin','kaiun','rekishi'], badges:['備中国一宮']},
+  {rank:33, name:'大山祇神社',     deity:'大山積神',              addr:'愛媛県今治市大三島町宮浦3327',            map:'https://www.google.com/maps/search/?api=1&query=大山祇神社',          area:'chugoku',  rating:4.5, rev:2890,  visited:false, tags:['goshuin','kaiun','shizen','rekishi'], badges:['伊予国一宮']},
+  {rank:34, name:'美保神社',       deity:'事代主神',              addr:'島根県松江市美保関町美保関608',           map:'https://www.google.com/maps/search/?api=1&query=美保神社',            area:'chugoku',  rating:4.4, rev:1980,  visited:false, tags:['goshuin','enmusubi','kaiun']},
+  {rank:35, name:'土佐神社',       deity:'味鋤高彦根神',          addr:'高知県高知市一宮しなね2-16-1',            map:'https://www.google.com/maps/search/?api=1&query=土佐神社',            area:'chugoku',  rating:4.3, rev:980,   visited:false, tags:['goshuin','kaiun','rekishi'], badges:['土佐国一宮']},
+  {rank:36, name:'速谷神社',       deity:'飛鳥大神',              addr:'広島県廿日市市上平良308',                map:'https://www.google.com/maps/search/?api=1&query=速谷神社',            area:'chugoku',  rating:4.3, rev:760,   visited:false, tags:['goshuin','kaiun']},
+  {rank:37, name:'粟嶋神社',       deity:'少彦名命',              addr:'香川県三豊市三野町大見甲701',             map:'https://www.google.com/maps/search/?api=1&query=粟嶋神社',            area:'chugoku',  rating:4.3, rev:890,   visited:false, tags:['goshuin','kenko','enmusubi']},
   // 北海道・東北
-  {rank:41, name:'北海道神宮',     deity:'大国魂神',              addr:'北海道札幌市中央区宮ケ丘474',             map:'https://www.google.com/maps/search/?api=1&query=北海道神宮',          area:'hokkaido', rating:4.4, rev:6780,  visited:false, tags:['goshuin','kaiun','shizen','rekishi']},
-  {rank:42, name:'塩竈神社',       deity:'鹽土老翁神',            addr:'宮城県塩竈市一森山1-1',                  map:'https://www.google.com/maps/search/?api=1&query=塩竈神社',            area:'hokkaido', rating:4.4, rev:3210,  visited:false, tags:['goshuin','kaiun','rekishi']},
-  {rank:43, name:'大崎八幡宮',     deity:'応神天皇',              addr:'宮城県仙台市青葉区八幡4-6-1',             map:'https://www.google.com/maps/search/?api=1&query=大崎八幡宮',          area:'hokkaido', rating:4.4, rev:2870,  visited:false, tags:['goshuin','kaiun','rekishi']},
-  {rank:45, name:'出羽三山神社',   deity:'伊氐波神',              addr:'山形県鶴岡市羽黒町手向字羽黒山33',        map:'https://www.google.com/maps/search/?api=1&query=出羽三山神社',        area:'hokkaido', rating:4.5, rev:2340,  visited:false, tags:['goshuin','kenko','shizen','rekishi']},
-  {rank:46, name:'熊野大社',       deity:'素戔嗚尊',              addr:'山形県南陽市宮内3476-1',                 map:'https://www.google.com/maps/search/?api=1&query=熊野大社山形',        area:'hokkaido', rating:4.3, rev:980,   visited:false, tags:['goshuin','kenko','rekishi']},
-  {rank:47, name:'弘前八幡宮',     deity:'誉田別命',              addr:'青森県弘前市八幡町1-1-1',                map:'https://www.google.com/maps/search/?api=1&query=弘前八幡宮',          area:'hokkaido', rating:4.2, rev:760,   visited:false, tags:['goshuin','kaiun']},
-  {rank:48, name:'都々古別神社',   deity:'味耜高彦根命',          addr:'福島県東白川郡棚倉町棚倉馬場39',          map:'https://www.google.com/maps/search/?api=1&query=都々古別神社',        area:'hokkaido', rating:4.3, rev:870,   visited:false, tags:['goshuin','kaiun','rekishi']},
-  {rank:49, name:'志波彦神社',     deity:'志波彦神',              addr:'宮城県塩竈市一森山1-1',                  map:'https://www.google.com/maps/search/?api=1&query=志波彦神社',          area:'hokkaido', rating:4.3, rev:1230,  visited:false, tags:['goshuin','kaiun']},
-  {rank:50, name:'函館護国神社',   deity:'護国の英霊',            addr:'北海道函館市青柳町9-23',                 map:'https://www.google.com/maps/search/?api=1&query=函館護国神社',        area:'hokkaido', rating:4.3, rev:1450,  visited:false, tags:['goshuin','rekishi']},
-  {rank:50, name:'富良野神社',     deity:'天照大御神',            addr:'北海道富良野市弥生町2-20',                map:'https://www.google.com/maps/search/?api=1&query=富良野神社',          area:'hokkaido', rating:4.2, rev:980,   visited:false, tags:['goshuin','shizen','kaiun']},
+  {rank:38, name:'北海道神宮',     deity:'大国魂神',              addr:'北海道札幌市中央区宮ケ丘474',             map:'https://www.google.com/maps/search/?api=1&query=北海道神宮',          area:'hokkaido', rating:4.4, rev:6780,  visited:false, tags:['goshuin','kaiun','shizen','rekishi'], badges:['北海道一宮']},
+  {rank:39, name:'塩竈神社',       deity:'鹽土老翁神',            addr:'宮城県塩竈市一森山1-1',                  map:'https://www.google.com/maps/search/?api=1&query=塩竈神社',            area:'hokkaido', rating:4.4, rev:3210,  visited:false, tags:['goshuin','kaiun','rekishi'], badges:['陸奥国一宮']},
+  {rank:40, name:'大崎八幡宮',     deity:'応神天皇',              addr:'宮城県仙台市青葉区八幡4-6-1',             map:'https://www.google.com/maps/search/?api=1&query=大崎八幡宮',          area:'hokkaido', rating:4.4, rev:2870,  visited:false, tags:['goshuin','kaiun','rekishi'], badges:['国宝社殿']},
+  {rank:41, name:'出羽三山神社',   deity:'伊氐波神',              addr:'山形県鶴岡市羽黒町手向字羽黒山33',        map:'https://www.google.com/maps/search/?api=1&query=出羽三山神社',        area:'hokkaido', rating:4.5, rev:2340,  visited:false, tags:['goshuin','kenko','shizen','rekishi'], badges:['日本三大修験道']},
+  {rank:42, name:'熊野大社',       deity:'素戔嗚尊',              addr:'山形県南陽市宮内3476-1',                 map:'https://www.google.com/maps/search/?api=1&query=熊野大社山形',        area:'hokkaido', rating:4.3, rev:980,   visited:false, tags:['goshuin','kenko','rekishi']},
+  {rank:43, name:'弘前八幡宮',     deity:'誉田別命',              addr:'青森県弘前市八幡町1-1-1',                map:'https://www.google.com/maps/search/?api=1&query=弘前八幡宮',          area:'hokkaido', rating:4.2, rev:760,   visited:false, tags:['goshuin','kaiun']},
+  {rank:44, name:'都々古別神社',   deity:'味耜高彦根命',          addr:'福島県東白川郡棚倉町棚倉馬場39',          map:'https://www.google.com/maps/search/?api=1&query=都々古別神社',        area:'hokkaido', rating:4.3, rev:870,   visited:false, tags:['goshuin','kaiun','rekishi'], badges:['陸奥国一宮']},
   // 中部・北陸
-  {rank:51, name:'伊勢神宮（内宮）', deity:'天照大御神',          addr:'三重県伊勢市宇治館町1',                  map:'https://www.google.com/maps/search/?api=1&query=伊勢神宮内宮',        area:'chubu',    rating:4.7, rev:18920, visited:false, tags:['goshuin','kaiun','rekishi','shizen']},
-  {rank:52, name:'諏訪大社',       deity:'建御名方神',            addr:'長野県諏訪市中洲宮山1',                  map:'https://www.google.com/maps/search/?api=1&query=諏訪大社上社本宮',   area:'chubu',    rating:4.5, rev:4560,  visited:false, tags:['goshuin','kaiun','rekishi','shizen']},
-  {rank:53, name:'熱田神宮',       deity:'熱田大神',              addr:'愛知県名古屋市熱田区神宮1-1-1',           map:'https://www.google.com/maps/search/?api=1&query=熱田神宮',            area:'chubu',    rating:4.5, rev:7830,  visited:false, tags:['goshuin','kaiun','rekishi']},
-  {rank:54, name:'白山比咩神社',   deity:'菊理媛尊',              addr:'石川県白山市三宮町二105-1',               map:'https://www.google.com/maps/search/?api=1&query=白山比咩神社',        area:'chubu',    rating:4.5, rev:3210,  visited:false, tags:['goshuin','enmusubi','kenko','shizen']},
-  {rank:55, name:'気多大社',       deity:'大己貴命',              addr:'石川県羽咋市寺家町ク1-1',                map:'https://www.google.com/maps/search/?api=1&query=気多大社',            area:'chubu',    rating:4.4, rev:2340,  visited:false, tags:['goshuin','enmusubi','kaiun']},
-  {rank:56, name:'富士山本宮浅間大社', deity:'木花之佐久夜毘売命', addr:'静岡県富士宮市宮町1-1',               map:'https://www.google.com/maps/search/?api=1&query=富士山本宮浅間大社',  area:'chubu',    rating:4.5, rev:5430,  visited:false, tags:['goshuin','enmusubi','shizen','rekishi']},
-  {rank:57, name:'真清田神社',     deity:'天火明命',              addr:'愛知県一宮市真清田1-2-1',                map:'https://www.google.com/maps/search/?api=1&query=真清田神社',          area:'chubu',    rating:4.3, rev:2180,  visited:false, tags:['goshuin','kaiun']},
-  {rank:58, name:'三嶋大社',       deity:'三嶋大明神',            addr:'静岡県三島市大宮町2-1-5',                map:'https://www.google.com/maps/search/?api=1&query=三嶋大社',            area:'chubu',    rating:4.4, rev:3210,  visited:false, tags:['goshuin','enmusubi','kaiun']},
-  {rank:59, name:'射水神社',       deity:'二上大神',              addr:'富山県高岡市古城1-1',                    map:'https://www.google.com/maps/search/?api=1&query=射水神社',            area:'chubu',    rating:4.3, rev:1870,  visited:false, tags:['goshuin','kaiun','rekishi']},
-  {rank:60, name:'椿大神社',       deity:'猿田彦大本神',          addr:'三重県鈴鹿市山本町1871',                 map:'https://www.google.com/maps/search/?api=1&query=椿大神社',            area:'chubu',    rating:4.4, rev:2340,  visited:false, tags:['goshuin','kaiun','enmusubi']},
+  {rank:45, name:'諏訪大社',       deity:'建御名方神',            addr:'長野県諏訪市中洲宮山1',                  map:'https://www.google.com/maps/search/?api=1&query=諏訪大社上社本宮',   area:'chubu',    rating:4.5, rev:4560,  visited:false, tags:['goshuin','kaiun','rekishi','shizen'], badges:['信濃国一宮']},
+  {rank:46, name:'白山比咩神社',   deity:'菊理媛尊',              addr:'石川県白山市三宮町二105-1',               map:'https://www.google.com/maps/search/?api=1&query=白山比咩神社',        area:'chubu',    rating:4.5, rev:3210,  visited:false, tags:['goshuin','enmusubi','kenko','shizen'], badges:['白山神社総本宮']},
+  {rank:47, name:'気多大社',       deity:'大己貴命',              addr:'石川県羽咋市寺家町ク1-1',                map:'https://www.google.com/maps/search/?api=1&query=気多大社',            area:'chubu',    rating:4.4, rev:2340,  visited:false, tags:['goshuin','enmusubi','kaiun'], badges:['能登国一宮']},
+  {rank:48, name:'真清田神社',     deity:'天火明命',              addr:'愛知県一宮市真清田1-2-1',                map:'https://www.google.com/maps/search/?api=1&query=真清田神社',          area:'chubu',    rating:4.3, rev:2180,  visited:false, tags:['goshuin','kaiun'], badges:['尾張国一宮']},
+  {rank:49, name:'三嶋大社',       deity:'三嶋大明神',            addr:'静岡県三島市大宮町2-1-5',                map:'https://www.google.com/maps/search/?api=1&query=三嶋大社',            area:'chubu',    rating:4.4, rev:3210,  visited:false, tags:['goshuin','enmusubi','kaiun'], badges:['伊豆国一宮']},
+  {rank:50, name:'椿大神社',       deity:'猿田彦大本神',          addr:'三重県鈴鹿市山本町1871',                 map:'https://www.google.com/maps/search/?api=1&query=椿大神社',            area:'chubu',    rating:4.4, rev:2340,  visited:false, tags:['goshuin','kaiun','enmusubi'], badges:['伊勢国一宮','猿田彦総本宮']},
   // 九州・沖縄
-  {rank:61, name:'太宰府天満宮',   deity:'菅原道真公',            addr:'福岡県太宰府市宰府4-7-1',                map:'https://www.google.com/maps/search/?api=1&query=太宰府天満宮',        area:'kyushu',   rating:4.4, rev:12340, visited:false, tags:['goshuin','gakumon','rekishi','kaiun']},
-  {rank:62, name:'宗像大社',       deity:'田心姫神',              addr:'福岡県宗像市田島2331',                   map:'https://www.google.com/maps/search/?api=1&query=宗像大社',            area:'kyushu',   rating:4.5, rev:4560,  visited:false, tags:['goshuin','enmusubi','rekishi','shizen']},
-  {rank:63, name:'霧島神宮',       deity:'天饒石国饒石天津日高彦火瓊瓊杵尊', addr:'鹿児島県霧島市霧島田口2608-5', map:'https://www.google.com/maps/search/?api=1&query=霧島神宮',           area:'kyushu',   rating:4.5, rev:3210,  visited:false, tags:['goshuin','kaiun','shizen','rekishi']},
-  {rank:64, name:'住吉神社',       deity:'底筒男命',              addr:'福岡県福岡市博多区住吉3-1-51',            map:'https://www.google.com/maps/search/?api=1&query=住吉神社博多',        area:'kyushu',   rating:4.3, rev:2870,  visited:false, tags:['goshuin','kaiun','rekishi']},
-  {rank:65, name:'阿蘇神社',       deity:'健磐龍命',              addr:'熊本県阿蘇市一の宮町宮地3083-1',          map:'https://www.google.com/maps/search/?api=1&query=阿蘇神社',            area:'kyushu',   rating:4.4, rev:3450,  visited:false, tags:['goshuin','shizen','rekishi']},
-  {rank:66, name:'高千穂神社',     deity:'三毛入野命',            addr:'宮崎県西臼杵郡高千穂町三田井1037',        map:'https://www.google.com/maps/search/?api=1&query=高千穂神社',          area:'kyushu',   rating:4.5, rev:4320,  visited:false, tags:['goshuin','shizen','rekishi','kaiun']},
-  {rank:67, name:'筥崎宮',         deity:'応神天皇',              addr:'福岡県福岡市東区箱崎1-22-1',              map:'https://www.google.com/maps/search/?api=1&query=筥崎宮',              area:'kyushu',   rating:4.3, rev:3210,  visited:false, tags:['goshuin','kaiun','rekishi']},
-  {rank:68, name:'波上宮',         deity:'伊弉册尊',              addr:'沖縄県那覇市若狭1-25-11',                map:'https://www.google.com/maps/search/?api=1&query=波上宮',              area:'kyushu',   rating:4.3, rev:3870,  visited:false, tags:['goshuin','kaiun','shizen']},
-  {rank:69, name:'鵜戸神宮',       deity:'鵜葺草葺不合命',        addr:'宮崎県日南市宮浦3232',                   map:'https://www.google.com/maps/search/?api=1&query=鵜戸神宮',            area:'kyushu',   rating:4.5, rev:2340,  visited:false, tags:['goshuin','enmusubi','shizen','rekishi']},
-  {rank:70, name:'英彦山神宮',     deity:'正勝吾勝勝速日天之忍穂耳命', addr:'福岡県田川郡添田町英彦山1',         map:'https://www.google.com/maps/search/?api=1&query=英彦山神宮',          area:'kyushu',   rating:4.3, rev:1560,  visited:false, tags:['goshuin','kenko','shizen','rekishi']},
+  {rank:51, name:'宗像大社',       deity:'田心姫神',              addr:'福岡県宗像市田島2331',                   map:'https://www.google.com/maps/search/?api=1&query=宗像大社',            area:'kyushu',   rating:4.5, rev:4560,  visited:false, tags:['goshuin','enmusubi','rekishi','shizen'], badges:['世界遺産']},
+  {rank:52, name:'霧島神宮',       deity:'天饒石国饒石天津日高彦火瓊瓊杵尊', addr:'鹿児島県霧島市霧島田口2608-5', map:'https://www.google.com/maps/search/?api=1&query=霧島神宮',           area:'kyushu',   rating:4.5, rev:3210,  visited:false, tags:['goshuin','kaiun','shizen','rekishi'], badges:['国宝本殿']},
+  {rank:53, name:'阿蘇神社',       deity:'健磐龍命',              addr:'熊本県阿蘇市一の宮町宮地3083-1',          map:'https://www.google.com/maps/search/?api=1&query=阿蘇神社',            area:'kyushu',   rating:4.4, rev:3450,  visited:false, tags:['goshuin','shizen','rekishi'], badges:['肥後国一宮']},
+  {rank:54, name:'高千穂神社',     deity:'三毛入野命',            addr:'宮崎県西臼杵郡高千穂町三田井1037',        map:'https://www.google.com/maps/search/?api=1&query=高千穂神社',          area:'kyushu',   rating:4.5, rev:4320,  visited:false, tags:['goshuin','shizen','rekishi','kaiun'], badges:['日向三代']},
+  {rank:55, name:'住吉神社',       deity:'底筒男命',              addr:'福岡県福岡市博多区住吉3-1-51',            map:'https://www.google.com/maps/search/?api=1&query=住吉神社博多',        area:'kyushu',   rating:4.3, rev:2870,  visited:false, tags:['goshuin','kaiun','rekishi'], badges:['筑前国一宮']},
+  {rank:56, name:'筥崎宮',         deity:'応神天皇',              addr:'福岡県福岡市東区箱崎1-22-1',              map:'https://www.google.com/maps/search/?api=1&query=筥崎宮',              area:'kyushu',   rating:4.3, rev:3210,  visited:false, tags:['goshuin','kaiun','rekishi'], badges:['日本三大八幡宮']},
+  {rank:57, name:'波上宮',         deity:'伊弉册尊',              addr:'沖縄県那覇市若狭1-25-11',                map:'https://www.google.com/maps/search/?api=1&query=波上宮',              area:'kyushu',   rating:4.3, rev:3870,  visited:false, tags:['goshuin','kaiun','shizen'], badges:['琉球八社']},
+  {rank:58, name:'鵜戸神宮',       deity:'鵜葺草葺不合命',        addr:'宮崎県日南市宮浦3232',                   map:'https://www.google.com/maps/search/?api=1&query=鵜戸神宮',            area:'kyushu',   rating:4.5, rev:2340,  visited:false, tags:['goshuin','enmusubi','shizen','rekishi']},
+  {rank:59, name:'英彦山神宮',     deity:'正勝吾勝勝速日天之忍穂耳命', addr:'福岡県田川郡添田町英彦山1',         map:'https://www.google.com/maps/search/?api=1&query=英彦山神宮',          area:'kyushu',   rating:4.3, rev:1560,  visited:false, tags:['goshuin','kenko','shizen','rekishi'], badges:['日本三大修験道']},
+  {rank:60, name:'伊曽乃神社',     deity:'天照大御神',            addr:'愛媛県西条市中野甲1649',                 map:'https://www.google.com/maps/search/?api=1&query=伊曽乃神社',          area:'chugoku',  rating:4.3, rev:1230,  visited:false, tags:['goshuin','kaiun']},
 ];
 
 // 主要神社の座標データ（マップピン表示用）
@@ -1672,12 +1684,23 @@ function renderCard(s, dr) {
   } else if (API_KEY) {
     gallery = galleryHtml(photoCache[s.name]);
   }
+  // 格式タグ（世界遺産・総本社・一宮など）
+  let kakushiki = '';
+  if (s.badges && s.badges.length) {
+    kakushiki = '<div class="kakushiki">' + s.badges.map(function(b){
+      var cls = 'kbadge';
+      if (b.indexOf('世界遺産') !== -1) cls = 'kbadge heritage';
+      else if (b.indexOf('総本社') !== -1 || b.indexOf('総本宮') !== -1) cls = 'kbadge top';
+      return '<span class="' + cls + '">' + b + '</span>';
+    }).join('') + '</div>';
+  }
   const sJson = JSON.stringify(s).replace(/"/g, '&quot;');
   return `<div class="${cls}">
     <div class="rhd">
       <div class="rbdg ${bc}">${dr}</div>
       <div class="nblk">
         <div class="nrow"><span class="rname" onclick='openShrineDetail(${JSON.stringify(s)})' style="cursor:pointer">${s.name}</span><span class="deity">祭神：${s.deity}</span></div>
+        ${kakushiki}
         <a class="alink" href="${s.map}" target="_blank" rel="noopener" onclick="event.stopPropagation()">
           <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><circle cx="5.5" cy="4.5" r="2.2" stroke="#2563a8" stroke-width="1"/><path d="M5.5 6.7L5.5 10" stroke="#2563a8" stroke-width="1"/></svg>
           ${s.addr}
@@ -1706,6 +1729,7 @@ function filter() {
   if (currentTag !== 'all') f = f.filter(s => s.tags && s.tags.includes(currentTag));
   if (sort === 'visited') f = f.filter(s => s.visited);
   if (sort === 'rating') f.sort((a,b) => b.rating - a.rating);
+  if (sort === 'rank') f.sort((a,b) => a.rank - b.rank);
   const lbl = document.getElementById('areaSel').options[document.getElementById('areaSel').selectedIndex].text;
   const top10 = f.slice(0, 10);
   document.getElementById('resCount').textContent = `${lbl} ${top10.length}件`;
@@ -2331,6 +2355,21 @@ function populateShrineDetail(s){
   document.getElementById('sdDeity').textContent = '主祭神：' + (s.deity || '—');
   if (!s.deity || s.deity === '—') document.getElementById('sdDeityWrap').style.display = 'none';
   else document.getElementById('sdDeityWrap').style.display = '';
+
+  // 格式タグ（世界遺産・総本社・一宮など）
+  var bw = document.getElementById('sdBadgesWrap');
+  if (s.badges && s.badges.length) {
+    bw.innerHTML = s.badges.map(function(b){
+      var cls = 'kbadge';
+      if (b.indexOf('世界遺産') !== -1) cls = 'kbadge heritage';
+      else if (b.indexOf('総本社') !== -1 || b.indexOf('総本宮') !== -1) cls = 'kbadge top';
+      return '<span class="' + cls + '">' + b + '</span>';
+    }).join('');
+    bw.style.display = 'flex';
+  } else {
+    bw.style.display = 'none';
+    bw.innerHTML = '';
+  }
 
   var rating = s.rating || 0;
   document.getElementById('sdRatingNum').textContent = rating > 0 ? rating.toFixed(1) : '—';
