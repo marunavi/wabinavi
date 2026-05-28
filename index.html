@@ -227,15 +227,15 @@
 .sd-back{cursor:pointer;color:rgba(255,255,255,.85);font-size:24px;line-height:1}
 .sd-hd-tit{font-family:'Shippori Mincho',serif;font-size:14px;font-weight:800;color:#fff;letter-spacing:.08em;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sd-share{cursor:pointer;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.12);border:.5px solid rgba(201,168,76,.4);display:flex;align-items:center;justify-content:center;color:var(--gold)}
-.sd-hero{width:100%;aspect-ratio:16/10;background:#e8e4dc;position:relative;overflow:hidden}
+.sd-hero{width:100%;aspect-ratio:16/10;min-height:200px;background:#e8e4dc;position:relative;overflow:hidden}
 .sd-hero img{width:100%;height:100%;object-fit:cover;display:block}
 .sd-hero-ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#c9a84c}
 .sd-hero-badge{position:absolute;top:12px;left:12px;background:rgba(42,18,74,.85);color:var(--gold);font-family:'Shippori Mincho',serif;font-size:11px;padding:4px 10px;border-radius:14px;border:.5px solid rgba(201,168,76,.5)}
 .sd-hero-count{position:absolute;bottom:12px;right:12px;background:rgba(0,0,0,.6);color:#fff;font-size:11px;padding:3px 10px;border-radius:12px;display:flex;align-items:center;gap:4px}
 /* 詳細ページ写真サムネイル横スクロール */
-.sd-thumbs{display:flex;gap:6px;overflow-x:auto;padding:10px 1.25rem;background:var(--washi);-webkit-overflow-scrolling:touch}
+.sd-thumbs{display:flex;gap:6px;overflow-x:auto;padding:10px 1.25rem;background:var(--washi);-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory}
 .sd-thumbs::-webkit-scrollbar{height:0;display:none}
-.sd-thumb{flex:0 0 auto;width:72px;height:72px;border-radius:8px;overflow:hidden;cursor:pointer;border:1.5px solid transparent;background:#e8e4dc;transition:border-color .15s var(--ease)}
+.sd-thumb{flex:0 0 calc((100% - 18px - 2.5rem) / 4);aspect-ratio:1;border-radius:8px;overflow:hidden;cursor:pointer;border:1.5px solid transparent;background:#e8e4dc;transition:border-color .15s var(--ease);scroll-snap-align:start}
 .sd-thumb.active{border-color:var(--gold)}
 .sd-thumb img{width:100%;height:100%;object-fit:cover;display:block}
 /* 写真ライトボックス（拡大表示） */
@@ -285,9 +285,9 @@
 
 /* 6県エリアカード（ホーム画面） */
 .area-section{padding:1.25rem 1.25rem .5rem}
-.area-sec-hd{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:.75rem}
-.area-sec-tit{font-family:'Shippori Mincho',serif;font-size:14px;font-weight:600;color:var(--ma);letter-spacing:.08em}
-.area-sec-link{font-size:11px;color:var(--red);cursor:pointer;text-decoration:none;font-family:'Noto Serif JP',serif}
+.area-sec-hd{position:relative;display:flex;justify-content:center;align-items:center;margin-bottom:.9rem}
+.area-sec-tit{font-family:'Shippori Mincho',serif;font-size:17px;font-weight:600;color:var(--ma);letter-spacing:.1em;text-align:center}
+.area-sec-link{position:absolute;right:0;top:50%;transform:translateY(-50%);font-size:11px;color:var(--red);cursor:pointer;text-decoration:none;font-family:'Noto Serif JP',serif}
 .area-nearby{width:100%;aspect-ratio:5/1;border-radius:12px;overflow:hidden;background:#e8e0d0;position:relative;margin-bottom:8px;cursor:pointer;border:.5px solid var(--gold);transition:transform .15s var(--ease)}
 .area-nearby:active{transform:scale(.98)}
 .area-nearby::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(42,18,74,.15) 0%,rgba(42,18,74,.45) 100%)}
@@ -2281,10 +2281,13 @@ function lightboxNav(dir){
 
 function openShrineDetail(shrine){
   currentSdShrine = shrine;
-  document.getElementById('pgShrineDetail').style.display = 'flex';
+  var pg = document.getElementById('pgShrineDetail');
+  pg.style.display = 'flex';
   if (document.getElementById('fabMap')) document.getElementById('fabMap').style.display = 'none';
-  window.scrollTo(0, 0);
   populateShrineDetail(shrine);
+  // 詳細ページ内部のスクロールをトップへ（fixed要素の独立スクロール対策）
+  pg.scrollTop = 0;
+  setTimeout(function(){ pg.scrollTop = 0; }, 50);
 }
 function closeShrineDetail(){
   document.getElementById('pgShrineDetail').style.display = 'none';
