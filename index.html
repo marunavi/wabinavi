@@ -242,8 +242,16 @@
 .sd-hero{width:100%;aspect-ratio:16/10;min-height:200px;background:#e8e4dc;position:relative;overflow:hidden}
 .sd-hero img{width:100%;height:100%;object-fit:cover;display:block}
 .sd-hero-ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#c9a84c}
-.sd-hero-badge{position:absolute;top:12px;left:12px;background:rgba(42,18,74,.85);color:var(--gold);font-family:'Shippori Mincho',serif;font-size:11px;padding:4px 10px;border-radius:14px;border:.5px solid rgba(201,168,76,.5)}
-.sd-hero-count{position:absolute;bottom:12px;right:12px;background:rgba(0,0,0,.6);color:#fff;font-size:11px;padding:3px 10px;border-radius:12px;display:flex;align-items:center;gap:4px}
+.sd-hero-badge{position:absolute;top:12px;left:12px;background:rgba(42,18,74,.85);color:var(--gold);font-family:'Shippori Mincho',serif;font-size:11px;padding:4px 10px;border-radius:14px;border:.5px solid rgba(201,168,76,.5);z-index:5;pointer-events:none}
+.sd-hero-count{position:absolute;bottom:12px;right:12px;background:rgba(0,0,0,.6);color:#fff;font-size:11px;padding:3px 10px;border-radius:12px;display:flex;align-items:center;gap:4px;z-index:5;pointer-events:none}
+/* ヒーロー画像カルーセル（スワイプ対応） */
+.sd-hero-carousel{width:100%;height:100%;display:flex;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.sd-hero-carousel::-webkit-scrollbar{display:none}
+.sd-hero-slide{flex:0 0 100%;width:100%;height:100%;scroll-snap-align:start;scroll-snap-stop:always;position:relative;cursor:zoom-in}
+.sd-hero-slide img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
+.sd-hero-dots{position:absolute;bottom:8px;left:0;right:0;display:flex;justify-content:center;gap:6px;z-index:5;pointer-events:none}
+.sd-hero-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.5);transition:all .2s ease;box-shadow:0 0 3px rgba(0,0,0,.4)}
+.sd-hero-dot.active{background:var(--gold);width:18px;border-radius:3px}
 /* 詳細ページ写真サムネイル横スクロール */
 .sd-thumbs{display:flex;gap:6px;overflow-x:auto;padding:10px 1.25rem;background:var(--washi);-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory}
 .sd-thumbs::-webkit-scrollbar{height:0;display:none}
@@ -295,7 +303,130 @@
 .sd-map-link{display:flex;align-items:center;justify-content:center;gap:6px;background:#fff;border:.5px solid var(--gold);color:var(--red-d);padding:9px;border-radius:8px;font-size:12px;font-family:'Noto Serif JP',serif;font-weight:600;cursor:pointer;margin-top:8px}
 .sd-map-link svg{width:13px;height:13px}
 
-/* 6県エリアカード（ホーム画面） */
+/* ─── ホーム下部5セクション共通 ─── */
+.home-sec{padding:1.5rem 1.25rem .5rem}
+.home-sec-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:.9rem}
+.home-sec-tit{font-family:'Shippori Mincho',serif;font-size:17px;font-weight:600;color:var(--ma);letter-spacing:.08em;display:flex;align-items:center;gap:8px}
+.home-sec-tit .ico{width:24px;height:24px;border-radius:6px;background:linear-gradient(135deg,#3a1d5d,#5d3a8a);display:flex;align-items:center;justify-content:center;color:var(--gold);flex-shrink:0}
+.home-sec-tit .ico svg{width:14px;height:14px}
+.home-sec-more{font-size:11px;color:var(--red);cursor:pointer;font-family:'Noto Serif JP',serif;display:flex;align-items:center;gap:2px}
+
+/* ① おすすめ記事 */
+.art-list{display:flex;flex-direction:column;gap:14px}
+.art-item{display:flex;gap:12px;cursor:pointer;align-items:flex-start}
+.art-item:active{opacity:.7}
+.art-thumb{flex:0 0 110px;width:110px;height:110px;border-radius:8px;overflow:hidden;background:linear-gradient(135deg,#3a1d5d,#5d3a8a);position:relative}
+.art-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.art-thumb-ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--gold);font-family:'Shippori Mincho',serif;font-size:11px;text-align:center;padding:6px}
+.art-body{flex:1;min-width:0;padding-top:4px}
+.art-title{font-family:'Noto Serif JP',serif;font-size:14px;font-weight:600;color:#222;line-height:1.5;margin-bottom:8px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.art-date{font-size:11px;color:#999;font-family:'Noto Serif JP',serif}
+
+/* ② 季節の行事・ライトアップ */
+.season-list{display:flex;gap:10px;overflow-x:auto;padding-bottom:6px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;margin:0 -1.25rem;padding-left:1.25rem;padding-right:1.25rem}
+.season-list::-webkit-scrollbar{display:none}
+.season-card{flex:0 0 240px;border-radius:12px;overflow:hidden;background:#fff;border:.5px solid var(--gold);cursor:pointer;scroll-snap-align:start;box-shadow:0 2px 8px rgba(58,29,93,.08)}
+.season-card:active{transform:scale(.98)}
+.season-img{width:100%;aspect-ratio:16/10;background:linear-gradient(135deg,#a83320,#3a1d5d);position:relative;overflow:hidden}
+.season-img img{width:100%;height:100%;object-fit:cover;display:block}
+.season-badge{position:absolute;top:8px;left:8px;background:rgba(168,51,32,.92);color:#fff;font-size:10px;padding:3px 8px;border-radius:10px;font-family:'Shippori Mincho',serif;letter-spacing:.05em}
+.season-body{padding:.7rem .8rem .8rem}
+.season-title{font-family:'Shippori Mincho',serif;font-size:13px;font-weight:600;color:#222;line-height:1.4;margin-bottom:5px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.season-meta{font-size:10px;color:#777;display:flex;align-items:center;gap:5px;font-family:'Noto Serif JP',serif}
+.season-meta .dot{width:3px;height:3px;border-radius:50%;background:#ccc}
+
+/* ③ ツアー特集 */
+.tour-list{display:flex;flex-direction:column;gap:12px}
+.tour-card{display:flex;background:#fff;border:.5px solid var(--gold);border-radius:10px;overflow:hidden;cursor:pointer;box-shadow:0 2px 6px rgba(58,29,93,.06)}
+.tour-card:active{transform:scale(.99)}
+.tour-img{flex:0 0 120px;width:120px;background:linear-gradient(135deg,#3a1d5d,#5d3a8a);position:relative;overflow:hidden}
+.tour-img img{width:100%;height:100%;object-fit:cover;display:block}
+.tour-img-badge{position:absolute;top:6px;left:6px;background:rgba(0,0,0,.7);color:var(--gold);font-size:9px;padding:2px 6px;border-radius:8px;font-family:'Shippori Mincho',serif;letter-spacing:.04em}
+.tour-body{flex:1;padding:.7rem .8rem;min-width:0;display:flex;flex-direction:column;justify-content:space-between}
+.tour-title{font-family:'Noto Serif JP',serif;font-size:13px;font-weight:600;color:#222;line-height:1.4;margin-bottom:4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.tour-route{font-size:10px;color:#666;margin-bottom:6px;line-height:1.4;font-family:'Noto Serif JP',serif}
+.tour-bottom{display:flex;align-items:flex-end;justify-content:space-between;gap:6px}
+.tour-price{font-family:'Shippori Mincho',serif;color:var(--red);font-size:11px;line-height:1}
+.tour-price b{font-size:15px;margin:0 1px;font-weight:700}
+.tour-partner{font-size:9px;color:#999;background:#f5f0e6;padding:2px 6px;border-radius:8px}
+
+/* ④ 御朱印グッズEC */
+.ec-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ec-card{background:#fff;border:.5px solid var(--gold);border-radius:10px;overflow:hidden;cursor:pointer;box-shadow:0 2px 6px rgba(58,29,93,.06)}
+.ec-card:active{transform:scale(.97)}
+.ec-img{width:100%;aspect-ratio:1;background:linear-gradient(135deg,#f5f0e6,#e8e0d0);position:relative;overflow:hidden}
+.ec-img img{width:100%;height:100%;object-fit:cover;display:block}
+.ec-img-tag{position:absolute;top:6px;right:6px;background:var(--red);color:#fff;font-size:9px;padding:2px 6px;border-radius:8px;font-family:'Shippori Mincho',serif}
+.ec-body{padding:.6rem .7rem .7rem}
+.ec-title{font-family:'Noto Serif JP',serif;font-size:11.5px;font-weight:600;color:#222;line-height:1.4;margin-bottom:5px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:30px}
+.ec-price{font-family:'Shippori Mincho',serif;color:var(--red);font-size:13px;font-weight:700}
+.ec-price small{font-size:9px;color:#999;font-weight:400;margin-left:3px}
+
+/* ⑤ 元寺院不動産 */
+.estate-list{display:flex;flex-direction:column;gap:14px}
+.estate-card{background:#fff;border:.5px solid var(--gold);border-radius:12px;overflow:hidden;cursor:pointer;box-shadow:0 3px 10px rgba(58,29,93,.08)}
+.estate-card:active{transform:scale(.99)}
+.estate-img{width:100%;aspect-ratio:16/10;background:linear-gradient(135deg,#3a1d5d,#5d3a8a);position:relative;overflow:hidden}
+.estate-img img{width:100%;height:100%;object-fit:cover;display:block}
+.estate-img-badge{position:absolute;top:10px;left:10px;background:rgba(42,18,74,.9);color:var(--gold);font-size:10px;padding:3px 9px;border-radius:10px;font-family:'Shippori Mincho',serif;border:.5px solid rgba(201,168,76,.5)}
+.estate-body{padding:.85rem 1rem 1rem}
+.estate-title{font-family:'Shippori Mincho',serif;font-size:14px;font-weight:600;color:#222;line-height:1.4;margin-bottom:6px}
+.estate-loc{font-size:11px;color:#666;margin-bottom:8px;display:flex;align-items:center;gap:4px;font-family:'Noto Serif JP',serif}
+.estate-loc svg{width:11px;height:11px;flex-shrink:0;color:var(--red)}
+.estate-price{font-family:'Shippori Mincho',serif;color:var(--red-d);font-size:18px;font-weight:700;border-top:.5px solid #eee;padding-top:8px;display:flex;align-items:baseline;gap:4px}
+.estate-price small{font-size:10px;color:#999;font-weight:400}
+
+/* ─── オーバーレイページ共通（5つの遷移先） ─── */
+.ovl-hd{background:#fff;padding:.95rem 1.25rem;display:flex;align-items:center;gap:10px;border-bottom:.5px solid #e8e0d0;position:sticky;top:0;z-index:10}
+.ovl-back{cursor:pointer;color:var(--ma);font-size:24px;line-height:1}
+.ovl-tit{font-family:'Shippori Mincho',serif;font-size:15px;font-weight:800;color:var(--ma);letter-spacing:.1em;flex:1}
+.ovl-cont{padding:1.25rem;padding-bottom:5rem}
+.ovl-placeholder{padding:3rem 1.25rem;text-align:center;color:#999;font-size:12px;font-family:'Noto Serif JP',serif}
+
+/* 記事詳細ページ */
+.article-detail{background:#fff;min-height:100vh}
+.article-hero{width:100%;aspect-ratio:16/9;background:linear-gradient(135deg,#3a1d5d,#5d3a8a);position:relative;overflow:hidden}
+.article-hero img{width:100%;height:100%;object-fit:cover;display:block}
+.article-cont{padding:1.5rem 1.25rem;max-width:390px;margin:0 auto}
+.article-cat{display:inline-block;background:var(--gold);color:#fff;font-size:10px;padding:3px 10px;border-radius:10px;font-family:'Shippori Mincho',serif;letter-spacing:.05em;margin-bottom:.8rem}
+.article-title{font-family:'Shippori Mincho',serif;font-size:20px;font-weight:700;color:#222;line-height:1.5;margin-bottom:.8rem}
+.article-meta{font-size:11px;color:#999;margin-bottom:1.5rem;display:flex;gap:10px;align-items:center;font-family:'Noto Serif JP',serif;padding-bottom:1rem;border-bottom:.5px solid #eee}
+.article-body{font-family:'Noto Serif JP',serif;font-size:14px;line-height:1.9;color:#333}
+.article-body h2{font-family:'Shippori Mincho',serif;font-size:16px;font-weight:700;color:var(--ma);margin:1.8rem 0 .8rem;padding-left:10px;border-left:3px solid var(--gold)}
+.article-body p{margin-bottom:1.2rem}
+.article-body img{width:100%;border-radius:8px;margin:1rem 0}
+.article-body .lead{font-size:13px;color:#555;background:#faf6ee;padding:1rem;border-radius:8px;border-left:3px solid var(--gold);margin-bottom:1.5rem;line-height:1.8}
+
+/* ECや外部リンクボタン */
+.ext-btn{display:flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(180deg,#a83320,#8a2417);color:#fff;border:1px solid var(--gold);border-radius:10px;padding:1rem;font-family:'Shippori Mincho',serif;font-size:13px;font-weight:600;letter-spacing:.08em;cursor:pointer;width:100%;margin-top:1rem;box-shadow:0 4px 14px -4px rgba(58,29,93,.4)}
+.ext-btn svg{width:14px;height:14px}
+
+/* ⑥ 終活・供養 */
+.shukatsu-list{display:flex;flex-direction:column;gap:10px}
+.shukatsu-card{display:flex;background:#fff;border:.5px solid #d4cdbb;border-radius:10px;overflow:hidden;cursor:pointer;box-shadow:0 2px 6px rgba(80,70,50,.06)}
+.shukatsu-card:active{transform:scale(.99)}
+.shukatsu-img{flex:0 0 96px;width:96px;background:linear-gradient(135deg,#4a5d3a,#6d7d5a);position:relative;overflow:hidden}
+.shukatsu-img img{width:100%;height:100%;object-fit:cover;display:block}
+.shukatsu-img-tag{position:absolute;bottom:5px;left:5px;background:rgba(0,0,0,.65);color:#fff;font-size:9px;padding:2px 6px;border-radius:6px;font-family:'Shippori Mincho',serif}
+.shukatsu-body{flex:1;padding:.7rem .85rem;min-width:0;display:flex;flex-direction:column;justify-content:space-between}
+.shukatsu-cat{display:inline-block;font-size:9px;color:#5d6d4d;background:#eef2e6;padding:1px 7px;border-radius:8px;font-family:'Shippori Mincho',serif;margin-bottom:4px;align-self:flex-start}
+.shukatsu-title{font-family:'Noto Serif JP',serif;font-size:13px;font-weight:600;color:#222;line-height:1.5;margin-bottom:5px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.shukatsu-cta{font-size:11px;color:#a83320;font-family:'Noto Serif JP',serif;display:flex;align-items:center;gap:3px;font-weight:600}
+.shukatsu-cta::after{content:"›";font-size:13px}
+
+/* ⑦ 参拝のお供（グッズ） */
+.osupply-list{display:flex;gap:10px;overflow-x:auto;padding-bottom:6px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;margin:0 -1.25rem;padding-left:1.25rem;padding-right:1.25rem}
+.osupply-list::-webkit-scrollbar{display:none}
+.osupply-card{flex:0 0 150px;background:#fff;border:.5px solid var(--gold);border-radius:10px;overflow:hidden;cursor:pointer;scroll-snap-align:start;box-shadow:0 2px 6px rgba(58,29,93,.06)}
+.osupply-card:active{transform:scale(.97)}
+.osupply-img{width:100%;aspect-ratio:1;background:#f5f0e6;position:relative;overflow:hidden}
+.osupply-img img{width:100%;height:100%;object-fit:cover;display:block}
+.osupply-img-rank{position:absolute;top:5px;left:5px;background:var(--red);color:#fff;font-size:9px;padding:2px 6px;border-radius:8px;font-family:'Shippori Mincho',serif;font-weight:700;letter-spacing:.04em}
+.osupply-body{padding:.55rem .65rem .7rem}
+.osupply-title{font-family:'Noto Serif JP',serif;font-size:11px;font-weight:600;color:#222;line-height:1.4;margin-bottom:5px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:30px}
+.osupply-price{font-family:'Shippori Mincho',serif;color:var(--red);font-size:13px;font-weight:700;display:flex;align-items:baseline;gap:3px}
+.osupply-price small{font-size:9px;color:#999;font-weight:400}
+.osupply-partner{font-size:9px;color:#888;margin-top:3px;font-family:'Noto Serif JP',serif}
 .area-section{padding:1.25rem 1.25rem .5rem}
 .area-sec-hd{position:relative;display:flex;justify-content:center;align-items:center;margin-bottom:.9rem}
 .area-sec-tit{font-family:'Shippori Mincho',serif;font-size:17px;font-weight:600;color:var(--ma);letter-spacing:.1em;text-align:center}
@@ -308,7 +439,7 @@
 .area-nearby-tit .main{font-size:16px;font-weight:800;letter-spacing:.1em}
 .area-nearby-tit .sub{font-size:10px;opacity:.85;margin-top:3px;letter-spacing:.05em}
 .area-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
-.area-card{aspect-ratio:1;border-radius:10px;overflow:hidden;position:relative;background:#e8e0d0;cursor:pointer;border:.5px solid var(--gold);transition:transform .15s var(--ease)}
+.area-card{aspect-ratio:1;border-radius:10px;overflow:hidden;position:relative;background:linear-gradient(135deg,#3a1d5d 0%,#5d3a8a 50%,#3a1d5d 100%);cursor:pointer;border:.5px solid var(--gold);transition:transform .15s var(--ease)}
 .area-card:hover{transform:translateY(-2px)}
 .area-card:active{transform:scale(.96)}
 .area-card-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
@@ -512,7 +643,7 @@
       <div class="area-card-name">京都</div>
     </div>
     <div class="area-card" onclick="openAreaSearch('福岡')">
-      <img class="area-card-bg" src="https://images.unsplash.com/photo-1622651995648-39c8ef647c1d?w=600&q=80&auto=format&fit=crop" alt="福岡 太宰府天満宮" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1565127803053-d3b0b1e6a2bb?w=600&q=80&auto=format&fit=crop'">
+      <img class="area-card-bg" src="https://images.unsplash.com/photo-1583148901321-0d8e8ad8a4ba?w=600&q=80&auto=format&fit=crop" alt="福岡" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=80&auto=format&fit=crop';this.onerror=function(){this.style.display='none';}">
       <div class="area-card-name">福岡</div>
     </div>
   </div>
@@ -589,6 +720,90 @@
   </button>
   <div class="rmeta" id="rmeta">全国 <span>5件</span> のおすすめ神社</div>
   <div id="list"></div>
+</div>
+
+<!-- ① おすすめ記事 -->
+<div class="home-sec">
+  <div class="home-sec-hd">
+    <div class="home-sec-tit">
+      <div class="ico"><svg viewBox="0 0 14 14" fill="none"><rect x="2" y="2" width="10" height="10" rx="1" stroke="currentColor" stroke-width="1.2"/><line x1="4" y1="5" x2="10" y2="5" stroke="currentColor" stroke-width="1"/><line x1="4" y1="7.5" x2="10" y2="7.5" stroke="currentColor" stroke-width="1"/><line x1="4" y1="10" x2="8" y2="10" stroke="currentColor" stroke-width="1"/></svg></div>
+      おすすめ記事
+    </div>
+    <div class="home-sec-more" onclick="openArticleList()">もっと見る ›</div>
+  </div>
+  <div class="art-list" id="artList"></div>
+</div>
+
+<!-- ② 参拝のお供（グッズ） -->
+<div class="home-sec">
+  <div class="home-sec-hd">
+    <div class="home-sec-tit">
+      <div class="ico"><svg viewBox="0 0 14 14" fill="none"><path d="M3 5l4-3 4 3v2c0 2.5-1.8 4.5-4 5-2.2-.5-4-2.5-4-5V5z" stroke="currentColor" stroke-width="1.1" fill="none" stroke-linejoin="round"/></svg></div>
+      参拝のお供
+    </div>
+    <div class="home-sec-more" onclick="openOsupplyList()">もっと見る ›</div>
+  </div>
+  <div class="osupply-list" id="osupplyList"></div>
+</div>
+
+<!-- ② 季節の行事・ライトアップ -->
+<div class="home-sec">
+  <div class="home-sec-hd">
+    <div class="home-sec-tit">
+      <div class="ico"><svg viewBox="0 0 14 14" fill="none"><path d="M7 1c0 3-3 4-3 6.5C4 9.4 5.3 11 7 11s3-1.6 3-3.5C10 5 7 4 7 1z" stroke="currentColor" stroke-width="1.1" fill="none"/></svg></div>
+      季節の行事・ライトアップ
+    </div>
+    <div class="home-sec-more" onclick="openSeasonList()">もっと見る ›</div>
+  </div>
+  <div class="season-list" id="seasonList"></div>
+</div>
+
+<!-- ③ ツアー特集 -->
+<div class="home-sec">
+  <div class="home-sec-hd">
+    <div class="home-sec-tit">
+      <div class="ico"><svg viewBox="0 0 14 14" fill="none"><rect x="1.5" y="4" width="11" height="6" rx="1" stroke="currentColor" stroke-width="1.1" fill="none"/><circle cx="4" cy="11" r="1" stroke="currentColor" stroke-width="1"/><circle cx="10" cy="11" r="1" stroke="currentColor" stroke-width="1"/></svg></div>
+      ツアー特集
+    </div>
+    <div class="home-sec-more" onclick="openTourList()">もっと見る ›</div>
+  </div>
+  <div class="tour-list" id="tourList"></div>
+</div>
+
+<!-- ④ 御朱印グッズEC -->
+<div class="home-sec">
+  <div class="home-sec-hd">
+    <div class="home-sec-tit">
+      <div class="ico"><svg viewBox="0 0 14 14" fill="none"><path d="M2 5l5-3 5 3v6.5L7 13l-5-1.5V5z" stroke="currentColor" stroke-width="1.1" fill="none" stroke-linejoin="round"/><line x1="7" y1="5.5" x2="7" y2="13" stroke="currentColor" stroke-width="1"/></svg></div>
+      御朱印グッズ
+    </div>
+    <div class="home-sec-more" onclick="openEcList()">もっと見る ›</div>
+  </div>
+  <div class="ec-grid" id="ecGrid"></div>
+</div>
+
+<!-- ⑥ 終活・供養 -->
+<div class="home-sec">
+  <div class="home-sec-hd">
+    <div class="home-sec-tit">
+      <div class="ico"><svg viewBox="0 0 14 14" fill="none"><path d="M7 1.5C5 1.5 3.5 3 3.5 5c0 2.5 3.5 7 3.5 7s3.5-4.5 3.5-7c0-2-1.5-3.5-3.5-3.5z" stroke="currentColor" stroke-width="1.1" fill="none" stroke-linejoin="round"/><circle cx="7" cy="5" r="1.3" stroke="currentColor" stroke-width="1" fill="none"/></svg></div>
+      終活・供養のご相談
+    </div>
+    <div class="home-sec-more" onclick="openShukatsuList()">もっと見る ›</div>
+  </div>
+  <div class="shukatsu-list" id="shukatsuList"></div>
+</div>
+
+<!-- ⑦ 元寺院仏閣・不動産 -->
+<div class="home-sec" style="padding-bottom:2rem">
+  <div class="home-sec-hd">
+    <div class="home-sec-tit">
+      <div class="ico"><svg viewBox="0 0 14 14" fill="none"><path d="M2 6L7 2L12 6V12H2V6z" stroke="currentColor" stroke-width="1.1" fill="none" stroke-linejoin="round"/><line x1="7" y1="2" x2="7" y2="4" stroke="currentColor" stroke-width="1.1"/></svg></div>
+      元寺院・古民家不動産
+    </div>
+    <div class="home-sec-more" onclick="openEstateList()">もっと見る ›</div>
+  </div>
+  <div class="estate-list" id="estateList"></div>
 </div>
 
 <div id="toast" style="display:none;position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--red);color:#fff;padding:.6rem 1.5rem;border-radius:30px;font-size:12px;text-align:center;border:1px solid rgba(201,168,76,.4);z-index:200;white-space:nowrap"></div>
@@ -1200,10 +1415,431 @@
 
 </div><!-- /app -->
 
+<!-- ━━━ ① 記事一覧ページ ━━━ -->
+<div id="pgArticleList" style="display:none;flex-direction:column;position:fixed;inset:0;z-index:100;overflow-y:auto;background:#faf6ee">
+  <div class="ovl-hd">
+    <div class="ovl-back" onclick="closeOverlay('pgArticleList')">‹</div>
+    <div class="ovl-tit">おすすめ記事</div>
+    <div style="width:24px"></div>
+  </div>
+  <div class="ovl-cont">
+    <div class="art-list" id="artListFull"></div>
+  </div>
+</div>
+
+<!-- ━━━ 記事詳細ページ ━━━ -->
+<div id="pgArticleDetail" style="display:none;flex-direction:column;position:fixed;inset:0;z-index:101;overflow-y:auto;background:#fff">
+  <div class="ovl-hd">
+    <div class="ovl-back" onclick="closeOverlay('pgArticleDetail')">‹</div>
+    <div class="ovl-tit">記事</div>
+    <div style="width:24px"></div>
+  </div>
+  <div id="articleDetailBody"></div>
+</div>
+
+<!-- ━━━ ② 季節の行事ページ ━━━ -->
+<div id="pgSeasonList" style="display:none;flex-direction:column;position:fixed;inset:0;z-index:100;overflow-y:auto;background:#faf6ee">
+  <div class="ovl-hd">
+    <div class="ovl-back" onclick="closeOverlay('pgSeasonList')">‹</div>
+    <div class="ovl-tit">季節の行事・ライトアップ</div>
+    <div style="width:24px"></div>
+  </div>
+  <div class="ovl-cont">
+    <div style="display:grid;grid-template-columns:1fr;gap:14px" id="seasonListFull"></div>
+  </div>
+</div>
+
+<!-- ━━━ ③ ツアー一覧ページ ━━━ -->
+<div id="pgTourList" style="display:none;flex-direction:column;position:fixed;inset:0;z-index:100;overflow-y:auto;background:#faf6ee">
+  <div class="ovl-hd">
+    <div class="ovl-back" onclick="closeOverlay('pgTourList')">‹</div>
+    <div class="ovl-tit">ツアー特集</div>
+    <div style="width:24px"></div>
+  </div>
+  <div class="ovl-cont">
+    <div style="font-size:11px;color:#999;background:#f5f0e6;padding:.7rem .9rem;border-radius:8px;margin-bottom:1rem;line-height:1.6;font-family:'Noto Serif JP',serif">
+      ※ 当ページのツアー予約は提携サイトに移動します。予約確定後、当サイトに紹介料が支払われる場合があります。
+    </div>
+    <div class="tour-list" id="tourListFull"></div>
+  </div>
+</div>
+
+<!-- ━━━ ④ 御朱印グッズECページ ━━━ -->
+<div id="pgEcList" style="display:none;flex-direction:column;position:fixed;inset:0;z-index:100;overflow-y:auto;background:#faf6ee">
+  <div class="ovl-hd">
+    <div class="ovl-back" onclick="closeOverlay('pgEcList')">‹</div>
+    <div class="ovl-tit">御朱印グッズ</div>
+    <div style="width:24px"></div>
+  </div>
+  <div class="ovl-cont">
+    <div style="font-size:11px;color:#999;background:#f5f0e6;padding:.7rem .9rem;border-radius:8px;margin-bottom:1rem;line-height:1.6;font-family:'Noto Serif JP',serif">
+      ※ 商品ページは提携ECサイトに移動します。
+    </div>
+    <div class="ec-grid" id="ecGridFull"></div>
+  </div>
+</div>
+
+<!-- ━━━ ⑤ 元寺院仏閣・不動産ページ ━━━ -->
+<div id="pgEstateList" style="display:none;flex-direction:column;position:fixed;inset:0;z-index:100;overflow-y:auto;background:#faf6ee">
+  <div class="ovl-hd">
+    <div class="ovl-back" onclick="closeOverlay('pgEstateList')">‹</div>
+    <div class="ovl-tit">元寺院・古民家不動産</div>
+    <div style="width:24px"></div>
+  </div>
+  <div class="ovl-cont">
+    <div style="font-size:11px;color:#999;background:#f5f0e6;padding:.7rem .9rem;border-radius:8px;margin-bottom:1rem;line-height:1.6;font-family:'Noto Serif JP',serif">
+      ※ 物件のお問い合わせは提携不動産会社にて承ります。
+    </div>
+    <div class="estate-list" id="estateListFull"></div>
+  </div>
+</div>
+
+<!-- ━━━ 参拝のお供（グッズ）一覧ページ ━━━ -->
+<div id="pgOsupplyList" style="display:none;flex-direction:column;position:fixed;inset:0;z-index:100;overflow-y:auto;background:#faf6ee">
+  <div class="ovl-hd">
+    <div class="ovl-back" onclick="closeOverlay('pgOsupplyList')">‹</div>
+    <div class="ovl-tit">参拝のお供</div>
+    <div style="width:24px"></div>
+  </div>
+  <div class="ovl-cont">
+    <div style="font-size:11px;color:#999;background:#f5f0e6;padding:.7rem .9rem;border-radius:8px;margin-bottom:1rem;line-height:1.6;font-family:'Noto Serif JP',serif">
+      ※ 当ページで紹介する商品はAmazon・楽天市場の提携リンクです。購入確定後、当サイトに紹介料が支払われる場合があります。
+    </div>
+    <div class="ec-grid" id="osupplyGridFull"></div>
+  </div>
+</div>
+
+<!-- ━━━ 終活・供養一覧ページ ━━━ -->
+<div id="pgShukatsuList" style="display:none;flex-direction:column;position:fixed;inset:0;z-index:100;overflow-y:auto;background:#faf6ee">
+  <div class="ovl-hd">
+    <div class="ovl-back" onclick="closeOverlay('pgShukatsuList')">‹</div>
+    <div class="ovl-tit">終活・供養のご相談</div>
+    <div style="width:24px"></div>
+  </div>
+  <div class="ovl-cont">
+    <div style="background:#fff;border:.5px solid #d4cdbb;border-radius:10px;padding:1rem 1.1rem;margin-bottom:1.2rem;font-family:'Noto Serif JP',serif">
+      <div style="font-family:'Shippori Mincho',serif;font-size:14px;font-weight:700;color:#5d6d4d;margin-bottom:.5rem;letter-spacing:.05em">後悔のないお別れのために</div>
+      <div style="font-size:12px;color:#555;line-height:1.7">墓じまい・永代供養・遺品整理など、人生の節目に必要な情報を、提携専門会社の無料資料請求でお届けします。複数社一括比較も可能です。</div>
+    </div>
+    <div class="shukatsu-list" id="shukatsuListFull"></div>
+  </div>
+</div>
+
 <!-- Google Maps JS SDK (Places library) をAPIキー確定後に動的ロード -->
 <div id="gmap-loader"></div>
 
 <script>
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// ホーム下部5セクション（記事/季節/ツアー/EC/不動産）データ
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+// ① 記事データ
+const ARTICLES = [
+  {
+    id:'a01',
+    title:'【2026年・全国版】5月の限定御朱印40選！鯉のぼりや兜のカッコイイ御朱印を紹介',
+    date:'2026-04-27',
+    cat:'御朱印',
+    img:'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=80&auto=format&fit=crop',
+    excerpt:'端午の節句にちなんだ鯉のぼりや兜をモチーフにしたカッコイイ限定御朱印を全国から厳選してご紹介します。',
+    body:`<p class="lead">5月は端午の節句にちなんだ、勇壮で華やかな限定御朱印が全国の神社仏閣で授与される月です。鯉のぼりや兜をモチーフにしたデザインは、子どもの成長を願う方はもちろん、御朱印コレクターの方からも毎年大人気。本記事では、2026年5月限定の御朱印を全国から40件厳選してご紹介します。</p>
+<h2>関東エリアの注目御朱印</h2>
+<p>関東エリアでは、武運の神様として知られる神社を中心に、兜や甲冑をデザインに取り入れた力強い御朱印が多数登場します。特に鎌倉・鶴岡八幡宮の限定御朱印は、武家文化を象徴する黒と金の配色が見事で、毎年5月1日からの授与開始と同時に長蛇の列ができます。</p>
+<p>また、東京・神田明神では江戸の粋を感じる鯉のぼり柄の御朱印が登場。職人による手書きの墨書きと、鮮やかな朱印のコントラストが美しい一枚です。</p>
+<h2>関西エリアの注目御朱印</h2>
+<p>関西では、京都・八坂神社や奈良・春日大社など、世界遺産級の神社で華やかな限定御朱印が授与されます。特に注目したいのが、伏見稲荷大社の「五月雨稲荷」と銘打った限定御朱印。雨に濡れた千本鳥居をモチーフにした幻想的な一枚です。</p>
+<h2>授与期間と注意点</h2>
+<p>多くの限定御朱印は5月1日〜5月31日の期間限定授与となります。人気の御朱印は数量限定で配布終了となることもあるため、お目当ての御朱印がある方は早めの参拝をおすすめします。また、御朱印帳をお忘れなく。直書きではなく書置き対応の神社も増えていますので、事前に公式サイトでの確認をお勧めします。</p>
+<h2>まとめ</h2>
+<p>5月限定の御朱印は、季節の風物詩を感じられる特別な記念になります。お子様の健やかな成長を願いながら、ぜひ全国の神社仏閣を巡ってみてください。</p>`
+  },
+  {
+    id:'a02',
+    title:'釈迦如来とは？仏教を作ったお釈迦様が悟りを開いた姿の仏様を徹底解説',
+    date:'2025-03-17',
+    cat:'仏教',
+    img:'https://images.unsplash.com/photo-1583089892943-e02e5b017b6a?w=600&q=80&auto=format&fit=crop',
+    excerpt:'仏教の開祖であるお釈迦様が悟りを開いた姿を表す釈迦如来。その特徴やご利益、有名な仏像を解説。',
+    body:'<p class="lead">仏教の開祖、お釈迦様が悟りを開いた姿を表す釈迦如来。その教えと姿の特徴を詳しく解説します。</p><p>準備中の記事です。</p>'
+  },
+  {
+    id:'a03',
+    title:'馬頭観音とは？人々の煩悩を食べ尽くす馬の守り神を徹底解説',
+    date:'2024-12-23',
+    cat:'仏像',
+    img:'https://images.unsplash.com/photo-1565967511849-76a60a516170?w=600&q=80&auto=format&fit=crop',
+    excerpt:'観音菩薩の中でも特異な姿を持つ馬頭観音。馬の守り神としても信仰される仏様の魅力を紹介。',
+    body:'<p class="lead">観音菩薩の中でも怒りの相を持つ馬頭観音。その意味と信仰を解説します。</p><p>準備中の記事です。</p>'
+  },
+  {
+    id:'a04',
+    title:'鎌倉・円覚寺横田南嶺管長に聞く「心が落ち着く御朱印めぐりの秘訣」',
+    date:'2022-12-24',
+    cat:'インタビュー',
+    img:'https://images.unsplash.com/photo-1583416750470-965b2707b355?w=600&q=80&auto=format&fit=crop',
+    excerpt:'臨済宗円覚寺派管長・横田南嶺老師に、心を整える参拝の作法と御朱印めぐりの心得を伺いました。',
+    body:'<p class="lead">円覚寺管長・横田南嶺老師にお話を伺いました。</p><p>準備中の記事です。</p>'
+  }
+];
+
+// ② 季節の行事
+const SEASONS = [
+  { id:'s01', title:'明治神宮 夏越の大祓・茅の輪くぐり', area:'東京', period:'2026/6/30', tag:'初夏', img:'https://images.unsplash.com/photo-1480796927426-f609979314bd?w=600&q=80&auto=format&fit=crop' },
+  { id:'s02', title:'鞍馬寺 竹伐り会式 修験者の勇壮な祭礼', area:'京都', period:'2026/6/20', tag:'初夏', img:'https://images.unsplash.com/photo-1545569310-c1d4ed14d12c?w=600&q=80&auto=format&fit=crop' },
+  { id:'s03', title:'貴船神社 七夕笹飾りライトアップ', area:'京都', period:'2026/7/1-8/15', tag:'夏', img:'https://images.unsplash.com/photo-1503249023995-51b0f3778ccf?w=600&q=80&auto=format&fit=crop' },
+  { id:'s04', title:'住吉大社 御田植神事 1800年続く豊作祈願', area:'大阪', period:'2026/6/14', tag:'初夏', img:'https://images.unsplash.com/photo-1493997181344-712f2f19d87a?w=600&q=80&auto=format&fit=crop' },
+  { id:'s05', title:'熱田神宮 月次祭と夜間特別拝観', area:'愛知', period:'毎月1日', tag:'年中', img:'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=80&auto=format&fit=crop' }
+];
+
+// ③ ツアー特集
+const TOURS = [
+  { id:'t01', title:'伊勢神宮 内宮・外宮 早朝参拝バスツアー', route:'名古屋発・日帰り', price:'9,800', partner:'楽天トラベル', img:'https://images.unsplash.com/photo-1480796927426-f609979314bd?w=600&q=80&auto=format&fit=crop', badge:'人気No.1' },
+  { id:'t02', title:'出雲大社・松江満喫 1泊2日プラン', route:'東京発・羽田空港', price:'38,500', partner:'JTB', img:'https://images.unsplash.com/photo-1545569310-c1d4ed14d12c?w=600&q=80&auto=format&fit=crop', badge:'特選' },
+  { id:'t03', title:'高野山 宿坊体験と奥之院夜の参道', route:'大阪発・1泊2日', price:'24,800', partner:'クラブツーリズム', img:'https://images.unsplash.com/photo-1565967511849-76a60a516170?w=600&q=80&auto=format&fit=crop', badge:'初秋' },
+  { id:'t04', title:'鎌倉 御朱印巡りハイキングツアー', route:'東京駅集合・日帰り', price:'6,500', partner:'はとバス', img:'https://images.unsplash.com/photo-1583416750470-965b2707b355?w=600&q=80&auto=format&fit=crop', badge:'手軽' }
+];
+
+// ④ 御朱印グッズEC
+const EC_ITEMS = [
+  { id:'e01', title:'蛇腹式 御朱印帳 金襴(きんらん)仕様 紫×金', price:'3,850', tag:'人気', img:'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=400&q=80&auto=format&fit=crop' },
+  { id:'e02', title:'桐箱入り 御朱印帳 京都西陣織 朱色', price:'5,500', tag:'新作', img:'https://images.unsplash.com/photo-1565967511849-76a60a516170?w=400&q=80&auto=format&fit=crop' },
+  { id:'e03', title:'御朱印帳 保存ファイル A6サイズ 40枚収納', price:'1,980', tag:null, img:'https://images.unsplash.com/photo-1583148901321-0d8e8ad8a4ba?w=400&q=80&auto=format&fit=crop' },
+  { id:'e04', title:'神社デザイン お守り袋セット 5色', price:'2,750', tag:'限定', img:'https://images.unsplash.com/photo-1545569310-c1d4ed14d12c?w=400&q=80&auto=format&fit=crop' }
+];
+
+// ⑤ 元寺院・古民家不動産
+const ESTATES = [
+  { id:'p01', title:'築120年 元真言宗寺院 本堂付き', loc:'長野県飯田市', price:'2,480', unit:'万円', img:'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=80&auto=format&fit=crop', badge:'希少' },
+  { id:'p02', title:'参道沿い 元神主邸 数寄屋造り', loc:'京都府宇治市', price:'5,800', unit:'万円', img:'https://images.unsplash.com/photo-1493997181344-712f2f19d87a?w=600&q=80&auto=format&fit=crop', badge:'歴史的価値' },
+  { id:'p03', title:'山門付き古民家 茶室・庭園あり', loc:'奈良県吉野郡', price:'1,980', unit:'万円', img:'https://images.unsplash.com/photo-1480796927426-f609979314bd?w=600&q=80&auto=format&fit=crop', badge:'リノベ済' }
+];
+
+// ⑥ 終活・供養（無料資料請求リード獲得型）
+const SHUKATSU = [
+  { id:'sk01', cat:'墓じまい', title:'後悔しない墓じまいの方法｜費用相場と手順を完全解説', cta:'無料で資料請求', tag:'人気', img:'https://images.unsplash.com/photo-1559291001-693fb9166859?w=400&q=80&auto=format&fit=crop' },
+  { id:'sk02', cat:'永代供養', title:'永代供養・樹木葬とは？費用・メリットを比較', cta:'複数社の資料を一括請求', tag:'比較', img:'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400&q=80&auto=format&fit=crop' },
+  { id:'sk03', cat:'遺品整理', title:'遺品整理サービスの選び方｜悪徳業者の見分け方', cta:'無料で見積もり依頼', tag:null, img:'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&q=80&auto=format&fit=crop' },
+  { id:'sk04', cat:'お墓探し', title:'関東エリアの霊園・納骨堂を一括検索', cta:'エリアから無料検索', tag:'新着', img:'https://images.unsplash.com/photo-1545569310-c1d4ed14d12c?w=400&q=80&auto=format&fit=crop' },
+  { id:'sk05', cat:'生前整理', title:'生前整理で家族に残せるもの・残せないもの', cta:'専門家に無料相談', tag:null, img:'https://images.unsplash.com/photo-1493106819501-66d381c466f1?w=400&q=80&auto=format&fit=crop' }
+];
+
+// ⑦ 参拝のお供（Amazon・楽天アフィリエイト）
+const OSUPPLY = [
+  { id:'os01', title:'【神社巡り向け】1日歩いても疲れないスニーカー ニューバランス 880', price:'14,300', partner:'Amazon', rank:'人気1位', img:'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&q=80&auto=format&fit=crop' },
+  { id:'os02', title:'御朱印を綺麗に撮影 スマホ用三脚＆リング照明セット', price:'2,980', partner:'楽天', rank:'人気2位', img:'https://images.unsplash.com/photo-1606983340126-99ab4feaa64a?w=400&q=80&auto=format&fit=crop' },
+  { id:'os03', title:'防水ポーチ 御朱印帳が雨でも安心 A6サイズ', price:'1,580', partner:'Amazon', rank:null, img:'https://images.unsplash.com/photo-1622560480605-d83c853bc5c3?w=400&q=80&auto=format&fit=crop' },
+  { id:'os04', title:'参拝マナーガイド付き 御朱印帳ケース 西陣織', price:'3,850', partner:'楽天', rank:null, img:'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=400&q=80&auto=format&fit=crop' },
+  { id:'os05', title:'長時間歩行用 圧縮ソックス 旅行・神社巡りに', price:'1,980', partner:'Amazon', rank:null, img:'https://images.unsplash.com/photo-1586350977771-b3714d018cf2?w=400&q=80&auto=format&fit=crop' },
+  { id:'os06', title:'携帯用 折りたたみ日傘 晴雨兼用 軽量200g', price:'2,480', partner:'楽天', rank:'人気3位', img:'https://images.unsplash.com/photo-1564594985645-4427056e22e2?w=400&q=80&auto=format&fit=crop' }
+];
+
+// ─── 描画関数 ───
+function renderArticleList(target, limit){
+  var items = limit ? ARTICLES.slice(0, limit) : ARTICLES;
+  var html = items.map(function(a){
+    var d = a.date.split('-'); var dateStr = d[0]+'年'+d[1]+'月'+d[2]+'日';
+    return '<div class="art-item" onclick="openArticle(\''+a.id+'\')">' +
+      '<div class="art-thumb">' +
+        (a.img ? '<img src="'+a.img+'" alt="" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">' : '') +
+        '<div class="art-thumb-ph" style="'+(a.img?'display:none':'')+'">'+a.cat+'</div>' +
+      '</div>' +
+      '<div class="art-body">' +
+        '<div class="art-title">'+a.title+'</div>' +
+        '<div class="art-date">'+dateStr+'</div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+  document.getElementById(target).innerHTML = html;
+}
+function renderSeasonList(target, limit){
+  var items = limit ? SEASONS.slice(0, limit) : SEASONS;
+  var html = items.map(function(s){
+    return '<div class="season-card" onclick="alert(\'準備中：'+s.title+'\')">' +
+      '<div class="season-img">' +
+        '<img src="'+s.img+'" alt="" onerror="this.style.display=\'none\'">' +
+        '<div class="season-badge">'+s.tag+'</div>' +
+      '</div>' +
+      '<div class="season-body">' +
+        '<div class="season-title">'+s.title+'</div>' +
+        '<div class="season-meta"><span>'+s.area+'</span><span class="dot"></span><span>'+s.period+'</span></div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+  document.getElementById(target).innerHTML = html;
+}
+function renderTourList(target, limit){
+  var items = limit ? TOURS.slice(0, limit) : TOURS;
+  var html = items.map(function(t){
+    return '<div class="tour-card" onclick="alert(\'準備中：提携サイトへ移動 ['+t.partner+']\')">' +
+      '<div class="tour-img">' +
+        '<img src="'+t.img+'" alt="" onerror="this.style.display=\'none\'">' +
+        '<div class="tour-img-badge">'+t.badge+'</div>' +
+      '</div>' +
+      '<div class="tour-body">' +
+        '<div>' +
+          '<div class="tour-title">'+t.title+'</div>' +
+          '<div class="tour-route">'+t.route+'</div>' +
+        '</div>' +
+        '<div class="tour-bottom">' +
+          '<div class="tour-price"><small>1名</small><b>¥'+t.price+'</b>〜</div>' +
+          '<div class="tour-partner">'+t.partner+'</div>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+  document.getElementById(target).innerHTML = html;
+}
+function renderEcGrid(target, limit){
+  var items = limit ? EC_ITEMS.slice(0, limit) : EC_ITEMS;
+  var html = items.map(function(e){
+    return '<div class="ec-card" onclick="alert(\'準備中：提携ECサイトへ移動\')">' +
+      '<div class="ec-img">' +
+        '<img src="'+e.img+'" alt="" onerror="this.style.display=\'none\'">' +
+        (e.tag ? '<div class="ec-img-tag">'+e.tag+'</div>' : '') +
+      '</div>' +
+      '<div class="ec-body">' +
+        '<div class="ec-title">'+e.title+'</div>' +
+        '<div class="ec-price">¥'+e.price+'<small>(税込)</small></div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+  document.getElementById(target).innerHTML = html;
+}
+function renderEstateList(target, limit){
+  var items = limit ? ESTATES.slice(0, limit) : ESTATES;
+  var html = items.map(function(p){
+    return '<div class="estate-card" onclick="alert(\'準備中：物件詳細ページ\')">' +
+      '<div class="estate-img">' +
+        '<img src="'+p.img+'" alt="" onerror="this.style.display=\'none\'">' +
+        '<div class="estate-img-badge">'+p.badge+'</div>' +
+      '</div>' +
+      '<div class="estate-body">' +
+        '<div class="estate-title">'+p.title+'</div>' +
+        '<div class="estate-loc">' +
+          '<svg viewBox="0 0 12 12" fill="none"><path d="M6 1c-2.5 0-4 1.7-4 4 0 3 4 6 4 6s4-3 4-6c0-2.3-1.5-4-4-4z" stroke="currentColor" stroke-width="1.1" fill="none"/><circle cx="6" cy="5" r="1.3" stroke="currentColor" stroke-width="1" fill="none"/></svg>' +
+          p.loc +
+        '</div>' +
+        '<div class="estate-price">'+p.price+'<small>'+p.unit+'</small></div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+  document.getElementById(target).innerHTML = html;
+}
+
+// 終活・供養
+function renderShukatsuList(target, limit){
+  var items = limit ? SHUKATSU.slice(0, limit) : SHUKATSU;
+  var html = items.map(function(s){
+    return '<div class="shukatsu-card" onclick="alert(\'準備中：提携専門会社の資料請求フォームへ移動\')">' +
+      '<div class="shukatsu-img">' +
+        '<img src="'+s.img+'" alt="" onerror="this.style.display=\'none\'">' +
+        (s.tag ? '<div class="shukatsu-img-tag">'+s.tag+'</div>' : '') +
+      '</div>' +
+      '<div class="shukatsu-body">' +
+        '<div>' +
+          '<div class="shukatsu-cat">'+s.cat+'</div>' +
+          '<div class="shukatsu-title">'+s.title+'</div>' +
+        '</div>' +
+        '<div class="shukatsu-cta">'+s.cta+'</div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+  document.getElementById(target).innerHTML = html;
+}
+
+// 参拝のお供（横スクロール用＋一覧用の2モード）
+function renderOsupplyList(target, limit, useGrid){
+  var items = limit ? OSUPPLY.slice(0, limit) : OSUPPLY;
+  var html;
+  if (useGrid) {
+    // 一覧ページ用（ec-grid流用：2列）
+    html = items.map(function(o){
+      return '<div class="ec-card" onclick="alert(\'準備中：'+o.partner+'のアフィリエイトリンクへ移動\')">' +
+        '<div class="ec-img">' +
+          '<img src="'+o.img+'" alt="" onerror="this.style.display=\'none\'">' +
+          (o.rank ? '<div class="ec-img-tag">'+o.rank+'</div>' : '') +
+        '</div>' +
+        '<div class="ec-body">' +
+          '<div class="ec-title">'+o.title+'</div>' +
+          '<div class="ec-price">¥'+o.price+'<small>('+o.partner+')</small></div>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  } else {
+    // ホーム用（横スクロール）
+    html = items.map(function(o){
+      return '<div class="osupply-card" onclick="alert(\'準備中：'+o.partner+'のアフィリエイトリンクへ移動\')">' +
+        '<div class="osupply-img">' +
+          '<img src="'+o.img+'" alt="" onerror="this.style.display=\'none\'">' +
+          (o.rank ? '<div class="osupply-img-rank">'+o.rank+'</div>' : '') +
+        '</div>' +
+        '<div class="osupply-body">' +
+          '<div class="osupply-title">'+o.title+'</div>' +
+          '<div class="osupply-price">¥'+o.price+'</div>' +
+          '<div class="osupply-partner">'+o.partner+'</div>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  }
+  document.getElementById(target).innerHTML = html;
+}
+
+// ─── オーバーレイ開閉 ───
+function openOverlay(id){
+  var pg = document.getElementById(id);
+  if (!pg) return;
+  pg.style.display = 'flex';
+  pg.scrollTop = 0;
+  if (typeof updateFabVisibility === 'function') updateFabVisibility();
+}
+function closeOverlay(id){
+  var pg = document.getElementById(id);
+  if (!pg) return;
+  pg.style.display = 'none';
+  if (typeof updateFabVisibility === 'function') updateFabVisibility();
+}
+function openArticleList(){ renderArticleList('artListFull', null); openOverlay('pgArticleList'); }
+function openSeasonList(){ renderSeasonList('seasonListFull', null); openOverlay('pgSeasonList'); }
+function openTourList(){ renderTourList('tourListFull', null); openOverlay('pgTourList'); }
+function openEcList(){ renderEcGrid('ecGridFull', null); openOverlay('pgEcList'); }
+function openEstateList(){ renderEstateList('estateListFull', null); openOverlay('pgEstateList'); }
+function openShukatsuList(){ renderShukatsuList('shukatsuListFull', null); openOverlay('pgShukatsuList'); }
+function openOsupplyList(){ renderOsupplyList('osupplyGridFull', null, true); openOverlay('pgOsupplyList'); }
+
+// ─── 記事詳細 ───
+function openArticle(id){
+  var a = ARTICLES.find(function(x){return x.id===id;});
+  if (!a) return;
+  var d = a.date.split('-'); var dateStr = d[0]+'年'+d[1]+'月'+d[2]+'日';
+  var html = '<div class="article-detail">' +
+    '<div class="article-hero">' +
+      (a.img ? '<img src="'+a.img+'" alt="">' : '') +
+    '</div>' +
+    '<div class="article-cont">' +
+      '<div class="article-cat">'+a.cat+'</div>' +
+      '<div class="article-title">'+a.title+'</div>' +
+      '<div class="article-meta"><span>📅 '+dateStr+'</span><span>📂 '+a.cat+'</span></div>' +
+      '<div class="article-body">'+a.body+'</div>' +
+      '<button class="ext-btn" onclick="closeOverlay(\'pgArticleDetail\')">‹ 記事一覧へ戻る</button>' +
+    '</div>' +
+  '</div>';
+  document.getElementById('articleDetailBody').innerHTML = html;
+  openOverlay('pgArticleDetail');
+}
+
+// 初期描画（ホーム画面の各セクション・件数限定）
+window.addEventListener('DOMContentLoaded', function(){
+  try {
+    renderArticleList('artList', 4);
+    renderOsupplyList('osupplyList', 6, false);
+    renderSeasonList('seasonList', 5);
+    renderTourList('tourList', 3);
+    renderEcGrid('ecGrid', 4);
+    renderShukatsuList('shukatsuList', 4);
+    renderEstateList('estateList', 2);
+  } catch(e) { console.warn('home sections render error:', e); }
+});
+
 const SHRINES = [
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   // TOP20（旅探たびたん2026年版「全国の行ってみたい神社ランキング」準拠）
@@ -2317,15 +2953,26 @@ function fetchDetailPhotosById(placeId, s){
 // サムネイルをクリックしてヒーロー写真を切り替え
 function selectHeroPhoto(idx){
   if (!sdCurrentPhotos[idx]) return;
-  var hero = document.getElementById('sdHero');
-  var img = hero.querySelector('img');
-  if (img) img.src = sdCurrentPhotos[idx];
+  // カルーセルをその位置にスクロール
+  var car = document.getElementById('sdHeroCarousel');
+  if (car) {
+    car.scrollTo({ left: car.clientWidth * idx, behavior: 'smooth' });
+  } else {
+    // カルーセルがない場合（1枚のみの旧式）
+    var hero = document.getElementById('sdHero');
+    var img = hero.querySelector('img');
+    if (img) {
+      img.src = sdCurrentPhotos[idx];
+      img.setAttribute('onclick', 'openLightbox(' + idx + ')');
+    }
+  }
   // アクティブ状態を更新
   document.querySelectorAll('#sdThumbs .sd-thumb').forEach(function(t, i){
     t.classList.toggle('active', i === idx);
   });
-  // ヒーロークリック時のライトボックス起点を更新
-  if (img) img.setAttribute('onclick', 'openLightbox(' + idx + ')');
+  document.querySelectorAll('#sdHero .sd-hero-dot').forEach(function(d, i){
+    d.classList.toggle('active', i === idx);
+  });
 }
 
 // ライトボックス（拡大表示）
@@ -2374,7 +3021,37 @@ function populateShrineDetail(s){
     var countHtml = photos.length > 1
       ? '<div class="sd-hero-count">📷 ' + photos.length + '枚</div>'
       : '';
-    hero.innerHTML = '<img src="' + photos[0] + '" alt="' + s.name + '" onclick="openLightbox(0)" style="cursor:zoom-in"><div class="sd-hero-badge">PILGRIMAGE</div>' + countHtml;
+    // カルーセル（スワイプ対応）
+    if (photos.length > 1) {
+      var slidesHtml = photos.map(function(url, i){
+        return '<div class="sd-hero-slide" data-idx="' + i + '" onclick="openLightbox(' + i + ')"><img src="' + url + '" alt="' + s.name + ' ' + (i+1) + '"></div>';
+      }).join('');
+      var dotsHtml = '<div class="sd-hero-dots">' + photos.map(function(_, i){
+        return '<div class="sd-hero-dot' + (i===0?' active':'') + '" data-dot="' + i + '"></div>';
+      }).join('') + '</div>';
+      hero.innerHTML = '<div class="sd-hero-carousel" id="sdHeroCarousel">' + slidesHtml + '</div><div class="sd-hero-badge">PILGRIMAGE</div>' + countHtml + dotsHtml;
+      // スワイプ位置に応じてドット＆サムネを同期
+      setTimeout(function(){
+        var car = document.getElementById('sdHeroCarousel');
+        if (car) {
+          car.addEventListener('scroll', function(){
+            var idx = Math.round(car.scrollLeft / car.clientWidth);
+            if (idx < 0) idx = 0;
+            if (idx >= photos.length) idx = photos.length - 1;
+            // ドット更新
+            document.querySelectorAll('#sdHero .sd-hero-dot').forEach(function(d, i){
+              d.classList.toggle('active', i === idx);
+            });
+            // サムネ更新
+            document.querySelectorAll('#sdThumbs .sd-thumb').forEach(function(t, i){
+              t.classList.toggle('active', i === idx);
+            });
+          }, { passive: true });
+        }
+      }, 30);
+    } else {
+      hero.innerHTML = '<img src="' + photos[0] + '" alt="' + s.name + '" onclick="openLightbox(0)" style="cursor:zoom-in"><div class="sd-hero-badge">PILGRIMAGE</div>' + countHtml;
+    }
     // サムネイル（2枚以上ある時だけ表示）
     if (photos.length > 1) {
       thumbs.style.display = 'flex';
