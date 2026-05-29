@@ -2513,7 +2513,11 @@ var myLatLng = null;
 function showMapArea(){
   var mp = document.getElementById('pgMap');
   mp.style.display = 'flex';
-  setTimeout(function(){ if(mapInstance) google.maps.event.trigger(mapInstance,'resize'); }, 300);
+  setTimeout(function(){
+    if (mapInstance && window.google && window.google.maps && window.google.maps.event) {
+      google.maps.event.trigger(mapInstance,'resize');
+    }
+  }, 300);
 }
 function hideMapArea(){ document.getElementById('pgMap').style.display='none'; }
 function closeMapPage(){ hideMapArea(); }
@@ -2551,6 +2555,10 @@ function clearMarkers(){
 }
 
 function initMap(lat, lng){
+  if (!window.google || !window.google.maps) {
+    console.warn('Google Maps SDK 未ロード - initMap スキップ');
+    return;
+  }
   var center = { lat: lat, lng: lng };
   if (!mapInstance) {
     mapInstance = new google.maps.Map(document.getElementById('mapCanvas'), {
@@ -2562,7 +2570,12 @@ function initMap(lat, lng){
     mapInstance.setCenter(center);
     mapInstance.setZoom(13);
   }
-  setTimeout(function(){ google.maps.event.trigger(mapInstance,'resize'); mapInstance.setCenter(center); }, 400);
+  setTimeout(function(){
+    if (mapInstance && window.google && window.google.maps && window.google.maps.event) {
+      google.maps.event.trigger(mapInstance,'resize');
+      mapInstance.setCenter(center);
+    }
+  }, 400);
 }
 
 // マーカー画像（SVG・Base64埋め込み・神社=赤×白「神」・寺=紫×白「寺」）
@@ -2581,6 +2594,10 @@ function getPinIcon(s){
 }
 
 function placePins(shrines){
+  if (!window.google || !window.google.maps) {
+    console.warn('Google Maps SDK 未ロード - placePins スキップ');
+    return;
+  }
   clearMarkers();
   shrines.forEach(function(s){
     if (!s.lat || !s.lng) return;
@@ -4077,25 +4094,25 @@ function searchNearby(){
   var areaSel = document.getElementById('areaSel');
   function back(){ areaSel.value = 'all'; filter(); }
 
-  // 位置情報が取れない・GPS未対応でも、DBデータで全国マップを開く
-  if (!navigator.geolocation) {
-    showAllShrinesOnMap();
-    return;
-  }
-
-  showToast('📍 現在地を取得しています…');
-  navigator.geolocation.getCurrentPosition(function(pos){
-    var lat = pos.coords.latitude;
-    var lng = pos.coords.longitude;
-    myLatLng = { lat: lat, lng: lng };
-
-    // 現在地周辺のDB神社を即表示
-    showShrinesNearLocation(lat, lng);
-
-    // APIキーがあれば、Google Places でも検索して補強
-    if (API_KEY) {
-      loadGoogleMapsSDK(API_KEY).then(function(){
-        initPlacesService();
+  // ━━━ APIキー状態に応じた起動フロー ━━━
+  // (A) APIキーがあれば、まず必ず地図SDKをロード→地図初期化→現在地取得の順
+  if (API_KEY) {
+    showToast('🗺️ 地図を準備中…');
+    loadGoogleMapsSDK(API_KEY).then(function(){
+      initPlacesService();
+      // 現在地取得（許可されたら現在地、拒否/未対応なら全国）
+      if (!navigator.geolocation) {
+        showAllShrinesOnMap();
+        return;
+      }
+      showToast('📍 現在地を取得しています…');
+      navigator.geolocation.getCurrentPosition(function(pos){
+        var lat = pos.coords.latitude;
+        var lng = pos.coords.longitude;
+        myLatLng = { lat: lat, lng: lng };
+        // 現在地周辺のDB神社を即表示
+        showShrinesNearLocation(lat, lng);
+        // Places APIで補強
         var loc = new google.maps.LatLng(lat, lng);
         placesService.nearbySearch(
           { location: loc, radius: 50000, keyword: '神社', type: 'place_of_worship', language: 'ja' },
@@ -4118,32 +4135,53 @@ function searchNearby(){
                   lat: rlat, lng: rlng
                 };
               });
-              // 既存のDBピンに追加で表示
               addPinsToMap(list);
               showToast('📍 お社を地図に表示しました（API検索結果も追加）');
             }
           }
         );
-      });
-    }
-  }, function(){
-    // 位置情報拒否 → 全国DBで表示
-    showAllShrinesOnMap();
-  }, { enableHighAccuracy: false, timeout: 10000 });
+      }, function(){
+        // 位置情報拒否 → 全国DBで表示
+        showToast('📍 位置情報が拒否されたため、全国の神社を表示します');
+        showAllShrinesOnMap();
+      }, { enableHighAccuracy: false, timeout: 10000 });
+    }).catch(function(e){
+      console.error('Google Maps SDK ロード失敗:', e);
+      showToast('⚠️ 地図の読み込みに失敗しました。APIキーをご確認ください');
+      showAllShrinesOnMap();  // SDKロード失敗時もリスト的に開く
+    });
+    return;
+  }
+
+  // (B) APIキーが無い場合 → 地図機能は使えないため、APIキー設定モーダルを促す
+  showToast('⚠️ Google Maps APIキーを設定してください');
+  // それでも全国神社リストは見せる
+  showAllShrinesOnMap();
 }
 
 // 全国の神社をマップ表示（座標DBあるもの）
 function showAllShrinesOnMap(){
   var list = SHRINES.filter(function(s){ return s.lat && s.lng; });
   showMapArea();
-  // 日本の中心あたりにフォーカス
-  initMap(36.2048, 138.2529);
-  if (mapInstance) mapInstance.setZoom(6);
-  placePins(list);
   document.getElementById('resCount').textContent = '全国 ' + list.length + '件';
   document.getElementById('rmeta').innerHTML = '全国の主要お社 <span>' + list.length + '件</span>';
   document.getElementById('list').innerHTML =
     list.map(function(s, i){ return renderCard(s, i + 1); }).join('');
+  // Google Maps SDK 未ロード時は地図描画を諦めて、リストのみ表示
+  if (!window.google || !window.google.maps) {
+    var canvas = document.getElementById('mapCanvas');
+    if (canvas) {
+      canvas.innerHTML = '<div style="padding:2rem 1.25rem;text-align:center;color:#999;font-size:13px;font-family:\'Noto Serif JP\',serif;line-height:1.8">' +
+        '🗺️ 地図機能を利用するには<br>Google Maps APIキーの設定が必要です<br><br>' +
+        '<span style="font-size:11px;color:#bbb">下のリストから神社を選んでください</span></div>';
+    }
+    showToast('地図機能はAPIキー未設定のため非表示');
+    return;
+  }
+  // 日本の中心あたりにフォーカス
+  initMap(36.2048, 138.2529);
+  if (mapInstance) mapInstance.setZoom(6);
+  placePins(list);
   showToast('お社を地図に表示しました');
 }
 
