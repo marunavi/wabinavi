@@ -11,6 +11,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;600&family=Shippori+Mincho:wght@400;600;800&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
 :root{--red:#3a1d5d;--gold:#c9a84c;--washi:#faf8f3;--kara:#e8e0d0;--ma:#0a1a0f;--gold-l:#f5efd6;--red-l:#ece4f5;--red-d:#2a124a;--gold-d:#a98a38;--ease:cubic-bezier(.22,.61,.36,1)}
+/* 神社モード：赤系テーマ（「この条件で検索する」ボタンと同じ赤系）*/
+.app[data-theme="shrine"]{--red:#a83320;--red-d:#8a2417;--red-l:#fce8e4}
+/* テーマ色がスムーズに切り替わるよう、色を使う要素にtransitionを */
+.app .tagbar,.app .api-btn,.app .secln,.app .btn-search,.app .srch-btn{transition:background .35s var(--ease),border-color .35s var(--ease),color .35s var(--ease),box-shadow .35s var(--ease)}
 .app{max-width:390px;margin:0 auto;background:var(--washi);font-family:'Noto Serif JP',serif}
 .hero{position:relative;height:260px;overflow:hidden;background:#1a2a1a}
 .hero-img{width:100%;height:100%;object-fit:cover;object-position:center 35%;display:block}
@@ -559,7 +563,7 @@
 </style>
 </head>
 <body>
-<div class="app">
+<div class="app" data-theme="shrine">
 
 <div class="pg on" id="pgHome">
 <div class="hero">
@@ -2035,8 +2039,11 @@ function setType(t){
   var tBtn = document.getElementById('ttTemple');
   if (sBtn) sBtn.classList.toggle('on', t === 'shrine');
   if (tBtn) tBtn.classList.toggle('on', t === 'temple');
+  // テーマカラー切替（神社=赤系 / 寺=紫系）
+  var app = document.querySelector('.app');
+  if (app) app.setAttribute('data-theme', t);
   // ランキングを再描画
-  if (typeof apply === 'function') apply();
+  if (typeof filter === 'function') filter();
 }
 let API_KEY = '';
 
@@ -4140,7 +4147,7 @@ function searchNearby(){
         // Places APIで補強
         var loc = new google.maps.LatLng(lat, lng);
         placesService.nearbySearch(
-          { location: loc, radius: 50000, keyword: '神社', type: 'place_of_worship', language: 'ja' },
+          { location: loc, radius: 3000, keyword: '神社', type: 'place_of_worship', language: 'ja' },
           function(results, status){
             if (status === google.maps.places.PlacesServiceStatus.OK && results && results.length) {
               var list = results.slice(0, 20).map(function(r, idx){
@@ -4212,7 +4219,14 @@ function showAllShrinesOnMap(){
 
 // 現在地周辺のDB神社を表示（半径50km）
 function showShrinesNearLocation(lat, lng){
+  // 半径3km圏内のDB神社のみ表示
   var list = SHRINES.filter(function(s){
+    if (!s.lat || !s.lng) return false;
+    var d = haversineDistance(lat, lng, s.lat, s.lng);
+    return d <= 3;
+  });
+  // 50km圏内（リスト表示用）
+  var listFar = SHRINES.filter(function(s){
     if (!s.lat || !s.lng) return false;
     var d = haversineDistance(lat, lng, s.lat, s.lng);
     return d <= 50;
@@ -4220,15 +4234,12 @@ function showShrinesNearLocation(lat, lng){
 
   showMapArea();
   initMap(lat, lng);
+  // ズーム14＝半径約3km圏が画面に収まる
+  if (mapInstance) mapInstance.setZoom(14);
 
-  if (list.length === 0) {
-    // 周辺にDBデータがない場合は全国表示
-    showAllShrinesOnMap();
-    showToast('近くに登録お社がないため全国を表示');
-    return;
-  }
-
+  // 3km圏内に1件もなくても、地図は現在地中心で表示（API検索で出る可能性）
   placePins(list);
+
   // 現在地マーカー
   if (mapInstance && window.google) {
     new google.maps.Marker({
@@ -4241,19 +4252,20 @@ function showShrinesNearLocation(lat, lng){
         strokeColor: '#fff', strokeWeight: 2, scale: 7
       }
     });
-    // マーカー全体が見えるようズーム自動調整
-    try {
-      var bounds = new google.maps.LatLngBounds();
-      bounds.extend({ lat: lat, lng: lng });
-      list.forEach(function(s){ bounds.extend({ lat: s.lat, lng: s.lng }); });
-      mapInstance.fitBounds(bounds, 40);
-    } catch(e) { console.warn('fitBounds失敗:', e); }
   }
-  document.getElementById('resCount').textContent = '周辺 ' + list.length + '件';
-  document.getElementById('rmeta').innerHTML = '周辺のお社 <span>' + list.length + '件</span>';
-  document.getElementById('list').innerHTML =
-    list.map(function(s, i){ return renderCard(s, i + 1); }).join('');
-  showToast('お社を地図に表示しました');
+
+  // 下のリストは50km圏内（DBがないと寂しいので広めに表示）
+  document.getElementById('resCount').textContent = '周辺 ' + listFar.length + '件';
+  document.getElementById('rmeta').innerHTML = '周辺のお社 <span>' + listFar.length + '件</span>';
+  document.getElementById('list').innerHTML = listFar.length
+    ? listFar.map(function(s, i){ return renderCard(s, i + 1); }).join('')
+    : '<div style="text-align:center;color:#aaa;padding:2rem 0;font-size:13px">周辺のDB登録お社がありません</div>';
+
+  if (list.length > 0) {
+    showToast('現在地周辺3km圏内に ' + list.length + '件のお社');
+  } else {
+    showToast('現在地3km圏内にDB登録なし。地図を広げて再検索可');
+  }
 }
 
 // 「この場所で再検索」用：既存マーカーに追加
