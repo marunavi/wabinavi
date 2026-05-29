@@ -561,6 +561,43 @@ html,body{margin:0;padding:0;background:var(--washi)}
 .srch-chip.on{background:var(--red-l);border-color:var(--red);color:var(--red-d);font-weight:600}
 .srch-btn{width:100%;background:linear-gradient(135deg,#e3c879 0%,#c9a84c 55%,#a98a38 100%);color:#3a2800;border:1px solid var(--gold);border-radius:12px;padding:.95rem;font-family:'Shippori Mincho',serif;font-size:14px;font-weight:700;letter-spacing:.1em;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.4),0 4px 14px -4px rgba(169,138,56,.65);margin-top:.5rem;text-shadow:0 1px 1px rgba(255,255,255,.35)}
 .srch-pref{width:100%;background:#fff;border:.5px solid var(--kara);border-radius:8px;padding:.6rem .875rem;font-family:'Noto Serif JP',serif;font-size:12px;color:var(--ma);cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23999'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:30px;margin-bottom:.875rem}
+/* ─── みんなの最新投稿（コミュニティ）─── */
+.community-section{padding:1.25rem 1.25rem .5rem}
+.community-box{background:#fff;border:1.5px solid var(--gold);border-radius:16px;padding:1rem 1rem 1.1rem;box-shadow:0 4px 18px -6px rgba(58,29,93,.18),0 0 0 1px rgba(201,168,76,.15);position:relative;overflow:hidden}
+.community-box::before{content:"";position:absolute;top:-30px;right:-30px;width:100px;height:100px;background:radial-gradient(circle,rgba(201,168,76,.12),transparent 70%);pointer-events:none}
+.community-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:.85rem;padding-bottom:.7rem;border-bottom:.5px solid var(--kara);position:relative;z-index:1}
+.community-hd-left{display:flex;align-items:center;gap:8px}
+.community-icon{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--red-d),var(--red));display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--gold);transition:background .35s var(--ease)}
+.community-icon svg{width:16px;height:16px}
+.community-tit-wrap{display:flex;flex-direction:column}
+.community-tit{font-family:'Shippori Mincho',serif;font-size:14px;font-weight:700;color:var(--ma);letter-spacing:.05em;line-height:1.2}
+.community-cnt{font-size:10px;color:#999;margin-top:2px}
+.community-badge{background:var(--gold-l);color:#5a3a08;font-size:10px;padding:3px 10px;border-radius:10px;font-family:'Shippori Mincho',serif;font-weight:600;border:.5px solid var(--gold);display:flex;align-items:center;gap:4px;white-space:nowrap}
+.community-badge .num{font-size:14px;font-weight:800;color:var(--red-d)}
+.community-list{display:flex;flex-direction:column;gap:0;position:relative;z-index:1}
+.community-post{padding:.85rem 0;border-bottom:.5px dashed #e5dccb;cursor:pointer;transition:opacity .18s var(--ease)}
+.community-post:last-child{border-bottom:none}
+.community-post:active{opacity:.6}
+.community-post-hd{display:flex;align-items:flex-start;gap:8px;margin-bottom:.5rem}
+.community-shrine{font-family:'Shippori Mincho',serif;font-size:13px;font-weight:700;color:var(--red-d);line-height:1.3}
+.community-station{font-size:10px;color:#888;margin-top:1px;font-family:'Noto Serif JP',serif}
+.community-count{margin-left:auto;font-size:9px;background:var(--red-l);color:var(--red-d);padding:2px 8px;border-radius:8px;font-family:'Shippori Mincho',serif;font-weight:600;border:.5px solid #d4c4e8;flex-shrink:0;white-space:nowrap}
+.community-text{font-size:12px;line-height:1.6;color:#333;margin-bottom:.55rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-family:'Noto Serif JP',serif}
+.community-thumb{display:flex;gap:5px;margin-bottom:.55rem}
+.community-thumb-img{flex:1;aspect-ratio:1;border-radius:6px;overflow:hidden;background:#e8e0d0;max-width:33%;position:relative}
+.community-thumb-img img{width:100%;height:100%;object-fit:cover;display:block}
+.community-thumb-more{display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Shippori Mincho',serif;font-size:13px;font-weight:700;background:rgba(58,29,93,.65);position:absolute;inset:0;text-shadow:0 1px 2px rgba(0,0,0,.5)}
+.community-meta{display:flex;align-items:center;justify-content:space-between;font-size:10px;color:#888;font-family:'Noto Serif JP',serif}
+.community-user{display:flex;align-items:center;gap:5px}
+.community-avatar{width:18px;height:18px;border-radius:50%;background:linear-gradient(135deg,#c9a84c,#e3c879);color:#3a2800;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;font-family:'Shippori Mincho',serif;flex-shrink:0}
+.community-stats{display:flex;gap:10px;color:#999}
+.community-stats .heart{color:#d85a3a;font-weight:600}
+.community-foot{display:flex;gap:8px;margin-top:.85rem;padding-top:.85rem;border-top:.5px solid var(--kara);position:relative;z-index:1}
+.community-btn{flex:1;padding:11px;border-radius:10px;font-size:12px;font-family:'Shippori Mincho',serif;font-weight:600;letter-spacing:.05em;cursor:pointer;border:none;transition:transform .15s var(--ease)}
+.community-btn:active{transform:scale(.985)}
+.community-btn-primary{background:linear-gradient(135deg,#e3c879 0%,#c9a84c 55%,#a98a38 100%);color:#3a2800;box-shadow:inset 0 0 0 1px rgba(255,255,255,.4),0 3px 10px -3px rgba(169,138,56,.55);text-shadow:0 1px 1px rgba(255,255,255,.35);display:flex;align-items:center;justify-content:center;gap:5px}
+.community-btn-secondary{background:#fff;color:var(--red-d);border:.5px solid var(--gold);display:flex;align-items:center;justify-content:center;gap:5px}
+.community-btn svg{width:13px;height:13px}
 </style>
 </head>
 <body>
@@ -729,6 +766,39 @@ html,body{margin:0;padding:0;background:var(--washi)}
   </button>
   <div class="rmeta" id="rmeta">全国 <span>5件</span> のおすすめ神社</div>
   <div id="list"></div>
+</div>
+
+<!-- ★ みんなの最新投稿（コミュニティ） -->
+<div class="community-section">
+  <div class="community-box">
+    <div class="community-hd">
+      <div class="community-hd-left">
+        <div class="community-icon">
+          <svg viewBox="0 0 16 16" fill="none">
+            <path d="M2 4h12v8l-3-1-3 2-3-2-3 1V4z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
+            <circle cx="6" cy="8" r="0.8" fill="currentColor"/>
+            <circle cx="10" cy="8" r="0.8" fill="currentColor"/>
+          </svg>
+        </div>
+        <div class="community-tit-wrap">
+          <div class="community-tit">みんなの最新投稿</div>
+          <div class="community-cnt" id="communityCnt">12,847件の参拝記録</div>
+        </div>
+      </div>
+      <div class="community-badge">本日 <span class="num" id="communityToday">217</span>件</div>
+    </div>
+    <div class="community-list" id="communityList"></div>
+    <div class="community-foot">
+      <button class="community-btn community-btn-secondary" onclick="openCommunityAll()">
+        <svg viewBox="0 0 14 14" fill="none"><rect x="2" y="2" width="10" height="10" rx="1" stroke="currentColor" stroke-width="1.3"/><line x1="4" y1="5" x2="10" y2="5" stroke="currentColor" stroke-width="1"/><line x1="4" y1="8" x2="10" y2="8" stroke="currentColor" stroke-width="1"/><line x1="4" y1="11" x2="7" y2="11" stroke="currentColor" stroke-width="1"/></svg>
+        もっと見る
+      </button>
+      <button class="community-btn community-btn-primary" onclick="openCommunityPost()">
+        <svg viewBox="0 0 14 14" fill="none"><path d="M11 2L12 3L5 10L3 11L4 9L11 2Z" stroke="#3a2800" stroke-width="1.5" stroke-linejoin="round" fill="none"/></svg>
+        参拝を投稿する
+      </button>
+    </div>
+  </div>
 </div>
 
 <!-- ① おすすめ記事 -->
@@ -1735,6 +1805,64 @@ function renderEstateList(target, limit){
   document.getElementById(target).innerHTML = html;
 }
 
+// みんなの最新投稿（コミュニティ）
+function renderCommunityList(target, limit){
+  if (typeof USER_POSTS === 'undefined') return;
+  var items = limit ? USER_POSTS.slice(0, limit) : USER_POSTS;
+  var visitNumMap = { p1:'2回目', p2:'1回目', p3:'5回目', p4:'3回目', p5:'1回目', p6:'2回目', p7:'1回目', p8:'4回目' };
+  var stationMap = {
+    '鶴岡八幡宮':'JR鎌倉駅', '伏見稲荷大社':'JR稲荷駅', '明治神宮':'JR原宿駅',
+    '清水寺':'京都市バス清水道', '熱田神宮':'名鉄神宮前駅', '住吉大社':'南海住吉大社駅',
+    '太宰府天満宮':'西鉄太宰府駅', '神田明神':'JRお茶の水駅'
+  };
+  var html = items.map(function(p){
+    var station = stationMap[p.shrine] || (p.area + 'エリア');
+    var visitNo = visitNumMap[p.id] || '1回目';
+    var text = (p.text || '').replace(/\n\n/g, ' ').replace(/\n/g, ' ');
+    // 投稿画像が1枚しかないので、3枚表示風に見せる
+    var thumbHtml = '';
+    if (p.img) {
+      thumbHtml = '<div class="community-thumb">' +
+        '<div class="community-thumb-img"><img src="' + p.img + '" alt="" loading="lazy" onerror="this.style.display=\'none\'"></div>' +
+        '<div class="community-thumb-img"><img src="' + p.img + '" alt="" loading="lazy" onerror="this.style.display=\'none\'" style="object-position:right"></div>' +
+        '<div class="community-thumb-img"><img src="' + p.img + '" alt="" loading="lazy" onerror="this.style.display=\'none\'" style="object-position:bottom"><div class="community-thumb-more">+3</div></div>' +
+      '</div>';
+    }
+    return '<div class="community-post" onclick="openPostDetail(\'' + p.id + '\')">' +
+      '<div class="community-post-hd">' +
+        '<div>' +
+          '<div class="community-shrine">' + p.shrine + '</div>' +
+          '<div class="community-station">' + station + '</div>' +
+        '</div>' +
+        '<div class="community-count">' + visitNo + '</div>' +
+      '</div>' +
+      '<div class="community-text">' + text + '</div>' +
+      thumbHtml +
+      '<div class="community-meta">' +
+        '<div class="community-user">' +
+          '<div class="community-avatar">' + p.avatar + '</div>' +
+          '<span>' + p.user + 'さん</span>' +
+          '<span style="color:#bbb">・ ' + p.date + '</span>' +
+        '</div>' +
+        '<div class="community-stats">' +
+          '<span class="heart">♡ ' + p.likes + '</span>' +
+          '<span>💬 ' + p.comments.length + '</span>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+  document.getElementById(target).innerHTML = html;
+}
+
+function openCommunityAll(){
+  // 既存のエリア検索ページ（全件表示モード）を流用
+  if (typeof openAreaSearch === 'function') openAreaSearch('all');
+}
+
+function openCommunityPost(){
+  if (typeof showToast === 'function') showToast('参拝投稿機能は現在準備中です');
+}
+
 // 終活・供養
 function renderShukatsuList(target, limit){
   var items = limit ? SHUKATSU.slice(0, limit) : SHUKATSU;
@@ -1846,6 +1974,7 @@ window.addEventListener('DOMContentLoaded', function(){
     renderEcGrid('ecGrid', 4);
     renderShukatsuList('shukatsuList', 4);
     renderEstateList('estateList', 2);
+    renderCommunityList('communityList', 4);
   } catch(e) { console.warn('home sections render error:', e); }
 });
 
