@@ -4220,7 +4220,6 @@ function showShrinesNearLocation(lat, lng){
 
   showMapArea();
   initMap(lat, lng);
-  if (mapInstance) mapInstance.setZoom(14);
 
   if (list.length === 0) {
     // 周辺にDBデータがない場合は全国表示
@@ -4242,6 +4241,13 @@ function showShrinesNearLocation(lat, lng){
         strokeColor: '#fff', strokeWeight: 2, scale: 7
       }
     });
+    // マーカー全体が見えるようズーム自動調整
+    try {
+      var bounds = new google.maps.LatLngBounds();
+      bounds.extend({ lat: lat, lng: lng });
+      list.forEach(function(s){ bounds.extend({ lat: s.lat, lng: s.lng }); });
+      mapInstance.fitBounds(bounds, 40);
+    } catch(e) { console.warn('fitBounds失敗:', e); }
   }
   document.getElementById('resCount').textContent = '周辺 ' + list.length + '件';
   document.getElementById('rmeta').innerHTML = '周辺のお社 <span>' + list.length + '件</span>';
@@ -4252,21 +4258,30 @@ function showShrinesNearLocation(lat, lng){
 
 // 「この場所で再検索」用：既存マーカーに追加
 function addPinsToMap(shrines){
+  if (!window.google || !window.google.maps) return;
+  var added = 0;
   shrines.forEach(function(s){
     if (!s.lat || !s.lng) return;
-    var marker = new google.maps.Marker({
-      position: { lat: s.lat, lng: s.lng },
-      map: mapInstance,
-      title: s.name,
-      icon: {
-        path: google.maps.SymbolPath.CIRCLE,
-        fillColor: '#d97706', fillOpacity: 1,
-        strokeColor: '#fff', strokeWeight: 1.5, scale: 7
-      }
-    });
-    marker.addListener('click', function(){ showMapCard(s); });
-    mapMarkers.push(marker);
+    try {
+      var iconUrl = getPinIcon(s);
+      var marker = new google.maps.Marker({
+        position: { lat: s.lat, lng: s.lng },
+        map: mapInstance,
+        title: s.name,
+        icon: {
+          url: iconUrl,
+          scaledSize: new google.maps.Size(32, 32),
+          anchor: new google.maps.Point(16, 32)
+        }
+      });
+      marker.addListener('click', function(){ showMapCard(s); });
+      mapMarkers.push(marker);
+      added++;
+    } catch(e) {
+      console.warn('addPinsToMap マーカー失敗:', s.name, e);
+    }
   });
+  console.log('[addPinsToMap] 追加:', added, '/', shrines.length, '件');
 }
 
 // 「この場所で再検索」ボタン用：現在のマップ中心でAPI検索
