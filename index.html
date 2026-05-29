@@ -15,7 +15,8 @@
 .app[data-theme="shrine"]{--red:#a83320;--red-d:#8a2417;--red-l:#fce8e4}
 /* テーマ色がスムーズに切り替わるよう、色を使う要素にtransitionを */
 .app .tagbar,.app .api-btn,.app .secln,.app .btn-search,.app .srch-btn{transition:background .35s var(--ease),border-color .35s var(--ease),color .35s var(--ease),box-shadow .35s var(--ease)}
-.app{max-width:390px;margin:0 auto;background:var(--washi);font-family:'Noto Serif JP',serif}
+.app{width:100%;max-width:500px;margin:0 auto;background:var(--washi);font-family:'Noto Serif JP',serif}
+html,body{margin:0;padding:0;background:var(--washi)}
 .hero{position:relative;height:260px;overflow:hidden;background:#1a2a1a}
 .hero-img{width:100%;height:100%;object-fit:cover;object-position:center 35%;display:block}
 .hero-ov{position:absolute;inset:0;background:rgba(5,12,5,0.42)}
@@ -100,7 +101,7 @@
 .bv{font-size:9px;background:var(--gold);color:#3a2800;padding:2px 8px;border-radius:20px}
 .bn{font-size:9px;background:var(--red-l);color:var(--red-d);padding:2px 8px;border-radius:20px;border:.5px solid #d4c4e8}
 /* AIルート生成ボタン（ホーム画面） */
-.ai-route-banner{margin:0 1.25rem;background:linear-gradient(135deg,#2a124a 0%,#2a124a 60%,#4d2d75 100%);border:1px solid var(--gold);border-radius:14px;padding:.95rem 1rem;display:flex;align-items:center;gap:12px;cursor:pointer;box-shadow:0 4px 16px -4px rgba(42,18,74,.45),0 0 0 1px rgba(201,168,76,.18);transition:transform .2s var(--ease),box-shadow .2s var(--ease);position:relative;overflow:hidden}
+.ai-route-banner{margin:0 1.25rem;background:linear-gradient(135deg,var(--red-d) 0%,var(--red-d) 60%,var(--red) 100%);border:1px solid var(--gold);border-radius:14px;padding:.95rem 1rem;display:flex;align-items:center;gap:12px;cursor:pointer;box-shadow:0 4px 16px -4px rgba(42,18,74,.45),0 0 0 1px rgba(201,168,76,.18);transition:transform .2s var(--ease),box-shadow .2s var(--ease),background .35s var(--ease);position:relative;overflow:hidden}
 .ai-route-banner:hover{transform:translateY(-1px);box-shadow:0 8px 22px -6px rgba(42,18,74,.55),0 0 0 1px rgba(201,168,76,.35)}
 .ai-route-banner:active{transform:scale(.985)}
 .ai-route-banner::before{content:"";position:absolute;top:-20px;right:-20px;width:80px;height:80px;background:radial-gradient(circle,rgba(201,168,76,.25),transparent 70%);pointer-events:none}
@@ -111,7 +112,7 @@
 .ai-route-sub{font-size:10px;color:rgba(255,255,255,.7);margin-top:3px;line-height:1.4}
 .ai-arrow{color:var(--gold);font-size:18px;z-index:1}
 /* AIルート入力ページ */
-.ai-page-hd{background:linear-gradient(180deg,#2a124a,#2a124a);padding:.9rem 1.25rem;display:flex;align-items:center;gap:10px;flex-shrink:0}
+.ai-page-hd{background:linear-gradient(180deg,var(--red-d),var(--red-d));padding:.9rem 1.25rem;display:flex;align-items:center;gap:10px;flex-shrink:0;transition:background .35s var(--ease)}
 .ai-back{cursor:pointer;color:rgba(255,255,255,.85);font-size:24px;line-height:1}
 .ai-page-tit{font-family:'Shippori Mincho',serif;font-size:15px;font-weight:800;color:#fff;letter-spacing:.1em;flex:1}
 .ai-counter{font-size:10px;color:var(--gold);background:rgba(0,0,0,.25);border:.5px solid rgba(201,168,76,.4);padding:3px 9px;border-radius:12px;letter-spacing:.05em}
@@ -163,9 +164,9 @@
 .ai-limit-btn.secondary{background:#fff;color:#666;border:.5px solid #ccc}
 /* AIルート結果ページ（マップ＋下部カード式） */
 #pgAiResult{display:none;flex-direction:column;position:fixed;inset:0;z-index:100;background:#e8e4dc}
-#pgAiResult > *{max-width:390px;margin-left:auto;margin-right:auto;width:100%}
+#pgAiResult > *{max-width:500px;margin-left:auto;margin-right:auto;width:100%}
 /* AIルート入力ページの中身も390px制限 */
-#pgAiRoute > *{max-width:390px;margin-left:auto;margin-right:auto;width:100%}
+#pgAiRoute > *{max-width:500px;margin-left:auto;margin-right:auto;width:100%}
 .ai-result-map{flex:1;width:100%;min-height:0;background:#e8e4dc;position:relative}
 #aiMapCanvas{width:100%;height:100%;background:#e8e4dc}
 .ai-map-overlay{position:absolute;top:10px;left:10px;right:10px;background:rgba(255,255,255,.95);border:.5px solid var(--gold);border-radius:10px;padding:.55rem .85rem;display:flex;align-items:center;gap:10px;box-shadow:0 2px 10px rgba(0,0,0,.12);backdrop-filter:blur(6px);z-index:5}
@@ -208,7 +209,7 @@
 
 /* 新規登録・ログインページ */
 .reg-bg{background:linear-gradient(180deg,#3a1408 0%,#2a124a 40%,#2a124a 100%);min-height:100vh;color:#fff}
-.reg-bg > *{max-width:390px;margin-left:auto;margin-right:auto}
+.reg-bg > *{max-width:500px;margin-left:auto;margin-right:auto}
 .reg-hd{padding:1rem 1.25rem;display:flex;align-items:center;gap:10px}
 .reg-back{cursor:pointer;color:rgba(255,255,255,.85);font-size:24px;line-height:1}
 .reg-hd-tit{font-family:'Shippori Mincho',serif;font-size:15px;font-weight:800;color:#fff;letter-spacing:.1em;flex:1}
@@ -241,8 +242,8 @@
 
 /* 神社詳細ページ */
 .sd-bg{background:var(--washi);min-height:100vh;padding-bottom:5rem}
-.sd-bg > *{max-width:390px;margin-left:auto;margin-right:auto}
-.sd-hd{position:sticky;top:0;background:linear-gradient(180deg,#2a124a,#2a124a);padding:.85rem 1.25rem;display:flex;align-items:center;gap:10px;z-index:20;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.sd-bg > *{max-width:500px;margin-left:auto;margin-right:auto}
+.sd-hd{position:sticky;top:0;background:linear-gradient(180deg,var(--red-d),var(--red-d));padding:.85rem 1.25rem;display:flex;align-items:center;gap:10px;z-index:20;box-shadow:0 2px 8px rgba(0,0,0,.15);transition:background .35s var(--ease)}
 .sd-back{cursor:pointer;color:rgba(255,255,255,.85);font-size:24px;line-height:1}
 .sd-hd-tit{font-family:'Shippori Mincho',serif;font-size:14px;font-weight:800;color:#fff;letter-spacing:.08em;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sd-share{cursor:pointer;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.12);border:.5px solid rgba(201,168,76,.4);display:flex;align-items:center;justify-content:center;color:var(--gold)}
@@ -394,7 +395,7 @@
 .article-detail{background:#fff;min-height:100vh}
 .article-hero{width:100%;aspect-ratio:16/9;background:linear-gradient(135deg,#3a1d5d,#5d3a8a);position:relative;overflow:hidden}
 .article-hero img{width:100%;height:100%;object-fit:cover;display:block}
-.article-cont{padding:1.5rem 1.25rem;max-width:390px;margin:0 auto}
+.article-cont{padding:1.5rem 1.25rem;max-width:500px;margin:0 auto}
 .article-cat{display:inline-block;background:var(--gold);color:#fff;font-size:10px;padding:3px 10px;border-radius:10px;font-family:'Shippori Mincho',serif;letter-spacing:.05em;margin-bottom:.8rem}
 .article-title{font-family:'Shippori Mincho',serif;font-size:20px;font-weight:700;color:#222;line-height:1.5;margin-bottom:.8rem}
 .article-meta{font-size:11px;color:#999;margin-bottom:1.5rem;display:flex;gap:10px;align-items:center;font-family:'Noto Serif JP',serif;padding-bottom:1rem;border-bottom:.5px solid #eee}
@@ -455,7 +456,7 @@
 
 /* エリア検索ページ */
 .area-pg-bg{background:var(--washi);min-height:100vh;padding-bottom:5rem}
-.area-pg-bg > *{max-width:390px;margin-left:auto;margin-right:auto}
+.area-pg-bg > *{max-width:500px;margin-left:auto;margin-right:auto}
 .area-pg-hd{position:sticky;top:0;background:linear-gradient(180deg,var(--red-d),#3a1d5d);padding:.85rem 1.25rem;display:flex;align-items:center;gap:10px;z-index:20;box-shadow:0 2px 8px rgba(0,0,0,.15)}
 .area-pg-back{cursor:pointer;color:rgba(255,255,255,.85);font-size:24px;line-height:1}
 .area-pg-tit{font-family:'Shippori Mincho',serif;font-size:14px;font-weight:800;color:#fff;letter-spacing:.08em;flex:1}
@@ -484,7 +485,7 @@
 
 /* 投稿詳細ページ */
 .post-detail-bg{background:#000;min-height:100vh;color:#fff}
-.post-detail-bg > *{max-width:390px;margin-left:auto;margin-right:auto}
+.post-detail-bg > *{max-width:500px;margin-left:auto;margin-right:auto}
 .post-detail-hd{position:sticky;top:0;background:linear-gradient(180deg,rgba(0,0,0,.85),transparent);padding:.85rem 1.25rem;display:flex;align-items:center;gap:10px;z-index:20}
 .post-detail-back{cursor:pointer;color:#fff;font-size:24px;line-height:1}
 .post-detail-hd-tit{font-family:'Shippori Mincho',serif;font-size:13px;font-weight:800;color:#fff;letter-spacing:.08em;flex:1}
@@ -538,7 +539,7 @@
 /* 地図全画面ページ */
 .maparea{display:none!important}
 #pgMap{display:none;flex-direction:column;position:fixed;inset:0;z-index:100;background:#fff}
-#pgMap > *{max-width:390px;margin-left:auto;margin-right:auto;width:100%}
+#pgMap > *{max-width:500px;margin-left:auto;margin-right:auto;width:100%}
 #mapCanvas{flex:1;width:100%;min-height:0;background:#e8e4dc}
 .map-loc-btn{position:absolute;bottom:20px;right:10px;background:#fff;border:1px solid var(--gold);border-radius:20px;padding:5px 12px;font-size:11px;font-family:'Noto Serif JP',serif;color:var(--ma);cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.15);display:flex;align-items:center;gap:4px;z-index:5}
 .map-info-card{position:absolute;bottom:60px;left:10px;right:10px;background:#fff;border-radius:10px;box-shadow:0 4px 16px rgba(0,0,0,.18);padding:.6rem .75rem;display:none;align-items:center;gap:8px;border:.5px solid var(--kara);z-index:5}
@@ -558,7 +559,7 @@
 .srch-chip{display:inline-flex;align-items:center;gap:4px;border:.5px solid var(--kara);border-radius:20px;padding:5px 13px;font-size:11px;color:var(--ma);cursor:pointer;background:#fff;font-family:'Noto Serif JP',serif;transition:all .18s}
 .srch-chip:active{transform:scale(.95)}
 .srch-chip.on{background:var(--red-l);border-color:var(--red);color:var(--red-d);font-weight:600}
-.srch-btn{width:100%;background:linear-gradient(180deg,#a83320,#8a2417);color:#fff;border:1px solid var(--gold);border-radius:12px;padding:.95rem;font-family:'Shippori Mincho',serif;font-size:14px;font-weight:600;letter-spacing:.1em;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;box-shadow:inset 0 0 0 1px rgba(201,168,76,.35),0 4px 14px -4px rgba(58,29,93,.55);margin-top:.5rem}
+.srch-btn{width:100%;background:linear-gradient(180deg,#d4b890,#c8a97e);color:#fff;border:1px solid var(--gold);border-radius:12px;padding:.95rem;font-family:'Shippori Mincho',serif;font-size:14px;font-weight:600;letter-spacing:.1em;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.25),0 4px 14px -4px rgba(168,138,80,.55);margin-top:.5rem;text-shadow:0 1px 2px rgba(80,60,30,.25)}
 .srch-pref{width:100%;background:#fff;border:.5px solid var(--kara);border-radius:8px;padding:.6rem .875rem;font-family:'Noto Serif JP',serif;font-size:12px;color:var(--ma);cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23999'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:30px;margin-bottom:.875rem}
 </style>
 </head>
@@ -722,7 +723,7 @@
       <option value="visited">参拝済のみ</option>
     </select>
   </div>
-  <button onclick="filter()" class="btn-search" style="width:100%;background:linear-gradient(180deg,#a83320,#8a2417);color:#fff;border:1px solid var(--gold);border-radius:12px;padding:.95rem;font-family:'Shippori Mincho',serif;font-size:14px;font-weight:600;letter-spacing:.1em;cursor:pointer;margin-bottom:1rem;display:flex;align-items:center;justify-content:center;gap:7px;box-shadow:inset 0 0 0 1px rgba(201,168,76,.35),0 4px 14px -4px rgba(58,29,93,.55);transition:transform .16s var(--ease),box-shadow .2s var(--ease)">
+  <button onclick="filter()" class="btn-search" style="width:100%;background:linear-gradient(180deg,#d4b890,#c8a97e);color:#fff;border:1px solid var(--gold);border-radius:12px;padding:.95rem;font-family:'Shippori Mincho',serif;font-size:14px;font-weight:600;letter-spacing:.1em;cursor:pointer;margin-bottom:1rem;display:flex;align-items:center;justify-content:center;gap:7px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.25),0 4px 14px -4px rgba(168,138,80,.55);transition:transform .16s var(--ease),box-shadow .2s var(--ease);text-shadow:0 1px 2px rgba(80,60,30,.25)">
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5" stroke="#fff" stroke-width="1.5"/><line x1="11" y1="11" x2="15" y2="15" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
     この条件で検索する
   </button>
@@ -1392,7 +1393,7 @@
 
 <!-- 御朱印投稿モーダル -->
 <div id="goshuinModal" style="position:fixed;inset:0;background:rgba(10,26,15,.72);display:none;align-items:flex-end;justify-content:center;z-index:200">
-  <div style="background:var(--washi);border-radius:20px 20px 0 0;padding:1.5rem 1.5rem 2.5rem;width:100%;max-width:390px">
+  <div style="background:var(--washi);border-radius:20px 20px 0 0;padding:1.5rem 1.5rem 2.5rem;width:100%;max-width:500px">
     <div style="width:34px;height:3px;background:#e8e0d0;border-radius:2px;margin:0 auto 1.25rem"></div>
     <div style="font-family:'Shippori Mincho',serif;font-size:16px;font-weight:800;color:var(--ma);text-align:center;margin-bottom:.4rem">
       御朱印を登録する
@@ -1411,7 +1412,7 @@
 
 <!-- MODAL -->
 <div id="modalVp" style="position:fixed;inset:0;background:rgba(10,26,15,.72);display:none;align-items:flex-end;justify-content:center;z-index:100">
-  <div style="background:var(--washi);border-radius:20px 20px 0 0;padding:1.5rem 1.5rem 2rem;width:100%;max-width:390px">
+  <div style="background:var(--washi);border-radius:20px 20px 0 0;padding:1.5rem 1.5rem 2rem;width:100%;max-width:500px">
     <div style="width:34px;height:3px;background:#e8e0d0;border-radius:2px;margin:0 auto 1.25rem"></div>
     <div style="font-family:'Shippori Mincho',serif;font-size:16px;font-weight:800;color:var(--ma);text-align:center;margin-bottom:4px">神社への参拝を記録</div>
     <input id="mPlace" type="text" placeholder="神社名" style="width:100%;border:.5px solid #e8e0d0;border-radius:8px;padding:.7rem 1rem;font-family:'Noto Serif JP',serif;font-size:14px;background:#fff;color:var(--ma);margin-bottom:.75rem;outline:none;display:block">
