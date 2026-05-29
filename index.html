@@ -2565,18 +2565,34 @@ function initMap(lat, lng){
   setTimeout(function(){ google.maps.event.trigger(mapInstance,'resize'); mapInstance.setCenter(center); }, 400);
 }
 
+// マーカー画像（SVG・Base64埋め込み・神社=赤×白「神」・寺=紫×白「寺」）
+const MARKER_ICON_SHRINE = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjggMTI4IiB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCI+CiAgPGRlZnM+CiAgICA8ZmlsdGVyIGlkPSJzaGFkb3ciIHg9Ii0yMCUiIHk9Ii0yMCUiIHdpZHRoPSIxNDAlIiBoZWlnaHQ9IjE0MCUiPgogICAgICA8ZmVHYXVzc2lhbkJsdXIgaW49IlNvdXJjZUFscGhhIiBzdGREZXZpYXRpb249IjIuNSIvPgogICAgICA8ZmVPZmZzZXQgZHg9IjAiIGR5PSIyIiByZXN1bHQ9Im9mZnNldGJsdXIiLz4KICAgICAgPGZlQ29tcG9uZW50VHJhbnNmZXI+PGZlRnVuY0EgdHlwZT0ibGluZWFyIiBzbG9wZT0iMC40NSIvPjwvZmVDb21wb25lbnRUcmFuc2Zlcj4KICAgICAgPGZlTWVyZ2U+PGZlTWVyZ2VOb2RlLz48ZmVNZXJnZU5vZGUgaW49IlNvdXJjZUdyYXBoaWMiLz48L2ZlTWVyZ2U+CiAgICA8L2ZpbHRlcj4KICAgIDxyYWRpYWxHcmFkaWVudCBpZD0ic2hyaW5lR3JhZCIgY3g9IjUwJSIgY3k9IjQwJSIgcj0iNjAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2Q5NGEzYSIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNhODMzMjAiLz4KICAgIDwvcmFkaWFsR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxnIGZpbHRlcj0idXJsKCNzaGFkb3cpIj4KICAgIDxwYXRoIGQ9Ik02NCA4IEMzNiA4IDE4IDI2IDE4IDUwIEMxOCA3OCA2NCAxMjAgNjQgMTIwIEM2NCAxMjAgMTEwIDc4IDExMCA1MCBDMTEwIDI2IDkyIDggNjQgOCBaIgogICAgICAgICAgZmlsbD0idXJsKCNzaHJpbmVHcmFkKSIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjQiLz4KICAgIDxjaXJjbGUgY3g9IjY0IiBjeT0iNDgiIHI9IjMwIiBmaWxsPSIjZmZmIiBvcGFjaXR5PSIwLjk1Ii8+CiAgICA8dGV4dCB4PSI2NCIgeT0iNjIiIGZvbnQtZmFtaWx5PSInU2hpcHBvcmkgTWluY2hvJywnWXUgTWluY2hvJyxzZXJpZiIgZm9udC1zaXplPSIzOCIgZm9udC13ZWlnaHQ9IjcwMCIKICAgICAgICAgIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiNhODMzMjAiPuelnjwvdGV4dD4KICA8L2c+Cjwvc3ZnPgo=';
+const MARKER_ICON_TEMPLE = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjggMTI4IiB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCI+CiAgPGRlZnM+CiAgICA8ZmlsdGVyIGlkPSJzaGFkb3cyIiB4PSItMjAlIiB5PSItMjAlIiB3aWR0aD0iMTQwJSIgaGVpZ2h0PSIxNDAlIj4KICAgICAgPGZlR2F1c3NpYW5CbHVyIGluPSJTb3VyY2VBbHBoYSIgc3RkRGV2aWF0aW9uPSIyLjUiLz4KICAgICAgPGZlT2Zmc2V0IGR4PSIwIiBkeT0iMiIgcmVzdWx0PSJvZmZzZXRibHVyIi8+CiAgICAgIDxmZUNvbXBvbmVudFRyYW5zZmVyPjxmZUZ1bmNBIHR5cGU9ImxpbmVhciIgc2xvcGU9IjAuNDUiLz48L2ZlQ29tcG9uZW50VHJhbnNmZXI+CiAgICAgIDxmZU1lcmdlPjxmZU1lcmdlTm9kZS8+PGZlTWVyZ2VOb2RlIGluPSJTb3VyY2VHcmFwaGljIi8+PC9mZU1lcmdlPgogICAgPC9maWx0ZXI+CiAgICA8cmFkaWFsR3JhZGllbnQgaWQ9InRlbXBsZUdyYWQiIGN4PSI1MCUiIGN5PSI0MCUiIHI9IjYwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiM1ZDNhOGEiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjM2ExZDVkIi8+CiAgICA8L3JhZGlhbEdyYWRpZW50PgogIDwvZGVmcz4KICA8ZyBmaWx0ZXI9InVybCgjc2hhZG93MikiPgogICAgPHBhdGggZD0iTTY0IDggQzM2IDggMTggMjYgMTggNTAgQzE4IDc4IDY0IDEyMCA2NCAxMjAgQzY0IDEyMCAxMTAgNzggMTEwIDUwIEMxMTAgMjYgOTIgOCA2NCA4IFoiCiAgICAgICAgICBmaWxsPSJ1cmwoI3RlbXBsZUdyYWQpIiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iNCIvPgogICAgPGNpcmNsZSBjeD0iNjQiIGN5PSI0OCIgcj0iMzAiIGZpbGw9IiNmZmYiIG9wYWNpdHk9IjAuOTUiLz4KICAgIDx0ZXh0IHg9IjY0IiB5PSI2MiIgZm9udC1mYW1pbHk9IidTaGlwcG9yaSBNaW5jaG8nLCdZdSBNaW5jaG8nLHNlcmlmIiBmb250LXNpemU9IjM4IiBmb250LXdlaWdodD0iNzAwIgogICAgICAgICAgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iIzNhMWQ1ZCI+5a+6PC90ZXh0PgogIDwvZz4KPC9zdmc+Cg==';
+
+// 神社/寺の判定（既存DBの type または name から推定）
+function getPinIcon(s){
+  // タイプフィールドがあればそれを優先
+  if (s.type === 'temple' || s.type === '寺') return MARKER_ICON_TEMPLE;
+  if (s.type === 'shrine' || s.type === '神社') return MARKER_ICON_SHRINE;
+  // 名前から推定（〇〇寺・〇〇院・〇〇庵→寺、それ以外→神社）
+  var nm = s.name || '';
+  if (/寺$|院$|庵$|坊$|大師$/.test(nm)) return MARKER_ICON_TEMPLE;
+  return MARKER_ICON_SHRINE;
+}
+
 function placePins(shrines){
   clearMarkers();
   shrines.forEach(function(s){
     if (!s.lat || !s.lng) return;
+    var iconUrl = getPinIcon(s);
     var marker = new google.maps.Marker({
       position: { lat: s.lat, lng: s.lng },
       map: mapInstance,
       title: s.name,
       icon: {
-        path: google.maps.SymbolPath.CIRCLE,
-        fillColor: '#3a1d5d', fillOpacity: 1,
-        strokeColor: '#c9a84c', strokeWeight: 1.5, scale: 8
+        url: iconUrl,
+        scaledSize: new google.maps.Size(32, 32),
+        anchor: new google.maps.Point(16, 32)
       }
     });
     marker.addListener('click', function(){ showMapCard(s); });
