@@ -158,7 +158,10 @@
 .ai-limit-btn.primary{background:var(--red-d);color:#fff}
 .ai-limit-btn.secondary{background:#fff;color:#666;border:.5px solid #ccc}
 /* AIルート結果ページ（マップ＋下部カード式） */
-#pgAiResult{display:none;flex-direction:column;position:fixed;inset:0;z-index:100;background:#e8e4dc;max-width:390px;margin:0 auto;left:50%;transform:translateX(-50%)}
+#pgAiResult{display:none;flex-direction:column;position:fixed;inset:0;z-index:100;background:#e8e4dc}
+#pgAiResult > *{max-width:390px;margin-left:auto;margin-right:auto;width:100%}
+/* AIルート入力ページの中身も390px制限 */
+#pgAiRoute > *{max-width:390px;margin-left:auto;margin-right:auto;width:100%}
 .ai-result-map{flex:1;width:100%;min-height:0;background:#e8e4dc;position:relative}
 #aiMapCanvas{width:100%;height:100%;background:#e8e4dc}
 .ai-map-overlay{position:absolute;top:10px;left:10px;right:10px;background:rgba(255,255,255,.95);border:.5px solid var(--gold);border-radius:10px;padding:.55rem .85rem;display:flex;align-items:center;gap:10px;box-shadow:0 2px 10px rgba(0,0,0,.12);backdrop-filter:blur(6px);z-index:5}
@@ -530,7 +533,8 @@
 .pg{display:none}.pg.on{display:block}
 /* 地図全画面ページ */
 .maparea{display:none!important}
-#pgMap{display:none;flex-direction:column;position:fixed;inset:0;z-index:100;background:#fff;max-width:390px;margin:0 auto;left:50%;transform:translateX(-50%)}
+#pgMap{display:none;flex-direction:column;position:fixed;inset:0;z-index:100;background:#fff}
+#pgMap > *{max-width:390px;margin-left:auto;margin-right:auto;width:100%}
 #mapCanvas{flex:1;width:100%;min-height:0;background:#e8e4dc}
 .map-loc-btn{position:absolute;bottom:20px;right:10px;background:#fff;border:1px solid var(--gold);border-radius:20px;padding:5px 12px;font-size:11px;font-family:'Noto Serif JP',serif;color:var(--ma);cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.15);display:flex;align-items:center;gap:4px;z-index:5}
 .map-info-card{position:absolute;bottom:60px;left:10px;right:10px;background:#fff;border-radius:10px;box-shadow:0 4px 16px rgba(0,0,0,.18);padding:.6rem .75rem;display:none;align-items:center;gap:8px;border:.5px solid var(--kara);z-index:5}
@@ -1064,7 +1068,7 @@
 </button>
 
 <!-- AIルート生成・入力ページ -->
-<div id="pgAiRoute" style="display:none;flex-direction:column;position:fixed;inset:0;z-index:100;background:var(--washi);overflow-y:auto;max-width:390px;margin:0 auto;left:50%;transform:translateX(-50%)">
+<div id="pgAiRoute" style="display:none;flex-direction:column;position:fixed;inset:0;z-index:100;background:var(--washi);overflow-y:auto">
   <div class="ai-page-hd">
     <div class="ai-back" onclick="closeAiRoute()">‹</div>
     <div class="ai-page-tit">AI御朱印巡りルート</div>
@@ -1201,7 +1205,7 @@
     </div>
   </div>
 </div>
-<div id="pgMap" style="display:none;flex-direction:column;position:fixed;inset:0;z-index:100;background:#fff;max-width:390px;margin:0 auto;left:50%;transform:translateX(-50%)">
+<div id="pgMap" style="display:none;flex-direction:column;position:fixed;inset:0;z-index:100;background:#fff">
   <div style="background:var(--red);padding:.9rem 1.25rem;display:flex;align-items:center;gap:10px;flex-shrink:0">
     <div onclick="closeMapPage()" style="cursor:pointer;color:rgba(255,255,255,.8);font-size:24px;line-height:1">‹</div>
     <div style="font-family:'Shippori Mincho',serif;font-size:15px;font-weight:800;color:#fff;letter-spacing:.1em;flex:1">地図から探す</div>
