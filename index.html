@@ -23,20 +23,21 @@ html,body{margin:0;padding:0;background:var(--washi)}
 .hero-ct{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:0 1.25rem .85rem}
 .hero-top{display:flex;align-items:flex-start;justify-content:center}
 /* ─── ホトカミ風ヘッダー（画像上部・独立バー）3カラム ─── */
-.site-hd{background:linear-gradient(180deg,var(--red-d) 0%,var(--red) 100%);padding:.65rem .9rem;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:8px;border-bottom:1px solid var(--gold);box-shadow:0 2px 8px rgba(0,0,0,.18);transition:background .35s var(--ease)}
+.site-hd{background:linear-gradient(180deg,var(--red-d) 0%,var(--red) 100%);padding:.45rem .8rem;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:8px;border-bottom:1px solid var(--gold);box-shadow:0 2px 8px rgba(0,0,0,.18);transition:background .35s var(--ease)}
 .site-hd-logo{display:flex;flex-direction:column;line-height:1;cursor:pointer}
-.site-hd-tit{font-family:'Shippori Mincho',serif;font-size:19px;font-weight:800;color:var(--gold);letter-spacing:.03em;line-height:1;text-shadow:0 1px 2px rgba(0,0,0,.35)}
-.site-hd-sub{font-family:'Shippori Mincho',serif;font-size:9px;color:rgba(255,255,255,.85);letter-spacing:.32em;margin-top:4px;font-weight:600;padding-left:.1em;text-shadow:0 1px 2px rgba(0,0,0,.4)}
+.site-hd-tit{font-family:'Shippori Mincho',serif;font-size:17px;font-weight:800;color:var(--gold);letter-spacing:.03em;line-height:1;text-shadow:0 1px 2px rgba(0,0,0,.35)}
+.site-hd-sub{font-family:'Shippori Mincho',serif;font-size:8px;color:rgba(255,255,255,.85);letter-spacing:.28em;margin-top:3px;font-weight:600;padding-left:.1em;text-shadow:0 1px 2px rgba(0,0,0,.4)}
 .site-hd-center{display:flex;justify-content:center;align-items:center}
 .site-hd-actions{display:flex;align-items:center;gap:6px}
-.site-hd-btn{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.12);border:1px solid rgba(201,168,76,.5);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s var(--ease),transform .15s var(--ease)}
+.site-hd-btn{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.12);border:1px solid rgba(201,168,76,.5);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s var(--ease),transform .15s var(--ease)}
+.site-hd-btn svg{width:15px;height:15px}
 .site-hd-btn:hover{background:rgba(255,255,255,.2)}
 .site-hd-btn:active{transform:scale(.93)}
 .hero-title{font-family:'Cormorant Garamond','Shippori Mincho',serif;font-size:32px;font-weight:500;color:#fff;letter-spacing:.12em;text-shadow:0 2px 8px rgba(0,0,0,.7),0 0 20px rgba(201,168,76,.25);padding-left:.05em;line-height:1;font-style:italic;background:linear-gradient(180deg,#fff 30%,#f5e9c4 70%,#e3c879 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 2px 4px rgba(0,0,0,.65))}
 .hero-sub{font-family:'Shippori Mincho',serif;font-size:10px;color:var(--gold);letter-spacing:.45em;margin-top:6px;text-shadow:0 1px 3px rgba(0,0,0,.55);font-weight:400}
 /* 神社・寺院トグル */
-.type-toggle{display:inline-flex;background:rgba(0,0,0,.35);border:1px solid rgba(201,168,76,.4);border-radius:24px;padding:3px;margin-top:14px;backdrop-filter:blur(4px);position:relative;z-index:5}
-.type-toggle-btn{padding:7px 22px;border-radius:20px;background:transparent;border:none;color:rgba(255,255,255,.65);font-size:13px;font-family:'Shippori Mincho',serif;font-weight:600;letter-spacing:.1em;cursor:pointer;transition:all .25s var(--ease)}
+.type-toggle{display:inline-flex;background:rgba(0,0,0,.35);border:1px solid rgba(201,168,76,.4);border-radius:16px;padding:2px;margin-top:0;backdrop-filter:blur(4px);position:relative;z-index:5}
+.type-toggle-btn{padding:3px 12px;border-radius:13px;background:transparent;border:none;color:rgba(255,255,255,.65);font-size:10.5px;font-family:'Shippori Mincho',serif;font-weight:600;letter-spacing:.05em;cursor:pointer;transition:all .25s var(--ease)}
 .type-toggle-btn.on{background:linear-gradient(135deg,#e3c879,#c9a84c);color:#2a124a;box-shadow:0 2px 8px rgba(201,168,76,.4)}
 .type-toggle-btn:not(.on):hover{color:rgba(255,255,255,.9)}
 .prof-btn{width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.15);border:1.5px solid rgba(201,168,76,.55);display:flex;align-items:center;justify-content:center;cursor:pointer}
@@ -526,10 +527,10 @@ html,body{margin:0;padding:0;background:var(--washi)}
 .post-detail-comment .cdate{font-size:9px;color:#666;margin-top:3px}
 
 /* 追従マップFAB（フローティングアクションボタン） */
-.fab-map{position:fixed;right:14px;bottom:78px;width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,#3a1d5d,#3a1d5d);box-shadow:0 4px 14px rgba(0,0,0,.3),0 0 0 1px rgba(201,168,76,.4) inset;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:80;transition:transform .2s var(--ease),box-shadow .2s var(--ease);border:none}
-.fab-map:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(0,0,0,.4),0 0 0 1px rgba(201,168,76,.7) inset}
+.fab-map{position:fixed;right:14px;bottom:78px;width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,#e3c879 0%,#c9a84c 55%,#a98a38 100%);box-shadow:0 4px 14px rgba(169,138,56,.45),inset 0 0 0 1px rgba(255,255,255,.35);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:80;transition:transform .2s var(--ease),box-shadow .2s var(--ease);border:1px solid var(--gold)}
+.fab-map:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(169,138,56,.55),inset 0 0 0 1px rgba(255,255,255,.5)}
 .fab-map:active{transform:scale(.94)}
-.fab-map svg{width:24px;height:24px;color:var(--gold)}
+.fab-map svg{width:24px;height:24px;color:var(--red-d);transition:color .35s var(--ease)}
 .fab-map-label{position:absolute;bottom:-14px;left:50%;transform:translateX(-50%);font-size:9px;color:#8b6f3f;font-family:'Shippori Mincho',serif;font-weight:600;white-space:nowrap;background:var(--washi);padding:1px 6px;border-radius:6px;letter-spacing:.05em;border:.5px solid rgba(201,168,76,.4)}
 /* マップページ表示中・登録ページ中は非表示 */
 #pgMap.shown ~ .fab-map,
@@ -552,13 +553,27 @@ html,body{margin:0;padding:0;background:var(--washi)}
 #pgMap > *{max-width:500px;margin-left:auto;margin-right:auto;width:100%}
 #mapCanvas{flex:1;width:100%;min-height:0;background:#e8e4dc}
 .map-loc-btn{position:absolute;bottom:20px;right:10px;background:#fff;border:1px solid var(--gold);border-radius:20px;padding:5px 12px;font-size:11px;font-family:'Noto Serif JP',serif;color:var(--ma);cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.15);display:flex;align-items:center;gap:4px;z-index:5}
-.map-info-card{position:absolute;bottom:60px;left:10px;right:10px;background:#fff;border-radius:10px;box-shadow:0 4px 16px rgba(0,0,0,.18);padding:.6rem .75rem;display:none;align-items:center;gap:8px;border:.5px solid var(--kara);z-index:5}
+.map-info-card{position:absolute;bottom:75px;left:12px;right:12px;background:#fff;border-radius:14px;box-shadow:0 6px 22px rgba(0,0,0,.22);padding:0;display:none;flex-direction:column;border:1px solid var(--gold);z-index:5;overflow:hidden;animation:cardSlide .25s var(--ease)}
+@keyframes cardSlide{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 .map-info-card.on{display:flex}
-.map-info-thumb{width:44px;height:44px;border-radius:7px;object-fit:cover;background:#f0ece4;flex-shrink:0}
-.map-info-body{flex:1;min-width:0}
-.map-info-name{font-family:'Shippori Mincho',serif;font-size:12px;font-weight:600;color:var(--ma);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.map-info-addr{font-size:10px;color:#999;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.map-info-close{width:22px;height:22px;border-radius:50%;background:#f0ece4;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;font-size:12px;color:#999}
+.map-info-thumb{width:100%;height:160px;object-fit:cover;background:#f0ece4;cursor:pointer;display:block;transition:opacity .15s var(--ease);position:relative}
+.map-info-thumb:active{opacity:.85}
+.map-info-photo-wrap{position:relative;width:100%;cursor:pointer}
+.map-info-photo-wrap:active{opacity:.92}
+.map-info-nav-hint{position:absolute;top:10px;right:10px;background:rgba(0,0,0,.65);color:#fff;font-size:10px;padding:4px 10px;border-radius:14px;font-family:'Noto Serif JP',serif;display:flex;align-items:center;gap:4px;backdrop-filter:blur(4px)}
+.map-info-nav-hint svg{width:11px;height:11px}
+.map-info-body{padding:.75rem .9rem .9rem;display:flex;align-items:flex-start;gap:8px}
+.map-info-body-text{flex:1;min-width:0}
+.map-info-name{font-family:'Shippori Mincho',serif;font-size:15px;font-weight:700;color:var(--red-d);line-height:1.3;margin-bottom:3px;transition:color .35s var(--ease)}
+.map-info-addr{font-size:11px;color:#888;line-height:1.5;display:flex;align-items:flex-start;gap:4px;font-family:'Noto Serif JP',serif}
+.map-info-addr svg{width:11px;height:11px;flex-shrink:0;margin-top:2px;color:var(--red)}
+.map-info-close{width:26px;height:26px;border-radius:50%;background:#f5f0e6;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;font-size:13px;color:#999;border:.5px solid #e0d8c4}
+.map-info-actions{display:flex;gap:6px;padding:0 .9rem .9rem}
+.map-info-act-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:5px;padding:9px;border-radius:8px;font-size:11.5px;font-family:'Noto Serif JP',serif;font-weight:600;cursor:pointer;border:.5px solid var(--gold);transition:transform .15s var(--ease)}
+.map-info-act-btn:active{transform:scale(.97)}
+.map-info-act-detail{background:#fff;color:var(--red-d)}
+.map-info-act-nav{background:linear-gradient(135deg,#e3c879 0%,#c9a84c 55%,#a98a38 100%);color:#3a2800;border-color:var(--gold);text-shadow:0 1px 1px rgba(255,255,255,.35);box-shadow:0 2px 6px -2px rgba(169,138,56,.5)}
+.map-info-act-btn svg{width:12px;height:12px}
 /* 検索ページ */
 .srch-bar{display:flex;align-items:center;gap:8px;background:#fff;border:.5px solid var(--kara);border-radius:10px;padding:.6rem .875rem;margin-bottom:.875rem}
 .srch-bar input{flex:1;border:none;outline:none;font-family:'Noto Serif JP',serif;font-size:13px;color:var(--ma);background:transparent}
@@ -1363,12 +1378,33 @@ html,body{margin:0;padding:0;background:var(--washi)}
     現在地に戻る
   </div>
   <div class="map-info-card" id="mapInfoCard">
-    <img class="map-info-thumb" id="mapInfoThumb" src="" alt="">
-    <div class="map-info-body">
-      <div class="map-info-name" id="mapInfoName"></div>
-      <div class="map-info-addr" id="mapInfoAddr"></div>
+    <div class="map-info-photo-wrap" id="mapInfoPhotoWrap" onclick="navigateToShrine()">
+      <img class="map-info-thumb" id="mapInfoThumb" src="" alt="">
+      <div class="map-info-nav-hint">
+        <svg viewBox="0 0 12 12" fill="none"><path d="M6 1.5l4 9-4-2-4 2 4-9z" stroke="#fff" stroke-width="1.2" stroke-linejoin="round" fill="#fff" fill-opacity=".3"/></svg>
+        タップでナビ起動
+      </div>
     </div>
-    <div class="map-info-close" onclick="closeMapCard()">✕</div>
+    <div class="map-info-body">
+      <div class="map-info-body-text">
+        <div class="map-info-name" id="mapInfoName"></div>
+        <div class="map-info-addr">
+          <svg viewBox="0 0 12 12" fill="none"><path d="M6 1c-2.5 0-4 1.7-4 4 0 3 4 6 4 6s4-3 4-6c0-2.3-1.5-4-4-4z" stroke="currentColor" stroke-width="1.1" fill="none"/><circle cx="6" cy="5" r="1.3" stroke="currentColor" stroke-width="1" fill="none"/></svg>
+          <span id="mapInfoAddr"></span>
+        </div>
+      </div>
+      <div class="map-info-close" onclick="closeMapCard()">✕</div>
+    </div>
+    <div class="map-info-actions">
+      <button class="map-info-act-btn map-info-act-detail" onclick="openShrineDetailFromMap()">
+        <svg viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.3"/><path d="M7 5v3M7 10v.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        詳細を見る
+      </button>
+      <button class="map-info-act-btn map-info-act-nav" onclick="navigateToShrine()">
+        <svg viewBox="0 0 14 14" fill="none"><path d="M7 1.5l5 11-5-2.5-5 2.5 5-11z" stroke="#3a2800" stroke-width="1.3" stroke-linejoin="round" fill="#3a2800" fill-opacity=".2"/></svg>
+        ナビを開始
+      </button>
+    </div>
   </div>
 </div>
 
@@ -2972,15 +3008,52 @@ function placePins(shrines){
   console.log('[placePins] 配置完了:', placed, '/', shrines.length, '件');
 }
 
+var currentMapShrine = null; // 地図カードに表示中の神社
+
 function showMapCard(s){
+  currentMapShrine = s;
   document.getElementById('mapInfoName').textContent = s.name;
   document.getElementById('mapInfoAddr').textContent = s.addr || '';
   var thumb = document.getElementById('mapInfoThumb');
+  var hint = document.querySelector('#mapInfoCard .map-info-nav-hint');
   var photos = photoCache[s.name];
-  if (photos && photos.length) { thumb.src = photos[0]; thumb.style.display='block'; }
-  else { thumb.style.display='none'; }
+  if (photos && photos.length) {
+    thumb.src = photos[0];
+    thumb.style.display='block';
+    if (hint) hint.style.display='flex';
+  } else {
+    // 写真がない場合：プレースホルダー画像
+    thumb.src = 'https://images.unsplash.com/photo-1610144572947-37b89e7af45f?w=600&q=80&auto=format&fit=crop';
+    thumb.style.display='block';
+    if (hint) hint.style.display='flex';
+  }
   document.getElementById('mapInfoCard').classList.add('on');
   if (s.lat && s.lng) mapInstance.panTo({ lat: s.lat, lng: s.lng });
+}
+
+// 写真クリック or 「ナビを開始」ボタン → Google マップのナビ起動
+function navigateToShrine(){
+  if (!currentMapShrine) return;
+  var s = currentMapShrine;
+  var dest;
+  if (s.lat && s.lng) {
+    dest = s.lat + ',' + s.lng;
+  } else if (s.addr) {
+    dest = encodeURIComponent(s.addr);
+  } else {
+    dest = encodeURIComponent(s.name);
+  }
+  // 現在地から目的地へのナビURL
+  var url = 'https://www.google.com/maps/dir/?api=1&destination=' + dest + '&travelmode=walking';
+  window.open(url, '_blank');
+}
+
+// 「詳細を見る」ボタン → 神社詳細ページを開く
+function openShrineDetailFromMap(){
+  if (!currentMapShrine) return;
+  if (typeof openShrineDetail === 'function') {
+    openShrineDetail(currentMapShrine);
+  }
 }
 
 function centerToMyLocation(){
