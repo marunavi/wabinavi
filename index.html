@@ -17,11 +17,20 @@
 .app .tagbar,.app .api-btn,.app .secln,.app .btn-search,.app .srch-btn{transition:background .35s var(--ease),border-color .35s var(--ease),color .35s var(--ease),box-shadow .35s var(--ease)}
 .app{width:100%;max-width:500px;margin:0 auto;background:var(--washi);font-family:'Noto Serif JP',serif}
 html,body{margin:0;padding:0;background:var(--washi)}
-.hero{position:relative;height:260px;overflow:hidden;background:#1a2a1a}
+.hero{position:relative;height:230px;overflow:hidden;background:#1a2a1a}
 .hero-img{width:100%;height:100%;object-fit:cover;object-position:center 35%;display:block}
-.hero-ov{position:absolute;inset:0;background:rgba(5,12,5,0.42)}
-.hero-ct{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;padding:1rem 1.25rem 0}
-.hero-top{display:flex;align-items:center;justify-content:space-between}
+.hero-ov{position:absolute;inset:0;background:rgba(5,12,5,0.38)}
+.hero-ct{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;padding:.85rem 1.25rem .25rem}
+.hero-top{display:flex;align-items:flex-start;justify-content:center}
+/* ─── ホトカミ風ヘッダー（画像上部・独立バー）─── */
+.site-hd{background:linear-gradient(180deg,var(--red-d) 0%,var(--red) 100%);padding:.7rem 1rem;display:flex;align-items:center;justify-content:space-between;gap:10px;border-bottom:1px solid var(--gold);box-shadow:0 2px 8px rgba(0,0,0,.18);transition:background .35s var(--ease)}
+.site-hd-logo{display:flex;flex-direction:column;line-height:1;cursor:pointer}
+.site-hd-tit{font-family:'Shippori Mincho',serif;font-size:22px;font-weight:800;color:var(--gold);letter-spacing:.06em;line-height:1;text-shadow:0 1px 2px rgba(0,0,0,.35)}
+.site-hd-sub{font-family:'Shippori Mincho',serif;font-size:9px;color:rgba(255,255,255,.78);letter-spacing:.32em;margin-top:5px;font-weight:600;padding-left:.1em}
+.site-hd-actions{display:flex;align-items:center;gap:8px}
+.site-hd-btn{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.12);border:1px solid rgba(201,168,76,.5);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s var(--ease),transform .15s var(--ease)}
+.site-hd-btn:hover{background:rgba(255,255,255,.2)}
+.site-hd-btn:active{transform:scale(.93)}
 .hero-title{font-family:'Cormorant Garamond','Shippori Mincho',serif;font-size:32px;font-weight:500;color:#fff;letter-spacing:.12em;text-shadow:0 2px 8px rgba(0,0,0,.7),0 0 20px rgba(201,168,76,.25);padding-left:.05em;line-height:1;font-style:italic;background:linear-gradient(180deg,#fff 30%,#f5e9c4 70%,#e3c879 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 2px 4px rgba(0,0,0,.65))}
 .hero-sub{font-family:'Shippori Mincho',serif;font-size:10px;color:var(--gold);letter-spacing:.45em;margin-top:6px;text-shadow:0 1px 3px rgba(0,0,0,.55);font-weight:400}
 /* 神社・寺院トグル */
@@ -635,24 +644,30 @@ html,body{margin:0;padding:0;background:var(--washi)}
 <div class="app" data-theme="shrine">
 
 <div class="pg on" id="pgHome">
+<!-- ── 上部ヘッダー（タイトル左・アクション右）── -->
+<div class="site-hd">
+  <div class="site-hd-logo" onclick="go('pgHome')">
+    <div class="site-hd-tit">Wa-Bi-Navi</div>
+    <div class="site-hd-sub">〜 和 美 導 〜</div>
+  </div>
+  <div class="site-hd-actions">
+    <div class="site-hd-btn" onclick="openRegister()" title="会員登録・ログイン">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="6" r="3" stroke="#c9a84c" stroke-width="1.5"/><path d="M3 17c0-4 12-4 12 0" stroke="#c9a84c" stroke-width="1.5" stroke-linecap="round" fill="none"/><circle cx="14" cy="3.5" r="2.5" fill="#c9a84c"/><path d="M14 2v3M12.5 3.5h3" stroke="#2a124a" stroke-width="0.8" stroke-linecap="round"/></svg>
+    </div>
+    <div class="site-hd-btn" onclick="go('pgProfile')" title="マイページ">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="6" r="3.2" stroke="#c9a84c" stroke-width="1.5"/><path d="M3 16.5c0-3.5 12-3.5 12 0" stroke="#c9a84c" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
+    </div>
+  </div>
+</div>
+
 <div class="hero">
   <img class="hero-img" src="https://raw.githubusercontent.com/SIMBA3838/shrine-app/main/ai.jinjya.jpg" alt="神社の風景">
   <div class="hero-ov"></div>
   <div class="hero-ct">
     <div class="hero-top">
-      <div onclick="openRegister()" style="width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.15);border:1.5px solid rgba(201,168,76,.55);display:flex;align-items:center;justify-content:center;cursor:pointer" title="新規登録">
-        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="6" r="3" stroke="#c9a84c" stroke-width="1.5"/><path d="M3 17c0-4 12-4 12 0" stroke="#c9a84c" stroke-width="1.5" stroke-linecap="round" fill="none"/><circle cx="14" cy="3.5" r="2.5" fill="#c9a84c"/><path d="M14 2v3M12.5 3.5h3" stroke="#2a124a" stroke-width="0.8" stroke-linecap="round"/></svg>
-      </div>
-      <div style="display:flex;flex-direction:column;align-items:center">
-        <div class="hero-title">Wa-Bi-Navi</div>
-        <div class="hero-sub">〜 和 美 導 〜</div>
-        <div class="type-toggle">
-          <button class="type-toggle-btn on" id="ttShrine" onclick="setType('shrine')">神社</button>
-          <button class="type-toggle-btn" id="ttTemple" onclick="setType('temple')">寺院</button>
-        </div>
-      </div>
-      <div class="prof-btn" onclick="go('pgProfile')" title="マイページ">
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="7" r="4" stroke="#c9a84c" stroke-width="1.5"/><path d="M3 18c0-4 14-4 14 0" stroke="#c9a84c" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <div class="type-toggle">
+        <button class="type-toggle-btn on" id="ttShrine" onclick="setType('shrine')">神社</button>
+        <button class="type-toggle-btn" id="ttTemple" onclick="setType('temple')">寺院</button>
       </div>
     </div>
     <div class="btns">
