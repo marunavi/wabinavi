@@ -22,27 +22,26 @@ html,body{margin:0;padding:0;background:var(--washi)}
 .hero-ov{position:absolute;inset:0;background:rgba(5,12,5,0.38)}
 .hero-ct{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:0 1.25rem .85rem}
 .hero-top{display:flex;align-items:flex-start;justify-content:center}
-/* ─── ホトカミ風ヘッダー（画像上部・独立バー）3カラム ─── */
-.site-hd{background:linear-gradient(180deg,var(--red-d) 0%,var(--red) 100%);padding:.45rem .8rem;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:8px;border-bottom:1px solid var(--gold);box-shadow:0 2px 8px rgba(0,0,0,.18);transition:background .35s var(--ease)}
+/* ─── ヘッダー（白基調・アクセントのみテーマ色）3カラム ─── */
+.site-hd{background:#fff;padding:.6rem .9rem;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:8px;border-bottom:1px solid #f0e8d8;box-shadow:0 1px 3px rgba(0,0,0,.04)}
 .site-hd-logo{display:flex;flex-direction:column;line-height:1;cursor:pointer}
-.site-hd-tit{font-family:'Shippori Mincho',serif;font-size:19px;font-weight:800;color:var(--gold);letter-spacing:.12em;line-height:1;text-shadow:0 1px 2px rgba(0,0,0,.35)}
-.site-hd-sub{font-family:'Shippori Mincho',serif;font-size:9px;color:rgba(255,255,255,.85);letter-spacing:.18em;margin-top:4px;font-weight:600;padding-left:.05em;text-shadow:0 1px 2px rgba(0,0,0,.4)}
-.site-hd-center{display:flex;justify-content:center;align-items:center;gap:6px}
-.gs-tag{font-family:'Shippori Mincho',serif;font-size:11px;font-weight:700;color:var(--gold);background:rgba(0,0,0,.28);border:1px solid rgba(201,168,76,.5);padding:4px 10px;border-radius:14px;cursor:pointer;letter-spacing:.06em;backdrop-filter:blur(4px);white-space:nowrap;transition:background .2s var(--ease),transform .15s var(--ease)}
-.gs-tag:hover{background:rgba(0,0,0,.45);border-color:var(--gold)}
-.gs-tag:active{transform:scale(.94)}
+.site-hd-tit{font-family:'Shippori Mincho',serif;font-size:19px;font-weight:800;color:#2a2a2a;letter-spacing:.12em;line-height:1}
+.site-hd-sub{font-family:'Shippori Mincho',serif;font-size:9px;color:#999;letter-spacing:.18em;margin-top:4px;font-weight:600;padding-left:.05em}
+.site-hd-center{display:flex;justify-content:center;align-items:center;gap:0}
 .site-hd-actions{display:flex;align-items:center;gap:6px}
-.site-hd-btn{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.12);border:1px solid rgba(201,168,76,.5);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s var(--ease),transform .15s var(--ease)}
+.site-hd-btn{width:32px;height:32px;border-radius:50%;background:#f5efe5;border:1px solid #e8dfcd;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s var(--ease),transform .15s var(--ease)}
 .site-hd-btn svg{width:15px;height:15px}
-.site-hd-btn:hover{background:rgba(255,255,255,.2)}
+.site-hd-btn svg *{stroke:#a89a7e !important}
+.site-hd-btn svg circle[fill]{fill:#a89a7e !important;stroke:none !important}
+.site-hd-btn:hover{background:#ece3d4}
 .site-hd-btn:active{transform:scale(.93)}
 .hero-title{font-family:'Cormorant Garamond','Shippori Mincho',serif;font-size:32px;font-weight:500;color:#fff;letter-spacing:.12em;text-shadow:0 2px 8px rgba(0,0,0,.7),0 0 20px rgba(201,168,76,.25);padding-left:.05em;line-height:1;font-style:italic;background:linear-gradient(180deg,#fff 30%,#f5e9c4 70%,#e3c879 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 2px 4px rgba(0,0,0,.65))}
 .hero-sub{font-family:'Shippori Mincho',serif;font-size:10px;color:var(--gold);letter-spacing:.45em;margin-top:6px;text-shadow:0 1px 3px rgba(0,0,0,.55);font-weight:400}
 /* 神社・寺院トグル */
-.type-toggle{display:inline-flex;background:rgba(0,0,0,.35);border:1px solid rgba(201,168,76,.4);border-radius:16px;padding:2px;margin-top:0;backdrop-filter:blur(4px);position:relative;z-index:5}
-.type-toggle-btn{padding:3px 12px;border-radius:13px;background:transparent;border:none;color:rgba(255,255,255,.65);font-size:10.5px;font-family:'Shippori Mincho',serif;font-weight:600;letter-spacing:.05em;cursor:pointer;transition:all .25s var(--ease)}
-.type-toggle-btn.on{background:linear-gradient(135deg,#e3c879,#c9a84c);color:#2a124a;box-shadow:0 2px 8px rgba(201,168,76,.4)}
-.type-toggle-btn:not(.on):hover{color:rgba(255,255,255,.9)}
+.type-toggle{display:inline-flex;background:transparent;border:none;border-radius:0;padding:0;margin-top:0;position:relative;z-index:5;gap:0}
+.type-toggle-btn{padding:7px 18px 5px;border-radius:0;background:transparent;border:none;border-bottom:2px solid transparent;color:#b0b0b0;font-size:13px;font-family:'Shippori Mincho',serif;font-weight:600;letter-spacing:.08em;cursor:pointer;transition:color .25s var(--ease),border-color .25s var(--ease);margin-bottom:-1px}
+.type-toggle-btn.on{background:transparent;color:var(--red);border-bottom-color:var(--red);box-shadow:none}
+.type-toggle-btn:not(.on):hover{color:#666}
 .prof-btn{width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.15);border:1.5px solid rgba(201,168,76,.55);display:flex;align-items:center;justify-content:center;cursor:pointer}
 .btns{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:.875rem 0}
 .abtn{background:linear-gradient(180deg,rgba(255,255,255,.16),rgba(255,255,255,.08));border:.5px solid rgba(201,168,76,.4);border-radius:13px;padding:.78rem .25rem .68rem;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;backdrop-filter:blur(2px);transition:transform .18s var(--ease),background .25s var(--ease),border-color .25s var(--ease)}
@@ -449,10 +448,15 @@ html,body{margin:0;padding:0;background:var(--washi)}
 .osupply-price{font-family:'Shippori Mincho',serif;color:var(--red);font-size:13px;font-weight:700;display:flex;align-items:baseline;gap:3px}
 .osupply-price small{font-size:9px;color:#999;font-weight:400}
 .osupply-partner{font-size:9px;color:#888;margin-top:3px;font-family:'Noto Serif JP',serif}
-.area-section{padding:1.25rem 1.25rem .5rem}
-.area-sec-hd{position:relative;display:flex;justify-content:center;align-items:center;margin-bottom:.9rem}
-.area-sec-tit{font-family:'Shippori Mincho',serif;font-size:17px;font-weight:600;color:var(--ma);letter-spacing:.1em;text-align:center}
-.area-sec-link{position:absolute;right:0;top:50%;transform:translateY(-50%);font-size:11px;color:var(--red);cursor:pointer;text-decoration:none;font-family:'Noto Serif JP',serif}
+.area-section{padding:1.5rem 1.25rem .5rem}
+.area-sec-hd{position:relative;display:flex;justify-content:center;align-items:center;margin-bottom:1.1rem}
+.area-sec-tit{font-family:'Shippori Mincho',serif;font-size:18px;font-weight:700;color:#2a2a2a;letter-spacing:.12em;text-align:center}
+.area-sec-link{position:absolute;right:0;top:50%;transform:translateY(-50%);font-size:11px;color:var(--red);cursor:pointer;text-decoration:none;font-family:'Shippori Mincho',serif;font-weight:600;letter-spacing:.05em;transition:color .35s var(--ease)}
+.goshuin-cta-wrap{display:flex;justify-content:flex-start;margin-top:1rem}
+.goshuin-cta{display:inline-flex;align-items:center;gap:6px;padding:7px 16px 7px 13px;border-radius:18px;background:#fff;border:1.5px solid var(--red);color:var(--red);font-family:'Shippori Mincho',serif;font-size:12px;font-weight:700;letter-spacing:.08em;cursor:pointer;transition:background .2s var(--ease),color .2s var(--ease),transform .15s var(--ease)}
+.goshuin-cta svg{width:13px;height:13px}
+.goshuin-cta:hover{background:var(--red);color:#fff}
+.goshuin-cta:active{transform:scale(.96)}
 .area-nearby{width:100%;aspect-ratio:5/1;border-radius:12px;overflow:hidden;background:#e8e0d0;position:relative;margin-bottom:8px;cursor:pointer;border:.5px solid var(--gold);transition:transform .15s var(--ease)}
 .area-nearby:active{transform:scale(.98)}
 .area-nearby::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(42,18,74,.15) 0%,rgba(42,18,74,.45) 100%)}
@@ -461,12 +465,15 @@ html,body{margin:0;padding:0;background:var(--washi)}
 .area-nearby-tit .main{font-size:16px;font-weight:800;letter-spacing:.1em}
 .area-nearby-tit .sub{font-size:10px;opacity:.85;margin-top:3px;letter-spacing:.05em}
 .area-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
-.area-card{aspect-ratio:1;border-radius:10px;overflow:hidden;position:relative;background:linear-gradient(135deg,#3a1d5d 0%,#5d3a8a 50%,#3a1d5d 100%);cursor:pointer;border:.5px solid var(--gold);transition:transform .15s var(--ease)}
-.area-card:hover{transform:translateY(-2px)}
+.area-card{aspect-ratio:5/6;border-radius:14px;overflow:hidden;position:relative;background:#fff;cursor:pointer;border:1px solid #ece3d4;transition:transform .15s var(--ease),box-shadow .2s var(--ease);box-shadow:0 4px 14px rgba(0,0,0,.05);display:flex;flex-direction:column}
+.area-card:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(0,0,0,.1)}
 .area-card:active{transform:scale(.96)}
-.area-card-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.area-card::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(42,18,74,.05) 0%,rgba(42,18,74,.65) 100%)}
-.area-card-name{position:absolute;left:0;right:0;bottom:0;padding:.6rem;color:#fff;font-family:'Shippori Mincho',serif;font-size:14px;font-weight:800;text-align:center;text-shadow:0 1px 2px rgba(0,0,0,.6);z-index:2;letter-spacing:.08em}
+.area-card-bg{width:100%;flex:1;object-fit:cover;border-radius:0}
+.area-card::after{display:none}
+.area-card-foot{background:#fff;padding:.55rem .7rem;display:flex;align-items:center;justify-content:space-between;gap:6px;border-bottom:2.5px solid var(--red);position:relative;z-index:2;transition:border-color .35s var(--ease)}
+.area-card-name{font-family:'Shippori Mincho',serif;font-size:13px;font-weight:800;color:#2a2a2a;letter-spacing:.06em;position:static;padding:0;text-shadow:none;background:none}
+.area-card-icon{color:var(--red);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:color .35s var(--ease)}
+.area-card-icon svg{width:18px;height:18px}
 
 /* エリア検索ページ */
 .area-pg-bg{background:var(--washi);min-height:100vh;padding-bottom:5rem}
@@ -742,14 +749,13 @@ html,body{margin:0;padding:0;background:var(--washi)}
       <button class="type-toggle-btn on" id="ttShrine" onclick="setType('shrine')">神社</button>
       <button class="type-toggle-btn" id="ttTemple" onclick="setType('temple')">寺院</button>
     </div>
-    <div class="gs-tag" onclick="openGoshuinSearch()">御朱印 ›</div>
   </div>
   <div class="site-hd-actions">
     <div class="site-hd-btn" onclick="openRegister()" title="会員登録・ログイン">
-      <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="6" r="3" stroke="#c9a84c" stroke-width="1.5"/><path d="M3 17c0-4 12-4 12 0" stroke="#c9a84c" stroke-width="1.5" stroke-linecap="round" fill="none"/><circle cx="14" cy="3.5" r="2.5" fill="#c9a84c"/><path d="M14 2v3M12.5 3.5h3" stroke="#2a124a" stroke-width="0.8" stroke-linecap="round"/></svg>
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="7" r="3" stroke="#a89a7e" stroke-width="1.5"/><path d="M3 17c0-4 12-4 12 0" stroke="#a89a7e" stroke-width="1.5" stroke-linecap="round" fill="none"/><circle cx="14" cy="3.5" r="2" fill="#a89a7e"/><path d="M14 2.3v2.4M12.9 3.5h2.2" stroke="#fff" stroke-width="0.8" stroke-linecap="round"/></svg>
     </div>
     <div class="site-hd-btn" onclick="go('pgProfile')" title="マイページ">
-      <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="6" r="3.2" stroke="#c9a84c" stroke-width="1.5"/><path d="M3 16.5c0-3.5 12-3.5 12 0" stroke="#c9a84c" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="7" r="3.2" stroke="#a89a7e" stroke-width="1.5"/><path d="M3 16.5c0-3.5 12-3.5 12 0" stroke="#a89a7e" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
     </div>
   </div>
 </div>
@@ -804,28 +810,52 @@ html,body{margin:0;padding:0;background:var(--washi)}
   <div class="area-grid">
     <div class="area-card" onclick="openAreaSearch('東京')">
       <img class="area-card-bg" src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&q=80&auto=format&fit=crop" alt="東京" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1513407030348-c983a97b98d8?w=600&q=80&auto=format&fit=crop'">
-      <div class="area-card-name">東京</div>
+      <div class="area-card-foot">
+        <div class="area-card-name">東京</div>
+        <div class="area-card-icon" id="areaIcon-東京"></div>
+      </div>
     </div>
     <div class="area-card" onclick="openAreaSearch('神奈川')">
       <img class="area-card-bg" src="https://images.unsplash.com/photo-1583416750470-965b2707b355?w=600&q=80&auto=format&fit=crop" alt="神奈川 鎌倉大仏" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1624253324719-fcdfee5e96f6?w=600&q=80&auto=format&fit=crop'">
-      <div class="area-card-name">神奈川</div>
+      <div class="area-card-foot">
+        <div class="area-card-name">神奈川</div>
+        <div class="area-card-icon" id="areaIcon-神奈川"></div>
+      </div>
     </div>
     <div class="area-card" onclick="openAreaSearch('愛知')">
       <img class="area-card-bg" src="https://images.unsplash.com/photo-1480796927426-f609979314bd?w=600&q=80&auto=format&fit=crop" alt="愛知 熱田神宮" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=80&auto=format&fit=crop'">
-      <div class="area-card-name">愛知</div>
+      <div class="area-card-foot">
+        <div class="area-card-name">愛知</div>
+        <div class="area-card-icon" id="areaIcon-愛知"></div>
+      </div>
     </div>
     <div class="area-card" onclick="openAreaSearch('大阪')">
       <img class="area-card-bg" src="https://images.unsplash.com/photo-1590559899731-a382839e5549?w=600&q=80&auto=format&fit=crop" alt="大阪" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1583077874340-79db6564672e?w=600&q=80&auto=format&fit=crop'">
-      <div class="area-card-name">大阪</div>
+      <div class="area-card-foot">
+        <div class="area-card-name">大阪</div>
+        <div class="area-card-icon" id="areaIcon-大阪"></div>
+      </div>
     </div>
     <div class="area-card" onclick="openAreaSearch('京都')">
       <img class="area-card-bg" src="https://images.unsplash.com/photo-1493997181344-712f2f19d87a?w=600&q=80&auto=format&fit=crop" alt="京都" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=80&auto=format&fit=crop'">
-      <div class="area-card-name">京都</div>
+      <div class="area-card-foot">
+        <div class="area-card-name">京都</div>
+        <div class="area-card-icon" id="areaIcon-京都"></div>
+      </div>
     </div>
     <div class="area-card" onclick="openAreaSearch('福岡')">
       <img class="area-card-bg" src="https://images.unsplash.com/photo-1583148901321-0d8e8ad8a4ba?w=600&q=80&auto=format&fit=crop" alt="福岡" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=80&auto=format&fit=crop';this.onerror=function(){this.style.display='none';}">
-      <div class="area-card-name">福岡</div>
+      <div class="area-card-foot">
+        <div class="area-card-name">福岡</div>
+        <div class="area-card-icon" id="areaIcon-福岡"></div>
+      </div>
     </div>
+  </div>
+  <div class="goshuin-cta-wrap">
+    <button class="goshuin-cta" onclick="openGoshuinSearch()">
+      <svg viewBox="0 0 14 14" fill="none"><rect x="3" y="2" width="8" height="10" rx="1" stroke="currentColor" stroke-width="1.3"/><line x1="5" y1="5" x2="9" y2="5" stroke="currentColor" stroke-width="1"/><line x1="5" y1="7" x2="9" y2="7" stroke="currentColor" stroke-width="1"/><line x1="5" y1="9" x2="7.5" y2="9" stroke="currentColor" stroke-width="1"/></svg>
+      御朱印
+    </button>
   </div>
 </div>
 
@@ -2492,6 +2522,7 @@ window.addEventListener('DOMContentLoaded', function(){
     renderShukatsuList('shukatsuList', 4);
     renderEstateList('estateList', 2);
     renderCommunityList('communityList', 4);
+    refreshAreaIcons('shrine');
   } catch(e) { console.warn('home sections render error:', e); }
 });
 
@@ -2678,6 +2709,18 @@ let visits = [
 
 let currentTag = 'all';
 let currentType = 'shrine'; // 'shrine' | 'temple'
+// エリアカード右下のアイコン（神社=鳥居 / 寺院=仏様/卍）SVG
+var AREA_ICON_SHRINE = '<svg viewBox="0 0 20 20" fill="none"><path d="M3 5h14M4.5 5v11M15.5 5v11M3 7.5h14M6 5V3.5h8V5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>';
+var AREA_ICON_TEMPLE = '<svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="8" r="3.5" stroke="currentColor" stroke-width="1.4"/><path d="M5.5 17c0-3 9-3 9 0" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none"/><path d="M10 4.5v-1.5M8.5 4.8l-.7-1.3M11.5 4.8l.7-1.3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>';
+
+function refreshAreaIcons(t){
+  var icon = (t === 'temple') ? AREA_ICON_TEMPLE : AREA_ICON_SHRINE;
+  ['東京','神奈川','愛知','大阪','京都','福岡'].forEach(function(area){
+    var el = document.getElementById('areaIcon-' + area);
+    if (el) el.innerHTML = icon;
+  });
+}
+
 function setType(t){
   if (t !== 'shrine' && t !== 'temple') return;
   currentType = t;
@@ -2689,6 +2732,8 @@ function setType(t){
   // テーマカラー切替（神社=赤系 / 寺=紫系）
   var app = document.querySelector('.app');
   if (app) app.setAttribute('data-theme', t);
+  // エリアカードのアイコン切替（神社=鳥居 / 寺院=仏）
+  refreshAreaIcons(t);
   // ランキングを再描画
   if (typeof filter === 'function') filter();
 }
