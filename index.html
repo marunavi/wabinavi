@@ -750,6 +750,67 @@ html,body{margin:0;padding:0;background:var(--washi)}
 .gs-card-tags{padding:0 .85rem 1rem;font-size:11px;color:var(--gs-accent-d);line-height:1.65;font-family:'Noto Serif JP',serif;cursor:pointer;word-break:break-all;font-weight:600;transition:color .35s var(--ease)}
 .gs-card-tags span{cursor:pointer;margin-right:.25rem;transition:opacity .15s var(--ease)}
 .gs-card-tags span:hover{opacity:.7;text-decoration:underline}
+
+/* ─────────────────────────────────────────────
+  御朱印自動判定ページ（Vision API連携デモ）
+  ───────────────────────────────────────────── */
+.gd-bg{background:var(--washi);min-height:100vh;display:flex;flex-direction:column}
+.gd-sec-tit{font-family:'Shippori Mincho',serif;font-size:13px;letter-spacing:.15em;font-weight:700;margin:1.25rem 1.25rem .75rem;display:flex;align-items:center;gap:.5rem;color:#2a2a2a}
+.gd-sec-tit .num{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:var(--red);color:#fff;font-size:11px;font-weight:700;flex-shrink:0;transition:background .35s var(--ease)}
+.gd-card{background:#fff;border:1px solid #e8dfcd;border-radius:14px;padding:1rem;box-shadow:0 4px 14px rgba(160,140,100,.06);margin:0 1.25rem 1rem}
+.gd-label{font-size:11px;color:#888;letter-spacing:.1em;margin-bottom:6px;font-family:'Shippori Mincho',serif;font-weight:600;display:block}
+.gd-row{display:flex;gap:8px;align-items:center}
+.gd-input{flex:1;border:1px solid #e8dfcd;border-radius:10px;padding:.7rem .85rem;font-size:13px;font-family:'Noto Serif JP',serif;color:#2a2a2a;outline:none;background:#fff;transition:border-color .2s var(--ease);min-width:0}
+.gd-input:focus{border-color:var(--red)}
+.gd-status{font-size:11px;color:#5d8a3a;background:#eef7e8;padding:8px 12px;border-radius:8px;display:flex;align-items:center;gap:6px;margin-top:.5rem;border:.5px solid #c8d8b8}
+.gd-status.warn{color:var(--red-d);background:var(--red-l);border-color:#e8c8c4}
+.gd-status svg{width:13px;height:13px;flex-shrink:0}
+.gd-btn-save{background:#fff;color:var(--red);border:1.5px solid var(--red);border-radius:10px;padding:.5rem 1rem;font-size:11px;font-weight:700;font-family:'Shippori Mincho',serif;cursor:pointer;letter-spacing:.05em;white-space:nowrap;transition:background .2s var(--ease),color .2s var(--ease)}
+.gd-btn-save:hover{background:var(--red);color:#fff}
+.gd-btn-primary{width:calc(100% - 2.5rem);margin:.5rem 1.25rem 1rem;background:linear-gradient(135deg,#e3c879 0%,#c9a84c 55%,#a98a38 100%);color:#3a2800;border:1px solid var(--gold);border-radius:12px;padding:.95rem;font-family:'Shippori Mincho',serif;font-size:14px;font-weight:700;letter-spacing:.1em;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.4),0 4px 14px -4px rgba(169,138,56,.55);transition:transform .15s var(--ease);text-shadow:0 1px 1px rgba(255,255,255,.35)}
+.gd-btn-primary:hover:not(:disabled){transform:translateY(-1px)}
+.gd-btn-primary:active:not(:disabled){transform:scale(.98)}
+.gd-btn-primary:disabled{opacity:.5;cursor:not-allowed}
+.gd-log{background:#fff;border:1px solid #e8dfcd;border-radius:14px;padding:1rem;margin:0 1.25rem 1rem;font-size:11px;font-family:'Menlo','Monaco',monospace;line-height:1.7;color:#666;max-height:200px;overflow-y:auto}
+.gd-log-item{padding:.25rem 0;border-bottom:.5px dashed #f0e8d8}
+.gd-log-item:last-child{border-bottom:none}
+.gd-log-item .gd-tag{display:inline-block;padding:1px 7px;border-radius:4px;font-size:9px;margin-right:6px;font-weight:700;letter-spacing:.05em}
+.gd-log-item .gd-tag.info{background:#e8f0fa;color:#3a5d8f}
+.gd-log-item .gd-tag.ok{background:#eef7e8;color:#5d8a3a}
+.gd-log-item .gd-tag.warn{background:#fff4d8;color:#9a7a08}
+.gd-log-item .gd-tag.err{background:var(--red-l);color:var(--red-d)}
+.gd-results{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 1.25rem 1rem}
+.gd-photo-card{background:#fff;border:1px solid #e8dfcd;border-radius:12px;overflow:hidden;box-shadow:0 4px 14px rgba(160,140,100,.06);position:relative;transition:transform .2s var(--ease)}
+.gd-photo-card.best{border-color:var(--red);box-shadow:0 0 0 2px rgba(168,51,32,.15),0 4px 14px rgba(168,51,32,.15)}
+.gd-photo-img{width:100%;aspect-ratio:1;object-fit:cover;background:#f0ead9;display:block}
+.gd-photo-info{padding:.6rem .7rem;font-size:11px;color:#2a2a2a;font-family:'Noto Serif JP',serif}
+.gd-photo-score{display:flex;align-items:center;justify-content:space-between;font-weight:700}
+.gd-photo-score .gd-num{font-family:'Shippori Mincho',serif;font-size:15px;color:var(--red);transition:color .35s var(--ease)}
+.gd-photo-judge{font-size:9px;color:#888;margin-top:3px;letter-spacing:.05em}
+.gd-photo-tags{font-size:9px;color:#888;margin-top:4px;line-height:1.4;max-height:24px;overflow:hidden}
+.gd-photo-best-badge{position:absolute;top:6px;left:6px;background:var(--red);color:#fff;font-size:9px;padding:3px 8px;border-radius:8px;font-family:'Shippori Mincho',serif;font-weight:700;letter-spacing:.05em;z-index:2;box-shadow:0 2px 4px rgba(0,0,0,.15);transition:background .35s var(--ease)}
+.gd-final-card{background:linear-gradient(135deg,#fdf5e8 0%,#fff 60%);border:2px solid var(--gold);border-radius:18px;padding:1.5rem 1.25rem;margin:1.5rem 1.25rem;text-align:center;box-shadow:0 6px 22px rgba(201,168,76,.18);position:relative;overflow:hidden}
+.gd-final-card::before{content:"";position:absolute;top:-40px;right:-40px;width:120px;height:120px;background:radial-gradient(circle,rgba(168,51,32,.1),transparent 70%);pointer-events:none}
+.gd-final-card .gd-badge{font-family:'Shippori Mincho',serif;font-size:10px;letter-spacing:.25em;font-weight:700;margin-bottom:.75rem;color:var(--red);transition:color .35s var(--ease)}
+.gd-final-card.notfound .gd-badge{color:#888}
+.gd-final-card .gd-img-wrap{width:180px;height:180px;margin:0 auto 1rem;border-radius:14px;overflow:hidden;background:#f0ead9;border:1px solid #e8dfcd;box-shadow:0 4px 14px rgba(0,0,0,.08)}
+.gd-final-card .gd-img-wrap img{width:100%;height:100%;object-fit:cover}
+.gd-final-card.notfound .gd-img-wrap{background:#f5efe5;display:flex;align-items:center;justify-content:center;font-family:'Shippori Mincho',serif;font-size:14px;color:#a89a7e;letter-spacing:.18em;font-weight:600}
+.gd-final-card .gd-info{font-family:'Noto Serif JP',serif;font-size:12px;color:#555;line-height:1.7}
+.gd-final-card .gd-info b{color:var(--red);font-size:14px;transition:color .35s var(--ease)}
+.gd-skeleton{background:linear-gradient(90deg,#f0ead9 0%,#faf6ef 50%,#f0ead9 100%);background-size:200% 100%;animation:gdShimmer 1.4s infinite}
+@keyframes gdShimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.gd-help{background:#fff;border:1px solid #e8dfcd;border-radius:14px;padding:1rem 1.25rem;margin:1.25rem 1.25rem 2rem;font-size:11px;color:#666;line-height:1.7;font-family:'Noto Serif JP',serif}
+.gd-help h3{font-family:'Shippori Mincho',serif;font-size:13px;color:#2a2a2a;margin-bottom:8px;letter-spacing:.1em;font-weight:700}
+.gd-help b{color:var(--red);transition:color .35s var(--ease)}
+.gd-help code{background:#f5efe5;padding:1px 5px;border-radius:3px;font-family:'Menlo',monospace;font-size:10px}
+.gd-help p{margin-bottom:4px}
+
+/* 御朱印なび内の「自動判定」ボタン */
+.gs-auto-btn{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#e3c879 0%,#c9a84c 55%,#a98a38 100%);color:#3a2800;border:1px solid var(--gold);border-radius:14px;padding:8px 16px;font-size:11px;font-family:'Shippori Mincho',serif;font-weight:700;letter-spacing:.08em;cursor:pointer;box-shadow:0 3px 10px -2px rgba(169,138,56,.45);transition:transform .15s var(--ease);text-shadow:0 1px 1px rgba(255,255,255,.35);margin:0 1.25rem 1rem}
+.gs-auto-btn:hover{transform:translateY(-1px)}
+.gs-auto-btn:active{transform:scale(.96)}
+.gs-auto-btn svg{width:13px;height:13px}
 </style>
 </head>
 <body>
@@ -1938,8 +1999,68 @@ html,body{margin:0;padding:0;background:var(--washi)}
 
   <!-- みんなの御朱印 -->
   <div class="gs-community">
+    <div style="text-align:center;margin:1rem 0 .5rem">
+      <button class="gs-auto-btn" onclick="openGoshuinDetect()">
+        <svg viewBox="0 0 14 14" fill="none"><path d="M2 7l2 2 4-6M7 11l5-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+        AIで御朱印を自動判定
+      </button>
+    </div>
     <h2 class="gs-community-tit">みんなの御朱印</h2>
     <div class="gs-grid" id="gsGrid"></div>
+  </div>
+</div>
+
+<!-- ━━━ 御朱印自動判定ページ（Vision API デモ）━━━ -->
+<div id="pgGoshuinDetect" style="display:none;flex-direction:column;position:fixed;inset:0;z-index:103;overflow-y:auto" class="gd-bg" data-theme="shrine">
+  <div class="gs-header">
+    <button class="gs-back" onclick="closeOverlay('pgGoshuinDetect')">‹</button>
+    <h1 class="gs-title"><span class="accent">御朱印</span>自動判定</h1>
+    <div class="gs-header-spacer"></div>
+  </div>
+
+  <div class="gd-sec-tit"><span class="num">1</span>Google APIキー</div>
+  <div class="gd-card">
+    <label class="gd-label">APIキー（Places API + Vision API有効化済み）</label>
+    <div class="gd-row">
+      <input type="password" class="gd-input" id="gdApiKey" placeholder="AIzaSy...">
+      <button class="gd-btn-save" onclick="gdSaveApiKey()">保存</button>
+    </div>
+    <div class="gd-status" id="gdApiStatus" style="display:none"></div>
+  </div>
+
+  <div class="gd-sec-tit"><span class="num">2</span>判定する神社・寺院</div>
+  <div class="gd-card">
+    <label class="gd-label">神社・寺院名（例：上野東照宮 / 明治神宮 / 清水寺）</label>
+    <div class="gd-row">
+      <input type="text" class="gd-input" id="gdShrineName" value="上野東照宮" placeholder="神社・寺院名を入力">
+    </div>
+  </div>
+
+  <button class="gd-btn-primary" id="gdRunBtn" onclick="gdRunDetection()">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5" stroke="#3a2800" stroke-width="1.7"/><line x1="11" y1="11" x2="15" y2="15" stroke="#3a2800" stroke-width="1.7" stroke-linecap="round"/></svg>
+    御朱印を自動判定
+  </button>
+
+  <div class="gd-sec-tit" id="gdLogTit" style="display:none"><span class="num">3</span>処理ログ</div>
+  <div class="gd-log" id="gdLog" style="display:none"></div>
+
+  <div class="gd-sec-tit" id="gdResultsTit" style="display:none"><span class="num">4</span>判定結果（スコア順）</div>
+  <div class="gd-results" id="gdResults"></div>
+
+  <div id="gdFinalArea"></div>
+
+  <div class="gd-help">
+    <h3>📖 セットアップガイド</h3>
+    <p><b>① Google Cloud Console</b> で以下のAPIを有効化：</p>
+    <p>・<code>Places API</code>　・<code>Maps JavaScript API</code>　・<code>Cloud Vision API</code></p>
+    <p style="margin-top:.5rem"><b>② APIキー制限</b>（必須）：</p>
+    <p>・「HTTPリファラ制限」で <code>simba3838.github.io/*</code> を許可</p>
+    <p>・「APIの制限」で上記3つのAPIだけ許可</p>
+    <p style="margin-top:.5rem"><b>③ 予算アラート</b>（推奨）：</p>
+    <p>・Google Cloud Console ＞ お支払い ＞ 予算とアラートで月$5を設定</p>
+    <p style="margin-top:.5rem"><b>判定ロジック：</b></p>
+    <p>・Vision APIで <code>Calligraphy</code>（書道）、<code>Seal</code>（印章）、<code>Handwriting</code>（手書き）、OCRで「奉拝」「令和」などのキーワードを検出</p>
+    <p>・スコア60点以上で御朱印と判定</p>
   </div>
 </div>
 
@@ -2394,6 +2515,284 @@ function updateGsSuggest(){
   if (kw) kw.textContent = val || '上野 御朱印';
   var sug = document.getElementById('gsSuggest');
   if (sug) sug.style.display = val.trim() ? 'block' : 'none';
+}
+
+// ━━━ 御朱印自動判定（Vision API + Places API デモ）━━━
+var gdApiKey = '';
+var gdMapsLoaded = false;
+var gdPlacesService = null;
+
+function openGoshuinDetect(){
+  // 御朱印自動判定ページにも現在のテーマを反映
+  var page = document.getElementById('pgGoshuinDetect');
+  if (page) page.setAttribute('data-theme', (typeof currentType !== 'undefined' && currentType === 'temple') ? 'temple' : 'shrine');
+  if (typeof openOverlay === 'function') openOverlay('pgGoshuinDetect');
+  else document.getElementById('pgGoshuinDetect').style.display = 'flex';
+  // localStorage からAPIキー読込
+  var saved = localStorage.getItem('googleApiKey') || localStorage.getItem('GOOGLE_API_KEY') || (typeof API_KEY !== 'undefined' ? API_KEY : '');
+  if (saved) {
+    document.getElementById('gdApiKey').value = saved;
+    gdApiKey = saved;
+    gdShowApiStatus(true);
+    gdLoadMapsSDK();
+  } else {
+    gdShowApiStatus(false);
+  }
+}
+
+function gdShowApiStatus(ok){
+  var el = document.getElementById('gdApiStatus');
+  el.style.display = 'flex';
+  if (ok) {
+    el.classList.remove('warn');
+    el.innerHTML = '<svg viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.4"/><path d="M4 7l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> APIキー設定済み（' + gdApiKey.slice(0,8) + '…）';
+  } else {
+    el.classList.add('warn');
+    el.innerHTML = '<svg viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.4"/><line x1="7" y1="4" x2="7" y2="8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="7" cy="10.5" r=".7" fill="currentColor"/></svg> APIキーを入力してください';
+  }
+}
+
+function gdSaveApiKey(){
+  var v = document.getElementById('gdApiKey').value.trim();
+  if (!v) { if (typeof showToast === 'function') showToast('APIキーを入力してください'); return; }
+  gdApiKey = v;
+  localStorage.setItem('googleApiKey', v);
+  gdShowApiStatus(true);
+  gdLoadMapsSDK();
+  if (typeof showToast === 'function') showToast('APIキーを保存しました');
+}
+
+function gdLoadMapsSDK(){
+  // 既にwindow.googleがあれば再利用
+  if (window.google && window.google.maps && window.google.maps.places) {
+    if (!gdPlacesService) {
+      var d = document.createElement('div');
+      gdPlacesService = new google.maps.places.PlacesService(d);
+    }
+    gdMapsLoaded = true;
+    gdLog('Google Maps SDK 読み込み完了', 'ok');
+    return;
+  }
+  if (gdMapsLoaded) return;
+  var s = document.createElement('script');
+  s.src = 'https://maps.googleapis.com/maps/api/js?key=' + gdApiKey + '&libraries=places&language=ja&region=JP';
+  s.async = true;
+  s.onload = function(){
+    gdMapsLoaded = true;
+    var d = document.createElement('div');
+    gdPlacesService = new google.maps.places.PlacesService(d);
+    gdLog('Google Maps SDK 読み込み完了', 'ok');
+  };
+  s.onerror = function(){ gdLog('Google Maps SDK 読み込み失敗', 'err'); };
+  document.head.appendChild(s);
+}
+
+function gdLog(msg, type){
+  document.getElementById('gdLogTit').style.display = 'flex';
+  var el = document.getElementById('gdLog');
+  el.style.display = 'block';
+  var item = document.createElement('div');
+  item.className = 'gd-log-item';
+  var t = type || 'info';
+  var ts = new Date().toLocaleTimeString('ja-JP');
+  item.innerHTML = '<span class="gd-tag ' + t + '">' + t.toUpperCase() + '</span>' + ts + ' ' + msg;
+  el.appendChild(item);
+  el.scrollTop = el.scrollHeight;
+}
+
+function gdClearResults(){
+  document.getElementById('gdLog').innerHTML = '';
+  document.getElementById('gdResults').innerHTML = '';
+  document.getElementById('gdFinalArea').innerHTML = '';
+  document.getElementById('gdResultsTit').style.display = 'none';
+}
+
+async function gdRunDetection(){
+  if (!gdApiKey) { if (typeof showToast === 'function') showToast('APIキーを設定してください'); return; }
+  if (!gdPlacesService) { 
+    if (typeof showToast === 'function') showToast('Maps SDK 読み込み中…'); 
+    gdLoadMapsSDK(); 
+    return; 
+  }
+  var name = document.getElementById('gdShrineName').value.trim();
+  if (!name) { if (typeof showToast === 'function') showToast('神社・寺院名を入力してください'); return; }
+
+  gdClearResults();
+  var btn = document.getElementById('gdRunBtn');
+  btn.disabled = true;
+  btn.innerHTML = '判定中…';
+
+  try {
+    gdLog('「' + name + '」をPlaces APIで検索中…', 'info');
+    var place = await gdSearchPlace(name);
+    gdLog('place_id 取得: ' + place.place_id.slice(0,20) + '…', 'ok');
+    gdLog('所在地: ' + (place.formatted_address || '不明'), 'info');
+
+    if (!place.photos || place.photos.length === 0) {
+      gdLog('写真が見つかりませんでした', 'warn');
+      gdShowFinalResult(null, 0);
+      return;
+    }
+
+    var maxPhotos = Math.min(place.photos.length, 10);
+    gdLog(maxPhotos + '枚の写真を取得しました。Vision APIで判定開始…', 'info');
+    document.getElementById('gdResultsTit').style.display = 'flex';
+    var resultsEl = document.getElementById('gdResults');
+    var analysisResults = [];
+
+    for (var i = 0; i < maxPhotos; i++) {
+      var photoUrl = place.photos[i].getUrl({ maxWidth: 800 });
+      var card = document.createElement('div');
+      card.className = 'gd-photo-card';
+      card.innerHTML = '<div class="gd-photo-img gd-skeleton" style="aspect-ratio:1"></div><div class="gd-photo-info"><div class="gd-photo-score">判定中…</div></div>';
+      resultsEl.appendChild(card);
+
+      try {
+        var vision = await gdCallVisionAPI(photoUrl);
+        var result = gdCalcGoshuinScore(vision);
+        analysisResults.push({ photoUrl: photoUrl, score: result.score, labels: result.labels, card: card });
+        card.innerHTML =
+          '<img class="gd-photo-img" src="' + photoUrl + '" loading="lazy">' +
+          '<div class="gd-photo-info">' +
+            '<div class="gd-photo-score"><span>スコア</span><span class="gd-num">' + result.score + '</span></div>' +
+            '<div class="gd-photo-judge">' + gdJudgeText(result.score) + '</div>' +
+            '<div class="gd-photo-tags">' + result.labels.slice(0,3).map(function(l){ return l.description; }).join('・') + '</div>' +
+          '</div>';
+        gdLog('写真' + (i+1) + ': スコア ' + result.score + ' / ' + result.labels.slice(0,3).map(function(l){ return l.description; }).join(','), result.score >= 60 ? 'ok' : 'info');
+      } catch (e) {
+        card.innerHTML = '<div class="gd-photo-img" style="display:flex;align-items:center;justify-content:center;font-size:10px;color:#a83320">エラー</div><div class="gd-photo-info"><div class="gd-photo-judge">' + e.message + '</div></div>';
+        gdLog('写真' + (i+1) + ' 判定失敗: ' + e.message, 'err');
+      }
+    }
+
+    analysisResults.sort(function(a,b){ return b.score - a.score; });
+    var best = analysisResults[0];
+    if (best && best.score >= 60) {
+      best.card.classList.add('best');
+      best.card.insertAdjacentHTML('afterbegin', '<div class="gd-photo-best-badge">★ 御朱印</div>');
+      gdLog('御朱印を発見！スコア: ' + best.score, 'ok');
+      gdShowFinalResult(best.photoUrl, best.score);
+    } else {
+      gdLog('御朱印の写真は見つかりませんでした（最高スコア: ' + ((best && best.score) || 0) + '）', 'warn');
+      gdShowFinalResult(null, (best && best.score) || 0);
+    }
+  } catch (e) {
+    gdLog('エラー: ' + e.message, 'err');
+    console.error(e);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5" stroke="#3a2800" stroke-width="1.7"/><line x1="11" y1="11" x2="15" y2="15" stroke="#3a2800" stroke-width="1.7" stroke-linecap="round"/></svg>御朱印を自動判定';
+  }
+}
+
+function gdSearchPlace(name){
+  return new Promise(function(resolve, reject){
+    gdPlacesService.findPlaceFromQuery({
+      query: name + ' 神社',
+      fields: ['place_id', 'name', 'formatted_address']
+    }, function(results, status){
+      if (status !== google.maps.places.PlacesServiceStatus.OK || !results || results.length === 0) {
+        // 神社で見つからなければ寺院名そのままで再検索
+        gdPlacesService.findPlaceFromQuery({
+          query: name,
+          fields: ['place_id', 'name', 'formatted_address']
+        }, function(r2, s2){
+          if (s2 !== google.maps.places.PlacesServiceStatus.OK || !r2 || r2.length === 0) {
+            return reject(new Error('神社・寺院が見つかりませんでした: ' + status));
+          }
+          gdFetchDetails(r2[0].place_id, resolve, reject);
+        });
+        return;
+      }
+      gdFetchDetails(results[0].place_id, resolve, reject);
+    });
+  });
+}
+
+function gdFetchDetails(placeId, resolve, reject){
+  gdPlacesService.getDetails({
+    placeId: placeId,
+    fields: ['place_id', 'name', 'formatted_address', 'photos']
+  }, function(detail, status){
+    if (status !== google.maps.places.PlacesServiceStatus.OK) {
+      return reject(new Error('Place Details取得失敗: ' + status));
+    }
+    resolve(detail);
+  });
+}
+
+async function gdCallVisionAPI(imageUrl){
+  var url = 'https://vision.googleapis.com/v1/images:annotate?key=' + gdApiKey;
+  var body = {
+    requests: [{
+      image: { source: { imageUri: imageUrl } },
+      features: [
+        { type: 'LABEL_DETECTION', maxResults: 15 },
+        { type: 'TEXT_DETECTION', maxResults: 1 }
+      ]
+    }]
+  };
+  var res = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+  if (!res.ok) {
+    var err = await res.json().catch(function(){ return {}; });
+    throw new Error((err.error && err.error.message) || ('HTTP ' + res.status));
+  }
+  var data = await res.json();
+  return (data.responses && data.responses[0]) || {};
+}
+
+function gdCalcGoshuinScore(visionResult){
+  var score = 0;
+  var labels = visionResult.labelAnnotations || [];
+  var labelWeights = {
+    'Calligraphy':50, 'Seal (Emblem)':45, 'Stamp':40,
+    'Handwriting':35, 'Manuscript':30, 'Ink':20,
+    'Art paper':20, 'Paper':15, 'Writing':15,
+    'Font':10, 'Document':8, 'Painting':5
+  };
+  labels.forEach(function(label){
+    var w = labelWeights[label.description];
+    if (w && label.score > 0.7) score += w * label.score;
+  });
+  var text = (visionResult.fullTextAnnotation && visionResult.fullTextAnnotation.text) || '';
+  var keywords = ['奉拝','参拝','令和','平成','神社','寺','宮','神宮','御朱印','朱印','社務所','謹書','初穂料','大社','院'];
+  keywords.forEach(function(kw){ if (text.indexOf(kw) !== -1) score += 25; });
+  var excludeLabels = ['Building','Architecture','Tree','Sky','Outdoor','Plant','Statue','Landscape','Forest','Vegetation'];
+  labels.forEach(function(label){
+    if (excludeLabels.indexOf(label.description) !== -1 && label.score > 0.8) {
+      score -= 15;
+    }
+  });
+  return { score: Math.round(score), labels: labels, text: text };
+}
+
+function gdJudgeText(score){
+  if (score >= 60) return '◎ 御朱印の可能性大';
+  if (score >= 30) return '△ 候補';
+  return '✕ 違う';
+}
+
+function gdShowFinalResult(imageUrl, score){
+  var area = document.getElementById('gdFinalArea');
+  if (imageUrl) {
+    area.innerHTML =
+      '<div class="gd-final-card">' +
+        '<div class="gd-badge">★ 御朱印を自動取得しました</div>' +
+        '<div class="gd-img-wrap"><img src="' + imageUrl + '" alt="御朱印"></div>' +
+        '<div class="gd-info">スコア <b>' + score + '</b> 点で御朱印と判定しました。<br>この画像が「募集中」プレースホルダーの代わりに表示されます。</div>' +
+      '</div>';
+  } else {
+    area.innerHTML =
+      '<div class="gd-final-card notfound">' +
+        '<div class="gd-badge">— 御朱印は見つかりませんでした —</div>' +
+        '<div class="gd-img-wrap">募集中</div>' +
+        '<div class="gd-info">写真から御朱印は検出できませんでした（最高スコア ' + score + ' 点）。<br>従来の「募集中」プレースホルダーが表示されます。</div>' +
+      '</div>';
+  }
 }
 
 // 既存のrenderCommunityList関数の上に挿入終了
