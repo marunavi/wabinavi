@@ -665,73 +665,76 @@ html,body{margin:0;padding:0;background:var(--washi)}
 .theme-coming-soon{text-align:center;padding:2.5rem 1rem;color:#999;font-size:13px;font-family:'Shippori Mincho',serif;background:#fff;border:.5px dashed var(--gold);border-radius:10px}
 .theme-coming-soon .ico-big{width:50px;height:50px;border-radius:50%;background:var(--gold-l);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;color:var(--red-d)}
 /* ─────────────────────────────────────────────
-  御朱印検索ページ「WABISABI GOSHUIN SEARCH」
-  和モダン・ミニマル・クリーン
+  御朱印なびページ（白基調・テーマ色アクセント追従）
   ───────────────────────────────────────────── */
-.gs-bg{background:#faf6ef;min-height:100vh;color:#3a2a1a;display:flex;flex-direction:column}
-.gs-header{background:#fff;padding:.85rem 1.25rem;display:flex;align-items:center;gap:.6rem;border-bottom:1px solid #ece3d4;position:sticky;top:0;z-index:10}
-.gs-back{background:transparent;border:none;font-size:24px;color:#3a2a1a;cursor:pointer;width:28px;line-height:1;padding:0;flex-shrink:0}
-.gs-title{flex:1;font-family:'Shippori Mincho',serif;font-size:13px;font-weight:700;letter-spacing:.2em;color:#3a2a1a;text-align:center}
-.gs-title .accent{color:var(--gold)}
+.gs-bg{background:#fff;min-height:100vh;color:#2a2a2a;display:flex;flex-direction:column}
+.gs-bg[data-theme="shrine"]{--gs-accent:#a83320;--gs-accent-d:#8a2417;--gs-accent-l:#fce8e4}
+.gs-bg[data-theme="temple"]{--gs-accent:#3a1d5d;--gs-accent-d:#2a124a;--gs-accent-l:#ece4f5}
+.gs-bg{--gs-accent:#a83320;--gs-accent-d:#8a2417;--gs-accent-l:#fce8e4}
+.gs-header{background:#fff;padding:.85rem 1.25rem;display:flex;align-items:center;gap:.6rem;border-bottom:1px solid #f0e8d8;position:sticky;top:0;z-index:10;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.gs-back{background:transparent;border:none;font-size:26px;color:#2a2a2a;cursor:pointer;width:28px;line-height:1;padding:0;flex-shrink:0;font-family:'Shippori Mincho',serif}
+.gs-title{flex:1;font-family:'Shippori Mincho',serif;font-size:18px;font-weight:800;letter-spacing:.18em;color:#2a2a2a;text-align:center}
+.gs-title .accent{color:var(--gs-accent);transition:color .35s var(--ease)}
 .gs-header-spacer{width:28px;flex-shrink:0}
-.gs-nav{display:flex;justify-content:center;gap:1.4rem;padding:.65rem 1.25rem;background:#fff;border-bottom:1px solid #ece3d4;position:sticky;top:54px;z-index:9}
-.gs-nav-item{font-size:10px;color:#8a7860;letter-spacing:.18em;cursor:pointer;font-family:'Shippori Mincho',serif;font-weight:600;padding-bottom:3px;border-bottom:2px solid transparent;transition:color .2s var(--ease),border-color .2s var(--ease);text-decoration:none}
-.gs-nav-item.active{color:#3a2a1a;border-bottom-color:var(--gold)}
-.gs-nav-item:hover{color:#3a2a1a}
+.gs-nav{display:flex;justify-content:center;gap:1.4rem;padding:.7rem 1.25rem;background:#fff;border-bottom:1px solid #f0e8d8;position:sticky;top:58px;z-index:9}
+.gs-nav-item{font-size:11px;color:#b0a89a;letter-spacing:.1em;cursor:pointer;font-family:'Shippori Mincho',serif;font-weight:700;padding-bottom:4px;border-bottom:2px solid transparent;transition:color .2s var(--ease),border-color .2s var(--ease);text-decoration:none}
+.gs-nav-item.active{color:var(--gs-accent);border-bottom-color:var(--gs-accent)}
+.gs-nav-item:hover{color:#2a2a2a}
 
 /* 検索セクション */
-.gs-search-section{padding:1.5rem 1.25rem .25rem;position:relative}
-.gs-search-box{position:relative;background:#fff;border:1px solid #e0d6c0;border-radius:14px;display:flex;align-items:center;padding:.95rem 1rem .95rem 2.6rem;box-shadow:0 6px 20px rgba(160,140,100,.08);transition:box-shadow .2s var(--ease)}
-.gs-search-box:focus-within{box-shadow:0 8px 28px rgba(160,140,100,.18);border-color:#c9a84c}
+.gs-search-section{padding:1.5rem 1.25rem .25rem;position:relative;background:#fff}
+.gs-search-box{position:relative;background:#fff;border:1px solid #e8dfcd;border-radius:14px;display:flex;align-items:center;padding:.95rem 1rem .95rem 2.6rem;box-shadow:0 4px 14px rgba(160,140,100,.06);transition:box-shadow .2s var(--ease),border-color .2s var(--ease)}
+.gs-search-box:focus-within{box-shadow:0 6px 22px rgba(160,140,100,.14);border-color:var(--gs-accent)}
 .gs-search-icon{position:absolute;left:1rem;color:#a89a7e;width:18px;height:18px}
-.gs-search-input{flex:1;border:none;outline:none;background:transparent;font-size:14px;font-family:'Noto Serif JP',serif;color:#3a2a1a;letter-spacing:.02em}
+.gs-search-input{flex:1;border:none;outline:none;background:transparent;font-size:14px;font-family:'Noto Serif JP',serif;color:#2a2a2a;letter-spacing:.02em}
 .gs-search-input::placeholder{color:#b8a989}
 
 /* サジェスト */
-.gs-suggest{background:#fff;border:1px solid #e0d6c0;border-radius:14px;margin-top:.6rem;box-shadow:0 10px 28px rgba(160,140,100,.14);overflow:hidden;animation:gsFade .25s var(--ease)}
+.gs-suggest{background:#fff;border:1px solid #e8dfcd;border-radius:14px;margin-top:.6rem;box-shadow:0 8px 22px rgba(160,140,100,.1);overflow:hidden;animation:gsFade .25s var(--ease)}
 @keyframes gsFade{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
-.gs-suggest-cat{padding:.85rem 1rem;border-bottom:1px solid #f3ebd9}
+.gs-suggest-cat{padding:.85rem 1rem;border-bottom:1px solid #f5ecd9}
 .gs-suggest-cat:last-child{border-bottom:none}
-.gs-suggest-label{font-size:9px;color:#a89a7e;letter-spacing:.22em;font-weight:700;margin-bottom:.55rem;font-family:'Shippori Mincho',serif}
-.gs-suggest-item{font-size:13px;color:#3a2a1a;font-family:'Noto Serif JP',serif;display:flex;align-items:center;gap:.5rem;cursor:pointer;padding:.2rem 0;transition:color .15s var(--ease)}
-.gs-suggest-item:hover{color:var(--red-d)}
+.gs-suggest-label{font-size:10px;color:#a89a7e;letter-spacing:.15em;font-weight:700;margin-bottom:.55rem;font-family:'Shippori Mincho',serif}
+.gs-suggest-item{font-size:13px;color:#2a2a2a;font-family:'Noto Serif JP',serif;display:flex;align-items:center;gap:.5rem;cursor:pointer;padding:.2rem 0;transition:color .15s var(--ease)}
+.gs-suggest-item:hover{color:var(--gs-accent)}
 .gs-suggest-item svg{width:13px;height:13px;color:#a89a7e}
 .gs-suggest-tags{display:flex;flex-wrap:wrap;gap:.4rem}
-.gs-suggest-tag{font-size:11px;color:#3a5d8f;background:#eef3fa;padding:4px 10px;border-radius:10px;cursor:pointer;transition:background .15s var(--ease);font-family:'Noto Serif JP',serif}
-.gs-suggest-tag:hover{background:#dde7f5}
+.gs-suggest-tag{font-size:11px;color:var(--gs-accent-d);background:var(--gs-accent-l);padding:4px 11px;border-radius:11px;cursor:pointer;transition:background .15s var(--ease);font-family:'Noto Serif JP',serif;font-weight:600;border:.5px solid rgba(0,0,0,.04)}
+.gs-suggest-tag:hover{background:var(--gs-accent);color:#fff}
 .gs-suggest-posts{display:flex;flex-direction:column;gap:.55rem}
 .gs-suggest-post{display:flex;align-items:center;gap:.7rem;cursor:pointer;padding:.2rem 0;transition:opacity .15s var(--ease)}
 .gs-suggest-post:hover{opacity:.7}
 .gs-suggest-post img{width:38px;height:38px;border-radius:8px;object-fit:cover;background:#f0ead9;flex-shrink:0}
 .gs-suggest-post-info{flex:1;min-width:0}
-.gs-suggest-post-tit{font-size:12px;color:#3a2a1a;font-family:'Noto Serif JP',serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600}
+.gs-suggest-post-tit{font-size:12px;color:#2a2a2a;font-family:'Noto Serif JP',serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600}
 .gs-suggest-post-meta{font-size:10px;color:#a89a7e;margin-top:1px;font-family:'Noto Serif JP',serif}
 
-/* コミュニティ */
-.gs-community{padding:1rem 1.25rem 4.5rem}
-.gs-community-tit{font-family:'Shippori Mincho',serif;font-size:13px;letter-spacing:.28em;font-weight:600;color:#3a2a1a;margin:2rem 0 1.25rem;text-align:center;display:flex;align-items:center;justify-content:center;gap:.85rem}
-.gs-community-tit::before,.gs-community-tit::after{content:"";display:inline-block;width:24px;height:1px;background:linear-gradient(90deg,transparent,#c9a84c,transparent)}
+/* みんなの御朱印 */
+.gs-community{padding:1rem 1.25rem 4.5rem;background:#fff}
+.gs-community-tit{font-family:'Shippori Mincho',serif;font-size:15px;letter-spacing:.18em;font-weight:700;color:#2a2a2a;margin:1.8rem 0 1.25rem;text-align:center;display:flex;align-items:center;justify-content:center;gap:.85rem}
+.gs-community-tit::before,.gs-community-tit::after{content:"";display:inline-block;width:28px;height:1.5px;background:var(--gs-accent);transition:background .35s var(--ease)}
 .gs-grid{display:grid;grid-template-columns:1fr;gap:1rem}
 @media (min-width:450px){.gs-grid{grid-template-columns:1fr 1fr}}
 
-.gs-card{background:#fff;border:1px solid #ece3d4;border-radius:14px;overflow:hidden;box-shadow:0 4px 16px rgba(160,140,100,.06);transition:transform .2s var(--ease),box-shadow .2s var(--ease);cursor:pointer}
-.gs-card:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(160,140,100,.15)}
+.gs-card{background:#fff;border:1px solid #f0e8d8;border-radius:14px;overflow:hidden;box-shadow:0 4px 14px rgba(160,140,100,.06);transition:transform .2s var(--ease),box-shadow .2s var(--ease);cursor:pointer;position:relative}
+.gs-card::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2.5px;background:var(--gs-accent);transition:background .35s var(--ease)}
+.gs-card:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(160,140,100,.14)}
 .gs-card-hd{display:flex;align-items:center;gap:.55rem;padding:.7rem .85rem}
-.gs-card-avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#e3c879,#c9a84c);display:flex;align-items:center;justify-content:center;font-family:'Shippori Mincho',serif;font-size:11px;font-weight:700;color:#3a2800;flex-shrink:0;overflow:hidden}
+.gs-card-avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--gs-accent),var(--gs-accent-d));display:flex;align-items:center;justify-content:center;font-family:'Shippori Mincho',serif;font-size:11px;font-weight:700;color:#fff;flex-shrink:0;overflow:hidden;transition:background .35s var(--ease)}
 .gs-card-avatar img{width:100%;height:100%;object-fit:cover}
-.gs-card-user{font-size:11px;font-weight:700;color:#3a2a1a;font-family:'Shippori Mincho',serif;letter-spacing:.04em;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.gs-card-time{font-size:9px;color:#b8a989;font-family:'Noto Serif JP',serif;flex-shrink:0}
+.gs-card-user{font-size:11px;font-weight:700;color:#2a2a2a;font-family:'Shippori Mincho',serif;letter-spacing:.04em;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gs-card-time{font-size:10px;color:#b8a989;font-family:'Noto Serif JP',serif;flex-shrink:0}
 .gs-card-img{width:100%;aspect-ratio:1;object-fit:cover;background:#f0ead9;display:block}
 .gs-card-actions{display:flex;align-items:center;gap:.85rem;padding:.6rem .85rem .25rem;color:#5a4a30}
 .gs-card-act{display:flex;align-items:center;gap:.32rem;font-size:11px;cursor:pointer;font-family:'Noto Serif JP',serif;font-weight:600;transition:color .15s var(--ease)}
 .gs-card-act:hover{color:#d85a3a}
 .gs-card-act svg{width:14px;height:14px}
 .gs-card-act.heart svg{color:#d85a3a;fill:#d85a3a}
-.gs-card-caption{padding:.2rem .85rem .4rem;font-size:12px;color:#3a2a1a;line-height:1.65;font-family:'Noto Serif JP',serif}
-.gs-card-caption .gs-cap-user{font-weight:700;margin-right:.3rem;font-family:'Shippori Mincho',serif}
-.gs-card-tags{padding:0 .85rem .85rem;font-size:11px;color:#3a5d8f;line-height:1.65;font-family:'Noto Serif JP',serif;cursor:pointer;word-break:break-all}
-.gs-card-tags span{cursor:pointer;margin-right:.2rem;transition:color .15s var(--ease)}
-.gs-card-tags span:hover{color:#5d7ab8;text-decoration:underline}
+.gs-card-caption{padding:.2rem .85rem .4rem;font-size:12px;color:#2a2a2a;line-height:1.65;font-family:'Noto Serif JP',serif}
+.gs-card-caption .gs-cap-user{font-weight:700;margin-right:.3rem;font-family:'Shippori Mincho',serif;color:var(--gs-accent-d);transition:color .35s var(--ease)}
+.gs-card-tags{padding:0 .85rem 1rem;font-size:11px;color:var(--gs-accent-d);line-height:1.65;font-family:'Noto Serif JP',serif;cursor:pointer;word-break:break-all;font-weight:600;transition:color .35s var(--ease)}
+.gs-card-tags span{cursor:pointer;margin-right:.25rem;transition:opacity .15s var(--ease)}
+.gs-card-tags span:hover{opacity:.7;text-decoration:underline}
 </style>
 </head>
 <body>
@@ -1821,20 +1824,20 @@ html,body{margin:0;padding:0;background:var(--washi)}
   </div>
 </div>
 
-<!-- ━━━ WABISABI GOSHUIN SEARCH（御朱印検索ページ）━━━ -->
-<div id="pgGoshuinSearch" style="display:none;flex-direction:column;position:fixed;inset:0;z-index:102;overflow-y:auto" class="gs-bg">
+<!-- ━━━ 御朱印なび（御朱印検索ページ）━━━ -->
+<div id="pgGoshuinSearch" style="display:none;flex-direction:column;position:fixed;inset:0;z-index:102;overflow-y:auto" class="gs-bg" data-theme="shrine">
   <!-- ヘッダー -->
   <div class="gs-header">
     <button class="gs-back" onclick="closeOverlay('pgGoshuinSearch')">‹</button>
-    <h1 class="gs-title">WABISABI <span class="accent">GOSHUIN</span> SEARCH</h1>
+    <h1 class="gs-title"><span class="accent">御朱印</span>なび</h1>
     <div class="gs-header-spacer"></div>
   </div>
 
   <!-- ナビゲーション -->
   <nav class="gs-nav">
-    <a class="gs-nav-item active">HOME</a>
-    <a class="gs-nav-item">SHRINE DIRECTORY</a>
-    <a class="gs-nav-item">COMMUNITY PHOTOS</a>
+    <a class="gs-nav-item active">ホーム</a>
+    <a class="gs-nav-item">神社・寺院一覧</a>
+    <a class="gs-nav-item">みんなの投稿</a>
   </nav>
 
   <!-- 検索セクション -->
@@ -1844,28 +1847,28 @@ html,body{margin:0;padding:0;background:var(--washi)}
         <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.6"/>
         <line x1="12.5" y1="12.5" x2="16" y2="16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
       </svg>
-      <input class="gs-search-input" id="gsSearchInput" value="Ueno Goshuin" autocomplete="off" oninput="updateGsSuggest()">
+      <input class="gs-search-input" id="gsSearchInput" value="上野 御朱印" placeholder="神社・寺院・地域名で検索" autocomplete="off" oninput="updateGsSuggest()">
     </div>
 
     <!-- サジェストドロップダウン -->
     <div class="gs-suggest" id="gsSuggest">
       <div class="gs-suggest-cat">
-        <div class="gs-suggest-label">KEYWORDS</div>
+        <div class="gs-suggest-label">キーワード</div>
         <div class="gs-suggest-item">
           <svg viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.3"/><line x1="9.5" y1="9.5" x2="12.5" y2="12.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
-          <span id="gsKwText">Ueno Goshuin</span>
+          <span id="gsKwText">上野 御朱印</span>
         </div>
       </div>
       <div class="gs-suggest-cat">
-        <div class="gs-suggest-label">SYSTEM HASHTAGS (Mapped)</div>
+        <div class="gs-suggest-label">関連ハッシュタグ</div>
         <div class="gs-suggest-tags">
-          <span class="gs-suggest-tag">#UenoToshogu</span>
-          <span class="gs-suggest-tag">#GoshuinTokyo</span>
           <span class="gs-suggest-tag">#上野東照宮</span>
+          <span class="gs-suggest-tag">#東京の御朱印</span>
+          <span class="gs-suggest-tag">#五條天神社</span>
         </div>
       </div>
       <div class="gs-suggest-cat">
-        <div class="gs-suggest-label">RECENT POST MATCHES</div>
+        <div class="gs-suggest-label">最近の投稿</div>
         <div class="gs-suggest-posts">
           <div class="gs-suggest-post">
             <img src="https://picsum.photos/seed/ueno1/120/120" alt="" loading="lazy">
@@ -1893,9 +1896,9 @@ html,body{margin:0;padding:0;background:var(--washi)}
     </div>
   </div>
 
-  <!-- COMMUNITY SNAPSHOTS -->
+  <!-- みんなの御朱印 -->
   <div class="gs-community">
-    <h2 class="gs-community-tit">COMMUNITY SNAPSHOTS</h2>
+    <h2 class="gs-community-tit">みんなの御朱印</h2>
     <div class="gs-grid" id="gsGrid"></div>
   </div>
 </div>
@@ -2242,67 +2245,67 @@ function openThemeDetail(id){
 }
 
 // みんなの最新投稿（コミュニティ）
-// ━━━ 御朱印検索ページ（WABISABI GOSHUIN SEARCH）━━━
+// ━━━ 御朱印なびページ（御朱印検索）━━━
 var GOSHUIN_POSTS = [
   {
     user:'yoko_kyoto', avatar:'よ', img:'https://picsum.photos/seed/wabi1/600/600',
     likes:342, comments:18, time:'3時間前',
     caption:'清水寺で頂いた美しい御朱印。墨の香りと朱印の鮮やかさに心が洗われました。',
-    tags:['#KiyomizuDera','#KyotoTemple','#御朱印']
+    tags:['#清水寺','#京都の御朱印','#御朱印巡り']
   },
   {
     user:'shrine_lover', avatar:'神', img:'https://picsum.photos/seed/wabi2/600/600',
     likes:521, comments:32, time:'5時間前',
     caption:'明治神宮の鳥居をくぐると、都心とは思えない静寂。御朱印もシンプルで美しい。',
-    tags:['#MeijiJingu','#TokyoShrine','#森の聖域']
+    tags:['#明治神宮','#東京の神社','#森の聖域']
   },
   {
     user:'goshuin_hunter', avatar:'印', img:'https://picsum.photos/seed/wabi3/600/600',
     likes:687, comments:45, time:'8時間前',
     caption:'上野東照宮の金色の御朱印。家康公を祀る格式高い社で頂きました。',
-    tags:['#UenoToshogu','#GoshuinTokyo','#KingGold']
+    tags:['#上野東照宮','#東京の御朱印','#徳川家康']
   },
   {
     user:'wabisabi_kyoto', avatar:'侘', img:'https://picsum.photos/seed/wabi4/600/600',
     likes:289, comments:21, time:'12時間前',
     caption:'龍安寺の石庭を眺めながら、御朱印帳を開く時間。わびさびの極致。',
-    tags:['#Ryoanji','#StoneGarden','#禅']
+    tags:['#龍安寺','#石庭','#禅の心']
   },
   {
     user:'ema_collector', avatar:'絵', img:'https://picsum.photos/seed/wabi5/600/600',
     likes:412, comments:28, time:'1日前',
     caption:'出雲大社で縁結び祈願。御朱印にも特別な力が宿っているような気がします。',
-    tags:['#Izumo','#EnmusubiShrine','#縁結び']
+    tags:['#出雲大社','#縁結び','#島根の神社']
   },
   {
     user:'red_seal_jp', avatar:'朱', img:'https://picsum.photos/seed/wabi6/600/600',
     likes:1238, comments:87, time:'1日前',
     caption:'伏見稲荷大社の千本鳥居。延々と続く朱色の道を抜けた先での御朱印は格別。',
-    tags:['#FushimiInari','#SenbonTorii','#千本鳥居']
+    tags:['#伏見稲荷大社','#千本鳥居','#京都の神社']
   },
   {
     user:'shrines_japan', avatar:'社', img:'https://picsum.photos/seed/wabi7/600/600',
     likes:456, comments:34, time:'2日前',
     caption:'鎌倉・鶴岡八幡宮の重厚な御朱印。武家の守護神として歴史を感じる一冊。',
-    tags:['#Tsurugaoka','#KamakuraShrine','#武運長久']
+    tags:['#鶴岡八幡宮','#鎌倉','#武運長久']
   },
   {
     user:'kawaii_shrine', avatar:'桜', img:'https://picsum.photos/seed/wabi8/600/600',
     likes:789, comments:52, time:'2日前',
     caption:'平安神宮の朱の鳥居と御朱印。京都の春は特別。桜と御朱印巡りは至福。',
-    tags:['#HeianJingu','#KyotoCherryBlossom','#桜']
+    tags:['#平安神宮','#京都の桜','#春の御朱印']
   },
   {
     user:'temple_walker', avatar:'歩', img:'https://picsum.photos/seed/wabi9/600/600',
     likes:367, comments:24, time:'3日前',
     caption:'浅草寺の雷門をくぐり、参道で頂く御朱印。下町の風情と共に。',
-    tags:['#SensojiTemple','#Asakusa','#雷門']
+    tags:['#浅草寺','#雷門','#東京下町']
   },
   {
     user:'wandering_jp', avatar:'旅', img:'https://picsum.photos/seed/wabi10/600/600',
     likes:521, comments:38, time:'3日前',
     caption:'高野山金剛峯寺の御朱印。空海ゆかりの聖地で頂いた一冊は宝物です。',
-    tags:['#Koyasan','#KongobujiTemple','#空海']
+    tags:['#高野山','#金剛峯寺','#空海']
   }
 ];
 
@@ -2332,20 +2335,23 @@ function renderGoshuinGrid(){
 }
 
 function openGoshuinSearch(){
+  // 御朱印ページにも現在のテーマ（神社/寺院）を反映
+  var page = document.getElementById('pgGoshuinSearch');
+  if (page) page.setAttribute('data-theme', (typeof currentType !== 'undefined' && currentType === 'temple') ? 'temple' : 'shrine');
   if (typeof openOverlay === 'function') openOverlay('pgGoshuinSearch');
   else document.getElementById('pgGoshuinSearch').style.display = 'flex';
   // 初回開いた時にグリッドを描画
   if (!document.getElementById('gsGrid').innerHTML) renderGoshuinGrid();
-  // 入力欄に Ueno Goshuin がデフォルトで入っている状態
+  // 入力欄に「上野 御朱印」がデフォルトで入っている状態
   var inp = document.getElementById('gsSearchInput');
-  if (inp && !inp.value) inp.value = 'Ueno Goshuin';
+  if (inp && !inp.value) inp.value = '上野 御朱印';
 }
 
 function updateGsSuggest(){
   var inp = document.getElementById('gsSearchInput');
-  var val = inp ? inp.value : 'Ueno Goshuin';
+  var val = inp ? inp.value : '上野 御朱印';
   var kw = document.getElementById('gsKwText');
-  if (kw) kw.textContent = val || 'Ueno Goshuin';
+  if (kw) kw.textContent = val || '上野 御朱印';
   var sug = document.getElementById('gsSuggest');
   if (sug) sug.style.display = val.trim() ? 'block' : 'none';
 }
