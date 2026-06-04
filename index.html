@@ -2504,13 +2504,19 @@ function renderGoshuinGrid(){
 }
 
 function openGoshuinSearch(){
-  // 御朱印ページにも現在のテーマ（神社/寺院）を反映
   var page = document.getElementById('pgGoshuinSearch');
-  if (page) page.setAttribute('data-theme', (typeof currentType !== 'undefined' && currentType === 'temple') ? 'temple' : 'shrine');
+  if (!page) {
+    if (typeof showToast === 'function') showToast('御朱印ページが見つかりません。ページを再読み込みしてください');
+    else alert('御朱印ページが見つかりません。ページを再読み込みしてください');
+    return;
+  }
+  // 御朱印ページにも現在のテーマ（神社/寺院）を反映
+  page.setAttribute('data-theme', (typeof currentType !== 'undefined' && currentType === 'temple') ? 'temple' : 'shrine');
   if (typeof openOverlay === 'function') openOverlay('pgGoshuinSearch');
-  else document.getElementById('pgGoshuinSearch').style.display = 'flex';
+  else { page.style.display = 'flex'; page.scrollTop = 0; }
   // 初回開いた時にグリッドを描画
-  if (!document.getElementById('gsGrid').innerHTML) renderGoshuinGrid();
+  var grid = document.getElementById('gsGrid');
+  if (grid && !grid.innerHTML && typeof renderGoshuinGrid === 'function') renderGoshuinGrid();
   // 入力欄に「上野 御朱印」がデフォルトで入っている状態
   var inp = document.getElementById('gsSearchInput');
   if (inp && !inp.value) inp.value = '上野 御朱印';
