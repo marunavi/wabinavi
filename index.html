@@ -17,39 +17,100 @@
 .app .tagbar,.app .api-btn,.app .secln,.app .btn-search,.app .srch-btn{transition:background .35s var(--ease),border-color .35s var(--ease),color .35s var(--ease),box-shadow .35s var(--ease)}
 .app{width:100%;max-width:500px;margin:0 auto;background:var(--washi);font-family:'Noto Serif JP',serif}
 html,body{margin:0;padding:0;background:var(--washi)}
-.hero{position:relative;height:200px;overflow:hidden;background:#1a2a1a}
-.hero-img{width:100%;height:100%;object-fit:cover;object-position:center 35%;display:block}
-.hero-ov{position:absolute;inset:0;background:rgba(5,12,5,0.38)}
-.hero-ct{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:0 1.25rem .85rem}
-.hero-top{display:flex;align-items:flex-start;justify-content:center}
-/* ─── ヘッダー（白基調・アクセントのみテーマ色）3カラム ─── */
-.site-hd{background:#fff;padding:.6rem .9rem;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:8px;border-bottom:1px solid #f0e8d8;box-shadow:0 1px 3px rgba(0,0,0,.04)}
-.site-hd-logo{display:flex;flex-direction:column;line-height:1;cursor:pointer}
-.site-hd-tit{font-family:'Shippori Mincho',serif;font-size:19px;font-weight:800;color:#2a2a2a;letter-spacing:.12em;line-height:1}
-.site-hd-sub{font-family:'Shippori Mincho',serif;font-size:9px;color:#999;letter-spacing:.18em;margin-top:4px;font-weight:600;padding-left:.05em}
-.site-hd-center{display:flex;justify-content:center;align-items:center;gap:0}
-.site-hd-actions{display:flex;align-items:center;gap:6px}
-.site-hd-btn{width:32px;height:32px;border-radius:50%;background:#f5efe5;border:1px solid #e8dfcd;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s var(--ease),transform .15s var(--ease)}
-.site-hd-btn svg{width:15px;height:15px}
-.site-hd-btn svg *{stroke:#a89a7e !important}
-.site-hd-btn svg circle[fill]{fill:#a89a7e !important;stroke:none !important}
-.site-hd-btn:hover{background:#ece3d4}
-.site-hd-btn:active{transform:scale(.93)}
-.hero-title{font-family:'Cormorant Garamond','Shippori Mincho',serif;font-size:32px;font-weight:500;color:#fff;letter-spacing:.12em;text-shadow:0 2px 8px rgba(0,0,0,.7),0 0 20px rgba(201,168,76,.25);padding-left:.05em;line-height:1;font-style:italic;background:linear-gradient(180deg,#fff 30%,#f5e9c4 70%,#e3c879 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 2px 4px rgba(0,0,0,.65))}
-.hero-sub{font-family:'Shippori Mincho',serif;font-size:10px;color:var(--gold);letter-spacing:.45em;margin-top:6px;text-shadow:0 1px 3px rgba(0,0,0,.55);font-weight:400}
-/* 神社・寺院トグル */
-.type-toggle{display:inline-flex;background:transparent;border:none;border-radius:0;padding:0;margin-top:0;position:relative;z-index:5;gap:0}
-.type-toggle-btn{padding:7px 18px 5px;border-radius:0;background:transparent;border:none;border-bottom:2px solid transparent;color:#b0b0b0;font-size:13px;font-family:'Shippori Mincho',serif;font-weight:600;letter-spacing:.08em;cursor:pointer;transition:color .25s var(--ease),border-color .25s var(--ease);margin-bottom:-1px}
-.type-toggle-btn.on{background:transparent;color:var(--red);border-bottom-color:var(--red);box-shadow:none}
-.type-toggle-btn:not(.on):hover{color:#666}
-.prof-btn{width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.15);border:1.5px solid rgba(201,168,76,.55);display:flex;align-items:center;justify-content:center;cursor:pointer}
-.btns{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:.875rem 0}
-.abtn{background:linear-gradient(180deg,rgba(255,255,255,.16),rgba(255,255,255,.08));border:.5px solid rgba(201,168,76,.4);border-radius:13px;padding:.78rem .25rem .68rem;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;backdrop-filter:blur(2px);transition:transform .18s var(--ease),background .25s var(--ease),border-color .25s var(--ease)}
-.abtn:hover{background:linear-gradient(180deg,rgba(255,255,255,.24),rgba(255,255,255,.13));border-color:rgba(201,168,76,.65)}
-.abtn:active{transform:scale(.96)}
-.abtn svg{width:30px;height:30px}
-.acnt{font-size:16px;font-weight:800;color:var(--gold);font-family:'Shippori Mincho',serif;line-height:1}
-.albl{font-family:'Shippori Mincho',serif;font-size:10px;font-weight:600;color:#fff;letter-spacing:.04em;text-align:center;line-height:1.3}
+/* ─── 新ヘッダー ─── */
+.site-hd{background:#fff;padding:.65rem 1rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #f0e8d8;box-shadow:0 1px 3px rgba(0,0,0,.04);position:sticky;top:0;z-index:50}
+.site-hd-logo{display:flex;align-items:center;gap:8px;cursor:pointer;text-decoration:none}
+.site-hd-tit-wrap{display:flex;flex-direction:column;line-height:1}
+.site-hd-tit{font-family:'Shippori Mincho',serif;font-size:20px;font-weight:800;color:#2a2a2a;letter-spacing:.1em;line-height:1}
+.site-hd-sub{font-family:'Noto Serif JP',serif;font-size:8px;color:#999;letter-spacing:.08em;margin-top:3px;font-weight:400}
+.site-hd-actions{display:flex;align-items:center;gap:14px}
+.site-hd-btn{color:#666;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;transition:color .2s var(--ease)}
+.site-hd-btn:hover{color:#2a2a2a}
+.site-hd-btn svg{width:20px;height:20px}
+.site-hd-btn-label{font-size:8px;color:#999;letter-spacing:.03em;font-family:'Noto Serif JP',serif}
+
+/* ─── ヒーロー ─── */
+.hero{position:relative;min-height:520px;overflow:hidden;background:#3a2416;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:2rem 1.25rem 1.5rem}
+.hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 40%;display:block}
+.hero-ov{position:absolute;inset:0;background:linear-gradient(180deg,rgba(60,30,15,.3) 0%,rgba(60,30,15,.5) 50%,rgba(60,30,15,.65) 100%)}
+.hero-ct{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;width:100%;max-width:440px}
+.hero-icon{margin-bottom:8px}
+.hero-icon svg{width:26px;height:26px}
+.hero-copy{text-align:center;margin-bottom:6px}
+.hero-copy-main{font-family:'Shippori Mincho',serif;font-size:22px;font-weight:800;color:#fff;line-height:1.55;letter-spacing:.08em;text-shadow:0 2px 8px rgba(0,0,0,.5)}
+.hero-copy-sub{font-family:'Noto Serif JP',serif;font-size:12px;color:rgba(255,255,255,.85);line-height:1.8;margin-top:8px;letter-spacing:.03em;text-shadow:0 1px 4px rgba(0,0,0,.4)}
+.hero-search{background:rgba(255,255,255,.97);border-radius:18px;padding:1.35rem 1.2rem 1.1rem;width:100%;max-width:400px;margin-top:1rem;box-shadow:0 8px 32px rgba(0,0,0,.18)}
+.hero-search-label{font-family:'Shippori Mincho',serif;font-size:13px;font-weight:700;color:#2a2a2a;letter-spacing:.06em;text-align:center;margin-bottom:.8rem;display:flex;align-items:center;justify-content:center;gap:7px}
+.hero-search-label svg{width:15px;height:15px;color:var(--red)}
+.hero-search-input-wrap{position:relative;margin-bottom:.8rem}
+.hero-search-input{width:100%;border:1px solid #e0d8c8;border-radius:12px;padding:.75rem .9rem .75rem 2.4rem;font-size:13px;font-family:'Noto Serif JP',serif;color:#2a2a2a;outline:none;background:#fff;transition:border-color .2s var(--ease),box-shadow .2s var(--ease);box-sizing:border-box}
+.hero-search-input:focus{border-color:var(--red);box-shadow:0 0 0 3px rgba(168,51,32,.08)}
+.hero-search-input::placeholder{color:#b8a989}
+.hero-search-input-icon{position:absolute;left:.8rem;top:50%;transform:translateY(-50%);color:#b0a090;width:15px;height:15px}
+.hero-search-toggles{display:flex;gap:6px;margin-bottom:.8rem}
+.hero-search-toggle{flex:1;padding:.5rem .3rem;border-radius:10px;border:1px solid #e0d8c8;background:#fff;font-family:'Shippori Mincho',serif;font-size:11px;font-weight:700;color:#888;cursor:pointer;text-align:center;transition:all .2s var(--ease);display:flex;align-items:center;justify-content:center;gap:4px;letter-spacing:.03em}
+.hero-search-toggle.on{background:var(--red);color:#fff;border-color:var(--red);box-shadow:0 2px 8px rgba(168,51,32,.25)}
+.hero-search-toggle:not(.on):hover{border-color:#c0b8a8;color:#555}
+.hero-search-toggle svg{width:12px;height:12px}
+.hero-search-cta{width:100%;padding:.85rem;border-radius:14px;background:var(--red);color:#fff;border:none;font-family:'Shippori Mincho',serif;font-size:14px;font-weight:700;letter-spacing:.08em;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 16px rgba(168,51,32,.35);transition:all .15s var(--ease)}
+.hero-search-cta:hover{transform:translateY(-1px);box-shadow:0 6px 22px rgba(168,51,32,.45)}
+.hero-search-cta:active{transform:scale(.98)}
+.hero-search-note{text-align:center;font-size:10px;color:rgba(255,255,255,.65);margin-top:.65rem;font-family:'Noto Serif JP',serif;letter-spacing:.03em;text-shadow:0 1px 3px rgba(0,0,0,.3)}
+/* ─── 特徴カード ─── */
+.features{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:1.5rem 1.25rem 1rem}
+.feat-item{text-align:center;padding:.4rem .15rem}
+.feat-icon{width:40px;height:40px;margin:0 auto .5rem;display:flex;align-items:center;justify-content:center;color:var(--red);transition:color .35s var(--ease)}
+.feat-icon svg{width:28px;height:28px}
+.feat-title{font-family:'Shippori Mincho',serif;font-size:10px;font-weight:700;color:#2a2a2a;letter-spacing:.03em;line-height:1.35;margin-bottom:2px}
+.feat-desc{font-size:8px;color:#999;line-height:1.45;font-family:'Noto Serif JP',serif}
+/* ─── 人気AI巡拝ルート ─── */
+.pop-routes{padding:.75rem 0 1rem}
+.pop-routes-hd{display:flex;align-items:center;justify-content:space-between;padding:0 1.25rem;margin-bottom:.85rem}
+.pop-routes-tit{font-family:'Shippori Mincho',serif;font-size:14px;font-weight:700;color:#2a2a2a;letter-spacing:.08em;display:flex;align-items:center;gap:5px}
+.pop-routes-tit svg{width:14px;height:14px;color:var(--gold)}
+.pop-routes-more{font-size:11px;color:var(--red);cursor:pointer;font-family:'Shippori Mincho',serif;font-weight:600;transition:color .35s var(--ease)}
+.pop-routes-scroll{display:flex;gap:10px;overflow-x:auto;padding:0 1.25rem .5rem;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.pop-routes-scroll::-webkit-scrollbar{display:none}
+.route-card{flex:0 0 160px;background:#fff;border:1px solid #e8dfcd;border-radius:14px;overflow:hidden;cursor:pointer;scroll-snap-align:start;transition:transform .2s var(--ease),box-shadow .2s var(--ease);box-shadow:0 3px 12px rgba(0,0,0,.05)}
+.route-card:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(0,0,0,.1)}
+.route-card-img-wrap{position:relative;overflow:hidden}
+.route-card-img{width:100%;aspect-ratio:4/3;object-fit:cover;background:#f0ead9;display:block}
+.route-card-badge{position:absolute;top:7px;left:7px;background:var(--red);color:#fff;font-size:9px;padding:2px 8px;border-radius:7px;font-family:'Shippori Mincho',serif;font-weight:700;z-index:2;box-shadow:0 2px 4px rgba(0,0,0,.15)}
+.route-card-body{padding:.55rem .65rem .6rem}
+.route-card-title{font-family:'Shippori Mincho',serif;font-size:11px;font-weight:700;color:#2a2a2a;line-height:1.3;margin-bottom:2px}
+.route-card-desc{font-size:9px;color:#888;line-height:1.4;margin-bottom:5px;font-family:'Noto Serif JP',serif}
+.route-card-meta{display:flex;gap:8px;font-size:9px;color:#aaa;font-family:'Noto Serif JP',serif;align-items:center}
+/* ─── AIルート作成の流れ ─── */
+.ai-flow{padding:1.25rem 1rem;background:#fff;margin:.5rem 1.25rem 0;border-radius:16px;border:1px solid #f0e8d8;box-shadow:0 3px 12px rgba(0,0,0,.03)}
+.ai-flow-tit{font-family:'Shippori Mincho',serif;font-size:13px;font-weight:700;color:#2a2a2a;letter-spacing:.1em;text-align:center;margin-bottom:1.1rem;display:flex;align-items:center;justify-content:center;gap:5px}
+.ai-flow-tit svg{width:13px;height:13px;color:var(--gold)}
+.ai-flow-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;position:relative}
+.ai-flow-steps::before{content:"";position:absolute;top:16px;left:14%;right:14%;height:2px;background:linear-gradient(90deg,var(--red),var(--gold));z-index:0;border-radius:2px}
+.ai-flow-step{text-align:center;position:relative;z-index:1}
+.ai-flow-num{width:32px;height:32px;border-radius:50%;background:var(--red);color:#fff;font-family:'Shippori Mincho',serif;font-size:13px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;margin-bottom:.4rem;box-shadow:0 2px 8px rgba(168,51,32,.2);transition:background .35s var(--ease)}
+.ai-flow-step-icon{color:var(--red);margin-bottom:3px;transition:color .35s var(--ease)}
+.ai-flow-step-icon svg{width:18px;height:18px}
+.ai-flow-step-tit{font-family:'Shippori Mincho',serif;font-size:9px;font-weight:700;color:#2a2a2a;letter-spacing:.03em;line-height:1.3}
+.ai-flow-step-desc{font-size:7.5px;color:#999;line-height:1.4;font-family:'Noto Serif JP',serif;margin-top:2px}
+/* ─── 今日行けるルートCTA ─── */
+.today-cta{margin:1rem 1.25rem;background:linear-gradient(135deg,#fdf5e8 0%,#fff 70%);border:1px solid var(--gold);border-radius:14px;padding:.85rem 1rem;display:flex;align-items:center;gap:12px;cursor:pointer;box-shadow:0 3px 12px rgba(201,168,76,.12);transition:transform .15s var(--ease)}
+.today-cta:hover{transform:translateY(-1px)}
+.today-cta-img{width:50px;height:50px;border-radius:10px;overflow:hidden;flex-shrink:0;background:#f0ead9}
+.today-cta-img img{width:100%;height:100%;object-fit:cover}
+.today-cta-body{flex:1}
+.today-cta-title{font-family:'Shippori Mincho',serif;font-size:12px;font-weight:700;color:var(--red);letter-spacing:.04em;line-height:1.3;transition:color .35s var(--ease)}
+.today-cta-desc{font-size:10px;color:#888;margin-top:2px;line-height:1.5;font-family:'Noto Serif JP',serif}
+.today-cta-arrow{width:32px;height:32px;border-radius:50%;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 6px rgba(168,51,32,.25);transition:background .35s var(--ease)}
+.today-cta-arrow svg{width:14px;height:14px}
+/* ─── 旧エリアカード・AI バナー（不要CSSを上書き消去）─── */
+.area-section,.area-sec-hd,.area-sec-tit,.area-sec-link,.area-grid,.area-card,.area-card-bg,.area-card-foot,.area-card-name,.area-card-icon{display:none !important}
+.ai-route-banner,.ai-icon,.ai-crown,.ai-route-body,.ai-route-title,.ai-route-sub,.ai-arrow{display:none !important}
+.btns,.abtn,.acnt,.albl{display:none !important}
+/* ─── フッターナビ ─── */
+.fnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:500px;background:#fff;border-top:1px solid #f0e8d8;display:grid;grid-template-columns:repeat(5,1fr);z-index:60;padding:5px 0 max(5px,env(safe-area-inset-bottom));box-shadow:0 -2px 10px rgba(0,0,0,.04)}
+.ni{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;padding:3px 0;transition:opacity .15s var(--ease)}
+.ni:active{opacity:.6}
+.nl{font-size:9px;letter-spacing:.02em;font-family:'Noto Serif JP',serif;font-weight:600}
 .tagbar{background:var(--red);padding:.7rem .9rem .8rem;margin:.75rem 1.25rem 0;border-radius:14px;border:1px solid var(--gold);box-shadow:0 4px 16px -4px rgba(42,18,74,.45),0 0 0 1px rgba(201,168,76,.18);transition:background .35s var(--ease),border-color .35s var(--ease),box-shadow .35s var(--ease)}
 .tagrow{display:flex;gap:6px;flex-wrap:wrap}
 .tag{display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.13);border:.5px solid rgba(255,255,255,.28);border-radius:20px;padding:5px 13px;font-size:11px;color:rgba(255,255,255,.92);cursor:pointer;font-family:'Noto Serif JP',serif;white-space:nowrap;transition:all .2s var(--ease)}
@@ -798,119 +859,194 @@ html,body{margin:0;padding:0;background:var(--washi)}
 <div class="app" data-theme="shrine">
 
 <div class="pg on" id="pgHome">
-<!-- ── 上部ヘッダー（タイトル左・トグル中央・アクション右）── -->
+<!-- ── 新ヘッダー ── -->
 <div class="site-hd">
   <div class="site-hd-logo" onclick="go('pgHome')">
-    <div class="site-hd-tit">わびなび</div>
-    <div class="site-hd-sub">〜和美導〜</div>
-  </div>
-  <div class="site-hd-center">
-    <div class="type-toggle">
-      <button class="type-toggle-btn on" id="ttShrine" onclick="setType('shrine')">神社</button>
-      <button class="type-toggle-btn" id="ttTemple" onclick="setType('temple')">寺院</button>
+    <svg class="site-hd-logo-icon" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="14" stroke="#a83320" stroke-width="1.5" fill="none"/><path d="M10 20L16 8L22 20" stroke="#a83320" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="16" cy="18" r="3" stroke="#a83320" stroke-width="1.2" fill="none"/></svg>
+    <div class="site-hd-tit-wrap">
+      <div class="site-hd-tit">わびなび</div>
+      <div class="site-hd-sub">神社と和文化のコミュニティ</div>
     </div>
   </div>
   <div class="site-hd-actions">
-    <div class="site-hd-btn" onclick="openRegister()" title="会員登録・ログイン">
-      <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="7" r="3" stroke="#a89a7e" stroke-width="1.5"/><path d="M3 17c0-4 12-4 12 0" stroke="#a89a7e" stroke-width="1.5" stroke-linecap="round" fill="none"/><circle cx="14" cy="3.5" r="2" fill="#a89a7e"/><path d="M14 2.3v2.4M12.9 3.5h2.2" stroke="#fff" stroke-width="0.8" stroke-linecap="round"/></svg>
+    <div class="site-hd-btn" onclick="go('pgSearch')">
+      <svg viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.7"/><line x1="13.5" y1="13.5" x2="18" y2="18" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+      <span class="site-hd-btn-label">検索</span>
     </div>
-    <div class="site-hd-btn" onclick="go('pgProfile')" title="マイページ">
-      <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="7" r="3.2" stroke="#a89a7e" stroke-width="1.5"/><path d="M3 16.5c0-3.5 12-3.5 12 0" stroke="#a89a7e" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
+    <div class="site-hd-btn" onclick="go('pgProfile')">
+      <svg viewBox="0 0 20 20" fill="none"><line x1="3" y1="5" x2="17" y2="5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><line x1="3" y1="10" x2="17" y2="10" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><line x1="3" y1="15" x2="17" y2="15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+      <span class="site-hd-btn-label">メニュー</span>
     </div>
   </div>
 </div>
 
+<!-- ── ヒーロー ── -->
 <div class="hero">
-  <img class="hero-img" src="https://raw.githubusercontent.com/SIMBA3838/shrine-app/main/ai.jinjya.jpg" alt="神社の風景">
+  <img class="hero-img" src="https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=1200&q=80&auto=format&fit=crop" alt="御朱印と和の世界">
   <div class="hero-ov"></div>
   <div class="hero-ct">
-    <div class="btns">
-      <div class="abtn" onclick="go('pgVisits')">
-        <svg viewBox="0 0 30 30" fill="none"><rect x="5" y="7" width="20" height="16" rx="2" stroke="#c9a84c" stroke-width="1.2"/><line x1="5" y1="11" x2="25" y2="11" stroke="#c9a84c" stroke-width="1"/><line x1="9" y1="7" x2="9" y2="5" stroke="#c9a84c" stroke-width="1.2" stroke-linecap="round"/><line x1="21" y1="7" x2="21" y2="5" stroke="#c9a84c" stroke-width="1.2" stroke-linecap="round"/><path d="M10 17.5l2.5 2.5 5.5-5" stroke="#c9a84c" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <div class="acnt" id="vcTop">3</div><div class="albl">参拝の記録</div>
+    <div class="hero-icon"><svg viewBox="0 0 26 26" fill="none"><circle cx="13" cy="13" r="11" stroke="rgba(255,255,255,.6)" stroke-width="1.2"/><path d="M8 18L13 6L18 18" stroke="rgba(255,255,255,.8)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="13" cy="16" r="2.5" stroke="rgba(255,255,255,.8)" stroke-width="1" fill="none"/></svg></div>
+    <div class="hero-copy">
+      <div class="hero-copy-main">あなたに合った<br>神社・お寺巡りを<br>AIがご提案</div>
+      <div class="hero-copy-sub">行きたい神社やお寺、<br>使える時間や交通手段を選ぶだけ。<br>AIが最適な巡拝ルートを作成します。</div>
+    </div>
+    <div class="hero-search">
+      <div class="hero-search-label">
+        <svg viewBox="0 0 16 16" fill="none"><path d="M2 6L8 2L14 6V13H2V6z" stroke="currentColor" stroke-width="1.3" fill="none" stroke-linejoin="round"/><line x1="8" y1="2" x2="8" y2="4" stroke="currentColor" stroke-width="1.3"/></svg>
+        行きたい神社・お寺を入力
       </div>
-      <div class="abtn" onclick="go('pgBmk')">
-        <svg viewBox="0 0 30 30" fill="none"><path d="M9 5h12v20l-6-4-6 4V5z" stroke="#c9a84c" stroke-width="1.2" stroke-linejoin="round"/><circle cx="15" cy="12" r="2.5" stroke="#c9a84c" stroke-width="1"/></svg>
-        <div class="acnt">5</div><div class="albl">いつか訪れたい</div>
+      <div class="hero-search-input-wrap">
+        <svg class="hero-search-input-icon" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.5"/><line x1="11" y1="11" x2="15" y2="15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <input class="hero-search-input" type="text" placeholder="例：明治神宮、浅草寺、鶴岡八幡宮" id="heroSearchInput">
       </div>
-      <div class="abtn" onclick="searchNearby()">
-        <svg viewBox="0 0 30 30" fill="none"><circle cx="15" cy="13" r="5" stroke="#c9a84c" stroke-width="1.2"/><circle cx="15" cy="13" r="1.5" fill="#c9a84c"/><line x1="15" y1="3" x2="15" y2="6" stroke="#c9a84c" stroke-width="1.2" stroke-linecap="round"/><line x1="15" y1="20" x2="15" y2="23" stroke="#c9a84c" stroke-width="1.2" stroke-linecap="round"/><line x1="4" y1="13" x2="7" y2="13" stroke="#c9a84c" stroke-width="1.2" stroke-linecap="round"/><line x1="23" y1="13" x2="26" y2="13" stroke="#c9a84c" stroke-width="1.2" stroke-linecap="round"/></svg>
-        <div class="acnt" style="font-size:10px;opacity:.85">GPS</div><div class="albl">地図から探す</div>
+      <div class="hero-search-toggles">
+        <button class="hero-search-toggle" onclick="setSearchMode(this,'shrine')">
+          <svg viewBox="0 0 14 14" fill="none"><path d="M3 12h8M5 12V7L7 4l2 3v5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+          神社中心
+        </button>
+        <button class="hero-search-toggle on" onclick="setSearchMode(this,'both')">
+          <svg viewBox="0 0 14 14" fill="none"><path d="M3 12h3M8 12h3M5 12V8l-2-3M9 12V8l2-3M7 5v7" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+          両方
+        </button>
+        <button class="hero-search-toggle" onclick="setSearchMode(this,'temple')">
+          <svg viewBox="0 0 14 14" fill="none"><circle cx="7" cy="5" r="2.5" stroke="currentColor" stroke-width="1.1" fill="none"/><path d="M4 12V8h6v4" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+          寺院中心
+        </button>
+      </div>
+      <button class="hero-search-cta" onclick="startAiRoute()">
+        <svg viewBox="0 0 16 16" fill="none"><path d="M8 2L9.5 6L14 6.5L10.5 9.5L11.5 14L8 12L4.5 14L5.5 9.5L2 6.5L6.5 6L8 2Z" fill="currentColor"/></svg>
+        AIがおすすめルートを作成
+        <svg viewBox="0 0 12 12" fill="none"><path d="M4 2l5 4-5 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+    <div class="hero-search-note">検索だけでもOK！おすすめスポットをチェックできます</div>
+  </div>
+</div>
+
+<!-- ── 4つの特徴 ── -->
+<div class="features">
+  <div class="feat-item">
+    <div class="feat-icon"><svg viewBox="0 0 28 28" fill="none"><path d="M14 4L17 10L24 11L19 16L20 23L14 20L8 23L9 16L4 11L11 10L14 4Z" stroke="currentColor" stroke-width="1.3" fill="none" stroke-linejoin="round"/></svg></div>
+    <div class="feat-title">行きたい場所から作成</div>
+    <div class="feat-desc">行きたい神社・寺院を<br>起点にルート作成</div>
+  </div>
+  <div class="feat-item">
+    <div class="feat-icon"><svg viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="9" stroke="currentColor" stroke-width="1.3" fill="none"/><line x1="14" y1="8" x2="14" y2="14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="14" y1="14" x2="18" y2="17" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></div>
+    <div class="feat-title">時間を無駄にしない</div>
+    <div class="feat-desc">移動効率をAIが最適化し、<br>無駄のない巡拝を実現</div>
+  </div>
+  <div class="feat-item">
+    <div class="feat-icon"><svg viewBox="0 0 28 28" fill="none"><rect x="5" y="4" width="18" height="20" rx="2" stroke="currentColor" stroke-width="1.3" fill="none"/><line x1="9" y1="10" x2="19" y2="10" stroke="currentColor" stroke-width="1"/><line x1="9" y1="14" x2="19" y2="14" stroke="currentColor" stroke-width="1"/><line x1="9" y1="18" x2="15" y2="18" stroke="currentColor" stroke-width="1"/></svg></div>
+    <div class="feat-title">御朱印情報も確認</div>
+    <div class="feat-desc">限定御朱印や受付時間・<br>見どころもチェック</div>
+  </div>
+  <div class="feat-item">
+    <div class="feat-icon"><svg viewBox="0 0 28 28" fill="none"><path d="M8 4h12v20l-6-4-6 4V4z" stroke="currentColor" stroke-width="1.3" fill="none" stroke-linejoin="round"/></svg></div>
+    <div class="feat-title">保存・共有できる</div>
+    <div class="feat-desc">作成したルートは保存して<br>あとで見返せる</div>
+  </div>
+</div>
+
+<!-- ── 人気のAI巡拝ルート ── -->
+<div class="pop-routes">
+  <div class="pop-routes-hd">
+    <div class="pop-routes-tit">
+      <svg viewBox="0 0 14 14" fill="none"><path d="M7 1L8.5 5L13 5.5L9.5 8.5L10.5 13L7 11L3.5 13L4.5 8.5L1 5.5L5.5 5L7 1Z" fill="currentColor"/></svg>
+      人気のAI巡拝ルート
+    </div>
+    <div class="pop-routes-more">すべて見る ›</div>
+  </div>
+  <div class="pop-routes-scroll">
+    <div class="route-card" onclick="openAiRoute()">
+      <div class="route-card-img-wrap">
+        <img class="route-card-img" src="https://images.unsplash.com/photo-1545569310-c1d4ed14d12c?w=400&q=80&auto=format&fit=crop" alt="縁結び" loading="lazy">
+        <div class="route-card-badge">縁結び</div>
+      </div>
+      <div class="route-card-body">
+        <div class="route-card-title">❤️ 縁結び巡りコース</div>
+        <div class="route-card-desc">良縁・恋愛成就を願う</div>
+        <div class="route-card-meta">🕐 約4時間 👥 3社</div>
+      </div>
+    </div>
+    <div class="route-card" onclick="openAiRoute()">
+      <div class="route-card-img-wrap">
+        <img class="route-card-img" src="https://images.unsplash.com/photo-1480796927426-f609979314bd?w=400&q=80&auto=format&fit=crop" alt="金運" loading="lazy">
+        <div class="route-card-badge">金運アップ</div>
+      </div>
+      <div class="route-card-body">
+        <div class="route-card-title">💰 金運アップコース</div>
+        <div class="route-card-desc">金運・商売繁盛を願う</div>
+        <div class="route-card-meta">🕐 約3時間 👥 3社</div>
+      </div>
+    </div>
+    <div class="route-card" onclick="openAiRoute()">
+      <div class="route-card-img-wrap">
+        <img class="route-card-img" src="https://images.unsplash.com/photo-1493997181344-712f2f19d87a?w=400&q=80&auto=format&fit=crop" alt="御朱印" loading="lazy">
+        <div class="route-card-badge">御朱印めぐり</div>
+      </div>
+      <div class="route-card-body">
+        <div class="route-card-title">📕 御朱印めぐりコース</div>
+        <div class="route-card-desc">人気の御朱印を集める旅</div>
+        <div class="route-card-meta">🕐 約6時間 👥 5社</div>
+      </div>
+    </div>
+    <div class="route-card" onclick="openAiRoute()">
+      <div class="route-card-img-wrap">
+        <img class="route-card-img" src="https://images.unsplash.com/photo-1583416750470-965b2707b355?w=400&q=80&auto=format&fit=crop" alt="花手水" loading="lazy">
+        <div class="route-card-badge">花手水</div>
+      </div>
+      <div class="route-card-body">
+        <div class="route-card-title">🌸 花手水めぐりコース</div>
+        <div class="route-card-desc">美しい花手水を楽しむ</div>
+        <div class="route-card-meta">🕐 約3時間 👥 4社</div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- AIルート生成バナー（ホーム画面・有料機能） -->
-<div style="padding:1rem 0 .25rem">
-<div class="ai-route-banner" onclick="openAiRoute()">
-  <div class="ai-icon">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-      <path d="M12 2L14 8L20 9L15.5 13L17 19L12 16L7 19L8.5 13L4 9L10 8L12 2Z" fill="#2a124a" stroke="#2a124a" stroke-width="0.5" stroke-linejoin="round"/>
-    </svg>
+<!-- ── AIルート作成の流れ ── -->
+<div class="ai-flow">
+  <div class="ai-flow-tit">
+    <svg viewBox="0 0 14 14" fill="none"><path d="M7 1L8.5 5L13 5.5L9.5 8.5L10.5 13L7 11L3.5 13L4.5 8.5L1 5.5L5.5 5L7 1Z" fill="currentColor"/></svg>
+    AIルート作成の流れ
+    <svg viewBox="0 0 14 14" fill="none"><path d="M7 1L8.5 5L13 5.5L9.5 8.5L10.5 13L7 11L3.5 13L4.5 8.5L1 5.5L5.5 5L7 1Z" fill="currentColor"/></svg>
   </div>
-  <div class="ai-route-body">
-    <div class="ai-crown">
-      <svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M1 4l2 3 3-5 3 5 2-3v6H1V4z" fill="#c9a84c"/></svg>
-      PREMIUM ・ 月2回まで無料
+  <div class="ai-flow-steps">
+    <div class="ai-flow-step">
+      <div class="ai-flow-num">1</div>
+      <div class="ai-flow-step-icon"><svg viewBox="0 0 18 18" fill="none"><path d="M3 12h12M6 12V8L9 4l3 4v4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
+      <div class="ai-flow-step-tit">行きたい神社・<br>お寺を選ぶ</div>
+      <div class="ai-flow-step-desc">行きたい場所を入力<br>または選択</div>
     </div>
-    <div class="ai-route-title">AI御朱印巡りルート</div>
-    <div class="ai-route-sub">出発地と願いを伝えるだけで、最適な巡り順を提案</div>
+    <div class="ai-flow-step">
+      <div class="ai-flow-num">2</div>
+      <div class="ai-flow-step-icon"><svg viewBox="0 0 18 18" fill="none"><rect x="3" y="4" width="12" height="10" rx="1.5" stroke="currentColor" stroke-width="1.3" fill="none"/><line x1="6" y1="8" x2="12" y2="8" stroke="currentColor" stroke-width="1"/><line x1="6" y1="11" x2="10" y2="11" stroke="currentColor" stroke-width="1"/></svg></div>
+      <div class="ai-flow-step-tit">条件を入力する</div>
+      <div class="ai-flow-step-desc">交通手段・時間・目的<br>などを選択</div>
+    </div>
+    <div class="ai-flow-step">
+      <div class="ai-flow-num">3</div>
+      <div class="ai-flow-step-icon"><svg viewBox="0 0 18 18" fill="none"><path d="M9 2L10.5 6L15 6.5L11.5 9.5L12.5 14L9 12L5.5 14L6.5 9.5L3 6.5L7.5 6L9 2Z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg></div>
+      <div class="ai-flow-step-tit">AIが最適ルート<br>を提案</div>
+      <div class="ai-flow-step-desc">移動時間や効率を考慮し<br>最適プランを生成</div>
+    </div>
+    <div class="ai-flow-step">
+      <div class="ai-flow-num">4</div>
+      <div class="ai-flow-step-icon"><svg viewBox="0 0 18 18" fill="none"><path d="M4 14V4h3l2 3 2-3h3v10" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill="none"/><line x1="4" y1="14" x2="14" y2="14" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></div>
+      <div class="ai-flow-step-tit">ルートを確認<br>して出発</div>
+      <div class="ai-flow-step-desc">地図や詳細情報を確認し<br>楽しい巡拝へ</div>
+    </div>
   </div>
-  <div class="ai-arrow">›</div>
-</div>
 </div>
 
-<!-- エリアから探す（6県カード） -->
-<div class="area-section">
-  <div class="area-sec-hd">
-    <div class="area-sec-tit">エリアから探す</div>
-    <div class="area-sec-link" onclick="openAreaSearch('all')">エリア一覧 ›</div>
+<!-- ── 今日行けるおすすめルート ── -->
+<div class="today-cta" onclick="openAiRoute()">
+  <div class="today-cta-img"><img src="https://images.unsplash.com/photo-1583416750470-965b2707b355?w=200&q=80&auto=format&fit=crop" alt="" loading="lazy"></div>
+  <div class="today-cta-body">
+    <div class="today-cta-title">今日行けるおすすめルートをチェック</div>
+    <div class="today-cta-desc">現在地から近くの神社・お寺を<br>AIがご提案します</div>
   </div>
-  <div class="area-grid">
-    <div class="area-card" onclick="openAreaSearch('東京')">
-      <img class="area-card-bg" src="https://github.com/SIMBA3838/shrine-app/blob/main/tokyo.sozai.PNG?raw=true" alt="東京" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&q=80&auto=format&fit=crop'">
-      <div class="area-card-foot">
-        <div class="area-card-name">東京</div>
-        <div class="area-card-icon" id="areaIcon-東京"></div>
-      </div>
-    </div>
-    <div class="area-card" onclick="openAreaSearch('神奈川')">
-      <img class="area-card-bg" src="https://github.com/SIMBA3838/shrine-app/blob/main/kanagawa.sozai.jpg?raw=true" alt="神奈川" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1583416750470-965b2707b355?w=600&q=80&auto=format&fit=crop'">
-      <div class="area-card-foot">
-        <div class="area-card-name">神奈川</div>
-        <div class="area-card-icon" id="areaIcon-神奈川"></div>
-      </div>
-    </div>
-    <div class="area-card" onclick="openAreaSearch('愛知')">
-      <img class="area-card-bg" src="https://github.com/SIMBA3838/shrine-app/blob/main/aichi.sozai.jpg?raw=true" alt="愛知" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1480796927426-f609979314bd?w=600&q=80&auto=format&fit=crop'">
-      <div class="area-card-foot">
-        <div class="area-card-name">愛知</div>
-        <div class="area-card-icon" id="areaIcon-愛知"></div>
-      </div>
-    </div>
-    <div class="area-card" onclick="openAreaSearch('大阪')">
-      <img class="area-card-bg" src="https://github.com/SIMBA3838/shrine-app/blob/main/oosaka.sozai.jpg?raw=true" alt="大阪" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1590559899731-a382839e5549?w=600&q=80&auto=format&fit=crop'">
-      <div class="area-card-foot">
-        <div class="area-card-name">大阪</div>
-        <div class="area-card-icon" id="areaIcon-大阪"></div>
-      </div>
-    </div>
-    <div class="area-card" onclick="openAreaSearch('京都')">
-      <img class="area-card-bg" src="https://github.com/SIMBA3838/shrine-app/blob/main/kyoto.sozai.jpg?raw=true" alt="京都" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1493997181344-712f2f19d87a?w=600&q=80&auto=format&fit=crop'">
-      <div class="area-card-foot">
-        <div class="area-card-name">京都</div>
-        <div class="area-card-icon" id="areaIcon-京都"></div>
-      </div>
-    </div>
-    <div class="area-card" onclick="openAreaSearch('福岡')">
-      <img class="area-card-bg" src="https://github.com/SIMBA3838/shrine-app/blob/main/fukuoka.sozai.jpg?raw=true" alt="福岡" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1583148901321-0d8e8ad8a4ba?w=600&q=80&auto=format&fit=crop'">
-      <div class="area-card-foot">
-        <div class="area-card-name">福岡</div>
-        <div class="area-card-icon" id="areaIcon-福岡"></div>
-      </div>
-    </div>
-  </div>
+  <div class="today-cta-arrow"><svg viewBox="0 0 14 14" fill="none"><path d="M5 3l5 4-5 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
 </div>
 
 <div class="tagbar">
@@ -1103,9 +1239,10 @@ html,body{margin:0;padding:0;background:var(--washi)}
 <div id="toast" style="display:none;position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--red);color:#fff;padding:.6rem 1.5rem;border-radius:30px;font-size:12px;text-align:center;border:1px solid rgba(201,168,76,.4);z-index:200;white-space:nowrap"></div>
 
 <div class="fnav">
-  <div class="ni" onclick="go('pgHome')"><svg width="18" height="18" viewBox="0 0 18 18"><path d="M9 2L16 7v9H2V7z" fill="#3a1d5d"/></svg><span class="nl" style="color:var(--red)">ホーム</span></div>
-  <div class="ni" onclick="go('pgSearch')"><svg width="18" height="18" viewBox="0 0 18 18"><circle cx="9" cy="8" r="5" fill="none" stroke="#bbb" stroke-width="1.5"/><line x1="13" y1="13" x2="17" y2="17" stroke="#bbb" stroke-width="1.5" stroke-linecap="round"/></svg><span class="nl" style="color:#bbb">さがす</span></div>
-  <div class="ni" onclick="go('pgVisits')"><svg width="18" height="18" viewBox="0 0 18 18"><rect x="2" y="3" width="14" height="12" rx="1" fill="none" stroke="#bbb" stroke-width="1.5"/><line x1="2" y1="7" x2="16" y2="7" stroke="#bbb" stroke-width="1"/></svg><span class="nl" style="color:#bbb">記録帳</span></div>
+  <div class="ni" onclick="go('pgHome')"><svg width="18" height="18" viewBox="0 0 18 18"><path d="M3 7l6-5 6 5v8H3V7z" fill="#a83320" stroke="#a83320" stroke-width="0.5"/></svg><span class="nl" style="color:#a83320">ホーム</span></div>
+  <div class="ni" onclick="go('pgSearch')"><svg width="18" height="18" viewBox="0 0 18 18"><circle cx="8" cy="8" r="5" fill="none" stroke="#bbb" stroke-width="1.5"/><line x1="12" y1="12" x2="16" y2="16" stroke="#bbb" stroke-width="1.5" stroke-linecap="round"/></svg><span class="nl" style="color:#bbb">神社を探す</span></div>
+  <div class="ni" onclick="openGoshuinSearch()"><svg width="18" height="18" viewBox="0 0 18 18"><rect x="3" y="2" width="12" height="14" rx="1.5" fill="none" stroke="#bbb" stroke-width="1.5"/><line x1="6" y1="6" x2="12" y2="6" stroke="#bbb" stroke-width="1"/><line x1="6" y1="9" x2="12" y2="9" stroke="#bbb" stroke-width="1"/><line x1="6" y1="12" x2="9" y2="12" stroke="#bbb" stroke-width="1"/></svg><span class="nl" style="color:#bbb">御朱印</span></div>
+  <div class="ni" onclick="openAiRoute()"><svg width="18" height="18" viewBox="0 0 18 18"><path d="M9 2L11 7L16 7.5L12 10.5L13 16L9 13.5L5 16L6 10.5L2 7.5L7 7L9 2Z" fill="none" stroke="#bbb" stroke-width="1.3" stroke-linejoin="round"/></svg><span class="nl" style="color:#bbb">ルート作成</span></div>
   <div class="ni" onclick="go('pgProfile')"><svg width="18" height="18" viewBox="0 0 18 18"><circle cx="9" cy="6" r="3.5" fill="none" stroke="#bbb" stroke-width="1.5"/><path d="M2 17c0-4 14-4 14 0" stroke="#bbb" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg><span class="nl" style="color:#bbb">マイページ</span></div>
 </div>
 </div>
@@ -2425,6 +2562,27 @@ function renderGoshuinGrid(){
     '</div>';
   }).join('');
   document.getElementById('gsGrid').innerHTML = html;
+}
+
+// ── 新TOP検索UI ──
+function setSearchMode(el, mode) {
+  document.querySelectorAll('.hero-search-toggle').forEach(function(b){ b.classList.remove('on'); });
+  el.classList.add('on');
+  // 既存のsetType関数と連携（shrine/temple/both）
+  if (mode === 'shrine' && typeof setType === 'function') setType('shrine');
+  else if (mode === 'temple' && typeof setType === 'function') setType('temple');
+  // 'both'の場合はデフォルト表示（神社優先）
+}
+
+function startAiRoute() {
+  var q = document.getElementById('heroSearchInput');
+  var val = q ? q.value.trim() : '';
+  if (typeof openAiRoute === 'function') {
+    openAiRoute();
+  } else {
+    if (typeof showToast === 'function') showToast('AI巡拝ルート機能は準備中です');
+    else alert('AI巡拝ルート機能は準備中です');
+  }
 }
 
 function openGoshuinSearch(){
