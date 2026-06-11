@@ -30,31 +30,31 @@ html,body{margin:0;padding:0;background:var(--washi)}
 .site-hd-btn-label{font-size:8px;color:#999;letter-spacing:.03em;font-family:'Noto Serif JP',serif}
 
 /* ─── ヒーロー（参考画像準拠・FV内収まり）─── */
-.hero{position:relative;overflow:hidden;background:#faf5ec;padding:0 0 1rem}
+.hero{position:relative;overflow:hidden;background:#faf5ec;padding:0 0 .5rem}
 .hero-bg-wrap{position:relative;height:340px;overflow:hidden}
 .hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block}
 .hero-ov{position:absolute;inset:0;background:linear-gradient(180deg,rgba(250,245,236,.55) 0%,rgba(250,245,236,.15) 40%,rgba(250,245,236,.4) 80%,rgba(250,245,236,.85) 100%)}
 .hero-ct{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;padding:1.4rem 1.25rem 0;max-width:440px;margin:0 auto}
 .hero-icon{margin-bottom:.5rem}
 .hero-icon svg{width:18px;height:18px}
-.hero-copy{text-align:center}
+.hero-copy{text-align:center;background:rgba(252,249,242,.82);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);padding:.9rem 1.4rem .8rem;border-radius:14px;box-shadow:0 4px 16px rgba(200,180,140,.12)}
 .hero-copy-main{font-family:'Shippori Mincho',serif;font-size:23px;font-weight:800;color:#2a2a2a;line-height:1.55;letter-spacing:.06em}
 .hero-copy-main .accent{color:var(--red);transition:color .35s var(--ease)}
 .hero-copy-main .main-2{font-size:25px;display:block;margin-top:2px}
 .hero-copy-main .main-3{font-size:25px;display:block;margin-top:2px}
-.hero-copy-sub{font-family:'Noto Serif JP',serif;font-size:12px;color:#5a4a3a;line-height:1.75;margin-top:.7rem;letter-spacing:.02em}
-/* 検索カード：背景画像エリアと重なる配置 */
-.hero-search{background:#fff;border-radius:18px;padding:1.1rem 1rem .9rem;width:calc(100% - 2.5rem);max-width:400px;margin:-1.5rem auto 0;box-shadow:0 8px 24px rgba(60,40,20,.12);position:relative;z-index:3}
-.hero-search-label{font-family:'Shippori Mincho',serif;font-size:13px;font-weight:700;color:#2a2a2a;letter-spacing:.06em;text-align:center;margin-bottom:.7rem;display:flex;align-items:center;justify-content:center;gap:6px}
+.hero-copy-sub{font-family:'Noto Serif JP',serif;font-size:12px;color:#5a4a3a;line-height:1.75;margin-top:.6rem;letter-spacing:.02em}
+/* 検索カード：背景画像エリアと重なる配置・余白コンパクト */
+.hero-search{background:#fff;border-radius:18px;padding:.7rem 1rem .6rem;width:calc(100% - 2.5rem);max-width:400px;margin:-1.5rem auto 0;box-shadow:0 8px 24px rgba(60,40,20,.12);position:relative;z-index:3}
+.hero-search-label{font-family:'Shippori Mincho',serif;font-size:13px;font-weight:700;color:#2a2a2a;letter-spacing:.06em;text-align:center;margin-bottom:.45rem;display:flex;align-items:center;justify-content:center;gap:6px}
 .hero-search-label::before,.hero-search-label::after{content:"";display:inline-block;width:18px;height:1px;background:#d4c8b0}
 .hero-search-label svg{width:14px;height:14px;color:var(--red);transition:color .35s var(--ease)}
-.hero-search-input-wrap{position:relative;margin-bottom:.65rem}
-.hero-search-input{width:100%;border:1px solid #e8dfcd;border-radius:10px;padding:.7rem .85rem .7rem 2.3rem;font-size:13px;font-family:'Noto Serif JP',serif;color:#2a2a2a;outline:none;background:#fff;transition:border-color .2s var(--ease),box-shadow .2s var(--ease);box-sizing:border-box}
+.hero-search-input-wrap{position:relative;margin-bottom:.4rem}
+.hero-search-input{width:100%;border:1px solid #e8dfcd;border-radius:10px;padding:.6rem .85rem .6rem 2.3rem;font-size:13px;font-family:'Noto Serif JP',serif;color:#2a2a2a;outline:none;background:#fff;transition:border-color .2s var(--ease),box-shadow .2s var(--ease);box-sizing:border-box}
 .hero-search-input:focus{border-color:var(--red);box-shadow:0 0 0 3px rgba(168,51,32,.08)}
 .hero-search-input::placeholder{color:#b8a989}
 .hero-search-input-icon{position:absolute;left:.75rem;top:50%;transform:translateY(-50%);color:#b0a090;width:14px;height:14px}
-.hero-search-toggles{display:flex;gap:5px;margin-bottom:.7rem}
-.hero-search-toggle{flex:1;padding:.45rem .25rem;border-radius:20px;border:1px solid #e8dfcd;background:#fff;font-family:'Shippori Mincho',serif;font-size:11px;font-weight:700;color:#999;cursor:pointer;text-align:center;transition:all .2s var(--ease);display:flex;align-items:center;justify-content:center;gap:4px;letter-spacing:.03em}
+.hero-search-toggles{display:flex;gap:5px;margin-bottom:.4rem}
+.hero-search-toggle{flex:1;padding:.42rem .25rem;border-radius:20px;border:1px solid #e8dfcd;background:#fff;font-family:'Shippori Mincho',serif;font-size:11px;font-weight:700;color:#999;cursor:pointer;text-align:center;transition:all .2s var(--ease);display:flex;align-items:center;justify-content:center;gap:4px;letter-spacing:.03em}
 .hero-search-toggle.on{background:var(--red);color:#fff;border-color:var(--red);box-shadow:0 2px 6px rgba(168,51,32,.22);transition:background .35s var(--ease),border-color .35s var(--ease),color .2s var(--ease)}
 .hero-search-toggle:not(.on):hover{border-color:#c0b8a8;color:#555}
 .hero-search-toggle svg{width:12px;height:12px}
@@ -63,14 +63,14 @@ html,body{margin:0;padding:0;background:var(--washi)}
 .hero-search-cta:active{transform:scale(.98)}
 .hero-search-cta svg.star{width:18px;height:18px}
 .hero-search-cta svg.arrow{width:14px;height:14px;margin-left:auto}
-.hero-search-note{text-align:center;font-size:10.5px;color:#a89a7e;margin-top:.7rem;font-family:'Noto Serif JP',serif;letter-spacing:.02em}
-/* ─── 特徴カード ─── */
-.features{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:1.5rem 1.25rem 1rem}
-.feat-item{text-align:center;padding:.4rem .15rem}
-.feat-icon{width:40px;height:40px;margin:0 auto .5rem;display:flex;align-items:center;justify-content:center;color:var(--red);transition:color .35s var(--ease)}
-.feat-icon svg{width:28px;height:28px}
-.feat-title{font-family:'Shippori Mincho',serif;font-size:10px;font-weight:700;color:#2a2a2a;letter-spacing:.03em;line-height:1.35;margin-bottom:2px}
-.feat-desc{font-size:8px;color:#999;line-height:1.45;font-family:'Noto Serif JP',serif}
+.hero-search-note{text-align:center;font-size:10.5px;color:#a89a7e;margin-top:.4rem;font-family:'Noto Serif JP',serif;letter-spacing:.02em}
+/* ─── 特徴カード（文字大きめ）─── */
+.features{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:1.25rem 1rem .75rem}
+.feat-item{text-align:center;padding:.3rem .1rem}
+.feat-icon{width:44px;height:44px;margin:0 auto .45rem;display:flex;align-items:center;justify-content:center;color:var(--red);transition:color .35s var(--ease)}
+.feat-icon svg{width:32px;height:32px}
+.feat-title{font-family:'Shippori Mincho',serif;font-size:13px;font-weight:700;color:#2a2a2a;letter-spacing:.03em;line-height:1.35;margin-bottom:4px}
+.feat-desc{font-size:11px;color:#888;line-height:1.55;font-family:'Noto Serif JP',serif}
 /* ─── 人気AI巡拝ルート ─── */
 .pop-routes{padding:.75rem 0 1rem}
 .pop-routes-hd{display:flex;align-items:center;justify-content:space-between;padding:0 1.25rem;margin-bottom:.85rem}
