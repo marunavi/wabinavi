@@ -56,6 +56,12 @@ html,body{margin:0;padding:0;background:var(--washi)}
 .hero-search-input::placeholder{color:#b8a989}
 .hero-search-input-icon{position:absolute;left:.75rem;top:50%;transform:translateY(-50%);color:#b0a090;width:14px;height:14px}
 .hero-search-toggles{display:flex;gap:5px;margin-bottom:.4rem}
+.hero-search-row-label{font-family:'Shippori Mincho',serif;font-size:10px;font-weight:700;color:#999;letter-spacing:.06em;margin-bottom:.3rem;padding-left:2px}
+.hero-search-pills{display:flex;gap:4px;margin-bottom:.4rem}
+.hero-search-pill{flex:1;padding:.35rem .15rem;border-radius:18px;border:1px solid #e8dfcd;background:#fff;font-family:'Noto Serif JP',serif;font-size:10.5px;font-weight:600;color:#999;cursor:pointer;text-align:center;transition:all .2s var(--ease);display:flex;align-items:center;justify-content:center;gap:3px}
+.hero-search-pill.on{background:var(--gold);color:#fff;border-color:var(--gold);box-shadow:0 2px 6px rgba(201,168,76,.25)}
+.hero-search-pill:not(.on):hover{border-color:#c0b8a8;color:#555}
+.hero-search-pill svg{width:11px;height:11px}
 .hero-search-toggle{flex:1;padding:.42rem .25rem;border-radius:20px;border:1px solid #e8dfcd;background:#fff;font-family:'Shippori Mincho',serif;font-size:11px;font-weight:700;color:#999;cursor:pointer;text-align:center;transition:all .2s var(--ease);display:flex;align-items:center;justify-content:center;gap:4px;letter-spacing:.03em}
 .hero-search-toggle.on{background:var(--red);color:#fff;border-color:var(--red);box-shadow:0 2px 6px rgba(168,51,32,.22);transition:background .35s var(--ease),border-color .35s var(--ease),color .2s var(--ease)}
 .hero-search-toggle:not(.on):hover{border-color:#c0b8a8;color:#555}
@@ -931,6 +937,37 @@ html,body{margin:0;padding:0;background:var(--washi)}
         寺院中心
       </button>
     </div>
+
+    <!-- 交通手段 -->
+    <div class="hero-search-row-label">交通手段</div>
+    <div class="hero-search-pills" id="transportPills">
+      <button class="hero-search-pill" onclick="setPill(this,'transport')">
+        <svg viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="currentColor" stroke-width="1.1" fill="none"/><path d="M3 11c0-1.5 6-1.5 6 0" stroke="currentColor" stroke-width="1.1" fill="none"/></svg>
+        徒歩
+      </button>
+      <button class="hero-search-pill on" onclick="setPill(this,'transport')">
+        <svg viewBox="0 0 12 12" fill="none"><rect x="2" y="3" width="8" height="6" rx="1" stroke="currentColor" stroke-width="1" fill="none"/><line x1="2" y1="6" x2="10" y2="6" stroke="currentColor" stroke-width=".8"/><circle cx="4" cy="10" r="1" stroke="currentColor" stroke-width=".8" fill="none"/><circle cx="8" cy="10" r="1" stroke="currentColor" stroke-width=".8" fill="none"/></svg>
+        電車
+      </button>
+      <button class="hero-search-pill" onclick="setPill(this,'transport')">
+        <svg viewBox="0 0 12 12" fill="none"><rect x="1" y="4" width="10" height="5" rx="1.5" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="3.5" cy="10" r="1" stroke="currentColor" stroke-width=".8" fill="none"/><circle cx="8.5" cy="10" r="1" stroke="currentColor" stroke-width=".8" fill="none"/><line x1="7" y1="4" x2="9" y2="6" stroke="currentColor" stroke-width=".8"/></svg>
+        車
+      </button>
+      <button class="hero-search-pill" onclick="setPill(this,'transport')">
+        <svg viewBox="0 0 12 12" fill="none"><rect x="2" y="2" width="8" height="7" rx="1.5" stroke="currentColor" stroke-width="1" fill="none"/><line x1="2" y1="6" x2="10" y2="6" stroke="currentColor" stroke-width=".8"/><circle cx="4" cy="10" r="1" stroke="currentColor" stroke-width=".8" fill="none"/><circle cx="8" cy="10" r="1" stroke="currentColor" stroke-width=".8" fill="none"/></svg>
+        バス
+      </button>
+    </div>
+
+    <!-- 所要時間 -->
+    <div class="hero-search-row-label">所要時間</div>
+    <div class="hero-search-pills" id="timePills">
+      <button class="hero-search-pill on" onclick="setPill(this,'time')">3時間</button>
+      <button class="hero-search-pill" onclick="setPill(this,'time')">6時間</button>
+      <button class="hero-search-pill" onclick="setPill(this,'time')">1日</button>
+      <button class="hero-search-pill" onclick="setPill(this,'time')">2日</button>
+    </div>
+
     <button class="hero-search-cta" onclick="startAiRoute()">
       <svg class="star" viewBox="0 0 18 18" fill="none"><path d="M9 2L10.5 6L15 6.5L11.5 9.5L12.5 14L9 12L5.5 14L6.5 9.5L3 6.5L7.5 6L9 2Z" fill="currentColor"/></svg>
       AIがおすすめルートを作成
@@ -2585,10 +2622,13 @@ function renderGoshuinGrid(){
 function setSearchMode(el, mode) {
   document.querySelectorAll('.hero-search-toggle').forEach(function(b){ b.classList.remove('on'); });
   el.classList.add('on');
-  // 既存のsetType関数と連携（shrine/temple/both）
   if (mode === 'shrine' && typeof setType === 'function') setType('shrine');
   else if (mode === 'temple' && typeof setType === 'function') setType('temple');
-  // 'both'の場合はデフォルト表示（神社優先）
+}
+
+function setPill(el, group) {
+  el.parentElement.querySelectorAll('.hero-search-pill').forEach(function(b){ b.classList.remove('on'); });
+  el.classList.add('on');
 }
 
 function startAiRoute() {
