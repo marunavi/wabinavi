@@ -74,51 +74,58 @@ html,body{margin:0;padding:0;background:var(--washi)}
 .hero-search-cta svg.arrow{width:14px;height:14px}
 .hero-search-note{text-align:center;font-size:10.5px;color:#a89a7e;margin-top:.4rem;font-family:'Noto Serif JP',serif;letter-spacing:.02em}
 /* ─── 特徴カード（文字大きめ）─── */
-.features{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:1.25rem 1rem .75rem}
-.feat-item{text-align:center;padding:.3rem .1rem}
-.feat-icon{width:44px;height:44px;margin:0 auto .45rem;display:flex;align-items:center;justify-content:center;color:var(--red);transition:color .35s var(--ease)}
-.feat-icon svg{width:32px;height:32px}
-.feat-title{font-family:'Shippori Mincho',serif;font-size:13px;font-weight:700;color:#2a2a2a;letter-spacing:.03em;line-height:1.35;margin-bottom:4px}
-.feat-desc{font-size:11px;color:#888;line-height:1.55;font-family:'Noto Serif JP',serif}
+.features{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;padding:2.5rem 1.25rem 1rem}
+.feat-item{text-align:center;padding:1.1rem .5rem;background:#fff;border-radius:20px;border:1px solid #f0e8d8;box-shadow:0 2px 10px rgba(0,0,0,.025)}
+.feat-icon{width:44px;height:44px;margin:0 auto .55rem;display:flex;align-items:center;justify-content:center;color:var(--red);transition:color .35s var(--ease)}
+.feat-icon svg{width:30px;height:30px}
+.feat-title{font-family:'Shippori Mincho',serif;font-size:13px;font-weight:700;color:#2a2a2a;letter-spacing:.03em;line-height:1.35;margin-bottom:3px}
+.feat-desc{font-size:10.5px;color:#999;line-height:1.55;font-family:'Noto Serif JP',serif}
 /* ─── 人気AI巡拝ルート ─── */
-.pop-routes{padding:.75rem 0 1rem}
-.pop-routes-hd{display:flex;align-items:center;justify-content:space-between;padding:0 1.25rem;margin-bottom:.85rem}
-.pop-routes-tit{font-family:'Shippori Mincho',serif;font-size:14px;font-weight:700;color:#2a2a2a;letter-spacing:.08em;display:flex;align-items:center;gap:5px}
+.pop-routes{padding:2rem 0 1.5rem}
+.pop-routes-hd{display:flex;align-items:center;justify-content:space-between;padding:0 1.25rem;margin-bottom:1rem}
+.pop-routes-tit{font-family:'Shippori Mincho',serif;font-size:15px;font-weight:700;color:#2a2a2a;letter-spacing:.08em;display:flex;align-items:center;gap:5px}
 .pop-routes-tit svg{width:14px;height:14px;color:var(--gold)}
 .pop-routes-more{font-size:11px;color:var(--red);cursor:pointer;font-family:'Shippori Mincho',serif;font-weight:600;transition:color .35s var(--ease)}
-.pop-routes-scroll{display:flex;gap:10px;overflow-x:auto;padding:0 1.25rem .5rem;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.pop-routes-scroll{display:flex;gap:12px;overflow-x:auto;padding:0 1.25rem .5rem;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none}
 .pop-routes-scroll::-webkit-scrollbar{display:none}
-.route-card{flex:0 0 160px;background:#fff;border:1px solid #e8dfcd;border-radius:14px;overflow:hidden;cursor:pointer;scroll-snap-align:start;transition:transform .2s var(--ease),box-shadow .2s var(--ease);box-shadow:0 3px 12px rgba(0,0,0,.05)}
+.route-card{flex:0 0 165px;background:#fff;border:1px solid #e8dfcd;border-radius:20px;overflow:hidden;cursor:pointer;scroll-snap-align:start;transition:transform .2s var(--ease),box-shadow .2s var(--ease);box-shadow:0 3px 14px rgba(0,0,0,.05)}
 .route-card:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(0,0,0,.1)}
 .route-card-img-wrap{position:relative;overflow:hidden}
 .route-card-img{width:100%;aspect-ratio:4/3;object-fit:cover;background:#f0ead9;display:block}
-.route-card-badge{position:absolute;top:7px;left:7px;background:var(--red);color:#fff;font-size:9px;padding:2px 8px;border-radius:7px;font-family:'Shippori Mincho',serif;font-weight:700;z-index:2;box-shadow:0 2px 4px rgba(0,0,0,.15)}
-.route-card-body{padding:.55rem .65rem .6rem}
-.route-card-title{font-family:'Shippori Mincho',serif;font-size:11px;font-weight:700;color:#2a2a2a;line-height:1.3;margin-bottom:2px}
-.route-card-desc{font-size:9px;color:#888;line-height:1.4;margin-bottom:5px;font-family:'Noto Serif JP',serif}
+.route-card-badge{position:absolute;top:8px;left:8px;background:var(--red);color:#fff;font-size:9px;padding:3px 9px;border-radius:8px;font-family:'Shippori Mincho',serif;font-weight:700;z-index:2;box-shadow:0 2px 4px rgba(0,0,0,.15)}
+.route-card-body{padding:.6rem .7rem .65rem}
+.route-card-title{font-family:'Shippori Mincho',serif;font-size:11.5px;font-weight:700;color:#2a2a2a;line-height:1.3;margin-bottom:3px}
+.route-card-desc{font-size:9.5px;color:#888;line-height:1.4;margin-bottom:5px;font-family:'Noto Serif JP',serif}
 .route-card-meta{display:flex;gap:8px;font-size:9px;color:#aaa;font-family:'Noto Serif JP',serif;align-items:center}
-/* ─── AIルート作成の流れ ─── */
-.ai-flow{padding:1.25rem 1rem;background:#fff;margin:.5rem 1.25rem 0;border-radius:16px;border:1px solid #f0e8d8;box-shadow:0 3px 12px rgba(0,0,0,.03)}
-.ai-flow-tit{font-family:'Shippori Mincho',serif;font-size:13px;font-weight:700;color:#2a2a2a;letter-spacing:.1em;text-align:center;margin-bottom:1.1rem;display:flex;align-items:center;justify-content:center;gap:5px}
-.ai-flow-tit svg{width:13px;height:13px;color:var(--gold)}
-.ai-flow-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;position:relative}
-.ai-flow-steps::before{content:"";position:absolute;top:16px;left:14%;right:14%;height:2px;background:linear-gradient(90deg,var(--red),var(--gold));z-index:0;border-radius:2px}
-.ai-flow-step{text-align:center;position:relative;z-index:1}
-.ai-flow-num{width:32px;height:32px;border-radius:50%;background:var(--red);color:#fff;font-family:'Shippori Mincho',serif;font-size:13px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;margin-bottom:.4rem;box-shadow:0 2px 8px rgba(168,51,32,.2);transition:background .35s var(--ease)}
-.ai-flow-step-icon{color:var(--red);margin-bottom:3px;transition:color .35s var(--ease)}
-.ai-flow-step-icon svg{width:18px;height:18px}
-.ai-flow-step-tit{font-family:'Shippori Mincho',serif;font-size:9px;font-weight:700;color:#2a2a2a;letter-spacing:.03em;line-height:1.3}
-.ai-flow-step-desc{font-size:7.5px;color:#999;line-height:1.4;font-family:'Noto Serif JP',serif;margin-top:2px}
-/* ─── 今日行けるルートCTA ─── */
-.today-cta{margin:1rem 1.25rem;background:linear-gradient(135deg,#fdf5e8 0%,#fff 70%);border:1px solid var(--gold);border-radius:14px;padding:.85rem 1rem;display:flex;align-items:center;gap:12px;cursor:pointer;box-shadow:0 3px 12px rgba(201,168,76,.12);transition:transform .15s var(--ease)}
-.today-cta:hover{transform:translateY(-1px)}
-.today-cta-img{width:50px;height:50px;border-radius:10px;overflow:hidden;flex-shrink:0;background:#f0ead9}
-.today-cta-img img{width:100%;height:100%;object-fit:cover}
-.today-cta-body{flex:1}
-.today-cta-title{font-family:'Shippori Mincho',serif;font-size:12px;font-weight:700;color:var(--red);letter-spacing:.04em;line-height:1.3;transition:color .35s var(--ease)}
-.today-cta-desc{font-size:10px;color:#888;margin-top:2px;line-height:1.5;font-family:'Noto Serif JP',serif}
-.today-cta-arrow{width:32px;height:32px;border-radius:50%;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 6px rgba(168,51,32,.25);transition:background .35s var(--ease)}
-.today-cta-arrow svg{width:14px;height:14px}
+/* ─── AI提案プレビュー（体験型カード）─── */
+.ai-preview{padding:2.5rem 0 1rem}
+.ai-preview-hd{text-align:center;padding:0 1.25rem;margin-bottom:1.2rem}
+.ai-preview-label{font-size:9px;letter-spacing:.22em;color:var(--gold);font-family:'Noto Serif JP',serif;font-weight:700;text-transform:uppercase;margin-bottom:6px}
+.ai-preview-tit{font-family:'Shippori Mincho',serif;font-size:18px;font-weight:800;color:#2a2a2a;letter-spacing:.06em;line-height:1.45}
+.ai-preview-scroll{display:flex;gap:14px;overflow-x:auto;padding:0 1.25rem 1rem;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.ai-preview-scroll::-webkit-scrollbar{display:none}
+.apc{flex:0 0 260px;background:#fff;border-radius:24px;overflow:hidden;scroll-snap-align:start;box-shadow:0 4px 20px rgba(0,0,0,.06);border:1px solid #f0e8d8;cursor:pointer;transition:transform .2s ease,box-shadow .2s ease}
+.apc:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(0,0,0,.1)}
+.apc-img{width:100%;aspect-ratio:16/10;object-fit:cover;display:block;background:#f0ead9}
+.apc-body{padding:1rem 1rem .85rem}
+.apc-name{font-family:'Shippori Mincho',serif;font-size:16px;font-weight:800;color:#2a2a2a;letter-spacing:.04em;margin-bottom:6px;line-height:1.3}
+.apc-desc{font-size:11px;color:#888;line-height:1.5;font-family:'Noto Serif JP',serif;margin-bottom:10px}
+.apc-tags{display:flex;gap:5px;flex-wrap:wrap}
+.apc-tag{font-size:10px;font-family:'Noto Serif JP',serif;color:#666;background:#F9F6EF;border:1px solid #E8DFCD;border-radius:16px;padding:3px 10px}
+.apc-tag.red{color:var(--red);background:rgba(179,58,38,.05);border-color:rgba(179,58,38,.18)}
+.apc-tag.gold{color:#9a7e3a;background:rgba(213,177,90,.08);border-color:rgba(213,177,90,.25)}
+/* ─── 大CTA セクション ─── */
+.big-cta-sec{padding:1.5rem 1.25rem 3rem;text-align:center}
+.big-cta-sec-label{font-size:9px;letter-spacing:.2em;color:#aaa;font-family:'Noto Serif JP',serif;font-weight:700;text-transform:uppercase;margin-bottom:6px}
+.big-cta-sec-tit{font-family:'Shippori Mincho',serif;font-size:16px;font-weight:800;color:#2a2a2a;letter-spacing:.05em;margin-bottom:6px;line-height:1.4}
+.big-cta-sec-sub{font-size:11px;color:#999;font-family:'Noto Serif JP',serif;margin-bottom:1.2rem;line-height:1.5}
+.big-cta-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;max-width:360px;height:62px;margin:0 auto;border-radius:999px;background:linear-gradient(135deg,#d44030 0%,#B33A26 50%,#8a2417 100%);color:#fff;border:none;font-family:'Shippori Mincho',serif;font-size:16px;font-weight:700;letter-spacing:.08em;cursor:pointer;box-shadow:0 6px 24px rgba(179,58,38,.35);transition:all .18s ease;position:relative;overflow:hidden}
+.big-cta-btn::before{content:"";position:absolute;inset:0;border-radius:999px;background:linear-gradient(135deg,rgba(255,255,255,.15) 0%,transparent 50%);pointer-events:none}
+.big-cta-btn:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(179,58,38,.45)}
+.big-cta-btn:active{transform:scale(.97)}
+.big-cta-btn svg{width:20px;height:20px}
+/* ─── 今日行けるルートCTA（big-ctaに統合のため非表示） ─── */
+.today-cta{display:none!important}
 /* ─── 旧エリアカード・AI バナー（不要CSSを上書き消去）─── */
 .area-section,.area-sec-hd,.area-sec-tit,.area-sec-link,.area-grid,.area-card,.area-card-bg,.area-card-foot,.area-card-name,.area-card-icon{display:none !important}
 .ai-route-banner,.ai-icon,.ai-crown,.ai-route-body,.ai-route-title,.ai-route-sub,.ai-arrow{display:none !important}
@@ -1144,22 +1151,22 @@ html,body{margin:0;padding:0;background:var(--washi)}
   <div class="feat-item">
     <div class="feat-icon"><svg viewBox="0 0 28 28" fill="none"><path d="M14 4L17 10L24 11L19 16L20 23L14 20L8 23L9 16L4 11L11 10L14 4Z" stroke="currentColor" stroke-width="1.3" fill="none" stroke-linejoin="round"/></svg></div>
     <div class="feat-title">行きたい場所から作成</div>
-    <div class="feat-desc">行きたい神社・寺院を<br>起点にルート作成</div>
+    <div class="feat-desc">神社名を入れるだけ</div>
   </div>
   <div class="feat-item">
     <div class="feat-icon"><svg viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="9" stroke="currentColor" stroke-width="1.3" fill="none"/><line x1="14" y1="8" x2="14" y2="14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="14" y1="14" x2="18" y2="17" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></div>
-    <div class="feat-title">時間を無駄にしない</div>
-    <div class="feat-desc">移動効率をAIが最適化し、<br>無駄のない巡拝を実現</div>
+    <div class="feat-title">移動時間を最適化</div>
+    <div class="feat-desc">AIが効率ルートを計算</div>
   </div>
   <div class="feat-item">
     <div class="feat-icon"><svg viewBox="0 0 28 28" fill="none"><rect x="5" y="4" width="18" height="20" rx="2" stroke="currentColor" stroke-width="1.3" fill="none"/><line x1="9" y1="10" x2="19" y2="10" stroke="currentColor" stroke-width="1"/><line x1="9" y1="14" x2="19" y2="14" stroke="currentColor" stroke-width="1"/><line x1="9" y1="18" x2="15" y2="18" stroke="currentColor" stroke-width="1"/></svg></div>
-    <div class="feat-title">御朱印情報も確認</div>
-    <div class="feat-desc">限定御朱印や受付時間・<br>見どころもチェック</div>
+    <div class="feat-title">御朱印情報つき</div>
+    <div class="feat-desc">受付時間・限定情報も</div>
   </div>
   <div class="feat-item">
     <div class="feat-icon"><svg viewBox="0 0 28 28" fill="none"><path d="M8 4h12v20l-6-4-6 4V4z" stroke="currentColor" stroke-width="1.3" fill="none" stroke-linejoin="round"/></svg></div>
-    <div class="feat-title">保存・共有できる</div>
-    <div class="feat-desc">作成したルートは保存して<br>あとで見返せる</div>
+    <div class="feat-title">保存・共有</div>
+    <div class="feat-desc">ルートを保存して共有</div>
   </div>
 </div>
 
@@ -1220,39 +1227,62 @@ html,body{margin:0;padding:0;background:var(--washi)}
   </div>
 </div>
 
-<!-- ── AIルート作成の流れ ── -->
-<div class="ai-flow">
-  <div class="ai-flow-tit">
-    <svg viewBox="0 0 14 14" fill="none"><path d="M7 1L8.5 5L13 5.5L9.5 8.5L10.5 13L7 11L3.5 13L4.5 8.5L1 5.5L5.5 5L7 1Z" fill="currentColor"/></svg>
-    AIルート作成の流れ
-    <svg viewBox="0 0 14 14" fill="none"><path d="M7 1L8.5 5L13 5.5L9.5 8.5L10.5 13L7 11L3.5 13L4.5 8.5L1 5.5L5.5 5L7 1Z" fill="currentColor"/></svg>
+<!-- ── AI提案プレビュー（体験型） ── -->
+<div class="ai-preview">
+  <div class="ai-preview-hd">
+    <div class="ai-preview-label">AI PILGRIMAGE</div>
+    <div class="ai-preview-tit">AIがこんな巡礼を<br>提案します</div>
   </div>
-  <div class="ai-flow-steps">
-    <div class="ai-flow-step">
-      <div class="ai-flow-num">1</div>
-      <div class="ai-flow-step-icon"><svg viewBox="0 0 18 18" fill="none"><path d="M3 12h12M6 12V8L9 4l3 4v4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
-      <div class="ai-flow-step-tit">行きたい神社・<br>お寺を選ぶ</div>
-      <div class="ai-flow-step-desc">行きたい場所を入力<br>または選択</div>
+  <div class="ai-preview-scroll">
+    <div class="apc" onclick="startAiRoute()">
+      <img class="apc-img" src="https://images.unsplash.com/photo-1545569310-c1d4ed14d12c?w=520&q=80&auto=format&fit=crop" alt="癒しと景色" loading="lazy">
+      <div class="apc-body">
+        <div class="apc-name">🌸 癒しと景色ルート</div>
+        <div class="apc-desc">長野の絶景スポットを巡り、<br>心を整える癒しの旅</div>
+        <div class="apc-tags">
+          <span class="apc-tag">⏱ 約6時間</span>
+          <span class="apc-tag red">⛩ 7社</span>
+          <span class="apc-tag gold">✦ 限定御朱印</span>
+        </div>
+      </div>
     </div>
-    <div class="ai-flow-step">
-      <div class="ai-flow-num">2</div>
-      <div class="ai-flow-step-icon"><svg viewBox="0 0 18 18" fill="none"><rect x="3" y="4" width="12" height="10" rx="1.5" stroke="currentColor" stroke-width="1.3" fill="none"/><line x1="6" y1="8" x2="12" y2="8" stroke="currentColor" stroke-width="1"/><line x1="6" y1="11" x2="10" y2="11" stroke="currentColor" stroke-width="1"/></svg></div>
-      <div class="ai-flow-step-tit">条件を入力する</div>
-      <div class="ai-flow-step-desc">交通手段・時間・目的<br>などを選択</div>
+    <div class="apc" onclick="startAiRoute()">
+      <img class="apc-img" src="https://images.unsplash.com/photo-1480796927426-f609979314bd?w=520&q=80&auto=format&fit=crop" alt="王道参拝" loading="lazy">
+      <div class="apc-body">
+        <div class="apc-name">⛩ 王道参拝ルート</div>
+        <div class="apc-desc">善光寺から始まる定番コース。<br>御利益重視の巡礼</div>
+        <div class="apc-tags">
+          <span class="apc-tag">⏱ 約5.5時間</span>
+          <span class="apc-tag red">⛩ 7社</span>
+          <span class="apc-tag gold">✦ 御朱印充実</span>
+        </div>
+      </div>
     </div>
-    <div class="ai-flow-step">
-      <div class="ai-flow-num">3</div>
-      <div class="ai-flow-step-icon"><svg viewBox="0 0 18 18" fill="none"><path d="M9 2L10.5 6L15 6.5L11.5 9.5L12.5 14L9 12L5.5 14L6.5 9.5L3 6.5L7.5 6L9 2Z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg></div>
-      <div class="ai-flow-step-tit">AIが最適ルート<br>を提案</div>
-      <div class="ai-flow-step-desc">移動時間や効率を考慮し<br>最適プランを生成</div>
-    </div>
-    <div class="ai-flow-step">
-      <div class="ai-flow-num">4</div>
-      <div class="ai-flow-step-icon"><svg viewBox="0 0 18 18" fill="none"><path d="M4 14V4h3l2 3 2-3h3v10" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill="none"/><line x1="4" y1="14" x2="14" y2="14" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></div>
-      <div class="ai-flow-step-tit">ルートを確認<br>して出発</div>
-      <div class="ai-flow-step-desc">地図や詳細情報を確認し<br>楽しい巡拝へ</div>
+    <div class="apc" onclick="startAiRoute()">
+      <img class="apc-img" src="https://images.unsplash.com/photo-1493997181344-712f2f19d87a?w=520&q=80&auto=format&fit=crop" alt="隠れ名所" loading="lazy">
+      <div class="apc-body">
+        <div class="apc-name">🍃 隠れ名所ルート</div>
+        <div class="apc-desc">地元の人も知らない穴場を巡る、<br>静かな巡礼の旅</div>
+        <div class="apc-tags">
+          <span class="apc-tag">⏱ 約6時間</span>
+          <span class="apc-tag red">⛩ 7社</span>
+          <span class="apc-tag gold">✦ 写真映え</span>
+        </div>
+      </div>
     </div>
   </div>
+</div>
+
+<!-- ── AI巡礼CTA（最大ボタン） ── -->
+<div class="big-cta-sec">
+  <div class="big-cta-sec-label">AI PILGRIMAGE</div>
+  <div class="big-cta-sec-tit">あなただけの巡礼を、<br>AIが10秒で作成</div>
+  <div class="big-cta-sec-sub">行きたい場所・時間・交通手段を選ぶだけ</div>
+  <button class="big-cta-btn" onclick="startAiRoute()">
+    <svg viewBox="0 0 20 20" fill="none"><path d="M10 2L12 7L17 7.5L13 10.5L14 16L10 13.5L6 16L7 10.5L3 7.5L8 7L10 2Z" fill="currentColor"/></svg>
+    AIに巡礼を提案してもらう
+    <svg viewBox="0 0 16 16" fill="none"><path d="M6 4l5 4-5 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
 </div>
 
 <!-- ── 今日行けるおすすめルート ── -->
