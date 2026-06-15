@@ -930,28 +930,72 @@ html,body{margin:0;padding:0;background:var(--washi)}
 .ai-list-retry{text-align:center;padding:1rem;font-size:12px;color:#999;cursor:pointer;font-family:'Noto Serif JP',serif}
 .ai-list-retry:hover{color:#B53A26}
 
-/* ③ ルートマップページ */
-.ai-map-area{width:100%;aspect-ratio:4/3;background:#e8e4de;position:relative;overflow:hidden}
-.ai-map-area iframe{width:100%;height:100%;border:none}
-.ai-map-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#e8e4de}
-.ai-map-placeholder svg{width:48px;height:48px;color:#B53A26;margin-bottom:8px}
-.ai-map-placeholder span{font-size:12px;color:#888;font-family:'Noto Serif JP',serif}
-.ai-map-detail{padding:1rem 1.25rem 6rem}
-.ai-map-route-hd{font-family:'Shippori Mincho',serif;font-size:16px;font-weight:800;color:#B53A26;letter-spacing:.04em;margin-bottom:4px}
-.ai-map-route-meta{font-size:11px;color:#888;font-family:'Noto Serif JP',serif;margin-bottom:1rem}
-.ai-map-spot{display:flex;gap:12px;padding:.8rem 0;border-bottom:1px solid #f0e8d8}
-.ai-map-spot:last-child{border-bottom:none}
-.ai-map-spot-num{width:28px;height:28px;border-radius:50%;background:#B53A26;color:#fff;font-family:'Shippori Mincho',serif;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
-.ai-map-spot-info{flex:1}
-.ai-map-spot-name{font-family:'Shippori Mincho',serif;font-size:14px;font-weight:700;color:#2D2A28}
-.ai-map-spot-loc{font-size:10px;color:#999;margin-top:2px;font-family:'Noto Serif JP',serif}
-.ai-map-spot-tags{display:flex;gap:4px;margin-top:4px}
-.ai-map-spot-tag{font-size:9px;color:#D4B05C;background:rgba(212,176,92,.1);padding:2px 8px;border-radius:8px;border:1px solid rgba(212,176,92,.3);font-family:'Noto Serif JP',serif}
-.ai-map-spot-move{font-size:10px;color:#aaa;padding:.4rem 0 .4rem 2.5rem;font-family:'Noto Serif JP',serif}
-.ai-map-navi{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:500px;background:#fff;padding:.8rem 1.25rem max(.8rem,env(safe-area-inset-bottom));box-shadow:0 -4px 16px rgba(0,0,0,.08);z-index:5}
-.ai-map-navi-btn{width:100%;padding:.8rem;border-radius:14px;background:#B53A26;color:#fff;border:none;font-family:'Shippori Mincho',serif;font-size:15px;font-weight:700;letter-spacing:.06em;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 14px rgba(181,58,38,.3);transition:all .15s}
-.ai-map-navi-btn:hover{transform:translateY(-1px)}
-.ai-map-navi-btn:active{transform:scale(.98)}
+/* ③ ルートマップページ v2 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+/* 地図エリア */
+.rm-map-wrap{position:relative;flex-shrink:0;height:46vh;min-height:220px;background:#2E2A28;overflow:hidden}
+.rm-map-inner{position:absolute;inset:52px 20px 0;border-radius:24px 24px 0 0;overflow:hidden;background:#ddd9d0}
+.rm-map-inner iframe{width:100%;height:100%;border:none;display:block}
+/* 上部グラデオーバーレイ */
+.rm-map-grad{position:absolute;top:0;left:0;right:0;height:110px;background:linear-gradient(to bottom,rgba(249,246,239,.95) 0%,transparent 100%);z-index:3;pointer-events:none}
+/* トップバー */
+.rm-top-bar{position:absolute;top:0;left:0;right:0;z-index:4;display:flex;align-items:center;padding:14px 20px 0;gap:4px}
+.rm-back-btn{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.12);flex-shrink:0;font-size:22px;color:#2E2A28;font-family:serif;line-height:1;padding-bottom:1px}
+.rm-top-title{flex:1;text-align:center;font-family:'Shippori Mincho',serif;font-size:13px;font-weight:700;color:#2E2A28;letter-spacing:.12em}
+.rm-top-share{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.12);flex-shrink:0}
+.rm-top-share svg{width:15px;height:15px;color:#2E2A28}
+/* スクロールエリア */
+.rm-scroll-body{flex:1;overflow-y:auto;overflow-x:hidden;background:#F9F6EF;padding-bottom:90px;-webkit-overflow-scrolling:touch}
+/* メインカード（地図に重なる） */
+.rm-main-card{margin:-28px 16px 0;background:#fff;border-radius:28px 28px 24px 24px;box-shadow:0 8px 28px rgba(46,42,40,.1),0 1px 4px rgba(46,42,40,.04);padding:1.2rem 1.2rem .9rem;position:relative;z-index:5}
+.rm-route-label{font-size:9px;letter-spacing:.22em;color:#B33A26;font-family:'Noto Serif JP',serif;font-weight:700;margin-bottom:4px;text-transform:uppercase}
+.rm-route-name{font-family:'Shippori Mincho',serif;font-size:20px;font-weight:800;color:#2E2A28;letter-spacing:.04em;margin-bottom:10px;line-height:1.3}
+.rm-chips{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:14px}
+.rm-chip{font-size:11px;font-family:'Noto Serif JP',serif;color:#666;background:#F9F6EF;border:1px solid #E8DFCD;border-radius:20px;padding:4px 10px;display:inline-flex;align-items:center;gap:3px}
+.rm-divider{height:1px;background:#F0E8D8;margin-bottom:13px}
+/* 現在スポット */
+.rm-current-block{display:flex;gap:10px;align-items:flex-start}
+.rm-current-info{flex:1;min-width:0}
+.rm-now-label{font-size:9px;letter-spacing:.18em;color:#B33A26;font-family:'Noto Serif JP',serif;font-weight:700;margin-bottom:3px}
+.rm-current-name{font-family:'Shippori Mincho',serif;font-size:22px;font-weight:800;color:#2E2A28;letter-spacing:.04em;margin-bottom:8px;line-height:1.2}
+.rm-next-row{display:flex;align-items:center;gap:5px;margin-bottom:9px}
+.rm-next-label{font-size:10px;color:#999;font-family:'Noto Serif JP',serif}
+.rm-next-arrow{font-size:10px;color:#B33A26}
+.rm-next-name{font-family:'Shippori Mincho',serif;font-size:13px;font-weight:700;color:#2E2A28}
+.rm-benefit{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-family:'Noto Serif JP',serif;color:#c4953a;background:rgba(213,177,90,.08);border:1px solid rgba(213,177,90,.25);border-radius:10px;padding:4px 10px;font-weight:600}
+.rm-current-photo{width:84px;height:84px;border-radius:18px;overflow:hidden;flex-shrink:0;background:#F0EAD9;border:1px solid #E8DFCD}
+.rm-current-photo img{width:100%;height:100%;object-fit:cover;display:block}
+.rm-current-photo-empty{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:30px;opacity:.35}
+/* タイムラインラッパー */
+.rm-timeline-wrap{margin:20px 16px 0}
+.rm-timeline-label{font-size:9px;letter-spacing:.2em;color:#AAA;font-family:'Noto Serif JP',serif;font-weight:700;text-transform:uppercase;margin-bottom:14px}
+/* タイムラインアイテム */
+.rm-tl-item{display:flex;gap:0;cursor:pointer}
+.rm-tl-left{display:flex;flex-direction:column;align-items:center;width:34px;flex-shrink:0}
+.rm-tl-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Shippori Mincho',serif;font-size:12px;font-weight:700;position:relative;z-index:1;flex-shrink:0}
+.rm-tl-dot.tl-done{background:#B33A26;color:#fff}
+.rm-tl-dot.tl-current{background:#B33A26;color:#fff;box-shadow:0 0 0 5px rgba(179,58,38,.14)}
+.rm-tl-dot.tl-next{background:#fff;color:#B33A26;border:2px solid #B33A26}
+.rm-tl-dot.tl-future{background:#fff;color:#CCC;border:2px solid #E8DFCD}
+.rm-tl-line{width:2px;flex:1;min-height:14px;margin:2px 0;background:#E8DFCD}
+.rm-tl-line.done-line{background:rgba(179,58,38,.25)}
+.rm-tl-content{flex:1;min-width:0;padding:0 0 18px 12px}
+.rm-tl-name{font-family:'Shippori Mincho',serif;font-size:15px;font-weight:700;color:#2E2A28;margin-bottom:2px;padding-top:3px;line-height:1.3}
+.rm-tl-name.tl-dim{color:#BBB}
+.rm-tl-meta{font-size:10px;color:#AAA;font-family:'Noto Serif JP',serif;margin-bottom:4px}
+.rm-tl-benefit{font-size:10px;color:#c4953a;font-family:'Noto Serif JP',serif;font-weight:600}
+/* タイムライン展開 */
+.rm-tl-detail{max-height:0;overflow:hidden;transition:max-height .32s ease}
+.rm-tl-detail.open{max-height:200px}
+.rm-tl-detail-inner{background:#F9F6EF;border-radius:14px;padding:10px 12px;margin-top:8px}
+.rm-tl-detail-row{display:flex;justify-content:space-between;align-items:flex-start;font-size:11px;font-family:'Noto Serif JP',serif;color:#555;padding:4px 0;border-bottom:1px solid #EDE6D6}
+.rm-tl-detail-row:last-child{border-bottom:none}
+.rm-tl-detail-lbl{color:#AAA;font-size:10px;flex-shrink:0;margin-right:8px}
+/* 固定ナビCTA */
+.rm-navi-fixed{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:500px;padding:.75rem 1.25rem max(.75rem,env(safe-area-inset-bottom));background:linear-gradient(to top,#F9F6EF 60%,rgba(249,246,239,0));z-index:10;box-sizing:border-box;pointer-events:none}
+.rm-navi-btn{width:100%;height:56px;border-radius:999px;background:linear-gradient(135deg,#c44030 0%,#b33a26 100%);color:#fff;border:none;font-family:'Shippori Mincho',serif;font-size:15px;font-weight:700;letter-spacing:.1em;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 18px rgba(179,58,38,.38);transition:all .15s ease;pointer-events:all}
+.rm-navi-btn:hover{transform:translateY(-1px);box-shadow:0 7px 22px rgba(179,58,38,.45)}
+.rm-navi-btn:active{transform:scale(.98)}
+
 
 /* 共通ヘッダー */
 .ai-ov-hd{display:flex;align-items:center;padding:.8rem 1rem;background:#fff;border-bottom:1px solid #f0e8d8;position:sticky;top:0;z-index:5;gap:8px;flex-shrink:0}
@@ -1675,22 +1719,64 @@ html,body{margin:0;padding:0;background:var(--washi)}
   <div class="ai-list-retry" onclick="retryAiRoute()">↻ もう一度提案してもらう</div>
 </div>
 
-<!-- ③ ルートマップ・ナビ -->
+<!-- ③ ルートマップ・ナビ v2 -->
 <div class="ai-ov" id="pgRouteMap">
-  <div class="ai-ov-hd">
-    <div class="ai-ov-back" onclick="backToRouteList()">‹</div>
-    <div class="ai-ov-title">✦ ルートマップページ</div>
-    <div class="ai-ov-space"></div>
-  </div>
-  <div class="ai-map-area" id="aiMapArea">
-    <div class="ai-map-placeholder" id="aiMapPlaceholder">
-      <svg viewBox="0 0 48 48" fill="none"><path d="M24 4C16 4 10 10 10 18c0 10 14 26 14 26s14-16 14-26c0-8-6-14-14-14z" stroke="currentColor" stroke-width="1.5"/><circle cx="24" cy="18" r="5" stroke="currentColor" stroke-width="1.5"/></svg>
-      <span>マップを読み込み中…</span>
+  <!-- 地図エリア (上部46vh) -->
+  <div class="rm-map-wrap">
+    <div class="rm-map-inner" id="aiMapArea">
+      <div id="aiMapPlaceholder" style="width:100%;height:100%;background:#ddd6c8;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px">
+        <svg viewBox="0 0 48 48" fill="none" style="width:36px;height:36px;opacity:.25"><path d="M24 4C16 4 10 10 10 18c0 10 14 26 14 26s14-16 14-26c0-8-6-14-14-14z" stroke="#2E2A28" stroke-width="1.5"/><circle cx="24" cy="18" r="5" stroke="#2E2A28" stroke-width="1.5"/></svg>
+        <span style="font-size:10px;color:#aaa;font-family:'Noto Serif JP',serif">地図を読み込んでいます…</span>
+      </div>
+    </div>
+    <!-- グラデオーバーレイ -->
+    <div class="rm-map-grad"></div>
+    <!-- トップバー -->
+    <div class="rm-top-bar">
+      <button class="rm-back-btn" onclick="backToRouteList()">‹</button>
+      <span class="rm-top-title">✦ 巡礼ルート</span>
+      <div class="rm-top-share">
+        <svg viewBox="0 0 20 20" fill="none"><circle cx="15" cy="4" r="2" stroke="currentColor" stroke-width="1.5"/><circle cx="5" cy="10" r="2" stroke="currentColor" stroke-width="1.5"/><circle cx="15" cy="16" r="2" stroke="currentColor" stroke-width="1.5"/><path d="M7 9l6-4M7 11l6 4" stroke="currentColor" stroke-width="1.3"/></svg>
+      </div>
     </div>
   </div>
-  <div class="ai-map-detail" id="aiMapDetail"></div>
-  <div class="ai-map-navi">
-    <button class="ai-map-navi-btn" onclick="startNavi()">✦ ナビ開始 →</button>
+  <!-- スクロール可能エリア -->
+  <div class="rm-scroll-body">
+    <!-- メインカード（地図に重なって浮き上がる） -->
+    <div class="rm-main-card" id="rmMainCard">
+      <div class="rm-route-label">PILGRIMAGE ROUTE</div>
+      <div class="rm-route-name" id="rmRouteName">—</div>
+      <div class="rm-chips" id="rmChips">
+        <span class="rm-chip">🚗 車</span>
+        <span class="rm-chip">⏱ 約6時間</span>
+        <span class="rm-chip">⛩ 御朱印5ヶ所</span>
+      </div>
+      <div class="rm-divider"></div>
+      <div class="rm-current-block">
+        <div class="rm-current-info">
+          <div class="rm-now-label">NOW VISITING</div>
+          <div class="rm-current-name" id="rmCurrentName">—</div>
+          <div class="rm-next-row">
+            <span class="rm-next-label">次のスポット</span>
+            <span class="rm-next-arrow">→</span>
+            <span class="rm-next-name" id="rmNextName">—</span>
+          </div>
+          <div class="rm-benefit" id="rmBenefit">✦ —</div>
+        </div>
+        <div class="rm-current-photo" id="rmCurrentPhoto">
+          <div class="rm-current-photo-empty">⛩</div>
+        </div>
+      </div>
+    </div>
+    <!-- タイムライン -->
+    <div class="rm-timeline-wrap">
+      <div class="rm-timeline-label">SPOTS · 巡礼スポット</div>
+      <div id="rmTimeline"></div>
+    </div>
+  </div>
+  <!-- 固定ナビCTA -->
+  <div class="rm-navi-fixed">
+    <button class="rm-navi-btn" onclick="startNavi()">✦ ナビ開始 →</button>
   </div>
 </div>
 
@@ -6157,36 +6243,79 @@ function selectRoute(rid) {
 function showRouteMap(route) {
   var pg = document.getElementById('pgRouteMap');
   pg.classList.add('show');
-  // マップ（OpenStreetMap embed）
-  var mapArea = document.getElementById('aiMapArea');
-  var firstSpot = route.spots[0];
-  // プレースホルダーをOSMに
-  var placeholder = document.getElementById('aiMapPlaceholder');
-  if (placeholder) {
-    placeholder.innerHTML = '<iframe src="https://www.openstreetmap.org/export/embed.html?bbox=137.8,36.1,138.5,36.8&layer=mapnik" style="width:100%;height:100%;border:none" loading="lazy"></iframe>';
-    placeholder.style.background = 'transparent';
+
+  // ── ① ルート名 & チップ ──────────────────────────────
+  document.getElementById('rmRouteName').textContent = route.name;
+  var spotCount = route.spots.length;
+  var transIcon = route.transport === '徒歩' ? '🚶' : route.transport === '車' ? '🚗' : route.transport === 'バス' ? '🚌' : '🚃';
+  document.getElementById('rmChips').innerHTML =
+    '<span class="rm-chip">' + transIcon + ' ' + route.transport + '</span>' +
+    '<span class="rm-chip">⏱ ' + route.time + '</span>' +
+    '<span class="rm-chip">⛩ 御朱印' + spotCount + 'ヶ所</span>';
+
+  // ── ② 現在スポット（1番目）──────────────────────────
+  var first = route.spots[0];
+  var second = route.spots[1];
+  document.getElementById('rmCurrentName').textContent = first.name;
+  document.getElementById('rmNextName').textContent = second ? second.name : '—';
+  document.getElementById('rmBenefit').textContent = '✦ ' + first.benefit;
+
+  // 写真（キャッシュがあれば使用）
+  var photoEl = document.getElementById('rmCurrentPhoto');
+  if (window.photoCache && window.photoCache[first.name] && window.photoCache[first.name][0]) {
+    photoEl.innerHTML = '<img src="' + window.photoCache[first.name][0] + '" alt="' + first.name + '">';
+  } else {
+    photoEl.innerHTML = '<div class="rm-current-photo-empty">⛩</div>';
   }
-  // ルート詳細
-  var dt = document.getElementById('aiMapDetail');
-  var h = '<div class="ai-map-route-hd">' + route.name + '</div>' +
-    '<div class="ai-map-route-meta">総移動時間 ' + route.totalMove + ' / 総時間 ' + route.time + '</div>';
-  route.spots.forEach(function(s, i){
-    h += '<div class="ai-map-spot">' +
-      '<div class="ai-map-spot-num">' + (i+1) + '</div>' +
-      '<div class="ai-map-spot-info">' +
-        '<div class="ai-map-spot-name">' + s.name + '</div>' +
-        '<div class="ai-map-spot-loc">' + s.move + '</div>' +
-        '<div class="ai-map-spot-tags">' +
-          s.tags.map(function(t){ return '<span class="ai-map-spot-tag">' + t + '</span>'; }).join('') +
-        '</div>' +
-      '</div>' +
-    '</div>';
-    if (i < route.spots.length - 1) {
-      h += '<div class="ai-map-spot-move">↓ ' + route.spots[i+1].move + '</div>';
-    }
+
+  // ── ③ OpenStreetMap ──────────────────────────────────
+  var ph = document.getElementById('aiMapPlaceholder');
+  if (ph) {
+    ph.innerHTML = '<iframe src="https://www.openstreetmap.org/export/embed.html?bbox=137.8,36.1,138.5,36.8&layer=mapnik" style="width:100%;height:100%;border:none" loading="lazy"></iframe>';
+    ph.style.background = 'transparent';
+    ph.style.display = 'block';
+  }
+
+  // ── ④ タイムライン ───────────────────────────────────
+  var tl = document.getElementById('rmTimeline');
+  var h = '';
+  route.spots.forEach(function(s, i) {
+    var isFirst = i === 0;
+    var isLast = i === route.spots.length - 1;
+    var isNext = i === 1;
+    var dotClass = isFirst ? 'tl-current' : (isNext ? 'tl-next' : 'tl-future');
+    var nameClass = isFirst ? '' : 'tl-dim';
+    var lineClass = isFirst ? 'done-line' : '';
+
+    h += '<div class="rm-tl-item" onclick="rmToggleDetail(' + i + ')">';
+    // 左：ドット + 縦線
+    h += '<div class="rm-tl-left">';
+    h += '<div class="rm-tl-dot ' + dotClass + '">' + (i + 1) + '</div>';
+    if (!isLast) h += '<div class="rm-tl-line ' + lineClass + '"></div>';
+    h += '</div>';
+    // 右：コンテンツ
+    h += '<div class="rm-tl-content">';
+    h += '<div class="rm-tl-name ' + nameClass + '">' + s.name + '</div>';
+    h += '<div class="rm-tl-meta">' + s.loc + (i > 0 ? ' · ' + s.move : ' · 出発スポット') + '</div>';
+    if (!isFirst) h += '<div class="rm-tl-benefit">✦ ' + s.benefit + '</div>';
+    // 展開パネル
+    h += '<div class="rm-tl-detail" id="rmTlDt' + i + '">';
+    h += '<div class="rm-tl-detail-inner">';
+    h += '<div class="rm-tl-detail-row"><span class="rm-tl-detail-lbl">所在地</span><span>' + s.loc + '</span></div>';
+    h += '<div class="rm-tl-detail-row"><span class="rm-tl-detail-lbl">移動時間</span><span>' + s.move + '</span></div>';
+    h += '<div class="rm-tl-detail-row"><span class="rm-tl-detail-lbl">御利益</span><span>' + s.benefit + '</span></div>';
+    h += '</div></div>';
+    h += '</div>';
+    h += '</div>';
   });
-  dt.innerHTML = h;
+  tl.innerHTML = h;
 }
+
+function rmToggleDetail(idx) {
+  var el = document.getElementById('rmTlDt' + idx);
+  if (el) el.classList.toggle('open');
+}
+
 
 function backToRouteList() {
   document.getElementById('pgRouteMap').classList.remove('show');
