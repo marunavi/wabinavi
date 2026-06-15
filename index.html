@@ -63,14 +63,14 @@ html,body{margin:0;padding:0;background:var(--washi)}
 .hero-search-pill:not(.on):hover{border-color:#c0b8a8;color:#555}
 .hero-search-pill svg{width:11px;height:11px}
 .hero-search-toggle{flex:1;padding:.42rem .25rem;border-radius:20px;border:1px solid #e8dfcd;background:#fff;font-family:'Shippori Mincho',serif;font-size:11px;font-weight:700;color:#999;cursor:pointer;text-align:center;transition:all .2s var(--ease);display:flex;align-items:center;justify-content:center;gap:4px;letter-spacing:.03em}
-.hero-search-toggle.on{background:var(--red);color:#fff;border-color:var(--red);box-shadow:0 2px 6px rgba(168,51,32,.22);transition:background .35s var(--ease),border-color .35s var(--ease),color .2s var(--ease)}
+.hero-search-toggle.on{background:var(--gold);color:#fff;border-color:var(--gold);box-shadow:0 2px 6px rgba(201,168,76,.3);transition:background .35s var(--ease),border-color .35s var(--ease),color .2s var(--ease)}
 .hero-search-toggle:not(.on):hover{border-color:#c0b8a8;color:#555}
 .hero-search-toggle svg{width:12px;height:12px}
 .hero-search-cta{width:90%;max-width:320px;height:56px;margin:0 auto;border-radius:14px;background:var(--red);color:#fff;border:none;font-family:'Shippori Mincho',serif;font-size:15px;font-weight:700;letter-spacing:.06em;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 14px rgba(168,51,32,.3);transition:all .15s var(--ease)}
 .hero-search-cta:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(168,51,32,.4)}
 .hero-search-cta:active{transform:scale(.98)}
 .hero-search-cta svg.star{width:18px;height:18px}
-.hero-search-cta svg.arrow{width:14px;height:14px;margin-left:auto}
+.hero-search-cta svg.arrow{width:14px;height:14px}
 .hero-search-note{text-align:center;font-size:10.5px;color:#a89a7e;margin-top:.4rem;font-family:'Noto Serif JP',serif;letter-spacing:.02em}
 /* ─── 特徴カード（文字大きめ）─── */
 .features{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:1.25rem 1rem .75rem}
@@ -908,23 +908,22 @@ html,body{margin:0;padding:0;background:var(--washi)}
 .ai-rcard-img-icon svg{width:12px;height:12px;color:#fff}
 .ai-rcard-tags{padding:0 1rem .7rem;display:flex;gap:5px;flex-wrap:wrap}
 .ai-rcard-tag{font-size:10px;color:#B53A26;background:rgba(181,58,38,.06);padding:4px 10px;border-radius:10px;font-family:'Noto Serif JP',serif;border:1px solid rgba(181,58,38,.15)}
-.ai-rcard-spots{border-top:1px solid #f0e8d8;margin:0 1rem;position:relative}
-.ai-rcard-spot-row{padding:.6rem 0}
-.ai-rcard-spot-top{display:flex;align-items:flex-start;gap:8px;margin-bottom:.5rem}
-.ai-rcard-spot-num{width:28px;height:28px;border-radius:50%;background:#B53A26;color:#fff;font-family:'Shippori Mincho',serif;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ai-rcard-spots{border-top:1px solid #f0e8d8;margin:0 1rem}
+.ai-rcard-spot-row{display:flex;align-items:center;gap:8px;padding:.6rem 0}
+.ai-rcard-spot-left{display:flex;align-items:flex-start;gap:8px;flex:1;min-width:0}
+.ai-rcard-spot-num{width:26px;height:26px;border-radius:50%;background:#B53A26;color:#fff;font-family:'Shippori Mincho',serif;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .ai-rcard-spot-body{flex:1;min-width:0}
-.ai-rcard-spot-name{font-family:'Shippori Mincho',serif;font-size:14px;font-weight:700;color:#2D2A28;line-height:1.3}
-.ai-rcard-spot-loc{font-size:10px;color:#aaa;font-family:'Noto Serif JP',serif;margin-top:1px}
-.ai-rcard-spot-move{font-size:10px;color:#999;font-family:'Noto Serif JP',serif;margin-top:1px}
-.ai-rcard-spot-bottom{display:flex;align-items:flex-start;gap:12px;margin-left:36px}
-.ai-rcard-spot-photo{width:140px;height:95px;border-radius:10px;overflow:hidden;background:#f0ead9;cursor:pointer;flex-shrink:0;transition:opacity .2s}
+.ai-rcard-spot-name{font-family:'Shippori Mincho',serif;font-size:13px;font-weight:700;color:#2D2A28;line-height:1.3}
+.ai-rcard-spot-loc{font-size:9px;color:#aaa;font-family:'Noto Serif JP',serif;margin-top:1px}
+.ai-rcard-spot-move{font-size:9px;color:#999;font-family:'Noto Serif JP',serif;margin-top:1px}
+.ai-rcard-spot-photo{width:72px;height:54px;border-radius:8px;overflow:hidden;background:#f0ead9;cursor:pointer;flex-shrink:0;transition:opacity .2s}
 .ai-rcard-spot-photo:hover{opacity:.85}
 .ai-rcard-spot-photo img{width:100%;height:100%;object-fit:cover;display:block}
-.ai-rcard-spot-benefit{display:flex;flex-direction:column;justify-content:center;padding-top:.3rem}
-.ai-rcard-spot-benefit-label{font-size:10px;color:#D4B05C;font-family:'Shippori Mincho',serif;font-weight:700;letter-spacing:.04em;margin-bottom:2px}
-.ai-rcard-spot-benefit-text{font-size:13px;color:#2D2A28;font-family:'Shippori Mincho',serif;font-weight:700;line-height:1.4}
-.ai-rcard-spot-connector{display:flex;justify-content:center;height:18px;width:28px;margin-left:0}
-.ai-rcard-spot-connector-line{width:2px;height:18px;border-left:2px dashed #B53A26;opacity:.4}
+.ai-rcard-spot-benefit{flex-shrink:0;min-width:70px;text-align:right}
+.ai-rcard-spot-benefit-label{font-size:9px;color:#D4B05C;font-family:'Shippori Mincho',serif;font-weight:700;letter-spacing:.04em;margin-bottom:1px}
+.ai-rcard-spot-benefit-text{font-size:11px;color:#2D2A28;font-family:'Noto Serif JP',serif;font-weight:600;line-height:1.3}
+.ai-rcard-spot-connector{display:flex;justify-content:center;height:14px;width:26px}
+.ai-rcard-spot-connector-line{width:2px;height:14px;border-left:2px dashed #B53A26;opacity:.4}
 .ai-rcard-cta{margin:.6rem 1rem 1rem;padding:.75rem;border-radius:26px;background:#B53A26;color:#fff;border:none;font-family:'Shippori Mincho',serif;font-size:13px;font-weight:700;letter-spacing:.06em;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;width:calc(100% - 2rem);box-shadow:0 3px 10px rgba(181,58,38,.2);transition:all .15s}
 .ai-rcard-cta:hover{transform:translateY(-1px);box-shadow:0 5px 16px rgba(181,58,38,.3)}
 .ai-rcard-cta:active{transform:scale(.98)}
@@ -5980,7 +5979,7 @@ var AI_ROUTES = [
     spots:[
       {name:'善光寺',loc:'長野市',move:'出発地から約15分',benefit:'開運・厄除け'},
       {name:'戸隠神社 中社',loc:'長野市',move:'約30分',benefit:'心願成就・学業成就'},
-      {name:'鏡池（戸隠）',loc:'長野市',move:'約20分',benefit:'癒し・リフレッシュ'},
+      {name:'戸隠神社 奥社',loc:'長野市',move:'約20分',benefit:'開運・心願成就'},
       {name:'飯綱神社',loc:'飯綱町',move:'約25分',benefit:'商売繁盛・家内安全'},
       {name:'地蔵院（元善光寺）',loc:'飯田市',move:'約40分',benefit:'良縁・子宝祈願'}
     ]
@@ -6069,7 +6068,7 @@ function renderRouteCards() {
     spots.forEach(function(s, i){
       var photoId = 'aiPhoto_' + r.id + '_' + i;
       h += '<div class="ai-rcard-spot-row">' +
-        '<div class="ai-rcard-spot-top">' +
+        '<div class="ai-rcard-spot-left">' +
           '<div class="ai-rcard-spot-num">' + (i+1) + '</div>' +
           '<div class="ai-rcard-spot-body">' +
             '<div class="ai-rcard-spot-name">' + s.name + '</div>' +
@@ -6077,14 +6076,12 @@ function renderRouteCards() {
             '<div class="ai-rcard-spot-move">' + s.move + '</div>' +
           '</div>' +
         '</div>' +
-        '<div class="ai-rcard-spot-bottom">' +
-          '<div class="ai-rcard-spot-photo" onclick="openSpotDetail(\'' + s.name.replace(/'/g,"\\'") + '\')">' +
-            '<img id="' + photoId + '" src="" alt="" loading="lazy" data-shrine="' + s.name + '">' +
-          '</div>' +
-          '<div class="ai-rcard-spot-benefit">' +
-            '<div class="ai-rcard-spot-benefit-label">御利益</div>' +
-            '<div class="ai-rcard-spot-benefit-text">' + s.benefit + '</div>' +
-          '</div>' +
+        '<div class="ai-rcard-spot-photo" onclick="openSpotDetail(\'' + s.name.replace(/'/g,"\\'") + '\')">' +
+          '<img id="' + photoId + '" src="" alt="" loading="lazy" data-shrine="' + s.name + '">' +
+        '</div>' +
+        '<div class="ai-rcard-spot-benefit">' +
+          '<div class="ai-rcard-spot-benefit-label">御利益</div>' +
+          '<div class="ai-rcard-spot-benefit-text">' + s.benefit + '</div>' +
         '</div>' +
       '</div>';
       if (i < spots.length - 1) {
