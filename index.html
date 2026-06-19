@@ -6639,7 +6639,7 @@ function renderRouteCards() {
         var nextMove = spots[i+1].move || '';
         h += '<div class="ai-rcard-spot-connector">' +
                '<div class="ai-rcard-spot-connector-line"></div>' +
-               '<div class="ai-rcard-spot-connector-time">' + nextMove + '</div>' +
+               '<div class="ai-rcard-spot-connector-time" id="move_' + r.id + '_' + i + '">' + nextMove + '</div>' +
                '<div class="ai-rcard-spot-connector-line"></div>' +
              '</div>';
       }
@@ -6650,6 +6650,119 @@ function renderRouteCards() {
   });
   ct.innerHTML = h;
   loadRouteSpotPhotos();
+  // Distance Matrix APIで実移動時間を取得して上書き
+  refineRouteTimesWithDistanceMatrix(routes);
+}
+
+// ══════════════════════════════════════════════════════════
+// Distance Matrix API で実移動時間を取得し、UIと所要時間を更新
+// ══════════════════════════════════════════════════════════
+function refineRouteTimesWithDistanceMatrix(routes) {
+  // APIキー・SDK・動的ルートが揃っている時のみ
+  if (!API_KEY || !window.google || !window.google.maps || !window.google.maps.DistanceMatrixService) return;
+  if (!window._dynamicRoutes) return;  // 固定ルートは対象外
+
+  var selTrans = window._aiSelTrans || '電車';
+  var mode = dmTravelMode(selTrans);
+  var service = new google.maps.DistanceMatrixService();
+
+  routes.forEach(function(r){
+    var spots = r.spots;
+    if (!spots || spots.length < 2) return;
+    // 隣接区間の origins/destinations を作る
+    var origins = [], destinations = [];
+    for (var i = 0; i < spots.length - 1; i++) {
+      if (!spots[i].lat || !spots[i+1].lat) continue;
+      origins.push(new google.maps.LatLng(spots[i].lat, spots[i].lng));
+      destinations.push(new google.maps.LatLng(spots[i+1].lat, spots[i+1].lng));
+    }
+    if (!origins.length) return;
+
+    var req = {
+      origins: origins, destinations: destinations,
+      travelMode: mode,
+      unitSystem: google.maps.UnitSystem.METRIC
+    };
+    if (mode === google.maps.TravelMode.TRANSIT) {
+      req.transitOptions = { departureTime: new Date() };
+    } else if (mode === google.maps.TravelMode.DRIVING) {
+      req.drivingOptions = { departureTime: new Date() };
+    }
+
+    service.getDistanceMatrix(req, function(res, status){
+      if (status !== 'OK' || !res || !res.rows) return;
+      var totalSec = 0, ok = false;
+      // 対角成分（origins[i] → destinations[i]）が各区間の実時間
+      for (var i = 0; i < res.rows.length; i++) {
+        var row = res.rows[i];
+        if (!row.elements || !row.elements[i]) continue;
+        var el = row.elements[i];
+        if (el.status !== 'OK' || !el.duration) continue;
+        var sec = (el.duration_in_traffic && el.duration_in_traffic.value) || el.duration.value;
+        totalSec += sec;
+        ok = true;
+        // UI更新：move_{routeId}_{区間index}
+        var label = dmFormatDuration(sec);
+        var elDom = document.getElementById('move_' + r.id + '_' + (i + 1));
+        if (elDom) elDom.textContent = label;
+        // spotデータにも反映
+        if (r.spots[i+1]) r.spots[i+1].move = label;
+      }
+      if (ok) {
+        // 総移動時間＋総所要時間を再計算して上書き
+        updateRouteTotals(r, totalSec);
+      }
+    });
+  });
+}
+
+// 交通手段(日本語) → Distance Matrix の travelMode
+function dmTravelMode(selTrans) {
+  if (selTrans === '徒歩') return google.maps.TravelMode.WALKING;
+  if (selTrans === '車')   return google.maps.TravelMode.DRIVING;
+  // 電車・バスはどちらも公共交通
+  return google.maps.TravelMode.TRANSIT;
+}
+
+// 秒 → 「約〇分 / 約〇時間〇分」
+function dmFormatDuration(sec) {
+  var mins = Math.round(sec / 60);
+  if (mins < 1) mins = 1;
+  if (mins >= 60) {
+    var h = Math.floor(mins / 60), m = Math.round((mins % 60) / 5) * 5;
+    return m > 0 ? ('約' + h + '時間' + m + '分') : ('約' + h + '時間');
+  }
+  return '約' + (mins < 5 ? mins : Math.round(mins / 5) * 5) + '分';
+}
+
+// 実移動時間の合計から、カードの所要時間・総移動時間を更新
+function updateRouteTotals(r, totalMoveSec) {
+  var selTime = window._aiSelTime || '3時間';
+  var budget = aiBudgetFor(selTime);
+  var moveMin = Math.round(totalMoveSec / 60);
+  var totalMin = moveMin + r.spots.length * budget.visitMin;
+  // 総移動時間ラベル
+  var moveLabel;
+  if (moveMin >= 60) { var h=Math.floor(moveMin/60), m=Math.round((moveMin%60)/5)*5; moveLabel = '総移動時間 ' + (m>0?('約'+h+'時間'+m+'分'):('約'+h+'時間')); }
+  else moveLabel = '総移動時間 約' + (Math.round(moveMin/5)*5) + '分';
+  // 所要時間ラベル
+  var th = Math.floor(totalMin/60), tm = Math.round((totalMin%60)/10)*10;
+  if (tm === 60) { th++; tm = 0; }
+  var timeLabel = tm>0 ? ('約'+th+'時間'+tm+'分') : ('約'+th+'時間');
+  // DOM更新（該当カードのメタタグ）
+  var card = document.getElementById('aiRouteImg_' + r.id);
+  if (card) {
+    var rcard = card.closest('.ai-rcard');
+    if (rcard) {
+      var metas = rcard.querySelectorAll('.ai-rcard-meta-tag');
+      if (metas.length >= 3) {
+        metas[1].textContent = '⏱ ' + timeLabel;
+        metas[2].textContent = moveLabel;
+      }
+    }
+  }
+  r.time = timeLabel;
+  r.totalMove = moveLabel;
 }
 
 // Google Places APIで各スポットの写真を取得
