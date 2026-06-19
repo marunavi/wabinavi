@@ -6650,82 +6650,95 @@ function renderRouteCards() {
   });
   ct.innerHTML = h;
   loadRouteSpotPhotos();
-  // Distance Matrix APIで実移動時間を取得して上書き
-  refineRouteTimesWithDistanceMatrix(routes);
+  // Routes API (Compute Route Matrix) で実移動時間を取得して上書き
+  refineRouteTimesWithRoutesAPI(routes);
 }
 
 // ══════════════════════════════════════════════════════════
-// Distance Matrix API で実移動時間を取得し、UIと所要時間を更新
+// Routes API (Compute Route Matrix) で実移動時間を取得し、UIと所要時間を更新
+//   旧Distance Matrix API/JS DistanceMatrixServiceは廃止のため、
+//   後継のRoutes APIをREST(fetch)で呼び出す
+//   エンドポイント: routes.googleapis.com/distanceMatrix/v2:computeRouteMatrix
 // ══════════════════════════════════════════════════════════
-function refineRouteTimesWithDistanceMatrix(routes) {
-  // APIキー・SDK・動的ルートが揃っている時のみ
-  if (!API_KEY || !window.google || !window.google.maps || !window.google.maps.DistanceMatrixService) return;
+function refineRouteTimesWithRoutesAPI(routes) {
+  // APIキー・動的ルートが揃っている時のみ（SDK不要、fetchで直接呼ぶ）
+  if (!API_KEY) return;
   if (!window._dynamicRoutes) return;  // 固定ルートは対象外
 
   var selTrans = window._aiSelTrans || '電車';
-  var mode = dmTravelMode(selTrans);
-  var service = new google.maps.DistanceMatrixService();
+  var mode = routesApiTravelMode(selTrans);
 
   routes.forEach(function(r){
     var spots = r.spots;
     if (!spots || spots.length < 2) return;
-    // 隣接区間の origins/destinations を作る
-    var origins = [], destinations = [];
+
+    // 隣接区間の origins/destinations を作る（i → i+1）
+    var origins = [], destinations = [], legIndex = [];
     for (var i = 0; i < spots.length - 1; i++) {
       if (!spots[i].lat || !spots[i+1].lat) continue;
-      origins.push(new google.maps.LatLng(spots[i].lat, spots[i].lng));
-      destinations.push(new google.maps.LatLng(spots[i+1].lat, spots[i+1].lng));
+      origins.push(waypointOf(spots[i].lat, spots[i].lng));
+      destinations.push(waypointOf(spots[i+1].lat, spots[i+1].lng));
+      legIndex.push(i);  // この区間が「spots[i+1]への移動」
     }
     if (!origins.length) return;
 
-    var req = {
-      origins: origins, destinations: destinations,
-      travelMode: mode,
-      unitSystem: google.maps.UnitSystem.METRIC
-    };
-    if (mode === google.maps.TravelMode.TRANSIT) {
-      req.transitOptions = { departureTime: new Date() };
-    } else if (mode === google.maps.TravelMode.DRIVING) {
-      req.drivingOptions = { departureTime: new Date() };
+    var body = { origins: origins, destinations: destinations, travelMode: mode };
+    // 交通モード別オプション（TRANSITはdepartureTime不要）
+    if (mode === 'DRIVE') {
+      body.routingPreference = 'TRAFFIC_AWARE';
     }
 
-    service.getDistanceMatrix(req, function(res, status){
-      if (status !== 'OK' || !res || !res.rows) return;
+    fetch('https://routes.googleapis.com/distanceMatrix/v2:computeRouteMatrix', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Goog-Api-Key': API_KEY,
+        'X-Goog-FieldMask': 'originIndex,destinationIndex,duration,distanceMeters,condition'
+      },
+      body: JSON.stringify(body)
+    })
+    .then(function(resp){ if (!resp.ok) throw new Error('Routes API ' + resp.status); return resp.json(); })
+    .then(function(data){
+      if (!Array.isArray(data)) return;
       var totalSec = 0, ok = false;
-      // 対角成分（origins[i] → destinations[i]）が各区間の実時間
-      for (var i = 0; i < res.rows.length; i++) {
-        var row = res.rows[i];
-        if (!row.elements || !row.elements[i]) continue;
-        var el = row.elements[i];
-        if (el.status !== 'OK' || !el.duration) continue;
-        var sec = (el.duration_in_traffic && el.duration_in_traffic.value) || el.duration.value;
+      data.forEach(function(elem){
+        // 対角成分（originIndex === destinationIndex）が各隣接区間の実時間
+        if (elem.originIndex !== elem.destinationIndex) return;
+        if (elem.condition && elem.condition !== 'ROUTE_EXISTS') return;
+        if (!elem.duration) return;
+        // duration は "123s" 形式
+        var sec = parseInt(String(elem.duration).replace('s',''), 10);
+        if (isNaN(sec)) return;
         totalSec += sec;
         ok = true;
-        // UI更新：move_{routeId}_{区間index}
-        var label = dmFormatDuration(sec);
-        var elDom = document.getElementById('move_' + r.id + '_' + (i + 1));
+        var label = routesFormatDuration(sec);
+        var spotPos = legIndex[elem.originIndex] + 1;  // 移動先スポットのindex
+        var elDom = document.getElementById('move_' + r.id + '_' + spotPos);
         if (elDom) elDom.textContent = label;
-        // spotデータにも反映
-        if (r.spots[i+1]) r.spots[i+1].move = label;
-      }
-      if (ok) {
-        // 総移動時間＋総所要時間を再計算して上書き
-        updateRouteTotals(r, totalSec);
-      }
+        if (r.spots[spotPos]) r.spots[spotPos].move = label;
+      });
+      if (ok) updateRouteTotals(r, totalSec);
+    })
+    .catch(function(err){
+      console.warn('Routes API取得失敗（概算値を維持）:', err.message);
     });
   });
 }
 
-// 交通手段(日本語) → Distance Matrix の travelMode
-function dmTravelMode(selTrans) {
-  if (selTrans === '徒歩') return google.maps.TravelMode.WALKING;
-  if (selTrans === '車')   return google.maps.TravelMode.DRIVING;
-  // 電車・バスはどちらも公共交通
-  return google.maps.TravelMode.TRANSIT;
+// Routes APIのwaypoint形式に変換
+function waypointOf(lat, lng) {
+  return { waypoint: { location: { latLng: { latitude: lat, longitude: lng } } } };
+}
+
+// 交通手段(日本語) → Routes API の travelMode
+function routesApiTravelMode(selTrans) {
+  if (selTrans === '徒歩') return 'WALK';
+  if (selTrans === '車')   return 'DRIVE';
+  return 'TRANSIT';  // 電車・バス
 }
 
 // 秒 → 「約〇分 / 約〇時間〇分」
-function dmFormatDuration(sec) {
+function routesFormatDuration(sec) {
   var mins = Math.round(sec / 60);
   if (mins < 1) mins = 1;
   if (mins >= 60) {
