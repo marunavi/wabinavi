@@ -3147,14 +3147,19 @@ function buildDynamicRoutes(base, baseCoord, candidates, selTime, selTrans, budg
     return a.substring(0, 8);
   }
   function legMinutes(km) {
-    var speed = selTrans === '徒歩' ? 4 : selTrans === '車' ? 35 : selTrans === 'バス' ? 20 : 30;
+    // 平均速度(km/h)：徒歩4.5 / 電車25 / バス15 / 車30（市街地）
+    var speed = selTrans === '徒歩' ? 4.5 : selTrans === '車' ? 30 : selTrans === 'バス' ? 15 : 25;
     var mins = km / speed * 60;
-    mins += selTrans === '徒歩' ? 0 : 10;
-    return Math.max(5, mins);
+    // 乗降・待ち時間の固定オフセット（交通手段で差をつける）
+    var overhead = selTrans === '徒歩' ? 0 : selTrans === '電車' ? 8 : selTrans === 'バス' ? 6 : 4;
+    mins += overhead;
+    return Math.max(selTrans === '徒歩' ? 3 : 5, mins);
   }
   function moveLbl(km) {
     var m = Math.round(legMinutes(km));
     if (m >= 60) { var h = Math.floor(m/60), mm = Math.round((m%60)/5)*5; return mm>0 ? ('約'+h+'時間'+mm+'分') : ('約'+h+'時間'); }
+    // 5分刻みだと近距離で差が潰れるため、20分未満は1分刻みで表示
+    if (m < 20) return '約' + m + '分';
     return '約' + (Math.round(m/5)*5) + '分';
   }
 
@@ -6670,11 +6675,12 @@ function renderRouteCards() {
 // ══════════════════════════════════════════════════════════
 function refineRouteTimesWithRoutesAPI(routes) {
   // APIキー・動的ルートが揃っている時のみ（SDK不要、fetchで直接呼ぶ）
-  if (!API_KEY) return;
+  if (!API_KEY) { console.warn('Routes API: APIキー未設定のため概算値を使用'); return; }
   if (!window._dynamicRoutes) return;  // 固定ルートは対象外
 
   var selTrans = window._aiSelTrans || '電車';
   var mode = routesApiTravelMode(selTrans);
+  var anySuccess = false, anyError = null, pending = 0;
 
   routes.forEach(function(r){
     var spots = r.spots;
@@ -6691,11 +6697,11 @@ function refineRouteTimesWithRoutesAPI(routes) {
     if (!origins.length) return;
 
     var body = { origins: origins, destinations: destinations, travelMode: mode };
-    // 交通モード別オプション（TRANSITはdepartureTime不要）
     if (mode === 'DRIVE') {
       body.routingPreference = 'TRAFFIC_AWARE';
     }
 
+    pending++;
     fetch('https://routes.googleapis.com/distanceMatrix/v2:computeRouteMatrix', {
       method: 'POST',
       headers: {
@@ -6705,30 +6711,41 @@ function refineRouteTimesWithRoutesAPI(routes) {
       },
       body: JSON.stringify(body)
     })
-    .then(function(resp){ if (!resp.ok) throw new Error('Routes API ' + resp.status); return resp.json(); })
+    .then(function(resp){
+      if (!resp.ok) {
+        return resp.text().then(function(t){ throw new Error('HTTP ' + resp.status + ' ' + t.slice(0,120)); });
+      }
+      return resp.json();
+    })
     .then(function(data){
-      if (!Array.isArray(data)) return;
+      if (!Array.isArray(data)) throw new Error('予期しないレスポンス形式');
       var totalSec = 0, ok = false;
       data.forEach(function(elem){
-        // 対角成分（originIndex === destinationIndex）が各隣接区間の実時間
         if (elem.originIndex !== elem.destinationIndex) return;
         if (elem.condition && elem.condition !== 'ROUTE_EXISTS') return;
         if (!elem.duration) return;
-        // duration は "123s" 形式
         var sec = parseInt(String(elem.duration).replace('s',''), 10);
         if (isNaN(sec)) return;
         totalSec += sec;
         ok = true;
         var label = routesFormatDuration(sec);
-        var spotPos = legIndex[elem.originIndex] + 1;  // 移動先スポットのindex
+        var spotPos = legIndex[elem.originIndex] + 1;
         var elDom = document.getElementById('move_' + r.id + '_' + spotPos);
         if (elDom) elDom.textContent = label;
         if (r.spots[spotPos]) r.spots[spotPos].move = label;
       });
-      if (ok) updateRouteTotals(r, totalSec);
+      if (ok) { updateRouteTotals(r, totalSec); anySuccess = true; }
     })
     .catch(function(err){
+      anyError = err.message;
       console.warn('Routes API取得失敗（概算値を維持）:', err.message);
+    })
+    .finally(function(){
+      pending--;
+      if (pending === 0 && typeof showToast === 'function') {
+        if (anySuccess) showToast('✅ 実際の移動時間（' + selTrans + '）に更新しました');
+        else if (anyError) showToast('⚠️ 移動時間API失敗: ' + anyError.slice(0, 60));
+      }
     });
   });
 }
