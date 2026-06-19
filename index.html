@@ -4036,10 +4036,18 @@ let placesService = null;
 function loadGoogleMapsSDK(key) {
   return new Promise((resolve, reject) => {
     if (window.google && window.google.maps) { resolve(); return; }
+    if (!key) { reject(new Error('APIキーが設定されていません')); return; }
+    // Googleからの認証失敗を捕捉（gm_authFailureはキー不正・API無効時に呼ばれる）
+    window.gm_authFailure = function(){
+      console.warn('Google Maps認証失敗：APIキーが無効か、Maps JavaScript API / Places APIが有効化されていません');
+      reject(new Error('Google Maps認証失敗（APIキーまたはAPI有効化を確認してください）'));
+    };
     window.__googleMapsReady = resolve;
     const s = document.createElement('script');
     s.src = `https://maps.googleapis.com/maps/api/js?key=${key}&libraries=places&language=ja&callback=__googleMapsReady`;
-    s.onerror = reject;
+    s.onerror = function(){
+      reject(new Error('Google Maps SDKの読み込みに失敗しました（ネットワークまたはキーを確認）'));
+    };
     document.head.appendChild(s);
   });
 }
