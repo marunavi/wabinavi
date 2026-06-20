@@ -908,46 +908,47 @@ html,body{margin:0;padding:0;background:var(--washi)}
 .ai-list-sub{font-size:11px;color:#999;margin-top:.3rem;font-family:'Noto Serif JP',serif}
 .ai-list-cards{padding:.75rem 1rem 6rem;overflow-x:hidden;box-sizing:border-box}
 .ai-rcard{background:#fff;border-radius:16px;box-shadow:0 4px 16px rgba(0,0,0,.06);margin-bottom:1.25rem;overflow:hidden;transition:all .3s ease;max-width:100%;box-sizing:border-box}
-/* ── ヒーロー画像（横長・オーバーレイ） ── */
-.ai-rcard-hero{position:relative;width:100%;height:200px;overflow:hidden;background:#2D2A28}
+/* ── ヒーロー画像（全面・大型） ── */
+.ai-rcard-hero{position:relative;width:100%;height:340px;overflow:hidden;background:#2D2A28}
 .ai-rcard-hero-img{width:100%;height:100%;object-fit:cover;display:block}
-.ai-rcard-hero-grad{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.75) 0%,rgba(0,0,0,.25) 45%,rgba(0,0,0,0) 70%)}
-.ai-rcard-hero-badge{position:absolute;top:14px;left:14px;background:rgba(93,58,138,.85);color:#fff;font-size:11px;font-weight:700;padding:5px 12px;border-radius:999px;font-family:'Shippori Mincho',serif;letter-spacing:.04em;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
-.ai-rcard-hero-content{position:absolute;left:0;right:0;bottom:0;padding:14px 16px}
-.ai-rcard-hero-name{font-family:'Shippori Mincho',serif;font-size:32px;font-weight:800;color:#fff;letter-spacing:.02em;line-height:1.25;margin-bottom:12px;text-shadow:0 2px 12px rgba(0,0,0,.55)}
+.ai-rcard-hero-grad{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.8) 0%,rgba(0,0,0,.3) 45%,rgba(0,0,0,.1) 70%,rgba(0,0,0,.15) 100%)}
+.ai-rcard-hero-badge{position:absolute;top:16px;left:16px;background:rgba(94,58,138,.9);color:#fff;font-size:13px;font-weight:700;padding:7px 16px;border-radius:999px;font-family:'Shippori Mincho',serif;letter-spacing:.04em;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+.ai-rcard-hero-content{position:absolute;left:0;right:0;bottom:0;padding:18px 20px 20px}
+.ai-rcard-hero-name{font-family:'Shippori Mincho',serif;font-size:36px;font-weight:800;color:#fff;letter-spacing:-.01em;line-height:1.15;margin-bottom:14px;text-shadow:0 2px 14px rgba(0,0,0,.6)}
+.ai-rcard-hero-sub{font-size:17px;font-weight:700;opacity:.92}
 .ai-rcard-hero-chips{display:flex;flex-wrap:wrap;gap:8px}
-.ai-rcard-hero-chip{font-size:12px;color:#fff;font-family:'Noto Sans JP',sans-serif;background:rgba(0,0,0,.5);padding:6px 12px;border-radius:999px;display:inline-flex;align-items:center;gap:4px;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+.ai-rcard-hero-chip{font-size:13px;color:#fff;font-family:'Noto Sans JP',sans-serif;background:rgba(0,0,0,.45);padding:7px 13px;border-radius:999px;display:inline-flex;align-items:center;gap:5px;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
 /* ── 本文 ── */
 .ai-rcard-body{padding:16px 16px 8px}
 .ai-rcard-desc{font-size:14px;color:#2B2B2B;line-height:1.8;font-family:'Noto Sans JP',sans-serif;margin-bottom:12px}
 .ai-rcard-tags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:4px}
 .ai-rcard-tag{font-size:12px;color:#B23A2E;background:rgba(178,58,46,.07);padding:5px 12px;border-radius:999px;font-family:'Noto Sans JP',sans-serif;border:1px solid rgba(178,58,46,.18)}
 /* ── AI選定理由 ── */
-.ai-rcard-reason{margin-top:12px;background:#faf8f3;border:1px solid #E7DFD6;border-left:3px solid #5E3A8A;border-radius:12px;padding:12px 14px}
-.ai-rcard-reason-label{font-size:12px;font-weight:700;color:#5E3A8A;font-family:'Shippori Mincho',serif;letter-spacing:.04em;margin-bottom:6px}
-.ai-rcard-reason-text{font-size:13px;color:#4a4540;line-height:1.75;font-family:'Noto Sans JP',sans-serif}
-/* ── 立ち寄りスポット（縦型大型カード） ── */
-.ai-rcard-spots{padding:8px 16px 4px}
-.spot-card{background:#fff;border:1px solid #EFE8DC;border-radius:20px;overflow:hidden;cursor:pointer;box-shadow:0 2px 12px rgba(46,42,40,.05);transition:transform .2s ease,box-shadow .2s ease;position:relative;margin-bottom:2px}
+.ai-rcard-reason{margin-top:14px;background:#fff;border:1px solid #EFE8DC;border-left:4px solid #5E3A8A;border-radius:20px;padding:18px 20px}
+.ai-rcard-reason-label{font-size:13px;font-weight:700;color:#5E3A8A;font-family:'Shippori Mincho',serif;letter-spacing:.04em;margin-bottom:8px}
+.ai-rcard-reason-text{font-size:13px;color:#4a4540;line-height:1.8;font-family:'Noto Sans JP',sans-serif}
+/* ── 立ち寄りスポット（縦タイムライン＋横カード） ── */
+.ai-rcard-spots{padding:12px 16px 8px}
+.tl-row{display:flex;gap:12px;align-items:stretch}
+/* 左：タイムラインの軌道（番号＋点線＋移動時間） */
+.tl-rail{display:flex;flex-direction:column;align-items:center;width:40px;flex-shrink:0;padding-top:8px}
+.tl-num{width:38px;height:38px;border-radius:50%;background:#B23A2E;color:#fff;font-family:'Shippori Mincho',serif;font-size:17px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 8px rgba(178,58,46,.3)}
+.tl-line{width:2px;flex:1;min-height:30px;border-left:2px dashed #d8cdb8;margin:6px 0}
+.tl-move{font-size:11px;color:#9a9388;font-weight:600;font-family:'Noto Sans JP',sans-serif;white-space:nowrap;padding-bottom:8px;letter-spacing:.01em}
+/* 右：横長カード（左大写真＋右情報） */
+.spot-card{flex:1;min-width:0;background:#fff;border:1px solid #EFE8DC;border-radius:18px;overflow:hidden;cursor:pointer;box-shadow:0 2px 12px rgba(46,42,40,.05);transition:transform .2s ease,box-shadow .2s ease;display:flex;margin-bottom:40px}
 .spot-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(46,42,40,.1)}
 .spot-card:active{transform:scale(.99)}
-/* 大型写真（4:3） */
-.spot-card-photo{position:relative;width:100%;aspect-ratio:4/3;overflow:hidden;background:#f0ead9}
+.spot-card-photo{position:relative;width:44%;flex-shrink:0;overflow:hidden;background:#f0ead9;aspect-ratio:3/4}
 .spot-card-photo img{width:100%;height:100%;object-fit:cover;display:block}
-.spot-card-num{position:absolute;top:12px;left:12px;width:36px;height:36px;border-radius:50%;background:rgba(178,58,46,.95);color:#fff;font-family:'Shippori Mincho',serif;font-size:16px;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.25);backdrop-filter:blur(4px)}
-.spot-card-day2{position:absolute;top:12px;right:12px;background:rgba(94,58,138,.9);color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px;font-family:'Shippori Mincho',serif;backdrop-filter:blur(4px)}
-/* 本文（写真の下：名前→住所→御利益タグ） */
-.spot-card-body{padding:14px 16px 14px;padding-right:44px}
-.spot-card-name{font-family:'Shippori Mincho',serif;font-size:19px;font-weight:800;color:#2B2B2B;letter-spacing:.02em;line-height:1.3;margin-bottom:4px}
-.spot-card-loc{font-size:12px;color:#9a9388;font-family:'Noto Sans JP',sans-serif;margin-bottom:10px}
-.spot-card-benefit-row{display:flex;gap:6px;flex-wrap:wrap}
-.spot-card-benefit-tag{font-size:11px;color:#a07c2c;background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.3);border-radius:999px;padding:4px 11px;font-family:'Noto Sans JP',sans-serif;font-weight:600}
-.spot-card-arrow{position:absolute;right:14px;bottom:16px;width:30px;height:30px;border-radius:50%;background:#F7F2EB;display:flex;align-items:center;justify-content:center}
-.spot-card-arrow svg{width:15px;height:15px;color:#B23A2E}
-/* 移動時間コネクター（カード間・薄め） */
-.spot-connector{display:flex;flex-direction:column;align-items:center;padding:8px 0}
-.spot-connector-line{width:2px;height:8px;border-left:2px dashed #d8cdb8}
-.spot-connector-time{font-size:11px;color:#B23A2E;font-weight:700;font-family:'Noto Sans JP',sans-serif;white-space:nowrap;padding:3px 11px;letter-spacing:.01em;line-height:1.1;background:#FBE8E6;border-radius:999px;margin:3px 0}
+.spot-card-day2{position:absolute;top:10px;left:10px;background:rgba(94,58,138,.9);color:#fff;font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;font-family:'Shippori Mincho',serif;backdrop-filter:blur(4px)}
+.spot-card-body{flex:1;min-width:0;padding:14px 14px 14px 16px;display:flex;flex-direction:column;justify-content:center}
+.spot-card-name{font-family:'Shippori Mincho',serif;font-size:20px;font-weight:800;color:#2B2B2B;letter-spacing:.01em;line-height:1.25;margin-bottom:5px}
+.spot-card-loc{font-size:12px;color:#9a9388;font-family:'Noto Sans JP',sans-serif;margin-bottom:12px}
+.spot-card-benefit-label{font-size:10px;color:#a07c2c;font-family:'Shippori Mincho',serif;font-weight:700;letter-spacing:.06em;margin-bottom:5px}
+.spot-card-benefit-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.spot-card-benefit-tag{font-size:11px;color:#a07c2c;background:rgba(212,175,55,.12);border:1px solid rgba(212,175,55,.35);border-radius:999px;padding:4px 12px;font-family:'Noto Sans JP',sans-serif;font-weight:600}
+.spot-card-stay{font-size:12px;color:#6B6B6B;font-family:'Noto Sans JP',sans-serif;display:flex;align-items:center;gap:4px}
 /* ── CTA（紫） ── */
 .ai-rcard-cta{margin:12px 16px 16px;height:56px;border-radius:28px;background:#5E3A8A;color:#fff;border:none;font-family:'Shippori Mincho',serif;font-size:16px;font-weight:700;letter-spacing:.06em;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;width:calc(100% - 32px);box-shadow:0 4px 14px rgba(94,58,138,.3);transition:all .15s}
 .ai-rcard-cta:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(94,58,138,.4);opacity:.92}
@@ -3427,22 +3428,22 @@ function buildDynamicRoutes(base, baseCoord, candidates, selTime, selTrans, budg
   }
 
   return [
-    { id:'dr1', name: '🌿 神話ロマン巡り',
-      transport: transLabel, time: totalTimeLabel(r1spots), totalMove: totalMoveLabel(r1spots),
+    { id:'dr1', name: '🌿 神話ロマン巡り', subtitle:'（相性重視）',
+      transport: transLabel, time: totalTimeLabel(r1spots), totalMove: totalMoveLabel(r1spots), visitMin: visitMin,
       desc: '祀られる神々の関係や歴史でつながる、物語性を重視した巡礼。',
       reason: romanReason(r1spots),
       tags:['神話のつながり','歴史ロマン'],
       img:'https://images.unsplash.com/photo-1480796927426-f609979314bd?w=300&q=80&auto=format&fit=crop',
       spots: r1spots },
-    { id:'dr2', name: '🎨 御朱印アート巡り',
-      transport: transLabel, time: totalTimeLabel(r2spots), totalMove: totalMoveLabel(r2spots),
+    { id:'dr2', name: '🎨 御朱印アート巡り', subtitle:'',
+      transport: transLabel, time: totalTimeLabel(r2spots), totalMove: totalMoveLabel(r2spots), visitMin: visitMin,
       desc: '御朱印の美しさ、建築、写真映え重視。',
       reason: goshuinReason(r2spots),
       tags:['限定御朱印','御朱印映え'],
       img:'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=300&q=80&auto=format&fit=crop',
       spots: r2spots },
-    { id:'dr3', name: '⛩ 最強パワースポット',
-      transport: transLabel, time: totalTimeLabel(r3spots), totalMove: totalMoveLabel(r3spots),
+    { id:'dr3', name: '⛩ 最強パワースポット', subtitle:'（属性特化）',
+      transport: transLabel, time: totalTimeLabel(r3spots), totalMove: totalMoveLabel(r3spots), visitMin: visitMin,
       desc: '願い事や属性相性、御利益最大化。',
       reason: powerReason(r3spots),
       tags:[basePower.label,'運気上昇'],
@@ -6754,7 +6755,7 @@ function renderRouteCards() {
       '<div class="ai-rcard-hero-grad"></div>' +
       '<div class="ai-rcard-hero-badge">🌿 おすすめ</div>' +
       '<div class="ai-rcard-hero-content">' +
-        '<div class="ai-rcard-hero-name">' + r.name + '</div>' +
+        '<div class="ai-rcard-hero-name">' + r.name + (r.subtitle ? '<span class="ai-rcard-hero-sub">' + r.subtitle + '</span>' : '') + '</div>' +
         '<div class="ai-rcard-hero-chips">' +
           '<span class="ai-rcard-hero-chip">' + transIcon + ' ' + selTrans + '</span>' +
           '<span class="ai-rcard-hero-chip">🕐 ' + rTime + '</span>' +
@@ -6777,33 +6778,37 @@ function renderRouteCards() {
            '</div>';
     }
     h += '</div>';  // ai-rcard-body
-    // ── 立ち寄りスポット（縦型大型カード） ──
+    // ── 立ち寄りスポット（縦タイムライン＋横カード） ──
     h += '<div class="ai-rcard-spots">';
+    var stayLabel = '約' + (r.visitMin || 40) + '分滞在';
     spots.forEach(function(s, i){
       var photoId = 'aiPhoto_' + r.id + '_' + i;
-      h += '<div class="spot-card" onclick="openSpotDetail(\'' + s.name.replace(/'/g,"\\'") + '\')">' +
-        '<div class="spot-card-photo">' +
-          '<img id="' + photoId + '" src="" alt="" loading="lazy" data-shrine="' + s.name + '">' +
-          '<div class="spot-card-num">' + (i+1) + '</div>' +
-          (s.dayStart === 2 ? '<div class="spot-card-day2">2日目</div>' : '') +
+      var nextMove = (i < spots.length - 1) ? (spots[i+1].move || '') : '';
+      // タイムライン行：左（番号＋点線＋移動時間）＋右（カード）
+      h += '<div class="tl-row">' +
+        '<div class="tl-rail">' +
+          '<div class="tl-num">' + (i+1) + '</div>' +
+          (i < spots.length - 1 ?
+            '<div class="tl-line"></div>' +
+            '<div class="tl-move" id="move_' + r.id + '_' + i + '">' + nextMove + '</div>'
+          : '') +
         '</div>' +
-        '<div class="spot-card-body">' +
-          '<div class="spot-card-name">' + s.name + '</div>' +
-          '<div class="spot-card-loc">' + s.loc + '</div>' +
-          '<div class="spot-card-benefit-row">' +
-            s.benefit.split('・').slice(0,3).map(function(b){ return '<span class="spot-card-benefit-tag">' + b + '</span>'; }).join('') +
+        '<div class="spot-card" onclick="openSpotDetail(\'' + s.name.replace(/'/g,"\\'") + '\')">' +
+          '<div class="spot-card-photo">' +
+            '<img id="' + photoId + '" src="" alt="" loading="lazy" data-shrine="' + s.name + '">' +
+            (s.dayStart === 2 ? '<div class="spot-card-day2">2日目</div>' : '') +
+          '</div>' +
+          '<div class="spot-card-body">' +
+            '<div class="spot-card-name">' + s.name + '</div>' +
+            '<div class="spot-card-loc">' + s.loc + '</div>' +
+            '<div class="spot-card-benefit-label">御利益</div>' +
+            '<div class="spot-card-benefit-row">' +
+              s.benefit.split('・').slice(0,2).map(function(b){ return '<span class="spot-card-benefit-tag">' + b + '</span>'; }).join('') +
+            '</div>' +
+            '<div class="spot-card-stay">🕐 ' + stayLabel + '</div>' +
           '</div>' +
         '</div>' +
-        '<div class="spot-card-arrow"><svg viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>' +
       '</div>';
-      if (i < spots.length - 1) {
-        var nextMove = spots[i+1].move || '';
-        h += '<div class="spot-connector">' +
-               '<div class="spot-connector-line"></div>' +
-               '<div class="spot-connector-time" id="move_' + r.id + '_' + i + '">' + nextMove + '</div>' +
-               '<div class="spot-connector-line"></div>' +
-             '</div>';
-      }
     });
     h += '</div>';
     h += '<button class="ai-rcard-cta" onclick="selectRoute(\'' + r.id + '\')">このルートを選ぶ →</button>';
