@@ -11,7 +11,7 @@
 <meta name="theme-color" content="#3a1d5d">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;600&family=Shippori+Mincho:wght@400;600;800&family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;600&family=Noto+Sans+JP:wght@400;500;700&family=Shippori+Mincho:wght@400;600;800&family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
 :root{--red:#3a1d5d;--gold:#c9a84c;--washi:#faf8f3;--kara:#e8e0d0;--ma:#0a1a0f;--gold-l:#f5efd6;--red-l:#ece4f5;--red-d:#2a124a;--gold-d:#a98a38;--ease:cubic-bezier(.22,.61,.36,1)}
 /* 神社モード：赤系テーマ（「この条件で検索する」ボタンと同じ赤系）*/
@@ -907,42 +907,46 @@ html,body{margin:0;padding:0;background:var(--washi)}
 .ai-list-tit{font-family:'Shippori Mincho',serif;font-size:18px;font-weight:800;color:#5d3a7a;letter-spacing:.06em;line-height:1.5}
 .ai-list-sub{font-size:11px;color:#999;margin-top:.3rem;font-family:'Noto Serif JP',serif}
 .ai-list-cards{padding:.75rem 1rem 6rem;overflow-x:hidden;box-sizing:border-box}
-.ai-rcard{background:#fff;border-radius:20px;border:1px solid #e8dfcd;box-shadow:0 4px 16px rgba(0,0,0,.05);margin-bottom:1.25rem;overflow:hidden;transition:all .3s ease;max-width:100%;box-sizing:border-box}
-.ai-rcard-header{padding:1rem 1rem .5rem;display:flex;gap:12px}
-.ai-rcard-header-info{flex:1}
-.ai-rcard-name{font-family:'Shippori Mincho',serif;font-size:18px;font-weight:800;color:#B53A26;letter-spacing:.04em;margin-bottom:6px}
-.ai-rcard-metas{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:6px}
-.ai-rcard-meta-tag{font-size:10px;color:#888;font-family:'Noto Serif JP',serif;background:#f5f0e6;padding:3px 8px;border-radius:10px;display:inline-flex;align-items:center;gap:3px}
-.ai-rcard-desc{font-size:12px;color:#555;line-height:1.6;font-family:'Noto Serif JP',serif;margin-bottom:6px}
-.ai-rcard-reason{margin:.4rem .85rem .2rem;background:linear-gradient(135deg,#faf7f0,#fff);border:1px solid #e8dfcd;border-left:3px solid #5d3a7a;border-radius:12px;padding:.7rem .85rem}
-.ai-rcard-reason-label{font-size:10px;font-weight:700;color:#5d3a7a;font-family:'Shippori Mincho',serif;letter-spacing:.06em;margin-bottom:4px}
-.ai-rcard-reason-text{font-size:11.5px;color:#4a4540;line-height:1.65;font-family:'Noto Serif JP',serif}
-.ai-rcard-img{width:100px;height:100px;border-radius:14px;overflow:hidden;flex-shrink:0;background:#f0ead9;position:relative}
-.ai-rcard-img img{width:100%;height:100%;object-fit:cover}
-.ai-rcard-img-icon{position:absolute;bottom:6px;right:6px;width:24px;height:24px;background:#D4B05C;border-radius:50%;display:flex;align-items:center;justify-content:center}
-.ai-rcard-img-icon svg{width:12px;height:12px;color:#fff}
-.ai-rcard-tags{padding:0 1rem .7rem;display:flex;gap:5px;flex-wrap:wrap}
-.ai-rcard-tag{font-size:10px;color:#B53A26;background:rgba(181,58,38,.06);padding:4px 10px;border-radius:10px;font-family:'Noto Serif JP',serif;border:1px solid rgba(181,58,38,.15)}
-.ai-rcard-spots{border-top:1px solid #f0e8d8;margin:0 .85rem}
-.ai-rcard-spot-row{display:grid;grid-template-columns:1fr 80px 85px;gap:6px;padding:.65rem 0;align-items:center}
-.ai-rcard-spot-left{display:flex;align-items:flex-start;gap:7px;min-width:0}
-.ai-rcard-spot-num{width:26px;height:26px;border-radius:50%;background:#B53A26;color:#fff;font-family:'Shippori Mincho',serif;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.ai-rcard-spot-body{flex:1;min-width:0}
-.ai-rcard-spot-name{font-family:'Shippori Mincho',serif;font-size:13px;font-weight:700;color:#2D2A28;line-height:1.3}
-.ai-rcard-spot-loc{font-size:9px;color:#aaa;font-family:'Noto Serif JP',serif;margin-top:1px}
-.ai-rcard-spot-move{font-size:9px;color:#999;font-family:'Noto Serif JP',serif;margin-top:1px}
-.ai-rcard-spot-photo{width:80px;height:56px;border-radius:8px;overflow:hidden;background:#f0ead9;cursor:pointer;transition:opacity .2s}
-.ai-rcard-spot-photo:hover{opacity:.85}
+.ai-rcard{background:#fff;border-radius:16px;box-shadow:0 4px 16px rgba(0,0,0,.06);margin-bottom:1.25rem;overflow:hidden;transition:all .3s ease;max-width:100%;box-sizing:border-box}
+/* ── ヒーロー画像（横長・オーバーレイ） ── */
+.ai-rcard-hero{position:relative;width:100%;height:200px;overflow:hidden;background:#2D2A28}
+.ai-rcard-hero-img{width:100%;height:100%;object-fit:cover;display:block}
+.ai-rcard-hero-grad{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.75) 0%,rgba(0,0,0,.25) 45%,rgba(0,0,0,0) 70%)}
+.ai-rcard-hero-badge{position:absolute;top:14px;left:14px;background:rgba(93,58,138,.85);color:#fff;font-size:11px;font-weight:700;padding:5px 12px;border-radius:999px;font-family:'Shippori Mincho',serif;letter-spacing:.04em;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+.ai-rcard-hero-content{position:absolute;left:0;right:0;bottom:0;padding:14px 16px}
+.ai-rcard-hero-name{font-family:'Shippori Mincho',serif;font-size:24px;font-weight:700;color:#fff;letter-spacing:.03em;line-height:1.3;margin-bottom:10px;text-shadow:0 2px 8px rgba(0,0,0,.4)}
+.ai-rcard-hero-chips{display:flex;flex-wrap:wrap;gap:8px}
+.ai-rcard-hero-chip{font-size:12px;color:#fff;font-family:'Noto Sans JP',sans-serif;background:rgba(0,0,0,.5);padding:6px 12px;border-radius:999px;display:inline-flex;align-items:center;gap:4px;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+/* ── 本文 ── */
+.ai-rcard-body{padding:16px 16px 8px}
+.ai-rcard-desc{font-size:14px;color:#2B2B2B;line-height:1.8;font-family:'Noto Sans JP',sans-serif;margin-bottom:12px}
+.ai-rcard-tags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:4px}
+.ai-rcard-tag{font-size:12px;color:#B23A2E;background:rgba(178,58,46,.07);padding:5px 12px;border-radius:999px;font-family:'Noto Sans JP',sans-serif;border:1px solid rgba(178,58,46,.18)}
+/* ── AI選定理由 ── */
+.ai-rcard-reason{margin-top:12px;background:#faf8f3;border:1px solid #E7DFD6;border-left:3px solid #5E3A8A;border-radius:12px;padding:12px 14px}
+.ai-rcard-reason-label{font-size:12px;font-weight:700;color:#5E3A8A;font-family:'Shippori Mincho',serif;letter-spacing:.04em;margin-bottom:6px}
+.ai-rcard-reason-text{font-size:13px;color:#4a4540;line-height:1.75;font-family:'Noto Sans JP',sans-serif}
+/* ── タイムライン ── */
+.ai-rcard-spots{padding:8px 16px 4px}
+.ai-rcard-spot-row{display:grid;grid-template-columns:32px 96px 1fr 24px;gap:12px;padding:10px 0;align-items:center;cursor:pointer}
+.ai-rcard-spot-num{width:32px;height:32px;border-radius:50%;background:#B23A2E;color:#fff;font-family:'Shippori Mincho',serif;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ai-rcard-spot-photo{width:96px;height:72px;border-radius:12px;overflow:hidden;background:#f0ead9;flex-shrink:0}
 .ai-rcard-spot-photo img{width:100%;height:100%;object-fit:cover;display:block}
-.ai-rcard-spot-benefit{text-align:right}
-.ai-rcard-spot-benefit-label{font-size:9px;color:#D4B05C;font-family:'Shippori Mincho',serif;font-weight:700;letter-spacing:.04em;margin-bottom:1px}
-.ai-rcard-spot-benefit-text{font-size:11px;color:#2D2A28;font-family:'Noto Serif JP',serif;font-weight:600;line-height:1.3}
-.ai-rcard-spot-connector{display:flex;flex-direction:column;align-items:center;width:26px;padding:2px 0;margin-left:0}
-.ai-rcard-spot-connector-line{width:2px;height:7px;border-left:2px dashed #B53A26;opacity:.45}
-.ai-rcard-spot-connector-time{font-size:9px;color:#B53A26;font-weight:700;font-family:'Noto Serif JP',serif;white-space:nowrap;padding:2px 5px;letter-spacing:.02em;line-height:1.1;background:rgba(179,58,38,.06);border-radius:8px;margin:1px 0}
-.ai-rcard-day2{display:inline-block;font-size:9px;color:#5d3a7a;background:rgba(93,58,122,.08);border:1px solid rgba(93,58,122,.2);border-radius:8px;padding:1px 7px;margin-top:3px;font-family:'Shippori Mincho',serif;font-weight:700}
-.ai-rcard-cta{margin:.6rem 1rem 1rem;padding:.75rem;border-radius:26px;background:#B53A26;color:#fff;border:none;font-family:'Shippori Mincho',serif;font-size:13px;font-weight:700;letter-spacing:.06em;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;width:calc(100% - 2rem);box-shadow:0 3px 10px rgba(181,58,38,.2);transition:all .15s}
-.ai-rcard-cta:hover{transform:translateY(-1px);box-shadow:0 5px 16px rgba(181,58,38,.3)}
+.ai-rcard-spot-info{min-width:0}
+.ai-rcard-spot-name{font-family:'Shippori Mincho',serif;font-size:15px;font-weight:700;color:#2B2B2B;line-height:1.3}
+.ai-rcard-spot-loc{font-size:11px;color:#6B6B6B;font-family:'Noto Sans JP',sans-serif;margin-top:2px}
+.ai-rcard-spot-benefit-label{font-size:10px;color:#D4AF37;font-family:'Shippori Mincho',serif;font-weight:700;letter-spacing:.04em;margin-top:6px}
+.ai-rcard-spot-benefit-text{font-size:12px;color:#2B2B2B;font-family:'Noto Sans JP',sans-serif;font-weight:500;line-height:1.4;margin-top:1px}
+.ai-rcard-spot-arrow{width:28px;height:28px;border-radius:50%;background:#F2F2F2;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ai-rcard-spot-arrow svg{width:14px;height:14px;color:#666}
+/* ── 移動時間コネクター（番号列の直下） ── */
+.ai-rcard-spot-connector{display:flex;flex-direction:column;align-items:center;width:32px;padding:2px 0}
+.ai-rcard-spot-connector-line{width:2px;height:6px;border-left:2px dashed #B23A2E;opacity:.4}
+.ai-rcard-spot-connector-time{font-size:10px;color:#B23A2E;font-weight:700;font-family:'Noto Sans JP',sans-serif;white-space:nowrap;padding:2px 6px;letter-spacing:.01em;line-height:1.1;background:#FBE8E6;border-radius:999px;margin:2px 0}
+.ai-rcard-day2{display:inline-block;font-size:10px;color:#5E3A8A;background:rgba(94,58,138,.08);border:1px solid rgba(94,58,138,.2);border-radius:8px;padding:1px 8px;margin-top:4px;font-family:'Shippori Mincho',serif;font-weight:700}
+/* ── CTA（紫） ── */
+.ai-rcard-cta{margin:12px 16px 16px;height:56px;border-radius:28px;background:#5E3A8A;color:#fff;border:none;font-family:'Shippori Mincho',serif;font-size:16px;font-weight:700;letter-spacing:.06em;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;width:calc(100% - 32px);box-shadow:0 4px 14px rgba(94,58,138,.3);transition:all .15s}
+.ai-rcard-cta:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(94,58,138,.4);opacity:.92}
 .ai-rcard-cta:active{transform:scale(.98)}
 .ai-list-retry{text-align:center;padding:1rem;font-size:12px;color:#999;cursor:pointer;font-family:'Noto Serif JP',serif}
 .ai-list-retry:hover{color:#B53A26}
@@ -6740,50 +6744,54 @@ function renderRouteCards() {
     var rTime = r.time || timeLabel;
     var rMove = r.totalMove || moveLabel;
     h += '<div class="ai-rcard">';
-    h += '<div class="ai-rcard-header"><div class="ai-rcard-header-info">' +
-      '<div class="ai-rcard-name">' + r.name + '</div>' +
-      '<div class="ai-rcard-metas">' +
-        '<span class="ai-rcard-meta-tag">' + transIcon + ' ' + selTrans + '</span>' +
-        '<span class="ai-rcard-meta-tag">⏱ ' + rTime + '</span>' +
-        '<span class="ai-rcard-meta-tag">' + rMove + '</span>' +
+    // ── ヒーロー画像（横長・オーバーレイ） ──
+    h += '<div class="ai-rcard-hero">' +
+      '<img class="ai-rcard-hero-img" src="" alt="" loading="lazy" data-shrine="' + r.spots[0].name + '" id="aiRouteImg_' + r.id + '">' +
+      '<div class="ai-rcard-hero-grad"></div>' +
+      '<div class="ai-rcard-hero-badge">🌿 おすすめ</div>' +
+      '<div class="ai-rcard-hero-content">' +
+        '<div class="ai-rcard-hero-name">' + r.name + '</div>' +
+        '<div class="ai-rcard-hero-chips">' +
+          '<span class="ai-rcard-hero-chip">' + transIcon + ' ' + selTrans + '</span>' +
+          '<span class="ai-rcard-hero-chip">🕐 ' + rTime + '</span>' +
+          '<span class="ai-rcard-hero-chip">🚶 ' + rMove + '</span>' +
+        '</div>' +
       '</div>' +
-      '<div class="ai-rcard-desc">' + r.desc + '</div>' +
-    '</div>' +
-    '<div class="ai-rcard-img"><img src="" alt="" loading="lazy" data-shrine="' + r.spots[0].name + '" id="aiRouteImg_' + r.id + '">' +
-      '<div class="ai-rcard-img-icon"><svg viewBox="0 0 12 12" fill="none"><path d="M6 1L7 4.5L11 5L8 7.5L9 11L6 9L3 11L4 7.5L1 5L5 4.5L6 1Z" fill="currentColor"/></svg></div>' +
-    '</div></div>';
+    '</div>';
+    // ── 説明文 ──
+    h += '<div class="ai-rcard-body">';
+    h += '<div class="ai-rcard-desc">' + r.desc + '</div>';
+    // ── タグ ──
     h += '<div class="ai-rcard-tags">';
     r.tags.forEach(function(t){ h += '<span class="ai-rcard-tag">' + t + '</span>'; });
     h += '</div>';
-    // AIの解説（選定理由）
+    // ── AIの選定理由 ──
     if (r.reason) {
       h += '<div class="ai-rcard-reason">' +
              '<div class="ai-rcard-reason-label">✦ わびなびAIの選定理由</div>' +
              '<div class="ai-rcard-reason-text">' + r.reason + '</div>' +
            '</div>';
     }
+    h += '</div>';  // ai-rcard-body
+    // ── タイムライン ──
     h += '<div class="ai-rcard-spots">';
     spots.forEach(function(s, i){
       var photoId = 'aiPhoto_' + r.id + '_' + i;
-      h += '<div class="ai-rcard-spot-row">' +
-        '<div class="ai-rcard-spot-left">' +
-          '<div class="ai-rcard-spot-num">' + (i+1) + '</div>' +
-          '<div class="ai-rcard-spot-body">' +
-            '<div class="ai-rcard-spot-name">' + s.name + '</div>' +
-            '<div class="ai-rcard-spot-loc">（' + s.loc + '）</div>' +
-            (s.dayStart === 2 ? '<div class="ai-rcard-day2">📅 2日目</div>' : '') +
-          '</div>' +
-        '</div>' +
-        '<div class="ai-rcard-spot-photo" onclick="openSpotDetail(\'' + s.name.replace(/'/g,"\\'") + '\')">' +
+      h += '<div class="ai-rcard-spot-row" onclick="openSpotDetail(\'' + s.name.replace(/'/g,"\\'") + '\')">' +
+        '<div class="ai-rcard-spot-num">' + (i+1) + '</div>' +
+        '<div class="ai-rcard-spot-photo">' +
           '<img id="' + photoId + '" src="" alt="" loading="lazy" data-shrine="' + s.name + '">' +
         '</div>' +
-        '<div class="ai-rcard-spot-benefit">' +
+        '<div class="ai-rcard-spot-info">' +
+          '<div class="ai-rcard-spot-name">' + s.name + '</div>' +
+          '<div class="ai-rcard-spot-loc">（' + s.loc + '）</div>' +
+          (s.dayStart === 2 ? '<div class="ai-rcard-day2">📅 2日目</div>' : '') +
           '<div class="ai-rcard-spot-benefit-label">御利益</div>' +
           '<div class="ai-rcard-spot-benefit-text">' + s.benefit + '</div>' +
         '</div>' +
+        '<div class="ai-rcard-spot-arrow"><svg viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>' +
       '</div>';
       if (i < spots.length - 1) {
-        // 次スポットへの移動時間をコネクター（点線）部分に表示
         var nextMove = spots[i+1].move || '';
         h += '<div class="ai-rcard-spot-connector">' +
                '<div class="ai-rcard-spot-connector-line"></div>' +
@@ -6793,7 +6801,7 @@ function renderRouteCards() {
       }
     });
     h += '</div>';
-    h += '<button class="ai-rcard-cta" onclick="selectRoute(\'' + r.id + '\')">このルートで巡る →</button>';
+    h += '<button class="ai-rcard-cta" onclick="selectRoute(\'' + r.id + '\')">このルートを選ぶ →</button>';
     h += '</div>';
   });
   ct.innerHTML = h;
@@ -6922,15 +6930,15 @@ function updateRouteTotals(r, totalMoveSec) {
   var th = Math.floor(totalMin/60), tm = Math.round((totalMin%60)/10)*10;
   if (tm === 60) { th++; tm = 0; }
   var timeLabel = tm>0 ? ('約'+th+'時間'+tm+'分') : ('約'+th+'時間');
-  // DOM更新（該当カードのメタタグ）
+  // DOM更新（該当カードのヒーローチップ）
   var card = document.getElementById('aiRouteImg_' + r.id);
   if (card) {
     var rcard = card.closest('.ai-rcard');
     if (rcard) {
-      var metas = rcard.querySelectorAll('.ai-rcard-meta-tag');
-      if (metas.length >= 3) {
-        metas[1].textContent = '⏱ ' + timeLabel;
-        metas[2].textContent = moveLabel;
+      var chips = rcard.querySelectorAll('.ai-rcard-hero-chip');
+      if (chips.length >= 3) {
+        chips[1].textContent = '🕐 ' + timeLabel;
+        chips[2].textContent = '🚶 ' + moveLabel;
       }
     }
   }
