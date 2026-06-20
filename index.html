@@ -914,6 +914,9 @@ html,body{margin:0;padding:0;background:var(--washi)}
 .ai-rcard-metas{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:6px}
 .ai-rcard-meta-tag{font-size:10px;color:#888;font-family:'Noto Serif JP',serif;background:#f5f0e6;padding:3px 8px;border-radius:10px;display:inline-flex;align-items:center;gap:3px}
 .ai-rcard-desc{font-size:12px;color:#555;line-height:1.6;font-family:'Noto Serif JP',serif;margin-bottom:6px}
+.ai-rcard-reason{margin:.4rem .85rem .2rem;background:linear-gradient(135deg,#faf7f0,#fff);border:1px solid #e8dfcd;border-left:3px solid #5d3a7a;border-radius:12px;padding:.7rem .85rem}
+.ai-rcard-reason-label{font-size:10px;font-weight:700;color:#5d3a7a;font-family:'Shippori Mincho',serif;letter-spacing:.06em;margin-bottom:4px}
+.ai-rcard-reason-text{font-size:11.5px;color:#4a4540;line-height:1.65;font-family:'Noto Serif JP',serif}
 .ai-rcard-img{width:100px;height:100px;border-radius:14px;overflow:hidden;flex-shrink:0;background:#f0ead9;position:relative}
 .ai-rcard-img img{width:100%;height:100%;object-fit:cover}
 .ai-rcard-img-icon{position:absolute;bottom:6px;right:6px;width:24px;height:24px;background:#D4B05C;border-radius:50%;display:flex;align-items:center;justify-content:center}
@@ -3113,6 +3116,58 @@ function buildRoutesViaLocal(query, selTime, selTrans, budget) {
   return buildDynamicRoutes(baseShrine, baseCoord, candidates, selTime, selTrans, budget);
 }
 
+// ══════════════════════════════════════════════════════════
+// 神話系統・属性の判定エンジン（ルート分類用）
+// ══════════════════════════════════════════════════════════
+// 祭神名 → 神話系統。同じ系統の神社は「物語のつながり」が深い
+function deityLineage(deity, name) {
+  var d = (deity || '') + ' ' + (name || '');
+  // 天津神（高天原系）：天照大御神を中心とする系譜
+  if (/天照|瓊瓊杵|邇邇芸|天忍穂耳|天児屋根|天火明|天饒石|皇大神|神明/.test(d)) return { key:'amatsu', label:'天津神（高天原系）' };
+  // 出雲・国津神系：大国主を中心とする国譲りの物語
+  if (/大国主|大己貴|大物主|大穴牟遅|事代主|建御名方|少彦名|味鋤|味耜|大国魂/.test(d)) return { key:'izumo', label:'出雲・国津神系' };
+  // 素戔嗚・須佐之男系：八岐大蛇神話・厄除けの荒ぶる神
+  if (/素戔嗚|須佐之男|スサノオ|牛頭天王|八坂|祇園|氷川/.test(d)) return { key:'susanoo', label:'素戔嗚（須佐之男）系' };
+  // 八幡・応神系：武神・勝負の神
+  if (/応神|誉田別|八幡|品陀和氣/.test(d)) return { key:'hachiman', label:'八幡（応神天皇）系' };
+  // 天神・菅原道真系：学問の神
+  if (/菅原道真|天満|天神/.test(d)) return { key:'tenjin', label:'天神（菅原道真）系' };
+  // 宗像・弁財天・水神系：海・水・財運
+  if (/市杵島|宗像|田心|湍津|江島|弁財天|弁天|厳島|住吉|底筒|鹽土|綿津見/.test(d)) return { key:'water', label:'宗像・水神系' };
+  // 稲荷・食物神系：商売繁盛・五穀豊穣
+  if (/宇迦之御魂|稲荷|豊受|保食|御饌/.test(d)) return { key:'inari', label:'稲荷・食物神系' };
+  // 山岳・龍神系：自然・龍脈
+  if (/高龗|闇龗|龍|木花之佐久夜|浅間|健磐龍|大山積|大山祇|菊理媛|白山/.test(d)) return { key:'dragon', label:'山岳・龍神系' };
+  // 鹿島・香取（武神）系
+  if (/武甕槌|経津主|鹿島|香取/.test(d)) return { key:'takemikazuchi', label:'鹿島・香取（武神）系' };
+  // 仏（寺院）
+  if (/如来|菩薩|観音|不動|明王|大師|空海|盧舎那|釈迦|薬師|阿弥陀|聖観/.test(d)) return { key:'butsu', label:'仏教（寺院）' };
+  return { key:'other', label:'その他' };
+}
+
+// パワースポット属性を判定
+function powerAttribute(deity, name) {
+  var lin = deityLineage(deity, name);
+  var d = (deity || '') + ' ' + (name || '');
+  if (lin.key === 'dragon' || /龍|滝|水分|高龗/.test(d)) return { key:'dragon', label:'龍脈・水の気' };
+  if (lin.key === 'water') return { key:'water', label:'水の浄化・財運' };
+  if (lin.key === 'susanoo' || /厄除|八方除|方位|疫病/.test(d)) return { key:'yakuyoke', label:'強力な厄除け' };
+  if (lin.key === 'hachiman' || lin.key === 'takemikazuchi') return { key:'shobu', label:'勝負・必勝の気' };
+  if (lin.key === 'amatsu') return { key:'kaiun', label:'太陽・開運の気' };
+  if (lin.key === 'izumo') return { key:'enmusubi', label:'縁結びの気' };
+  return { key:'sogo', label:'総合的なご神気' };
+}
+
+// 御朱印の充実度スコア（口コミ数＋御朱印タグ＋有名社ボーナス）
+function goshuinScore(c) {
+  var s = c.shrine;
+  var score = (s.rev || 0) / 1000;
+  if (s.tags && s.tags.indexOf('goshuin') !== -1) score += 5;
+  // 御朱印・切り絵で著名な神社（名前マッチで加点）
+  if (/天満宮|東照宮|大社|神宮|八幡宮|稲荷/.test(s.name || '')) score += 3;
+  return score;
+}
+
 function buildDynamicRoutes(base, baseCoord, candidates, selTime, selTrans, budget) {
   var budgetMin = budget.budgetMin;
   var visitMin = budget.visitMin;
@@ -3238,21 +3293,59 @@ function buildDynamicRoutes(base, baseCoord, candidates, selTime, selTrans, budg
     return '総移動時間 約' + (Math.round(moveMin/5)*5) + '分';
   }
 
-  // ══ 3ルートを差別化（神社が被らないよう配分）══
-  function hasTag(c, t) { return c.shrine.tags && c.shrine.tags.indexOf(t) !== -1; }
+  // ══ 3ルートを新テーマで構成 ══
   function nameMatch(c, re) { return re.test(c.shrine.name || ''); }
+  // 各候補に祭神情報を補完（SHRINESにあれば取得）
+  candidates.forEach(function(c){
+    if (!c.shrine.deity) {
+      var known = SHRINES.find(function(s){ return s.name === c.shrine.name; });
+      if (known) c.shrine.deity = known.deity;
+    }
+    c._lineage = deityLineage(c.shrine.deity, c.shrine.name);
+    c._power = powerAttribute(c.shrine.deity, c.shrine.name);
+    c._goshuin = goshuinScore(c);
+  });
+  // 起点の系統
+  if (!base.deity) {
+    var bk = SHRINES.find(function(s){ return s.name === base.name; });
+    if (bk) base.deity = bk.deity;
+  }
+  var baseLineage = deityLineage(base.deity, base.name);
+  var basePower = powerAttribute(base.deity, base.name);
 
-  // テーマ別の優先候補（距離順は維持）
-  var shizenPref   = candidates.filter(function(c){ return hasTag(c,'shizen')||hasTag(c,'kenko')||nameMatch(c,/自然|山|滝|池|温泉|観音|不動|権現/); });
-  var enmusubiPref = candidates.filter(function(c){ return hasTag(c,'enmusubi')||hasTag(c,'gakumon')||nameMatch(c,/天満|天神|縁結|結び|弁財天|弁天|八坂|出雲/); });
-  // 王道は評価の高い順（口コミ数）を優先
-  var oudouPref = candidates.slice().sort(function(a,b){
-    var ra = (a.shrine.rev||0), rb = (b.shrine.rev||0);
-    if (rb !== ra) return rb - ra;
+  // ── ルート1：歴史・神話ロマン（起点と系統が近い順を優先）──
+  function lineageAffinity(c) {
+    // 同系統=3点、関連系統=2点、武神同士など=1点
+    if (c._lineage.key === baseLineage.key) return 3;
+    var related = {
+      amatsu:['izumo','hachiman'], izumo:['amatsu','susanoo','dragon'],
+      susanoo:['izumo','dragon'], hachiman:['takemikazuchi','amatsu'],
+      takemikazuchi:['hachiman'], water:['izumo','dragon'], dragon:['izumo','water','susanoo']
+    };
+    if (related[baseLineage.key] && related[baseLineage.key].indexOf(c._lineage.key) !== -1) return 2;
+    return 0;
+  }
+  var romanPref = candidates.slice().sort(function(a,b){
+    var aff = lineageAffinity(b) - lineageAffinity(a);
+    if (aff !== 0) return aff;
+    if ((b.shrine.rev||0) !== (a.shrine.rev||0)) return (b.shrine.rev||0) - (a.shrine.rev||0);
     return a.dist - b.dist;
   });
 
-  // 優先プール + 残り全候補（重複除外）で各ルートの母集団を作る
+  // ── ルート2：御朱印・アート巡り（御朱印スコア順）──
+  var goshuinPref = candidates.slice().sort(function(a,b){
+    if (b._goshuin !== a._goshuin) return b._goshuin - a._goshuin;
+    return a.dist - b.dist;
+  });
+
+  // ── ルート3：最強パワースポット（起点と同属性＋口コミ順）──
+  var powerPref = candidates.slice().sort(function(a,b){
+    var as = (a._power.key === basePower.key ? 1 : 0), bs = (b._power.key === basePower.key ? 1 : 0);
+    if (bs !== as) return bs - as;
+    if ((b.shrine.rev||0) !== (a.shrine.rev||0)) return (b.shrine.rev||0) - (a.shrine.rev||0);
+    return a.dist - b.dist;
+  });
+
   function poolWith(pref) {
     var names = {}; var pool = [];
     pref.forEach(function(c){ if(!names[c.shrine.name]){names[c.shrine.name]=true; pool.push(c);} });
@@ -3260,30 +3353,25 @@ function buildDynamicRoutes(base, baseCoord, candidates, selTime, selTrans, budg
     return pool;
   }
 
-  // ルート間で同じ神社が重ならないよう、使用済みを記録しながら生成
-  var usedAcross = {};  // 全ルート横断の使用回数
+  var usedAcross = {};
   function buildDistinct(pool, avoidWeight) {
-    // avoidWeight: 既に他ルートで使われた神社のペナルティ（距離を水増し）
     var weighted = pool.map(function(c){
       var penalty = (usedAcross[c.shrine.name] || 0) * avoidWeight;
       return { c: c, eff: c.dist + penalty };
     });
-    // 起点に近い順（ペナルティ込み）でソートし直す
     var spots = buildOrderedSpotsWeighted(weighted);
     spots.forEach(function(s, i){ if(i>0) usedAcross[s.name] = (usedAcross[s.name]||0)+1; });
     return spots;
   }
 
   var transLabel = selTrans;
-  // 癒し → 王道 → 縁結び の順で生成。後のルートほど前ルートと被らないよう調整
-  var r1spots = buildDistinct(poolWith(shizenPref), 0);     // 1本目は自由
-  var r2spots = buildDistinct(poolWith(oudouPref), 8);      // 8km相当のペナルティで分散
-  var r3spots = buildDistinct(poolWith(enmusubiPref), 8);
+  var r1spots = buildDistinct(poolWith(romanPref), 0);
+  var r2spots = buildDistinct(poolWith(goshuinPref), 8);
+  var r3spots = buildDistinct(poolWith(powerPref), 8);
 
-  // ── 2日コースは「翌日3時間ぶん」を区切りとして付与 ──
+  // ── 2日コースの分割マーク ──
   function dayMarker(spots) {
     if (!budget.twoDay) return spots;
-    // 7時間(420分)を超えたあたりで「2日目」に分割マーク
     var acc = visitMin, dayFlagged = false;
     for (var i = 1; i < spots.length; i++) {
       acc += legMinutes(shrineDistKm({lat:spots[i-1].lat,lng:spots[i-1].lng},{lat:spots[i].lat,lng:spots[i].lng})) + visitMin;
@@ -3293,24 +3381,64 @@ function buildDynamicRoutes(base, baseCoord, candidates, selTime, selTrans, budg
   }
   r1spots = dayMarker(r1spots); r2spots = dayMarker(r2spots); r3spots = dayMarker(r3spots);
 
+  // ══ 解説文（AIの選定理由）を生成 ══
+  function spotLineages(spots) {
+    var set = {};
+    spots.forEach(function(s){
+      var c = candidates.find(function(x){ return x.shrine.name === s.name; });
+      var lin = c ? c._lineage : deityLineage(null, s.name);
+      if (lin.key !== 'other' && lin.key !== 'butsu') set[lin.label] = true;
+    });
+    return Object.keys(set);
+  }
+  function romanReason(spots) {
+    var lins = spotLineages(spots);
+    var head = base.name + 'は' + baseLineage.label + 'に連なる神社です。';
+    if (lins.length >= 2) {
+      return head + 'このルートは' + lins.slice(0,2).join('と') + 'など、神々の系譜や物語のつながりが感じられる社を組み合わせました。神話のロマンを辿る巡礼です。';
+    }
+    return head + '同じ神話の系譜に連なる社を中心に、歴史的なつながりを辿るルートに仕上げました。';
+  }
+  function goshuinReason(spots) {
+    var famous = spots.filter(function(s){ return /天満宮|東照宮|大社|神宮|八幡宮|稲荷/.test(s.name); }).map(function(s){return s.name;});
+    var lead = '御朱印集めを楽しむ方へ。';
+    if (famous.length) {
+      return lead + famous.slice(0,2).join('・') + 'など、限定御朱印や美しい授与品で知られる社を中心に構成しました。月替わりや切り絵御朱印に出会えるかもしれません。';
+    }
+    return lead + '参拝者の評価が高く、御朱印の授与に力を入れている社を厳選しました。御朱印帳が華やぐ巡礼です。';
+  }
+  function powerReason(spots) {
+    var attrs = {};
+    spots.forEach(function(s){
+      var c = candidates.find(function(x){ return x.shrine.name === s.name; });
+      var p = c ? c._power : powerAttribute(null, s.name);
+      attrs[p.label] = true;
+    });
+    var list = Object.keys(attrs).slice(0,2);
+    return base.name + 'を起点に、' + (list.length ? list.join('・') : 'ご神気') + 'を感じられる社を集めました。エネルギーに満ちたパワースポットを巡り、心身を整える特別なルートです。';
+  }
+
   return [
-    { id:'dr1', name: base.name + '周辺 癒しルート',
+    { id:'dr1', name: '🌿 ' + base.name + '・神話ロマン巡り',
       transport: transLabel, time: totalTimeLabel(r1spots), totalMove: totalMoveLabel(r1spots),
-      desc: base.name + 'を起点に、自然や景色を楽しみながら心を整えるルートです',
-      tags:['絶景スポット多め','癒し重視'],
-      img:'https://images.unsplash.com/photo-1545569310-c1d4ed14d12c?w=300&q=80&auto=format&fit=crop',
-      spots: r1spots },
-    { id:'dr2', name: base.name + '周辺 王道ルート',
-      transport: transLabel, time: totalTimeLabel(r2spots), totalMove: totalMoveLabel(r2spots),
-      desc: base.name + 'を中心に、人気の高い神社仏閣を巡る王道ルートです',
-      tags:['ご利益重視','御朱印充実'],
+      desc: '祀られる神々の関係や歴史でつながる社を巡る、物語性のあるルート',
+      reason: romanReason(r1spots),
+      tags:['神話のつながり','歴史ロマン'],
       img:'https://images.unsplash.com/photo-1480796927426-f609979314bd?w=300&q=80&auto=format&fit=crop',
+      spots: r1spots },
+    { id:'dr2', name: '🎨 ' + base.name + '・御朱印アート巡り',
+      transport: transLabel, time: totalTimeLabel(r2spots), totalMove: totalMoveLabel(r2spots),
+      desc: '限定御朱印や美しい授与品で知られる社を集めた、御朱印好きのためのルート',
+      reason: goshuinReason(r2spots),
+      tags:['限定御朱印','御朱印映え'],
+      img:'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=300&q=80&auto=format&fit=crop',
       spots: r2spots },
-    { id:'dr3', name: base.name + '周辺 縁結び・学業ルート',
+    { id:'dr3', name: '⛩ ' + base.name + '・最強パワースポット',
       transport: transLabel, time: totalTimeLabel(r3spots), totalMove: totalMoveLabel(r3spots),
-      desc: base.name + '周辺で良縁や学業成就を願う特別なルートです',
-      tags:['縁結び','静かに巡れる'],
-      img:'https://images.unsplash.com/photo-1493997181344-712f2f19d87a?w=300&q=80&auto=format&fit=crop',
+      desc: base.name + 'と同じ気を持つ社で統一した、エネルギー特化ルート',
+      reason: powerReason(r3spots),
+      tags:[basePower.label,'運気上昇'],
+      img:'https://images.unsplash.com/photo-1545569310-c1d4ed14d12c?w=300&q=80&auto=format&fit=crop',
       spots: r3spots }
   ];
 }
@@ -6627,6 +6755,13 @@ function renderRouteCards() {
     h += '<div class="ai-rcard-tags">';
     r.tags.forEach(function(t){ h += '<span class="ai-rcard-tag">' + t + '</span>'; });
     h += '</div>';
+    // AIの解説（選定理由）
+    if (r.reason) {
+      h += '<div class="ai-rcard-reason">' +
+             '<div class="ai-rcard-reason-label">✦ わびなびAIの選定理由</div>' +
+             '<div class="ai-rcard-reason-text">' + r.reason + '</div>' +
+           '</div>';
+    }
     h += '<div class="ai-rcard-spots">';
     spots.forEach(function(s, i){
       var photoId = 'aiPhoto_' + r.id + '_' + i;
