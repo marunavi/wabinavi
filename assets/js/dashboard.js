@@ -131,11 +131,25 @@
     }
   };
 
-  // ── 初回だけ data/articles.json を記事一覧（localStorage）へ読み込む ──
-  // 管理画面の一覧・編集は localStorage を見るため、公開データを取り込んで編集可能にする
-  if (WabiStore.getArticles().length === 0) {
-    WabiStore.seedFromJson('../data/articles.json').then(function () { render(); });
-  } else {
-    render();
+  // ── data/articles.json を記事一覧（localStorage）へ取り込む ──
+  // 管理画面の一覧・編集は localStorage を見るため、公開データを取り込んで編集可能にする。
+  // 既にある記事（同じスラッグ）はそのまま残し、まだ無い記事だけを追加する。
+  function mergeFromJson(url) {
+    return fetch(url, { cache: 'no-store' })
+      .then(function (r) { return r.ok ? r.json() : []; })
+      .then(function (arr) {
+        if (!Array.isArray(arr)) return;
+        var have = {};
+        WabiStore.getArticles().forEach(function (a) { if (a.slug) have[a.slug] = true; });
+        arr.forEach(function (a) {
+          if (a && a.slug && !have[a.slug]) {
+            var copy = JSON.parse(JSON.stringify(a));
+            copy.id = null; // 新しいIDを割り当てて保存
+            WabiStore.upsert(copy);
+          }
+        });
+      })
+      .catch(function () {});
   }
+  mergeFromJson('../data/articles.json').then(function () { render(); });
 })();
