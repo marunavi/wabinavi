@@ -131,5 +131,11 @@
     }
   };
 
-  render();
+  // ── 初回だけ data/articles.json を記事一覧（localStorage）へ読み込む ──
+  // 管理画面の一覧・編集は localStorage を見るため、公開データを取り込んで編集可能にする
+  if (WabiStore.getArticles().length === 0) {
+    WabiStore.seedFromJson('../data/articles.json').then(function () { render(); });
+  } else {
+    render();
+  }
 })();
