@@ -266,4 +266,42 @@
   // ── ⑥ 「3つのルートを比較して…」の文言を修正 ──
   var sub = document.querySelector('.ai-list-sub');
   if (sub) sub.textContent = '10のルートを比較して、あなたにぴったりの巡拝を選べます';
+
+  // ── ⑦ 神社名を入力しないと「AIがおすすめルートを作成」を押せないようにする ──
+  var heroInput = document.getElementById('heroSearchInput');
+  var heroBtn = document.querySelector('.hero-search-cta');
+  if (heroInput && heroBtn) {
+    var syncHeroBtn = function(){
+      var ok = heroInput.value.trim().length > 0;
+      heroBtn.disabled = !ok;
+      heroBtn.style.opacity = ok ? '' : '0.45';
+      heroBtn.style.cursor = ok ? '' : 'not-allowed';
+    };
+    heroInput.addEventListener('input', syncHeroBtn);
+    syncHeroBtn();
+  }
+
+  // ── ⑧ 「このルートを選ぶ」→ Googleマップで経路を開く ──
+  window.selectRoute = function(rid){
+    var routes = window._dynamicRoutes || window.AI_ROUTES;
+    var route = routes.find(function(r){ return r.id === rid; });
+    if (!route) route = window.AI_ROUTES.find(function(r){ return r.id === rid; });
+    if (!route || !route.spots || !route.spots.length) return;
+    // カッコ書きを除いた神社名で経路を組み立てる
+    var names = route.spots.map(function(s){ return String(s.name).replace(/[（(].*$/, '').trim(); });
+    var url;
+    if (names.length === 1) {
+      url = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(names[0]);
+    } else {
+      var mode = route.transport === '徒歩' ? 'walking'
+               : (route.transport === '電車' || route.transport === 'バス') && names.length === 2 ? 'transit'
+               : 'driving'; // 経由地ありは乗換案内非対応のため車モードで開く
+      url = 'https://www.google.com/maps/dir/?api=1'
+          + '&origin=' + encodeURIComponent(names[0])
+          + '&destination=' + encodeURIComponent(names[names.length - 1])
+          + (names.length > 2 ? '&waypoints=' + encodeURIComponent(names.slice(1, -1).join('|')) : '')
+          + '&travelmode=' + mode;
+    }
+    window.open(url, '_blank');
+  };
 })();
