@@ -304,4 +304,78 @@
     }
     window.open(url, '_blank');
   };
+
+  // ── ⑨ ランキングカードは写真・御朱印どこを押しても詳細ページへ ──
+  document.addEventListener('click', function(ev){
+    var card = ev.target.closest ? ev.target.closest('.rcard') : null;
+    if (!card) return;
+    var el = ev.target;
+    while (el && el !== card) {
+      // 独自の動きを持つ要素（住所リンク・御朱印登録ボタンなど）はそのまま生かす
+      if (el.tagName === 'A' || el.tagName === 'BUTTON' || (el.getAttribute && el.getAttribute('onclick'))) return;
+      el = el.parentElement;
+    }
+    var rn = card.querySelector('.rname');
+    if (rn) rn.click();
+  });
+
+  // ── ⑩ 詳細ページのトップ画像を少し縦長（4:3）にする ──
+  var wabiCss = document.createElement('style');
+  wabiCss.textContent = '.sd-hero{flex:0 0 auto !important;min-height:calc(min(100vw, 500px) * 0.75) !important;aspect-ratio:4 / 3 !important;}\n.sd-hero img{width:100%;height:100%;object-fit:cover;}';
+  document.head.appendChild(wabiCss);
+
+  // ── ⑪ 詳細ページ：トップ画像の下に「別アングル写真＋御朱印」を2枚並べる ──
+  function wabiAltPhoto(name){
+    var trim = String(name).replace(/[（(].*$/,'').trim();
+    return (window.sdCurrentPhotos && window.sdCurrentPhotos[1])
+        || PHOTO_BY_NAME[name] || PHOTO_BY_NAME[trim]
+        || (window.sdCurrentPhotos && window.sdCurrentPhotos[0]) || '';
+  }
+  var origPopulate = window.populateShrineDetail;
+  if (typeof origPopulate === 'function') {
+    window.populateShrineDetail = function(s){
+      origPopulate(s);
+      try {
+        var hero = document.getElementById('sdHero');
+        if (!hero) return;
+        var old = document.getElementById('wabiSdDuo');
+        if (old) old.remove();
+        var duo = document.createElement('div');
+        duo.id = 'wabiSdDuo';
+        duo.style.cssText = 'display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 16px 4px;';
+        var anchor = document.getElementById('sdThumbs') || hero;
+        anchor.insertAdjacentElement('afterend', duo);
+        // ① 神社の別アングル写真
+        var alt = wabiAltPhoto(s.name);
+        var c1 = document.createElement('div');
+        if (alt) {
+          var liIdx = window.sdCurrentPhotos ? window.sdCurrentPhotos.indexOf(alt) : -1;
+          c1.innerHTML = '<img src="' + alt + '" loading="lazy" style="width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:10px;display:block' + (liIdx > -1 ? ';cursor:pointer' : '') + '"' + (liIdx > -1 ? ' onclick="openLightbox(' + liIdx + ')"' : '') + '>';
+        } else { c1.style.display = 'none'; }
+        duo.appendChild(c1);
+        // ② 御朱印（あれば表示、なければ募集中）
+        var c2 = document.createElement('div');
+        duo.appendChild(c2);
+        var name = s.name;
+        if (typeof resolveGoshuin === 'function') resolveGoshuin(name);
+        var tries = 0;
+        (function poll(){
+          if (!document.getElementById('wabiSdDuo')) return;
+          var v = (typeof goshuinFileCache !== 'undefined') ? goshuinFileCache[name] : undefined;
+          if (typeof v === 'string' && v !== '__loading') {
+            c2.innerHTML = '<div style="position:relative;background:#fff;border:1px solid #c9a84c;border-radius:10px;overflow:hidden">'
+              + '<img src="' + v + '" loading="lazy" style="width:100%;aspect-ratio:1/1;object-fit:contain;display:block;background:#fff">'
+              + '<span style="position:absolute;top:6px;left:6px;background:#a83320;color:#fff;font-size:10px;padding:2px 10px;border-radius:12px;font-family:\'Shippori Mincho\',serif">御朱印</span></div>';
+            return;
+          }
+          if (v === false || tries > 16) {
+            c2.innerHTML = (typeof goshuinPH === 'function') ? goshuinPH(name) : '';
+            var im = c2.querySelector('img'); if (im) im.style.aspectRatio = '1/1';
+            return;
+          }
+          tries++; setTimeout(poll, 250);
+        })();
+      } catch(e){}
+    };
+  }
 })();
