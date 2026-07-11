@@ -329,7 +329,7 @@
   // ── ⑫ 公開用APIキー（訪問者全員が神社の写真を見られるようにする）──
   // 下の '' の中にGoogleのAPIキーを貼り付けてください。
   // ※必ずGoogle Cloud側で「HTTPリファラー制限: https://marunavi.github.io/*」を設定してから貼ること
-  var WABI_PUBLIC_API_KEY = '';
+  var WABI_PUBLIC_API_KEY = 'AIzaSyBhItwVQYblQTxo92oWeXuskQW-JYipgCk';
   if (WABI_PUBLIC_API_KEY && !localStorage.getItem('gplaces_key')) {
     try {
       localStorage.setItem('gplaces_key', WABI_PUBLIC_API_KEY);
