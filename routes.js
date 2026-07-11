@@ -321,8 +321,23 @@
 
   // ── ⑩ 詳細ページのトップ画像を少し縦長（4:3）にする ──
   var wabiCss = document.createElement('style');
-  wabiCss.textContent = '.sd-hero{flex:0 0 auto !important;min-height:calc(min(100vw, 500px) * 0.75) !important;aspect-ratio:4 / 3 !important;}\n.sd-hero img{width:100%;height:100%;object-fit:cover;}';
+  wabiCss.textContent = '.sd-hero{flex:0 0 auto !important;min-height:calc(min(100vw, 500px) * 0.75) !important;aspect-ratio:4 / 3 !important;}\n.sd-hero img{width:100%;height:100%;object-fit:cover;}'
+    // iPhoneで入力欄タップ時に画面が拡大されるのを防ぐ（文字16px未満だとiOSが自動ズームするため）
+    + '\ninput, textarea, select{font-size:16px !important;}';
   document.head.appendChild(wabiCss);
+
+  // ── ⑫ 公開用APIキー（訪問者全員が神社の写真を見られるようにする）──
+  // 下の '' の中にGoogleのAPIキーを貼り付けてください。
+  // ※必ずGoogle Cloud側で「HTTPリファラー制限: https://marunavi.github.io/*」を設定してから貼ること
+  var WABI_PUBLIC_API_KEY = '';
+  if (WABI_PUBLIC_API_KEY && !localStorage.getItem('gplaces_key')) {
+    try {
+      localStorage.setItem('gplaces_key', WABI_PUBLIC_API_KEY);
+      API_KEY = WABI_PUBLIC_API_KEY;
+      if (typeof showAppliedBar === 'function') showAppliedBar();
+      if (typeof filter === 'function') filter();
+    } catch(e){}
+  }
 
   // ── ⑪ 詳細ページ：トップ画像の下に「別アングル写真＋御朱印」を2枚並べる ──
   function wabiAltPhoto(name){
