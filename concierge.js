@@ -225,25 +225,25 @@
     '.wc-hd{position:sticky;top:0;z-index:5;background:#fff;display:flex;align-items:center;gap:8px;padding:14px 16px;border-bottom:1px solid #eee8dc;}',
     '.wc-back{font-size:22px;color:#a83320;cursor:pointer;line-height:1;padding:0 6px;}',
     '.wc-tit{font-family:"Shippori Mincho",serif;font-weight:800;font-size:15px;color:#2a2018;}',
-    '.wc-sec{margin:24px 16px 0;}',
+    '.wc-sec{margin:10px 16px 0;}',
     '.wc-sec-h{display:flex;align-items:baseline;justify-content:space-between;}',
-    '.wc-sec-tit{font-family:"Shippori Mincho",serif;font-size:16px;font-weight:800;color:#2a2018;}',
+    '.wc-sec-tit{font-family:"Shippori Mincho",serif;font-size:14.5px;font-weight:800;color:#2a2018;}',
     '.wc-sec-sub{font-size:11px;color:#a89a80;margin-top:2px;}',
     '.wc-all{font-size:11px;color:#a83320;cursor:pointer;white-space:nowrap;}',
-    '.wc-row{display:flex;gap:12px;overflow-x:auto;padding:12px 2px 6px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;}',
+    '.wc-row{display:flex;gap:10px;overflow-x:auto;padding:6px 2px 2px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;}',
     '.wc-row::-webkit-scrollbar{display:none;}',
-    '.wc-card{flex:0 0 200px;background:#fff;border-radius:24px;box-shadow:0 4px 16px -8px rgba(90,70,40,.25);overflow:hidden;scroll-snap-align:start;}',
-    '.wc-img{position:relative;width:100%;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;font-size:44px;}',
-    '.wc-ai{position:absolute;top:8px;left:8px;background:rgba(255,255,255,.92);color:#6e5a20;font-size:10px;font-weight:700;padding:3px 9px;border-radius:12px;}',
+    '.wc-card{flex:0 0 148px;background:#fff;border-radius:18px;box-shadow:0 3px 12px -6px rgba(90,70,40,.25);overflow:hidden;scroll-snap-align:start;}',
+    '.wc-img{position:relative;width:100%;height:58px;display:flex;align-items:center;justify-content:center;font-size:24px;}',
+    '.wc-ai{position:absolute;top:5px;left:5px;background:rgba(255,255,255,.92);color:#6e5a20;font-size:8px;font-weight:700;padding:2px 6px;border-radius:10px;}',
     '.wc-pr{position:absolute;top:8px;right:8px;background:rgba(42,32,24,.65);color:#fff;font-size:9px;padding:2px 7px;border-radius:10px;}',
-    '.wc-body{padding:12px 14px 14px;}',
-    '.wc-name{font-family:"Shippori Mincho",serif;font-size:13px;font-weight:800;color:#2a2018;line-height:1.4;}',
-    '.wc-meta{font-size:11px;color:#c9a84c;margin-top:5px;}',
+    '.wc-body{padding:9px 10px 10px;}',
+    '.wc-name{font-family:"Shippori Mincho",serif;font-size:11px;font-weight:800;color:#2a2018;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}',
+    '.wc-meta{font-size:9.5px;color:#a89a80;margin-top:3px;}',
     '.wc-meta b{color:#2a2018;font-weight:700;}',
-    '.wc-sub2{font-size:10.5px;color:#a89a80;margin-top:3px;}',
-    '.wc-genre{display:inline-block;font-size:10px;color:#7a4a10;background:#f5efd6;border-radius:10px;padding:2px 9px;margin-top:7px;}',
-    '.wc-price{font-size:12px;font-weight:800;color:#a83320;margin-top:5px;}',
-    '.wc-add{display:block;width:100%;margin-top:10px;padding:9px 0;border-radius:14px;border:1px solid #c9a84c;background:#fff;color:#7a4a10;font-size:12px;font-weight:700;cursor:pointer;font-family:"Shippori Mincho",serif;}',
+    '.wc-sub2{font-size:9.5px;color:#a89a80;margin-top:2px;}',
+    '.wc-genre{display:inline-block;font-size:9px;color:#7a4a10;background:#f5efd6;border-radius:8px;padding:1px 7px;margin-top:5px;}',
+    '.wc-price{font-size:11px;font-weight:800;color:#a83320;margin-top:4px;}',
+    '.wc-add{display:block;width:100%;margin-top:6px;padding:5px 0;border-radius:10px;border:1px solid #c9a84c;background:#fff;color:#7a4a10;font-size:10px;font-weight:700;cursor:pointer;font-family:"Shippori Mincho",serif;}',
     '.wc-add.on{background:#a83320;border-color:#a83320;color:#fff;}',
     '.wc-advice{background:#fff;border-radius:24px;padding:18px;margin:28px 16px 0;box-shadow:0 4px 16px -8px rgba(90,70,40,.25);border-left:4px solid #7a5aa8;}',
     '.wc-advice-t{font-family:"Shippori Mincho",serif;font-size:13px;font-weight:800;color:#5a4470;}',
@@ -317,10 +317,8 @@
       +   (cat.pr ? '<span class="wc-pr">PR</span>' : '')
       + '</div>'
       + '<div class="wc-body">'
-      +   '<div class="wc-name">'+item.name+'</div>'
-      +   '<div class="wc-meta">'+star+' <b>'+item.rating.toFixed(1)+'</b></div>'
-      +   '<div class="wc-sub2">'+item.reviews+'件の口コミ ・ '+item.walk+'</div>'
-      +   '<span class="wc-genre">'+item.genre+'</span>'
+      +   '<div class="wc-name" title="'+esc(item.name+'（'+item.genre+'）')+'">'+item.name+'</div>'
+      +   '<div class="wc-meta">★<b style="color:#2a2018">'+item.rating.toFixed(1)+'</b>（'+item.reviews+'）・'+item.walk+'</div>'
       +   (item.price ? '<div class="wc-price">'+item.price+'</div>' : '')
       +   '<button class="wc-add" data-cat="'+cat.key+'" data-idx="'+idx+'">＋ ルートに追加</button>'
       + '</div></div>';
@@ -330,19 +328,22 @@
     var r = state.route, d = fetchNearby(r);
     var b = document.getElementById('wcBody');
     var h = '';
-    // 選択中ルートの概要
-    h += '<div class="wc-tl" style="margin-top:20px">';
-    h += '<div style="font-family:\'Shippori Mincho\',serif;font-weight:800;font-size:15px;color:#2a2018">'+(r.emoji?r.emoji+' ':'')+r.name+'</div>';
-    h += '<div style="font-size:11px;color:#a89a80;margin:4px 0 8px">'+(r.transport||'')+'・'+(r.time||'')+'・'+r.spots.length+'社</div>';
+    // 選択中ルートの概要（横並びコンパクト表示）
+    h += '<div class="wc-tl" style="margin-top:14px;padding:14px 14px 10px">';
+    h += '<div style="display:flex;align-items:baseline;justify-content:space-between"><div style="font-family:\'Shippori Mincho\',serif;font-weight:800;font-size:14px;color:#2a2018">'+(r.emoji?r.emoji+' ':'')+r.name+'</div>'
+      + '<div style="font-size:10px;color:#a89a80">'+(r.transport||'')+'・'+(r.time||'')+'・'+r.spots.length+'社</div></div>';
+    h += '<div style="display:flex;gap:10px;overflow-x:auto;padding:10px 0 4px">';
     r.spots.forEach(function(s,i){
-      h += '<div class="wc-tl-i"><div class="wc-tl-n">'+(i+1)+'</div>'
-        + '<div class="wc-tl-th" style="background:'+G.sight+'">'+(s.photo?'<img src="'+esc(s.photo)+'" loading="lazy">':'⛩')+'</div>'
-        + '<div><div class="wc-tl-nm">'+s.name+'</div><div class="wc-tl-mt">'+(s.loc||'')+' ・ 約40分滞在</div></div></div>';
+      h += '<div style="flex:0 0 64px;text-align:center;position:relative">'
+        + '<div style="position:absolute;top:-4px;left:0;width:17px;height:17px;border-radius:50%;background:#a83320;color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;z-index:1">'+(i+1)+'</div>'
+        + '<div style="width:56px;height:56px;border-radius:14px;overflow:hidden;margin:0 auto;background:'+G.sight+';display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px">'+(s.photo?'<img src="'+esc(s.photo)+'" loading="lazy" style="width:100%;height:100%;object-fit:cover">':'⛩')+'</div>'
+        + '<div style="font-size:9px;color:#2a2018;font-weight:700;margin-top:4px;line-height:1.3;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">'+s.name+'</div></div>';
+      if(i<r.spots.length-1) h += '<div style="flex:0 0 10px;display:flex;align-items:center;justify-content:center;color:#c9a84c;font-size:12px;padding-top:14px">→</div>';
     });
-    h += '</div>';
+    h += '</div></div>';
     // AI見出し
-    h += '<div class="wc-sec" style="text-align:center;margin-top:30px">'
-      + '<div class="wc-sec-tit" style="font-size:17px">🌿 この近くもおすすめです 🍃</div>'
+    h += '<div class="wc-sec" style="text-align:center;margin-top:14px">'
+      + '<div class="wc-sec-tit" style="font-size:15.5px">🌿 この近くもおすすめです 🍃</div>'
       + '<div class="wc-sec-sub">AIが周辺スポットを見つけました</div></div>';
     // カテゴリ各段
     CATS.forEach(function(cat){
