@@ -232,8 +232,8 @@
     '.wc-all{font-size:11px;color:#a83320;cursor:pointer;white-space:nowrap;}',
     '.wc-row{display:flex;gap:10px;overflow-x:auto;padding:6px 2px 2px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;}',
     '.wc-row::-webkit-scrollbar{display:none;}',
-    '.wc-card{flex:0 0 148px;background:#fff;border-radius:18px;box-shadow:0 3px 12px -6px rgba(90,70,40,.25);overflow:hidden;scroll-snap-align:start;}',
-    '.wc-img{position:relative;width:100%;height:58px;display:flex;align-items:center;justify-content:center;font-size:24px;}',
+    '.wc-card{flex:0 0 calc(50% - 5px);background:#fff;border-radius:18px;box-shadow:0 3px 12px -6px rgba(90,70,40,.25);overflow:hidden;scroll-snap-align:start;}',
+    '.wc-img{position:relative;width:100%;height:76px;display:flex;align-items:center;justify-content:center;font-size:26px;overflow:hidden;}',
     '.wc-ai{position:absolute;top:5px;left:5px;background:rgba(255,255,255,.92);color:#6e5a20;font-size:8px;font-weight:700;padding:2px 6px;border-radius:10px;}',
     '.wc-pr{position:absolute;top:8px;right:8px;background:rgba(42,32,24,.65);color:#fff;font-size:9px;padding:2px 7px;border-radius:10px;}',
     '.wc-body{padding:9px 10px 10px;}',
@@ -290,6 +290,36 @@
   document.body.appendChild(prev);
   document.getElementById('wcPrevBack').onclick = function(){ prev.style.display='none'; };
 
+  var currentNear = '';
+  // Google Placesでお店・スポットの実写真を取得（APIキーがある場合のみ／なければ絵文字のまま）
+  var wcPhotoCache = {};
+  function resolveCardPhotos(){
+    try{
+      if (typeof API_KEY==='undefined' || !API_KEY) return;
+      if (typeof google==='undefined' || !google.maps || !google.maps.places) return;
+      var svc = new google.maps.places.PlacesService(document.createElement('div'));
+      document.querySelectorAll('#wcInline .wc-img[data-q]').forEach(function(el){
+        if (el.querySelector('img')) return;
+        var q = el.getAttribute('data-q');
+        function setImg(url){
+          if (!url || el.querySelector('img')) return;
+          var im = document.createElement('img');
+          im.src = url; im.loading = 'lazy';
+          im.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;';
+          el.insertBefore(im, el.firstChild);
+        }
+        if (wcPhotoCache[q] !== undefined) { setImg(wcPhotoCache[q]); return; }
+        wcPhotoCache[q] = null;
+        svc.findPlaceFromQuery({query:q, fields:['photos']}, function(res, status){
+          if (status === google.maps.places.PlacesServiceStatus.OK && res && res[0] && res[0].photos && res[0].photos.length){
+            var u = res[0].photos[0].getUrl({maxWidth:500});
+            wcPhotoCache[q] = u; setImg(u);
+          }
+        });
+      });
+    }catch(e){}
+  }
+
   var CATS = [
     {key:'gourmet', tit:'グルメ',       sub:'おすすめランチ'},
     {key:'cafe',    tit:'カフェ・スイーツ', sub:'ひと休みに'},
@@ -301,7 +331,7 @@
 
   function cardHtml(item, cat, idx){
     return '<div class="wc-card">'
-      + '<div class="wc-img" style="background:'+item.img.grad+'">'
+      + '<div class="wc-img" data-q="'+esc(item.name+' '+(currentNear||''))+'" style="background:'+item.img.grad+'">'
       +   '<span style="filter:drop-shadow(0 2px 6px rgba(0,0,0,.3))">'+item.img.emoji+'</span>'
       +   '<span class="wc-ai">🌿 AIおすすめ度 '+item.ai+'点</span>'
       +   (cat.pr ? '<span class="wc-pr">PR</span>' : '')
@@ -324,6 +354,7 @@
     if (!routes.length) return;
     if (!state.route || routes.indexOf(state.route) < 0) { state.route = routes[0]; state.added = []; }
     var d = fetchNearby(state.route);
+    currentNear = d.near || String(state.route.spots[0].name).replace(/[（(].*$/,'');
 
     var old = document.getElementById('wcInline'); if (old) old.remove();
     var box = document.createElement('div'); box.id='wcInline';
@@ -368,6 +399,8 @@
       pg.appendChild(bar);
       document.getElementById('wcInlineCta').onclick = openPreview;
     }
+    resolveCardPhotos();
+    setTimeout(resolveCardPhotos, 1200); // SDK読み込みが遅れた場合の再試行
   }
 
   function renderAddedList(){
