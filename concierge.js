@@ -7,6 +7,10 @@
 (function(){
   'use strict';
 
+  // 二重読み込み防止（タグが複数あっても1回だけ動く）
+  if (window.__wabiConciergeLoaded) return;
+  window.__wabiConciergeLoaded = true;
+
   // ─────────────────────────────────────────
   // 1. 周辺スポットデータ（※評価・件数・徒歩分はダミー値。店名は実在）
   //    API接続時はこのオブジェクトを Google Places / 楽天トラベル の結果に置き換える
