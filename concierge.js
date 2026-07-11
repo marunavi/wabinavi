@@ -278,28 +278,18 @@
   document.head.appendChild(css);
 
   // ─────────────────────────────────────────
-  // 3. 状態と骨組み
+  // 3. 状態（選択中ルート・追加スポット）
   // ─────────────────────────────────────────
   var state = { route:null, added:[] };
+  function toast(m){ if (typeof showToast==='function') showToast(m); }
+  function esc(s){ return String(s).replace(/"/g,'&quot;'); }
 
-  var page = document.createElement('div'); page.id='wcPage';
-  page.innerHTML = '<div class="wc-hd"><span class="wc-back" id="wcBack">‹</span><span class="wc-tit">おすすめルート</span></div><div class="wc-inner" id="wcBody"></div><div class="wc-cta-wrap" id="wcCtaWrap"><button class="wc-cta" id="wcCta">カスタマイズしたルートを見る →</button></div>';
-  document.body.appendChild(page);
-
+  // プレビュー（カスタマイズ済みルート）用のオーバーレイ
   var prev = document.createElement('div'); prev.id='wcPrev';
   prev.innerHTML = '<div class="wc-hd"><span class="wc-back" id="wcPrevBack">‹</span><span class="wc-tit">カスタマイズ済みルート</span></div><div class="wc-inner" id="wcPrevBody"></div>';
   document.body.appendChild(prev);
-
-  document.getElementById('wcBack').onclick = function(){ page.style.display='none'; };
   document.getElementById('wcPrevBack').onclick = function(){ prev.style.display='none'; };
-  document.getElementById('wcCta').onclick = openPreview;
 
-  function toast(m){ if(typeof showToast==='function') showToast(m); }
-  function esc(s){ return String(s).replace(/"/g,'&quot;'); }
-
-  // ─────────────────────────────────────────
-  // 4. コンシェルジュページの描画
-  // ─────────────────────────────────────────
   var CATS = [
     {key:'gourmet', tit:'グルメ',       sub:'おすすめランチ'},
     {key:'cafe',    tit:'カフェ・スイーツ', sub:'ひと休みに'},
@@ -307,9 +297,9 @@
     {key:'exp',     tit:'体験・アクティビティ', sub:'旅を深める'},
     {key:'hotel',   tit:'宿泊施設',      sub:'PR・巡拝の拠点に', pr:true}
   ];
+  var CAT_LABEL = {gourmet:'ランチ',cafe:'カフェ',sight:'観光',exp:'体験',hotel:'宿泊'};
 
   function cardHtml(item, cat, idx){
-    var star = '★'.repeat(Math.round(item.rating)) + '☆'.repeat(5-Math.round(item.rating));
     return '<div class="wc-card">'
       + '<div class="wc-img" style="background:'+item.img.grad+'">'
       +   '<span style="filter:drop-shadow(0 2px 6px rgba(0,0,0,.3))">'+item.img.emoji+'</span>'
@@ -324,63 +314,67 @@
       + '</div></div>';
   }
 
-  function renderConcierge(){
-    var r = state.route, d = fetchNearby(r);
-    var b = document.getElementById('wcBody');
+  // ─────────────────────────────────────────
+  // 4. 検索結果ページ（ルート一覧）の下に提案セクションを組み込む
+  // ─────────────────────────────────────────
+  function buildInline(){
+    var ct = document.getElementById('aiRouteCards');
+    if (!ct) return;
+    var routes = window._dynamicRoutes || window.AI_ROUTES || [];
+    if (!routes.length) return;
+    if (!state.route || routes.indexOf(state.route) < 0) { state.route = routes[0]; state.added = []; }
+    var d = fetchNearby(state.route);
+
+    var old = document.getElementById('wcInline'); if (old) old.remove();
+    var box = document.createElement('div'); box.id='wcInline';
+    box.style.cssText = 'padding-bottom:96px;';
     var h = '';
-    // 選択中ルートの概要（横並びコンパクト表示）
-    h += '<div class="wc-tl" style="margin-top:14px;padding:14px 14px 10px">';
-    h += '<div style="display:flex;align-items:baseline;justify-content:space-between"><div style="font-family:\'Shippori Mincho\',serif;font-weight:800;font-size:14px;color:#2a2018">'+(r.emoji?r.emoji+' ':'')+r.name+'</div>'
-      + '<div style="font-size:10px;color:#a89a80">'+(r.transport||'')+'・'+(r.time||'')+'・'+r.spots.length+'社</div></div>';
-    h += '<div style="display:flex;gap:10px;overflow-x:auto;padding:10px 0 4px">';
-    r.spots.forEach(function(s,i){
-      h += '<div style="flex:0 0 64px;text-align:center;position:relative">'
-        + '<div style="position:absolute;top:-4px;left:0;width:17px;height:17px;border-radius:50%;background:#a83320;color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;z-index:1">'+(i+1)+'</div>'
-        + '<div style="width:56px;height:56px;border-radius:14px;overflow:hidden;margin:0 auto;background:'+G.sight+';display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px">'+(s.photo?'<img src="'+esc(s.photo)+'" loading="lazy" style="width:100%;height:100%;object-fit:cover">':'⛩')+'</div>'
-        + '<div style="font-size:9px;color:#2a2018;font-weight:700;margin-top:4px;line-height:1.3;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">'+s.name+'</div></div>';
-      if(i<r.spots.length-1) h += '<div style="flex:0 0 10px;display:flex;align-items:center;justify-content:center;color:#c9a84c;font-size:12px;padding-top:14px">→</div>';
-    });
-    h += '</div></div>';
-    // AI見出し
-    h += '<div class="wc-sec" style="text-align:center;margin-top:14px">'
+    h += '<div class="wc-sec" style="text-align:center;margin-top:18px">'
       + '<div class="wc-sec-tit" style="font-size:15.5px">🌿 この近くもおすすめです 🍃</div>'
-      + '<div class="wc-sec-sub">AIが周辺スポットを見つけました</div></div>';
-    // カテゴリ各段
+      + '<div class="wc-sec-sub">AIが周辺スポットを見つけました（ベース：'+state.route.name+'）</div></div>';
     CATS.forEach(function(cat){
       var items = d[cat.key]||[];
-      if(!items.length) return;
+      if (!items.length) return;
       h += '<div class="wc-sec"><div class="wc-sec-h"><div><span class="wc-sec-tit">'+cat.tit+'</span>'
         + ' <span class="wc-sec-sub">'+(cat.sub||'')+'</span></div><span class="wc-all">すべて見る ›</span></div>'
         + '<div class="wc-row">' + items.map(function(it,i){ return cardHtml(it,cat,i); }).join('') + '</div></div>';
     });
-    // AIアドバイス
     h += '<div class="wc-advice"><div class="wc-advice-t">💜 AIからのおすすめアドバイス</div><div class="wc-advice-b">'+(d.advice||'')+'</div></div>';
-    // 追加スポット一覧
     h += '<div class="wc-list" id="wcAddedBox"></div>';
-    b.innerHTML = h;
+    box.innerHTML = h;
+    ct.appendChild(box);
     renderAddedList();
-    // 追加ボタン
-    b.querySelectorAll('.wc-add').forEach(function(btn){
+
+    box.querySelectorAll('.wc-add').forEach(function(btn){
       btn.onclick = function(){
-        var cat=btn.getAttribute('data-cat'), idx=+btn.getAttribute('data-idx');
+        var cat = btn.getAttribute('data-cat'), idx = +btn.getAttribute('data-idx');
         var item = (fetchNearby(state.route)[cat]||[])[idx];
-        if(!item) return;
+        if (!item) return;
         var key = cat+':'+idx;
-        var pos = state.added.findIndex(function(a){return a.key===key;});
-        if(pos>-1){ state.added.splice(pos,1); btn.classList.remove('on'); btn.textContent='＋ ルートに追加'; toast('ルートから外しました'); }
+        var pos = state.added.findIndex(function(a){ return a.key===key; });
+        if (pos>-1) { state.added.splice(pos,1); btn.classList.remove('on'); btn.textContent='＋ ルートに追加'; }
         else { state.added.push({key:key,cat:cat,item:item}); btn.classList.add('on'); btn.textContent='✓ 追加済み'; toast('🌿 「'+item.name+'」をルートに追加しました'); }
         renderAddedList();
       };
     });
-    b.querySelectorAll('.wc-all').forEach(function(a){ a.onclick=function(){ toast('「すべて見る」はAPI接続後に対応予定です'); }; });
+    box.querySelectorAll('.wc-all').forEach(function(a){ a.onclick=function(){ toast('「すべて見る」はAPI接続後に対応予定です'); }; });
+
+    // 画面下固定の「カスタマイズしたルートを見る」ボタン
+    var pg = document.getElementById('pgAiRouteList');
+    if (pg && !document.getElementById('wcInlineCtaBar')) {
+      var bar = document.createElement('div');
+      bar.id = 'wcInlineCtaBar'; bar.className = 'wc-cta-wrap';
+      bar.innerHTML = '<button class="wc-cta" id="wcInlineCta">カスタマイズしたルートを見る →</button>';
+      pg.appendChild(bar);
+      document.getElementById('wcInlineCta').onclick = openPreview;
+    }
   }
 
-  var CAT_LABEL = {gourmet:'ランチ',cafe:'カフェ',sight:'観光',exp:'体験',hotel:'宿泊'};
   function renderAddedList(){
-    var box = document.getElementById('wcAddedBox');
-    if(!box) return;
+    var boxEl = document.getElementById('wcAddedBox');
+    if (!boxEl || !state.route) return;
     var h = '<div style="font-family:\'Shippori Mincho\',serif;font-weight:800;font-size:14px;color:#2a2018;margin-bottom:6px">現在のルート</div>';
-    state.route.spots.forEach(function(s,i){
+    state.route.spots.forEach(function(s){
       h += '<div class="wc-li"><div class="wc-li-ic" style="background:'+G.sight+'">⛩</div><div class="wc-li-nm">'+s.name+'</div></div>';
     });
     state.added.forEach(function(a,i){
@@ -390,91 +384,119 @@
         + '<button class="wc-li-btn" data-mv="1" data-i="'+i+'">↓</button>'
         + '<button class="wc-li-btn" data-del="'+i+'" style="color:#a83320">✕</button></div>';
     });
-    if(!state.added.length) h += '<div style="font-size:11px;color:#a89a80;padding:8px 4px">気になるスポットを「＋ルートに追加」してみましょう</div>';
-    box.innerHTML = h;
-    box.querySelectorAll('[data-del]').forEach(function(btn){
-      btn.onclick=function(){ state.added.splice(+btn.getAttribute('data-del'),1); renderConcierge(); };
+    if (!state.added.length) h += '<div style="font-size:11px;color:#a89a80;padding:8px 4px">気になるスポットを「＋ルートに追加」してみましょう</div>';
+    boxEl.innerHTML = h;
+    boxEl.querySelectorAll('[data-del]').forEach(function(btn){
+      btn.onclick = function(){
+        state.added.splice(+btn.getAttribute('data-del'),1);
+        var inline = document.getElementById('wcInline');
+        if (inline) { buildInlineKeep(); }
+      };
     });
-    box.querySelectorAll('[data-mv]').forEach(function(btn){
-      btn.onclick=function(){
-        var i=+btn.getAttribute('data-i'), d=+btn.getAttribute('data-mv'), j=i+d;
-        if(j<0||j>=state.added.length) return;
+    boxEl.querySelectorAll('[data-mv]').forEach(function(btn){
+      btn.onclick = function(){
+        var i=+btn.getAttribute('data-i'), dd=+btn.getAttribute('data-mv'), j=i+dd;
+        if (j<0 || j>=state.added.length) return;
         var t=state.added[i]; state.added[i]=state.added[j]; state.added[j]=t;
         renderAddedList();
       };
     });
+  }
+  // 削除後にボタン状態も同期して再構築（選択ルートは保持）
+  function buildInlineKeep(){
+    var keepRoute = state.route, keepAdded = state.added;
+    buildInline();
+    state.route = keepRoute; state.added = keepAdded;
+    // ボタンの押下状態を復元
+    keepAdded.forEach(function(a){
+      var btn = document.querySelector('#wcInline .wc-add[data-cat="'+a.cat+'"][data-idx="'+a.key.split(':')[1]+'"]');
+      if (btn) { btn.classList.add('on'); btn.textContent='✓ 追加済み'; }
+    });
+    renderAddedList();
   }
 
   // ─────────────────────────────────────────
   // 5. カスタマイズ済みルートのプレビュー
   // ─────────────────────────────────────────
   function buildTimeline(){
-    var r=state.route;
-    var tl=[{type:'shrine',name:r.spots[0].name,photo:r.spots[0].photo,meta:'約40分滞在',ic:'⛩',grad:G.sight}];
-    state.added.filter(function(a){return a.cat!=='hotel';}).forEach(function(a){
-      tl.push({type:a.cat,name:a.item.name,meta:(CAT_LABEL[a.cat])+'・約60分',ic:a.item.img.emoji,grad:a.item.img.grad});
+    var r = state.route;
+    var tl = [{name:r.spots[0].name, photo:r.spots[0].photo, meta:'約40分滞在', ic:'⛩', grad:G.sight}];
+    state.added.filter(function(a){ return a.cat!=='hotel'; }).forEach(function(a){
+      tl.push({name:a.item.name, meta:CAT_LABEL[a.cat]+'・約60分', ic:a.item.img.emoji, grad:a.item.img.grad});
     });
-    r.spots.slice(1).forEach(function(s){ tl.push({type:'shrine',name:s.name,photo:s.photo,meta:'約40分滞在',ic:'⛩',grad:G.sight}); });
-    state.added.filter(function(a){return a.cat==='hotel';}).forEach(function(a){
-      tl.push({type:'hotel',name:a.item.name,meta:'宿泊・1泊',ic:a.item.img.emoji,grad:a.item.img.grad});
+    r.spots.slice(1).forEach(function(s){ tl.push({name:s.name, photo:s.photo, meta:'約40分滞在', ic:'⛩', grad:G.sight}); });
+    state.added.filter(function(a){ return a.cat==='hotel'; }).forEach(function(a){
+      tl.push({name:a.item.name, meta:'宿泊・1泊', ic:a.item.img.emoji, grad:a.item.img.grad});
     });
     return tl;
   }
 
   function openPreview(){
-    var r=state.route, tl=buildTimeline();
-    var base=r.spots[0].name.replace(/[（(].*$/,'');
-    var theme=(r.tags&&r.tags[0])?r.tags[0]:'祈り';
-    var title=base+'とめぐる、<br>'+theme+'の旅';
-    var transIc=r.transport==='徒歩'?'🚶 徒歩中心':r.transport==='車'?'🚗 車中心':'🚃 電車・バス';
-    var hero=r.spots[0].photo||'';
-    var h='<div class="wc-hero">'+(hero?'<img src="'+esc(hero)+'">':'<div style="width:100%;height:100%;background:'+G.sight+'"></div>')
-      +'<div class="wc-hero-grad"></div>'
-      +'<div style="position:absolute;top:14px;left:14px;background:rgba(255,255,255,.9);color:#5a4470;font-size:10px;font-weight:700;padding:4px 12px;border-radius:14px">カスタマイズ済みルート</div>'
-      +'<div class="wc-hero-t">'+title+'</div>'
-      +'<div class="wc-hero-chips"><span class="wc-chip">'+transIc+'</span><span class="wc-chip">🕐 '+(r.time||'')+'＋α</span><span class="wc-chip">📍 '+tl.length+'スポット</span></div></div>';
-    h+='<div class="wc-tl">';
+    if (!state.route) return;
+    var r = state.route, tl = buildTimeline();
+    var base = String(r.spots[0].name).replace(/[（(].*$/,'');
+    var theme = (r.tags && r.tags[0]) ? r.tags[0] : '祈り';
+    var title = base + 'とめぐる、<br>' + theme + 'の旅';
+    var transIc = r.transport==='徒歩' ? '🚶 徒歩中心' : r.transport==='車' ? '🚗 車中心' : '🚃 電車・バス';
+    var hero = r.spots[0].photo || '';
+    var h = '<div class="wc-hero">' + (hero ? '<img src="'+esc(hero)+'">' : '<div style="width:100%;height:100%;background:'+G.sight+'"></div>')
+      + '<div class="wc-hero-grad"></div>'
+      + '<div style="position:absolute;top:14px;left:14px;background:rgba(255,255,255,.9);color:#5a4470;font-size:10px;font-weight:700;padding:4px 12px;border-radius:14px">カスタマイズ済みルート</div>'
+      + '<div class="wc-hero-t">'+title+'</div>'
+      + '<div class="wc-hero-chips"><span class="wc-chip">'+transIc+'</span><span class="wc-chip">🕐 '+(r.time||'')+'＋α</span><span class="wc-chip">📍 '+tl.length+'スポット</span></div></div>';
+    h += '<div class="wc-tl">';
     tl.forEach(function(t,i){
-      h+='<div class="wc-tl-i"><div class="wc-tl-n">'+(i+1)+'</div>'
-        +'<div class="wc-tl-th" style="background:'+t.grad+'">'+(t.photo?'<img src="'+esc(t.photo)+'" loading="lazy">':t.ic)+'</div>'
-        +'<div><div class="wc-tl-nm">'+t.name+'</div><div class="wc-tl-mt">'+t.meta+'</div></div></div>';
-      if(i<tl.length-1) h+='<div class="wc-tl-mv">'+(r.transport==='徒歩'?'徒歩':'移動')+' 約10分</div>';
+      h += '<div class="wc-tl-i"><div class="wc-tl-n">'+(i+1)+'</div>'
+        + '<div class="wc-tl-th" style="background:'+t.grad+'">'+(t.photo?'<img src="'+esc(t.photo)+'" loading="lazy">':t.ic)+'</div>'
+        + '<div><div class="wc-tl-nm">'+t.name+'</div><div class="wc-tl-mt">'+t.meta+'</div></div></div>';
+      if (i<tl.length-1) h += '<div class="wc-tl-mv">'+(r.transport==='徒歩'?'徒歩':'移動')+' 約10分</div>';
     });
-    h+='</div>';
-    h+='<div style="display:flex;gap:10px;margin:20px 16px 30px">'
-      +'<button class="wc-btn2 wc-save" id="wcSave">♡ ルートを保存</button>'
-      +'<button class="wc-btn2 wc-navi" id="wcNavi">✦ このルートでナビを開始 →</button></div>';
-    document.getElementById('wcPrevBody').innerHTML=h;
-    prev.style.display='block'; prev.scrollTop=0;
-    document.getElementById('wcSave').onclick=function(){
+    h += '</div>';
+    h += '<div style="display:flex;gap:10px;margin:20px 16px 30px">'
+      + '<button class="wc-btn2 wc-save" id="wcSave">♡ ルートを保存</button>'
+      + '<button class="wc-btn2 wc-navi" id="wcNavi">✦ このルートでナビを開始 →</button></div>';
+    document.getElementById('wcPrevBody').innerHTML = h;
+    prev.style.display = 'block'; prev.scrollTop = 0;
+    document.getElementById('wcSave').onclick = function(){
       try{
-        var saved=JSON.parse(localStorage.getItem('wabi_custom_routes')||'[]');
-        saved.push({route:r.id,name:r.name,added:state.added.map(function(a){return a.item.name;}),date:new Date().toISOString().slice(0,10)});
-        localStorage.setItem('wabi_custom_routes',JSON.stringify(saved));
+        var saved = JSON.parse(localStorage.getItem('wabi_custom_routes')||'[]');
+        saved.push({route:r.id, name:r.name, added:state.added.map(function(a){return a.item.name;}), date:new Date().toISOString().slice(0,10)});
+        localStorage.setItem('wabi_custom_routes', JSON.stringify(saved));
       }catch(e){}
       toast('♡ ルートを保存しました');
     };
-    document.getElementById('wcNavi').onclick=function(){
-      var names=tl.map(function(t){return t.name.replace(/[（(].*$/,'').trim();});
-      var mode=r.transport==='徒歩'?'walking':'driving';
-      var url='https://www.google.com/maps/dir/?api=1&origin='+encodeURIComponent(names[0])
-        +'&destination='+encodeURIComponent(names[names.length-1])
-        +(names.length>2?'&waypoints='+encodeURIComponent(names.slice(1,-1).join('|')):'')
-        +'&travelmode='+mode;
-      window.open(url,'_blank');
+    document.getElementById('wcNavi').onclick = function(){
+      var names = tl.map(function(t){ return String(t.name).replace(/[（(].*$/,'').trim(); });
+      var mode = r.transport==='徒歩' ? 'walking' : 'driving';
+      var url = 'https://www.google.com/maps/dir/?api=1&origin=' + encodeURIComponent(names[0])
+        + '&destination=' + encodeURIComponent(names[names.length-1])
+        + (names.length>2 ? '&waypoints=' + encodeURIComponent(names.slice(1,-1).join('|')) : '')
+        + '&travelmode=' + mode;
+      window.open(url, '_blank');
     };
   }
 
   // ─────────────────────────────────────────
-  // 6. 「このルートを選ぶ」をコンシェルジュページに接続
+  // 6. アプリへの組み込み
   // ─────────────────────────────────────────
+  // ルート一覧が描画されるたびに、下に提案セクションを付ける
+  var origRRC = window.renderRouteCards;
+  if (typeof origRRC === 'function') {
+    window.renderRouteCards = function(){
+      origRRC();
+      try { state.route = null; state.added = []; buildInline(); } catch(e){}
+    };
+  }
+  // 「このルートを選ぶ」＝そのルートをベースにして、おすすめセクションへ移動
   window.selectRoute = function(rid){
-    var routes = window._dynamicRoutes || window.AI_ROUTES;
-    var route = (routes||[]).find(function(r){ return r.id===rid; });
+    var routes = window._dynamicRoutes || window.AI_ROUTES || [];
+    var route = routes.find(function(r){ return r.id===rid; });
     if (!route && window.AI_ROUTES) route = window.AI_ROUTES.find(function(r){ return r.id===rid; });
     if (!route || !route.spots || !route.spots.length) return;
     state.route = route; state.added = [];
-    renderConcierge();
-    page.style.display='block'; page.scrollTop=0;
+    buildInline();
+    toast('🌿 「'+route.name+'」をベースにしました。下のおすすめを追加できます');
+    var el = document.getElementById('wcInline');
+    if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
   };
 })();
