@@ -235,8 +235,9 @@
       jobs.forEach(function(job){
         svc.nearbySearch({location:center, radius:job.radius, type:job.type}, function(res, status){
           if (status===google.maps.places.PlacesServiceStatus.OK && res){
-            var list = res.filter(function(p){ return p.rating>=4.0 && (p.user_ratings_total||0)>=50 && p.name!==s0.name; });
-            if (list.length<2) list = res.filter(function(p){ return p.rating>=3.8 && (p.user_ratings_total||0)>=10; });
+            var notHotel = function(p){ return job.key==='hotel' || !(p.types && p.types.indexOf('lodging')>-1); };
+            var list = res.filter(function(p){ return notHotel(p) && p.rating>=4.0 && (p.user_ratings_total||0)>=50 && p.name!==s0.name; });
+            if (list.length<2) list = res.filter(function(p){ return notHotel(p) && p.rating>=3.8 && (p.user_ratings_total||0)>=10; });
             list.sort(function(a,b){ return (b.rating||0)-(a.rating||0); });
             out[job.key] = list.slice(0,4).map(function(p){
               var dist = (p.geometry&&p.geometry.location)?haversine(s0.lat,s0.lng,p.geometry.location.lat(),p.geometry.location.lng()):600;
