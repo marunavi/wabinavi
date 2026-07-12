@@ -209,9 +209,50 @@
       advice:'登拝の昼は山頂の「つくばうどん」を。下山後は神社隣の江戸屋で一泊すれば、朝の静かな拝殿にお参りできます。縁結びの旅は朝が吉です。'}
   };
 
-  // API接続時はこの関数を Google Places / 楽天トラベル 呼び出しに差し替える
+  // 固定10ルート＝手作りデータ／検索ルート＝Google Placesで周辺を実検索
+  var dynCache = {};
+  function dynKey(route){ return route.spots.map(function(s){return s.name;}).join('|'); }
   function fetchNearby(route){
+    if (window._dynamicRoutes && dynCache[dynKey(route)]) return dynCache[dynKey(route)];
     return WC_DATA[route.id] || WC_DATA.dyn;
+  }
+  function haversine(a,b,c,d2){var R=6371e3,p=Math.PI/180;var x=(c-a)*p,y=(d2-b)*p;var s=Math.sin(x/2)*Math.sin(x/2)+Math.cos(a*p)*Math.cos(c*p)*Math.sin(y/2)*Math.sin(y/2);return 2*R*Math.asin(Math.sqrt(s));}
+  function fetchDynamicNearby(route, cb){
+    try{
+      var s0 = route.spots[0];
+      if (typeof API_KEY==='undefined' || !API_KEY || typeof google==='undefined' || !google.maps || !google.maps.places || !s0 || !s0.lat){ cb(null); return; }
+      var svc = new google.maps.places.PlacesService(document.createElement('div'));
+      var center = new google.maps.LatLng(s0.lat, s0.lng);
+      var out = { near:String(s0.name).replace(/[（(].*$/,''), gourmet:[], cafe:[], sight:[], exp:[], hotel:[],
+        advice: String(s0.name).replace(/[（(].*$/,'')+'周辺の人気スポットをAIが選びました。ランチやカフェを追加して、あなただけの巡拝プランに仕上げましょう。' };
+      var jobs = [
+        {key:'gourmet', type:'restaurant', radius:800,  emoji:'🍱', grad:G.food,  genre:'お食事処'},
+        {key:'cafe',    type:'cafe',       radius:800,  emoji:'☕',  grad:G.cafe,  genre:'カフェ'},
+        {key:'sight',   type:'tourist_attraction', radius:1500, emoji:'🏞', grad:G.sight, genre:'観光名所'},
+        {key:'hotel',   type:'lodging',    radius:1500, emoji:'🏨', grad:G.hotel, genre:'ホテル'}
+      ];
+      var done = 0;
+      jobs.forEach(function(job){
+        svc.nearbySearch({location:center, radius:job.radius, type:job.type}, function(res, status){
+          if (status===google.maps.places.PlacesServiceStatus.OK && res){
+            var list = res.filter(function(p){ return p.rating>=4.0 && (p.user_ratings_total||0)>=50 && p.name!==s0.name; });
+            if (list.length<2) list = res.filter(function(p){ return p.rating>=3.8 && (p.user_ratings_total||0)>=10; });
+            list.sort(function(a,b){ return (b.rating||0)-(a.rating||0); });
+            out[job.key] = list.slice(0,4).map(function(p){
+              var dist = (p.geometry&&p.geometry.location)?haversine(s0.lat,s0.lng,p.geometry.location.lat(),p.geometry.location.lng()):600;
+              var mins = Math.max(1, Math.round(dist/80));
+              return { name:p.name, genre:job.genre, rating:p.rating||4.0, reviews:p.user_ratings_total||0,
+                walk:(mins>20?'車'+Math.round(mins/5)+'分':'徒歩'+mins+'分'),
+                ai:Math.min(99, Math.round((p.rating||4)*19 + Math.min((p.user_ratings_total||0),1000)/125)),
+                img:I(job.emoji, job.grad),
+                photoUrl:(p.photos&&p.photos.length)?p.photos[0].getUrl({maxWidth:500}):null };
+            });
+          }
+          done++;
+          if (done===jobs.length) cb(out);
+        });
+      });
+    }catch(e){ cb(null); }
   }
 
   // ─────────────────────────────────────────
@@ -364,6 +405,8 @@
           im.src = url; im.loading = 'lazy';
           im.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;';
           el.insertBefore(im, el.firstChild);
+          var sp = el.querySelector('span:not(.wc-ai):not(.wc-pr)');
+          if (sp) sp.style.display = 'none';
         }
         if (wcPhotoCache[q] !== undefined) { setImg(wcPhotoCache[q]); return; }
         wcPhotoCache[q] = null;
@@ -389,7 +432,8 @@
   function cardHtml(item, cat, idx){
     return '<div class="wc-card">'
       + '<div class="wc-img" data-q="'+esc(item.name+' '+(currentNear||''))+'" style="background:'+item.img.grad+'">'
-      +   '<span style="filter:drop-shadow(0 2px 6px rgba(0,0,0,.3))">'+item.img.emoji+'</span>'
+      +   (item.photoUrl ? '<img src="'+esc(item.photoUrl)+'" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">' : '')
+      +   '<span style="filter:drop-shadow(0 2px 6px rgba(0,0,0,.3));'+(item.photoUrl?'display:none;':'')+'">'+item.img.emoji+'</span>'
       +   '<span class="wc-ai">🌿 AIおすすめ度 '+item.ai+'点</span>'
       +   (cat.pr ? '<span class="wc-pr">PR</span>' : '')
       + '</div>'
@@ -410,7 +454,28 @@
     var routes = window._dynamicRoutes || window.AI_ROUTES || [];
     if (!routes.length) return;
     if (!state.route || routes.indexOf(state.route) < 0) { state.route = routes[0]; state.added = []; }
-    var d = fetchNearby(state.route);
+    var d;
+    if (window._dynamicRoutes) {
+      var dk = dynKey(state.route);
+      if (dynCache[dk]) { d = dynCache[dk]; }
+      else if (dynCache[dk+':loading']) { d = null; }
+      else {
+        dynCache[dk+':loading'] = true;
+        fetchDynamicNearby(state.route, function(res){
+          dynCache[dk] = res || WC_DATA.dyn;
+          delete dynCache[dk+':loading'];
+          buildInlineKeep();
+        });
+        d = null;
+      }
+    } else { d = fetchNearby(state.route); }
+    if (!d) {
+      var oldL = document.getElementById('wcInline'); if (oldL) oldL.remove();
+      var ld = document.createElement('div'); ld.id='wcInline';
+      ld.innerHTML = '<div class="wc-sec" style="text-align:center;margin:26px 16px 40px"><div class="wc-sec-tit" style="font-size:15px">🌿 周辺のおすすめを探しています…</div><div class="wc-sec-sub">AIが'+String(state.route.spots[0].name).replace(/[（(].*$/,'')+'の近くのグルメ・カフェ・観光を検索中</div></div>';
+      ct.appendChild(ld);
+      return;
+    }
     currentNear = d.near || String(state.route.spots[0].name).replace(/[（(].*$/,'');
 
     var old = document.getElementById('wcInline'); if (old) old.remove();
@@ -604,7 +669,8 @@
     var h = '';
     // ① ヒーロー
     h += '<div class="wc-sd-hero" id="sdHeroBox" style="background:'+item.img.grad+'">'
-      + '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:64px">'+item.img.emoji+'</div>'
+      + (item.photoUrl ? '<img src="'+esc(item.photoUrl)+'" style="width:100%;height:100%;object-fit:cover">' : '')
+      + '<div id="sdHeroEmoji" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:64px;'+(item.photoUrl?'display:none;':'')+'">'+item.img.emoji+'</div>'
       + '<div class="wc-sd-grad"></div>'
       + '<div class="wc-sd-back" id="sdBack">‹</div><div class="wc-sd-heart">♡</div>'
       + '<div class="wc-sd-badge">🌿 AIおすすめ度 '+item.ai+'点</div>'
@@ -747,8 +813,10 @@
           var hero=document.getElementById('sdHeroBox');
           if(hero && !hero.querySelector('img')){
             var im=document.createElement('img'); im.src=p.photos[0].getUrl({maxWidth:900});
+            im.style.cssText='width:100%;height:100%;object-fit:cover;';
             hero.insertBefore(im, hero.firstChild);
           }
+          var he=document.getElementById('sdHeroEmoji'); if(he) he.style.display='none';
           var g=document.getElementById('sdGallery');
           if(g){ g.innerHTML=p.photos.slice(0,6).map(function(ph){ return '<img src="'+ph.getUrl({maxWidth:400})+'" loading="lazy">'; }).join('');
             g.querySelectorAll('img').forEach(function(im2){ im2.onclick=function(){ lb.querySelector('img').src=im2.src.replace('maxwidth=400','maxwidth=1200'); lb.style.display='flex'; }; });
