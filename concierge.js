@@ -658,7 +658,7 @@
   function openSpot(cat, idx){
     var item = (fetchNearby(state.route)[cat]||[])[idx];
     if (!item) return;
-    currentSpot = {cat:cat, idx:idx, item:item};
+    if (cat==='hotel' && item && item.url){ window.open(item.url,'_blank'); return; }     if (cat==='hotel' && item && item.url){ window.open(item.url,'_blank'); return; }     currentSpot = {cat:cat, idx:idx, item:item};
     renderSpot(item, cat);
     spotPg.style.display='block'; spotPg.scrollTop=0;
     enrichSpot(item, cat); // Placesで写真・営業時間・口コミを取得して差し込み
