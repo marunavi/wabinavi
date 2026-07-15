@@ -477,7 +477,7 @@
       ct.appendChild(ld);
       return;
     }
-    currentNear = d.near || String(state.route.spots[0].name).replace(/[（(].*$/,'');
+    currentNear = d.near || String(state.route.spots[0].name).replace(/[（(].*$/,'');     var _s0=state.route.spots[0], _rk=_s0?(_s0.name+'|'+_s0.lat):state.route.name;     if (rakCache[_rk] && rakCache[_rk].length){ var _c={}; for(var _k in d)_c[_k]=d[_k]; _c.hotel=rakCache[_rk]; d=_c; }     else if (!rakCache[_rk+':loading'] && _s0 && _s0.lat){ rakCache[_rk+':loading']=true; wcRakutenHotels(_s0.lat,_s0.lng,function(_l){ rakCache[_rk]=(_l&&_l.length)?_l:(d.hotel||[]); delete rakCache[_rk+':loading']; buildInlineKeep(); }); }
 
     var old = document.getElementById('wcInline'); if (old) old.remove();
     var box = document.createElement('div'); box.id='wcInline';
