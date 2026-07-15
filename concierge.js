@@ -774,7 +774,7 @@
         var nm=btn.getAttribute('data-hname'), tp=btn.getAttribute('data-htype');
         var url = tp==='rk'
           ? 'https://search.travel.rakuten.co.jp/ds/hotellist/Japan?f_query='+encodeURIComponent(nm)
-          : 'https://www.jalan.net/uw/uwp1300/uww1301.do?keyword='+encodeURIComponent(nm);
+          : 'https://px.a8.net/svt/ejp?a8mat=4B7ZH3+NTCZ6+14CS+691UQ';
         window.open(url,'_blank');
       };
     });
