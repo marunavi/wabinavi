@@ -494,7 +494,7 @@
         + ' <span class="wc-sec-sub">'+(cat.sub||'')+'</span></div><span class="wc-all" data-cat="'+cat.key+'">すべて見る ›</span></div>'
         + '<div class="wc-row">' + items.slice(0,4).map(function(it,i){ return cardHtml(it,cat,i); }).join('') + '</div></div>';
     });
-    h += '<div class="wc-advice"><div class="wc-advice-t">💜 AIからのおすすめアドバイス</div><div class="wc-advice-b">'+(d.advice||'')+'</div></div>';
+    
     h += '<div class="wc-list" id="wcAddedBox"></div>';
     box.innerHTML = h;
     ct.appendChild(box);
@@ -536,37 +536,43 @@
   }
 
   function renderAddedList(){
-    var boxEl = document.getElementById('wcAddedBox');
-    if (!boxEl || !state.route) return;
-    var h = '<div style="font-family:\'Shippori Mincho\',serif;font-weight:800;font-size:14px;color:#2a2018;margin-bottom:6px">現在のルート</div>';
-    state.route.spots.forEach(function(s){
-      h += '<div class="wc-li"><div class="wc-li-ic" style="background:'+G.sight+'">⛩</div><div class="wc-li-nm">'+s.name+'</div></div>';
-    });
-    state.added.forEach(function(a,i){
-      h += '<div class="wc-li"><div class="wc-li-ic" style="background:'+a.item.img.grad+'">'+a.item.img.emoji+'</div>'
-        + '<div class="wc-li-nm">'+a.item.name+' <span class="wc-li-tag">（'+CAT_LABEL[a.cat]+'）</span></div>'
-        + '<button class="wc-li-btn" data-mv="-1" data-i="'+i+'">↑</button>'
-        + '<button class="wc-li-btn" data-mv="1" data-i="'+i+'">↓</button>'
-        + '<button class="wc-li-btn" data-del="'+i+'" style="color:#a83320">✕</button></div>';
-    });
-    if (!state.added.length) h += '<div style="font-size:11px;color:#a89a80;padding:8px 4px">気になるスポットを「＋ルートに追加」してみましょう</div>';
-    boxEl.innerHTML = h;
-    boxEl.querySelectorAll('[data-del]').forEach(function(btn){
-      btn.onclick = function(){
-        state.added.splice(+btn.getAttribute('data-del'),1);
-        var inline = document.getElementById('wcInline');
-        if (inline) { buildInlineKeep(); }
-      };
-    });
-    boxEl.querySelectorAll('[data-mv]').forEach(function(btn){
-      btn.onclick = function(){
-        var i=+btn.getAttribute('data-i'), dd=+btn.getAttribute('data-mv'), j=i+dd;
-        if (j<0 || j>=state.added.length) return;
-        var t=state.added[i]; state.added[i]=state.added[j]; state.added[j]=t;
-        renderAddedList();
-      };
-    });
-  }
+  var boxEl = document.getElementById('wcAddedBox');
+  if (!boxEl || !state.route) return;
+  var r = state.route, seq = [];
+  seq.push({t:'s', s:r.spots[0]});
+  state.added.forEach(function(a,i){ if(a.cat!=='hotel') seq.push({t:'a', a:a, i:i}); });
+  r.spots.slice(1).forEach(function(sp){ seq.push({t:'s', s:sp}); });
+  state.added.forEach(function(a,i){ if(a.cat==='hotel') seq.push({t:'a', a:a, i:i}); });
+  var STAY={gourmet:'約45分',cafe:'約45分',sight:'約40分',exp:'約60分',hotel:'1泊'};
+  var h = '<div style="text-align:center;margin-bottom:2px"><div style="font-family:Shippori Mincho,serif;font-weight:800;font-size:16px;color:#2a2018;letter-spacing:.05em">❖ 現在のルート ❖</div><div style="font-size:11px;color:#a89a80;margin-top:4px">追加したスポットで、あなただけの巡礼ルートを作りましょう</div></div>';
+  h += '<div style="margin-top:14px">';
+  seq.forEach(function(o,idx){
+    var last = idx===seq.length-1, img, nm, sub, tags='', stay, ctrl='', bg;
+    if(o.t==='s'){
+      var sp=o.s; bg='linear-gradient(135deg,#8a9ab0,#4a5a70)';
+      img = sp.photo ? '<img src="'+esc(sp.photo)+'" style="width:100%;height:100%;object-fit:cover">' : '⛩';
+      nm = String(sp.name); sub = sp.loc || sp.addr || '';
+      tags = '<span style="font-size:10px;color:#7a4a10;background:#f5efd6;border-radius:9px;padding:2px 8px">参拝・巡拝</span>';
+      stay = '約40分';
+    } else {
+      var it=o.a.item; bg=it.img.grad;
+      img = it.photoUrl ? '<img src="'+esc(it.photoUrl)+'" style="width:100%;height:100%;object-fit:cover">' : it.img.emoji;
+      nm = String(it.name); sub = it.walk || '';
+      tags = '<span style="font-size:10px;color:#7a4a10;background:#f5efd6;border-radius:9px;padding:2px 8px">'+(CAT_LABEL[o.a.cat]||'')+'</span>';
+      if(it.ai) tags += ' <span style="font-size:10px;color:#a06a00;background:#fff3d8;border-radius:9px;padding:2px 8px">AIおすすめ度 '+it.ai+'点</span>';
+      stay = STAY[o.a.cat]||'約45分';
+      ctrl = '<div style="display:flex;flex-direction:column;gap:3px;margin-left:2px;flex:0 0 auto"><button data-mv="-1" data-i="'+o.i+'" aria-label="上へ" style="border:none;background:#f3ede1;color:#8a7a5c;width:22px;height:19px;border-radius:6px;font-size:11px;cursor:pointer">↑</button><button data-mv="1" data-i="'+o.i+'" aria-label="下へ" style="border:none;background:#f3ede1;color:#8a7a5c;width:22px;height:19px;border-radius:6px;font-size:11px;cursor:pointer">↓</button><button data-del="'+o.i+'" aria-label="削除" style="border:none;background:#f7e4e0;color:#a83320;width:22px;height:19px;border-radius:6px;font-size:11px;cursor:pointer">✕</button></div>';
+    }
+    h += '<div style="display:flex;align-items:stretch;gap:10px;position:relative;padding-bottom:'+(last?'0':'14px')+'"><div style="display:flex;flex-direction:column;align-items:center;flex:0 0 30px"><div style="width:30px;height:30px;border-radius:50%;background:#a83320;color:#fff;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;flex:0 0 30px">'+(idx+1)+'</div>'+(last?'':'<div style="flex:1;width:0;border-left:2px dashed #e0d4b4;margin:4px 0"></div>')+'</div><div style="flex:1;display:flex;gap:10px;background:#fff;border:1px solid #eee2c8;border-radius:14px;padding:9px;align-items:center;min-width:0;box-shadow:0 3px 10px -6px rgba(90,70,40,.18)"><div style="width:76px;height:60px;flex:0 0 76px;border-radius:10px;overflow:hidden;background:'+bg+';display:flex;align-items:center;justify-content:center;font-size:24px;color:#fff">'+img+'</div><div style="flex:1;min-width:0"><div style="font-family:Shippori Mincho,serif;font-weight:800;font-size:13px;color:#2a2018;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+nm+'</div>'+(sub?'<div style="font-size:10px;color:#a89a80;margin-top:2px">'+sub+'</div>':'')+'<div style="margin-top:5px;display:flex;flex-wrap:wrap;gap:4px">'+tags+'</div></div><div style="flex:0 0 auto;text-align:center;background:#fff7e6;border:1px solid #eadfc6;border-radius:10px;padding:6px 7px"><div style="font-size:8.5px;color:#a89a80">滞在</div><div style="font-size:12px;font-weight:800;color:#7a4a10;white-space:nowrap">'+stay+'</div></div>'+ctrl+'</div></div>';
+  });
+  h += '</div>';
+  h += '<div id="wcAddMore" style="margin-top:14px;border:1.5px dashed #e0d4b4;border-radius:14px;text-align:center;padding:13px;color:#7a5aa8;font-weight:800;font-size:12.5px;cursor:pointer;font-family:Shippori Mincho,serif">＋ スポットを追加</div>';
+  boxEl.innerHTML = h;
+  var am=document.getElementById('wcAddMore');
+  if(am) am.onclick=function(){ var g=document.querySelector('#wcInline .wc-sec'); if(g) g.scrollIntoView({behavior:'smooth',block:'start'}); };
+  boxEl.querySelectorAll('[data-del]').forEach(function(btn){ btn.onclick=function(){ state.added.splice(+btn.getAttribute('data-del'),1); if(document.getElementById('wcInline')) buildInlineKeep(); }; });
+  boxEl.querySelectorAll('[data-mv]').forEach(function(btn){ btn.onclick=function(){ var i=+btn.getAttribute('data-i'),dd=+btn.getAttribute('data-mv'),j=i+dd; if(j<0||j>=state.added.length)return; var t=state.added[i];state.added[i]=state.added[j];state.added[j]=t; renderAddedList(); }; });
+}
   // 削除後にボタン状態も同期して再構築（選択ルートは保持）
   function buildInlineKeep(){
     var keepRoute = state.route, keepAdded = state.added;
