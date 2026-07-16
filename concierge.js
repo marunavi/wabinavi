@@ -220,7 +220,7 @@
   function fetchDynamicNearby(route, cb){
     try{
       var s0 = route.spots[0];
-      if (typeof API_KEY==='undefined' || !API_KEY || typeof google==='undefined' || !google.maps || !google.maps.places || !s0 || !s0.lat){ cb(null); return; }
+      var _k=(typeof localStorage!=='undefined'&&localStorage.getItem('gplaces_key'))||''; if(_k){ try{ window.API_KEY=_k; }catch(e){} } if (!_k || !s0 || !s0.lat){ cb(null); return; } if (typeof google==='undefined' || !google.maps || !google.maps.places){ if(!window.__wabiGmap){ window.__wabiGmap=1; window.__wabiGmapReady=function(){ try{for(var _kk in dynCache){delete dynCache[_kk];}}catch(e){} buildInlineKeep(); }; var _sc=document.createElement('script'); _sc.src='https://maps.googleapis.com/maps/api/js?key='+encodeURIComponent(_k)+'&libraries=places&callback=__wabiGmapReady'; document.head.appendChild(_sc); } cb(null); return; }
       var svc = new google.maps.places.PlacesService(document.createElement('div'));
       var center = new google.maps.LatLng(s0.lat, s0.lng);
       var out = { near:String(s0.name).replace(/[（(].*$/,''), gourmet:[], cafe:[], sight:[], exp:[], hotel:[],
