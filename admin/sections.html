@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>わびなび 管理｜テーマ・季節行事の編集</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F8F5EF;font-family:'Noto Serif JP',serif;color:#2a2018}
+.wrap{max-width:680px;margin:0 auto;padding:20px 16px 80px}
+h1{font-size:18px;margin:0 0 4px}
+.sub{font-size:12px;color:#a89a80;margin-bottom:16px}
+.tabs{display:flex;gap:8px;margin-bottom:14px}
+.tab{padding:9px 18px;border-radius:20px;border:1.5px solid #c9a84c;background:#fff;color:#7a4a10;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
+.tab.on{background:#a83320;border-color:#a83320;color:#fff}
+.card{background:#fff;border-radius:16px;padding:14px;margin-bottom:12px;box-shadow:0 3px 12px -6px rgba(90,70,40,.2)}
+.row{display:flex;gap:8px;margin-bottom:8px}
+label{font-size:11px;color:#a89a80;display:block;margin-bottom:3px}
+input{width:100%;border:1.5px solid #e5ddca;border-radius:10px;padding:9px;font-size:14px;box-sizing:border-box;font-family:inherit}
+input:focus{outline:none;border-color:#7a5aa8}
+.del{background:#fff;border:1px solid #e0b0a8;color:#a83320;border-radius:10px;padding:6px 12px;font-size:12px;cursor:pointer;font-family:inherit}
+.up,.down{background:#f3ede1;border:none;border-radius:10px;padding:6px 10px;font-size:12px;cursor:pointer}
+.btnrow{display:flex;gap:10px;margin:18px 0}
+.btn{flex:1;padding:14px 0;border-radius:14px;border:none;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}
+.btn.add{background:#fff;border:2px dashed #c9a84c;color:#7a4a10}
+.btn.save{background:linear-gradient(135deg,#7a5aa8,#5a4470);color:#fff}
+.note{font-size:11px;color:#a89a80;line-height:1.8;background:#fff;border-radius:12px;padding:12px 14px}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#2a2018;color:#fff;padding:10px 22px;border-radius:20px;font-size:13px;opacity:0;transition:.3s;pointer-events:none}
+.toast.show{opacity:1}
+a.back{color:#a83320;text-decoration:none;font-size:13px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="dashboard.html">‹ ダッシュボードに戻る</a>
+  <h1>テーマ・季節行事の編集</h1>
+  <div class="sub">トップページの「テーマで巡るベスト10」「季節の行事・ライトアップ」のカードを編集します</div>
+  <div class="tabs">
+    <button class="tab on" data-k="themes">テーマで巡るベスト10</button>
+    <button class="tab" data-k="events">季節の行事・ライトアップ</button>
+  </div>
+  <div id="list"></div>
+  <div class="btnrow">
+    <button class="btn add" id="addBtn">＋ カードを追加</button>
+    <button class="btn save" id="dlBtn">📥 JSONを書き出す（公開用）</button>
+  </div>
+  <div class="note">
+    <b>公開までの流れ：</b>①編集 → ②「JSONを書き出す」→ ③ダウンロードされた themes.json / events.json を GitHubの data フォルダへアップロード（またはClaudeに依頼）→ ④数分でトップページに反映。<br>
+    <b>各項目：</b>絵文字＝カード左上のアイコン／神社名＝Wikipediaから写真を自動取得する正式名（例：八坂神社）／リンク＝タップで開くページ（記事URLなど・空欄可）
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<script src="../assets/js/store.js"></script>
+<script>
+if (typeof WabiStore!=='undefined' && WabiStore.requireAuth) WabiStore.requireAuth();
+var KEY='themes';
+var DATA={themes:[],events:[]};
+function $(i){return document.getElementById(i);}
+function toast(m){var t=$('toast');t.textContent=m;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},2200);}
+function load(k){
+  var ls=localStorage.getItem('wabi_admin_'+k);
+  if(ls){try{DATA[k]=JSON.parse(ls);render();return;}catch(e){}}
+  fetch('../data/'+k+'.json',{cache:'no-store'}).then(function(r){return r.ok?r.json():[];}).then(function(j){DATA[k]=j||[];render();}).catch(function(){DATA[k]=[];render();});
+}
+function persist(){localStorage.setItem('wabi_admin_'+KEY,JSON.stringify(DATA[KEY]));}
+function render(){
+  var arr=DATA[KEY];
+  $('list').innerHTML=arr.map(function(t,i){
+    function f(k,ph,w){return '<div style="flex:'+(w||1)+'"><label>'+ph+'</label><input data-i="'+i+'" data-k="'+k+'" value="'+String(t[k]||'').replace(/"/g,'&quot;')+'"></div>';}
+    return '<div class="card">'
+      +'<div class="row">'+f('emoji','絵文字','0 0 70px')+f('title','タイトル',3)+'</div>'
+      +'<div class="row">'+f('desc','説明（短く）',1)+'</div>'
+      +'<div class="row">'+f('meta','メタ表示（例：🕐 7月1日〜31日）',1)+f('shrine','神社名（写真の自動取得用）',1)+'</div>'
+      +'<div class="row">'+f('link','リンク先URL（空欄可）',1)+'</div>'
+      +'<div style="display:flex;gap:8px;justify-content:flex-end"><button class="up" data-mv="-1" data-i="'+i+'">↑</button><button class="down" data-mv="1" data-i="'+i+'">↓</button><button class="del" data-del="'+i+'">削除</button></div>'
+      +'</div>';
+  }).join('')||'<div class="note">カードがありません。「＋カードを追加」で作成してください。</div>';
+  document.querySelectorAll('#list input').forEach(function(inp){
+    inp.oninput=function(){DATA[KEY][+inp.getAttribute('data-i')][inp.getAttribute('data-k')]=inp.value;persist();};
+  });
+  document.querySelectorAll('[data-del]').forEach(function(b){b.onclick=function(){if(confirm('このカードを削除しますか？')){DATA[KEY].splice(+b.getAttribute('data-del'),1);persist();render();}};});
+  document.querySelectorAll('[data-mv]').forEach(function(b){b.onclick=function(){var i=+b.getAttribute('data-i'),d=+b.getAttribute('data-mv'),j=i+d;if(j<0||j>=DATA[KEY].length)return;var t=DATA[KEY][i];DATA[KEY][i]=DATA[KEY][j];DATA[KEY][j]=t;persist();render();};});
+}
+document.querySelectorAll('.tab').forEach(function(tb){
+  tb.onclick=function(){document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('on');});tb.classList.add('on');KEY=tb.getAttribute('data-k');if(!DATA[KEY].length)load(KEY);else render();};
+});
+$('addBtn').onclick=function(){DATA[KEY].push({emoji:'⛩',title:'',desc:'',meta:'',shrine:'',link:''});persist();render();};
+$('dlBtn').onclick=function(){
+  var blob=new Blob([JSON.stringify(DATA[KEY],null,1)],{type:'application/json'});
+  var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=KEY+'.json';a.click();
+  toast(KEY+'.json を書き出しました。GitHubのdataフォルダへアップしてください');
+};
+load('themes');
+</script>
+</body>
+</html>
