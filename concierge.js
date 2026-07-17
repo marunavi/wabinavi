@@ -1198,11 +1198,40 @@
   // 10. トップ「テーマで巡るベスト10」「季節の行事・ライトアップ」をJSONから表示
   //（管理画面 admin/sections.html で編集 → data/themes.json・events.json をアップで反映）
   // ─────────────────────────────────────────
+  // テーマ／季節行事の詳細ビュー（説明文中の画像URLは画像として表示）
+  var themePg = document.createElement('div'); themePg.id='wcTheme';
+  themePg.style.cssText='position:fixed;inset:0;z-index:262;background:#F8F5EF;display:none;overflow-y:auto;';
+  themePg.innerHTML='<div style="max-width:500px;margin:0 auto;padding-bottom:50px" id="wcThemeBody"></div>';
+  document.body.appendChild(themePg);
+  function openWabiTheme(t, photoUrl){
+    var hero = t.hero || photoUrl || '';
+    var descHtml = String(t.desc||'').split(/\n/).map(function(line){
+      var s = line.trim();
+      if (!s) return '';
+      if (/^https?:\/\/\S+$/.test(s) && (/\.(png|jpe?g|webp|gif)(\?|$)/i.test(s) || /wikimedia\.org|unsplash\.com|googleusercontent/.test(s))) {
+        return '<img src="'+esc(s)+'" loading="lazy" style="width:100%;border-radius:14px;margin:12px 0;display:block">';
+      }
+      return '<p style="font-size:13.5px;line-height:2;color:#3f382e;margin:10px 0">'+esc(s)+'</p>';
+    }).join('');
+    var h='<div style="position:relative;width:100%;height:230px;background:'+(hero?('url('+esc(hero)+') center/cover'):'linear-gradient(135deg,#8a9ab0,#4a5a70)')+'">'
+      +'<div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(15,10,5,.72),rgba(15,10,5,.05) 60%)"></div>'
+      +'<div style="position:absolute;top:14px;left:14px;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.94);display:flex;align-items:center;justify-content:center;font-size:19px;color:#a83320;cursor:pointer;z-index:2" id="wcThemeBack">‹</div>'
+      +'<div style="position:absolute;left:18px;right:18px;bottom:38px;color:#fff;font-family:\'Shippori Mincho\',serif;font-size:19px;font-weight:800;text-shadow:0 2px 8px rgba(0,0,0,.4)">'+esc(t.title||'')+'</div>'
+      +(t.meta?'<div style="position:absolute;left:18px;bottom:12px"><span style="background:rgba(42,32,24,.6);color:#fff;font-size:11px;padding:4px 11px;border-radius:14px">'+esc(t.meta)+'</span></div>':'')
+      +'</div>'
+      +'<div style="padding:14px 18px 30px">'+(descHtml||'<p style="font-size:12px;color:#a89a80">詳しい内容は準備中です。</p>')+'</div>';
+    document.getElementById('wcThemeBody').innerHTML=h;
+    themePg.style.display='block'; themePg.scrollTop=0;
+    document.getElementById('wcThemeBack').onclick=function(){ themePg.style.display='none'; };
+  }
+
   function renderTopSection(headText, jsonUrl){
     fetch(jsonUrl, {cache:'no-store'}).then(function(r){ return r.ok ? r.json() : null; }).then(function(items){
       if (!items || !items.length) return;
+      items = items.filter(function(t){ return t.status !== 'draft'; });
+      if (!items.length) return;
       var head = [...document.querySelectorAll('div,h2,h3,span')].find(function(e){
-        return e.tagName!=='SCRIPT' && e.childElementCount===0 && (e.textContent||'').trim().indexOf(headText)===0 && !e.closest('#wcPost,#wcPrev,#wcSpot');
+        return e.tagName!=='SCRIPT' && e.childElementCount===0 && (e.textContent||'').trim().indexOf(headText)===0 && !e.closest('#wcPost,#wcPrev,#wcSpot,#wcTheme');
       });
       if (!head) return;
       var sec = head;
@@ -1215,24 +1244,28 @@
         row = [...sec.querySelectorAll('div')].find(function(d){ return d.children.length>=2 && d.scrollWidth>d.clientWidth+40; });
       }
       if (!row){
-        // カード列が見つからなければ、見出しの直後に新設
         row = document.createElement('div');
         row.style.cssText='display:flex;gap:10px;overflow-x:auto;padding:10px 0 6px;';
         head.parentElement.insertAdjacentElement('afterend', row);
       }
       row.innerHTML = items.map(function(t,i){
+        var bg = t.hero ? 'url('+esc(t.hero)+') center/cover' : 'linear-gradient(135deg,#8a9ab0,#4a5a70)';
         return '<div class="route-card" data-wtop="'+i+'" style="flex:0 0 165px;cursor:pointer">'
-          + '<div class="route-card-img-wrap"><div class="route-card-img wtop-img" data-shrine-w="'+esc(t.shrine||'')+'" style="display:flex;align-items:center;justify-content:center;font-size:30px;background:linear-gradient(135deg,#8a9ab0,#4a5a70);color:#fff">'+(t.emoji||'⛩')+'</div></div>'
-          + '<div class="route-card-body"><div class="route-card-title">'+(t.emoji?t.emoji+' ':'')+esc(t.title||'')+'</div>'
-          + '<div class="route-card-desc">'+esc(t.desc||'')+'</div>'
+          + '<div class="route-card-img-wrap"><div class="route-card-img wtop-img" data-shrine-w="'+esc((!t.hero&&t.shrine)?t.shrine:'')+'" style="display:flex;align-items:center;justify-content:center;font-size:30px;background:'+bg+';color:#fff">'+(t.hero?'':'⛩')+'</div></div>'
+          + '<div class="route-card-body"><div class="route-card-title">'+esc(t.title||'')+'</div>'
+          + '<div class="route-card-desc">'+esc(String(t.desc||'').split(/\n/)[0].slice(0,28))+'</div>'
           + '<div class="route-card-meta">'+esc(t.meta||'')+'</div></div></div>';
       }).join('');
+      var wikiMapCache = {};
       row.querySelectorAll('[data-wtop]').forEach(function(c){
         var t = items[+c.getAttribute('data-wtop')];
-        c.onclick = function(){ if (t.link) location.href = t.link; };
+        c.onclick = function(){
+          var img = c.querySelector('.wtop-img');
+          var bgu = (img && img.style.background.match(/url\("?([^)"]+)"?\)/)||[])[1];
+          openWabiTheme(t, bgu);
+        };
       });
-      // 神社名からWikipediaの実写真を差し込み
-      var names = items.map(function(t){ return t.shrine; }).filter(Boolean);
+      var names = items.filter(function(t){ return !t.hero && t.shrine; }).map(function(t){ return t.shrine; });
       if (names.length) wikiPhotosFor([...new Set(names)], function(map){
         row.querySelectorAll('.wtop-img').forEach(function(el){
           var u = map[el.getAttribute('data-shrine-w')];
@@ -1241,6 +1274,7 @@
       });
     }).catch(function(){});
   }
+
   renderTopSection('テーマで巡るベスト', 'data/themes.json');
   renderTopSection('季節の行事', 'data/events.json');
 
