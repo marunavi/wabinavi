@@ -13,19 +13,27 @@ h1{font-size:18px;margin:0 0 4px}
 .tabs{display:flex;gap:8px;margin-bottom:14px}
 .tab{padding:9px 18px;border-radius:20px;border:1.5px solid #c9a84c;background:#fff;color:#7a4a10;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
 .tab.on{background:#a83320;border-color:#a83320;color:#fff}
-.card{background:#fff;border-radius:16px;padding:14px;margin-bottom:12px;box-shadow:0 3px 12px -6px rgba(90,70,40,.2)}
+.card{background:#fff;border-radius:16px;padding:14px;margin-bottom:14px;box-shadow:0 3px 12px -6px rgba(90,70,40,.2);position:relative}
+.stbadge{position:absolute;top:12px;right:14px;font-size:10px;font-weight:700;padding:3px 10px;border-radius:12px}
+.stbadge.pub{background:#e6f4ec;color:#2e7d4f}
+.stbadge.dft{background:#f5f3ee;color:#a89a80}
 .row{display:flex;gap:8px;margin-bottom:8px}
 label{font-size:11px;color:#a89a80;display:block;margin-bottom:3px}
-input{width:100%;border:1.5px solid #e5ddca;border-radius:10px;padding:9px;font-size:14px;box-sizing:border-box;font-family:inherit}
-input:focus{outline:none;border-color:#7a5aa8}
-.del{background:#fff;border:1px solid #e0b0a8;color:#a83320;border-radius:10px;padding:6px 12px;font-size:12px;cursor:pointer;font-family:inherit}
-.up,.down{background:#f3ede1;border:none;border-radius:10px;padding:6px 10px;font-size:12px;cursor:pointer}
+input,textarea{width:100%;border:1.5px solid #e5ddca;border-radius:10px;padding:9px;font-size:14px;box-sizing:border-box;font-family:inherit}
+input:focus,textarea:focus{outline:none;border-color:#7a5aa8}
+textarea{min-height:150px;line-height:1.8;resize:vertical}
+.btns{display:flex;gap:8px;justify-content:flex-end;align-items:center;margin-top:4px;flex-wrap:wrap}
+.del{background:#fff;border:1px solid #e0b0a8;color:#a83320;border-radius:10px;padding:8px 14px;font-size:12px;cursor:pointer;font-family:inherit}
+.draft{background:#fff;border:1.5px solid #c9a84c;color:#7a4a10;border-radius:10px;padding:8px 16px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit}
+.pub{background:linear-gradient(135deg,#7a5aa8,#5a4470);border:none;color:#fff;border-radius:10px;padding:8px 20px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit}
+.up,.down{background:#f3ede1;border:none;border-radius:10px;padding:8px 10px;font-size:12px;cursor:pointer}
 .btnrow{display:flex;gap:10px;margin:18px 0}
 .btn{flex:1;padding:14px 0;border-radius:14px;border:none;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}
 .btn.add{background:#fff;border:2px dashed #c9a84c;color:#7a4a10}
-.btn.save{background:linear-gradient(135deg,#7a5aa8,#5a4470);color:#fff}
-.note{font-size:11px;color:#a89a80;line-height:1.8;background:#fff;border-radius:12px;padding:12px 14px}
-.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#2a2018;color:#fff;padding:10px 22px;border-radius:20px;font-size:13px;opacity:0;transition:.3s;pointer-events:none}
+.note{font-size:11px;color:#a89a80;line-height:1.8;background:#fff;border-radius:12px;padding:12px 14px;margin-top:10px}
+.ghbox{background:#fff;border-radius:12px;padding:12px 14px;margin-top:14px;font-size:11px;color:#6b5d48}
+.ghbox input{font-size:12px;margin-top:6px}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#2a2018;color:#fff;padding:10px 22px;border-radius:20px;font-size:13px;opacity:0;transition:.3s;pointer-events:none;z-index:9;max-width:86%;text-align:center}
 .toast.show{opacity:1}
 a.back{color:#a83320;text-decoration:none;font-size:13px}
 </style>
@@ -34,7 +42,7 @@ a.back{color:#a83320;text-decoration:none;font-size:13px}
 <div class="wrap">
   <a class="back" href="dashboard.html">‹ ダッシュボードに戻る</a>
   <h1>テーマ・季節行事の編集</h1>
-  <div class="sub">トップページの「テーマで巡るベスト10」「季節の行事・ライトアップ」のカードを編集します</div>
+  <div class="sub">トップページの「テーマで巡るベスト10」「季節の行事・ライトアップ」を編集します</div>
   <div class="tabs">
     <button class="tab on" data-k="themes">テーマで巡るベスト10</button>
     <button class="tab" data-k="events">季節の行事・ライトアップ</button>
@@ -42,11 +50,16 @@ a.back{color:#a83320;text-decoration:none;font-size:13px}
   <div id="list"></div>
   <div class="btnrow">
     <button class="btn add" id="addBtn">＋ カードを追加</button>
-    <button class="btn save" id="dlBtn">📥 JSONを書き出す（公開用）</button>
+  </div>
+  <div class="ghbox">
+    <b>🔑 直接投稿の設定（初回のみ）</b><br>
+    GitHubの接続キー（Personal Access Token）を入れると、「投稿」ボタンだけでサイトに公開できます。未設定のときは、編集後にClaudeへ「テーマを公開して」と頼んでください。
+    <input type="password" id="ghToken" placeholder="github_pat_ で始まるキーを貼り付け">
+    <div style="margin-top:6px"><button class="draft" id="ghSave">キーを保存</button> <span id="ghState"></span></div>
   </div>
   <div class="note">
-    <b>公開までの流れ：</b>①編集 → ②「JSONを書き出す」→ ③ダウンロードされた themes.json / events.json を GitHubの data フォルダへアップロード（またはClaudeに依頼）→ ④数分でトップページに反映。<br>
-    <b>各項目：</b>絵文字＝カード左上のアイコン／神社名＝Wikipediaから写真を自動取得する正式名（例：八坂神社）／リンク＝タップで開くページ（記事URLなど・空欄可）
+    <b>説明文の書き方：</b>自由に文章を書けます。行に画像のURL（https://〜.jpg など）だけを貼ると、公開ページでその場所に画像として表示されます。<br>
+    <b>投稿：</b>そのカードを「公開」にしてサイトへ反映（キー設定時は即時／未設定時はClaudeに依頼）。<b>下書き保存：</b>編集は保存されるがサイトには出ません。
   </div>
 </div>
 <div class="toast" id="toast"></div>
@@ -54,42 +67,79 @@ a.back{color:#a83320;text-decoration:none;font-size:13px}
 <script>
 if (typeof WabiStore!=='undefined' && WabiStore.requireAuth) WabiStore.requireAuth();
 var KEY='themes';
-var DATA={themes:[],events:[]};
+var DATA={themes:null,events:null};
+var REPO='marunavi/wabinavi';
 function $(i){return document.getElementById(i);}
-function toast(m){var t=$('toast');t.textContent=m;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},2200);}
-function load(k){
+function toast(m){var t=$('toast');t.textContent=m;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},2600);}
+function migrate(a){
+  return (a||[]).map(function(t){
+    return {title:t.title||'',hero:t.hero||'',meta:t.meta||'',shrine:t.shrine||'',desc:t.desc||'',status:(t.status==='draft')?'draft':'published'};
+  });
+}
+function load(k,cb){
   var ls=localStorage.getItem('wabi_admin_'+k);
-  if(ls){try{DATA[k]=JSON.parse(ls);render();return;}catch(e){}}
-  fetch('../data/'+k+'.json',{cache:'no-store'}).then(function(r){return r.ok?r.json():[];}).then(function(j){DATA[k]=j||[];render();}).catch(function(){DATA[k]=[];render();});
+  if(ls){try{DATA[k]=migrate(JSON.parse(ls));if(cb)cb();render();return;}catch(e){}}
+  fetch('../data/'+k+'.json',{cache:'no-store'}).then(function(r){return r.ok?r.json():[];}).then(function(j){DATA[k]=migrate(j);if(cb)cb();render();}).catch(function(){DATA[k]=[];render();});
 }
 function persist(){localStorage.setItem('wabi_admin_'+KEY,JSON.stringify(DATA[KEY]));}
 function render(){
-  var arr=DATA[KEY];
+  var arr=DATA[KEY]||[];
   $('list').innerHTML=arr.map(function(t,i){
-    function f(k,ph,w){return '<div style="flex:'+(w||1)+'"><label>'+ph+'</label><input data-i="'+i+'" data-k="'+k+'" value="'+String(t[k]||'').replace(/"/g,'&quot;')+'"></div>';}
+    function f(k,ph){return '<div style="flex:1"><label>'+ph+'</label><input data-i="'+i+'" data-k="'+k+'" value="'+String(t[k]||'').replace(/"/g,'&quot;')+'"></div>';}
     return '<div class="card">'
-      +'<div class="row">'+f('emoji','絵文字','0 0 70px')+f('title','タイトル',3)+'</div>'
-      +'<div class="row">'+f('desc','説明（短く）',1)+'</div>'
-      +'<div class="row">'+f('meta','メタ表示（例：🕐 7月1日〜31日）',1)+f('shrine','神社名（写真の自動取得用）',1)+'</div>'
-      +'<div class="row">'+f('link','リンク先URL（空欄可）',1)+'</div>'
-      +'<div style="display:flex;gap:8px;justify-content:flex-end"><button class="up" data-mv="-1" data-i="'+i+'">↑</button><button class="down" data-mv="1" data-i="'+i+'">↓</button><button class="del" data-del="'+i+'">削除</button></div>'
-      +'</div>';
+      +'<span class="stbadge '+(t.status==='published'?'pub':'dft')+'">'+(t.status==='published'?'公開中':'下書き')+'</span>'
+      +'<div class="row" style="margin-top:14px">'+f('title','タイトル')+'</div>'
+      +'<div class="row">'+f('hero','ヒーロー画像のURL（空欄なら神社名から自動で写真を取得）')+'</div>'
+      +'<div class="row">'+f('meta','メタ表示（例：🕐 7月1日〜31日）')+f('shrine','神社名（自動写真の取得用）')+'</div>'
+      +'<div class="row"><div style="flex:1"><label>説明文（自由記入。行に画像URLだけを貼るとその位置に画像が表示されます）</label>'
+      +'<textarea data-i="'+i+'" data-k="desc" rows="7" placeholder=""></textarea></div></div>'
+      +'<div class="btns">'
+      +'<button class="up" data-mv="-1" data-i="'+i+'">↑</button><button class="down" data-mv="1" data-i="'+i+'">↓</button>'
+      +'<button class="del" data-del="'+i+'">削除</button>'
+      +'<button class="draft" data-dft="'+i+'">下書き保存</button>'
+      +'<button class="pub" data-pub="'+i+'">投稿</button>'
+      +'</div></div>';
   }).join('')||'<div class="note">カードがありません。「＋カードを追加」で作成してください。</div>';
+  document.querySelectorAll('#list textarea').forEach(function(ta){
+    ta.value=DATA[KEY][+ta.getAttribute('data-i')].desc||'';
+    ta.oninput=function(){DATA[KEY][+ta.getAttribute('data-i')].desc=ta.value;persist();};
+  });
   document.querySelectorAll('#list input').forEach(function(inp){
     inp.oninput=function(){DATA[KEY][+inp.getAttribute('data-i')][inp.getAttribute('data-k')]=inp.value;persist();};
   });
   document.querySelectorAll('[data-del]').forEach(function(b){b.onclick=function(){if(confirm('このカードを削除しますか？')){DATA[KEY].splice(+b.getAttribute('data-del'),1);persist();render();}};});
   document.querySelectorAll('[data-mv]').forEach(function(b){b.onclick=function(){var i=+b.getAttribute('data-i'),d=+b.getAttribute('data-mv'),j=i+d;if(j<0||j>=DATA[KEY].length)return;var t=DATA[KEY][i];DATA[KEY][i]=DATA[KEY][j];DATA[KEY][j]=t;persist();render();};});
+  document.querySelectorAll('[data-dft]').forEach(function(b){b.onclick=function(){DATA[KEY][+b.getAttribute('data-dft')].status='draft';persist();render();toast('下書きとして保存しました（サイトには表示されません）');};});
+  document.querySelectorAll('[data-pub]').forEach(function(b){b.onclick=function(){DATA[KEY][+b.getAttribute('data-pub')].status='published';persist();render();publish();};});
 }
 document.querySelectorAll('.tab').forEach(function(tb){
-  tb.onclick=function(){document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('on');});tb.classList.add('on');KEY=tb.getAttribute('data-k');if(!DATA[KEY].length)load(KEY);else render();};
+  tb.onclick=function(){document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('on');});tb.classList.add('on');KEY=tb.getAttribute('data-k');if(!DATA[KEY])load(KEY);else render();};
 });
-$('addBtn').onclick=function(){DATA[KEY].push({emoji:'⛩',title:'',desc:'',meta:'',shrine:'',link:''});persist();render();};
-$('dlBtn').onclick=function(){
-  var blob=new Blob([JSON.stringify(DATA[KEY],null,1)],{type:'application/json'});
-  var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=KEY+'.json';a.click();
-  toast(KEY+'.json を書き出しました。GitHubのdataフォルダへアップしてください');
-};
+$('addBtn').onclick=function(){if(!DATA[KEY])DATA[KEY]=[];DATA[KEY].push({title:'',hero:'',meta:'',shrine:'',desc:'',status:'draft'});persist();render();};
+
+/* ── GitHubへ直接公開 ── */
+$('ghToken').value=localStorage.getItem('wabi_gh_token')||'';
+function ghState(){$('ghState').textContent=localStorage.getItem('wabi_gh_token')?'✓ 設定済み（投稿ボタンで直接公開できます）':'未設定';}
+ghState();
+$('ghSave').onclick=function(){localStorage.setItem('wabi_gh_token',$('ghToken').value.trim());ghState();toast('キーを保存しました');};
+function publish(){
+  var token=(localStorage.getItem('wabi_gh_token')||'').trim();
+  var pubItems=(DATA[KEY]||[]).filter(function(t){return t.status==='published';});
+  var body=JSON.stringify(pubItems,null,1);
+  if(!token){toast('公開予約OK。Claudeに「テーマを公開して」と伝えると反映されます（キー設定で即時公開も可能）');return;}
+  var path='data/'+KEY+'.json';
+  var api='https://api.github.com/repos/'+REPO+'/contents/'+path;
+  var hd={'Authorization':'Bearer '+token,'Accept':'application/vnd.github+json'};
+  toast('公開中…');
+  fetch(api,{headers:hd}).then(function(r){return r.ok?r.json():null;}).then(function(cur){
+    var payload={message:'Update '+path+' (from admin)',content:btoa(unescape(encodeURIComponent(body)))};
+    if(cur&&cur.sha)payload.sha=cur.sha;
+    return fetch(api,{method:'PUT',headers:hd,body:JSON.stringify(payload)});
+  }).then(function(r){
+    if(r&&r.ok){toast('🌿 公開しました！数分でトップページに反映されます');}
+    else{toast('公開に失敗しました。キーの権限をご確認いただくか、Claudeにご依頼ください');}
+  }).catch(function(){toast('公開に失敗しました。Claudeにご依頼ください');});
+}
 load('themes');
 </script>
 </body>
