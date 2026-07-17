@@ -1065,4 +1065,102 @@
     var el = document.getElementById('wcInline');
     if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
   };
+
+  // ─────────────────────────────────────────
+  // 7. トップ「みんなの最新投稿」を2列フォトグリッドに刷新
+  // ─────────────────────────────────────────
+  var css4 = document.createElement('style');
+  css4.textContent = [
+    '.wcp-hd{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;}',
+    '.wcp-tit{font-size:16px;font-weight:800;color:#2F2F2F;font-family:"Shippori Mincho",serif;}',
+    '.wcp-sub{font-size:11.5px;color:#6B6B6B;margin-top:2px;}',
+    '.wcp-more{font-size:12px;color:#7a5aa8;font-weight:700;cursor:pointer;padding-top:3px;white-space:nowrap;}',
+    '.wcp-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}',
+    '.wcp-card{position:relative;aspect-ratio:3/4;border-radius:16px;overflow:hidden;background:linear-gradient(135deg,#8a9ab0,#4a5a70);cursor:pointer;}',
+    '.wcp-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}',
+    '.wcp-card.noimg img{display:none;}',
+    '.wcp-card.noimg::after{content:"⛩";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:38px;color:#fff;}',
+    '.wcp-grad{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.62),rgba(0,0,0,0) 55%);}',
+    '.wcp-info{position:absolute;left:10px;right:10px;bottom:9px;color:#fff;}',
+    '.wcp-userrow{display:flex;align-items:center;gap:7px;}',
+    '.wcp-av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex:0 0 28px;border:1.5px solid rgba(255,255,255,.7);}',
+    '.wcp-un{flex:1;font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-shadow:0 1px 4px rgba(0,0,0,.5);}',
+    '.wcp-like{font-size:17px;cursor:pointer;line-height:1;}',
+    '.wcp-like.on{color:#ff5a5a;}',
+    '.wcp-tags{display:flex;gap:8px;margin-top:6px;font-size:10.5px;white-space:nowrap;overflow:hidden;text-shadow:0 1px 4px rgba(0,0,0,.5);}',
+    '.wcp-postbtn{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;margin-top:14px;padding:12px 0;border:1.5px solid #7a5aa8;border-radius:12px;background:#fff;color:#7a5aa8;font-size:14px;font-weight:700;cursor:pointer;font-family:"Shippori Mincho",serif;}'
+  ].join('\n');
+  document.head.appendChild(css4);
+
+  // 神社名からWikipediaの実写真を一括取得（投稿カード用）
+  function wikiPhotosFor(names, cb){
+    try{
+      var url='https://ja.wikipedia.org/w/api.php?action=query&format=json&origin=*&prop=pageimages&piprop=thumbnail&pithumbsize=600&redirects=1&titles='+encodeURIComponent(names.join('|'));
+      fetch(url).then(function(r){ return r.json(); }).then(function(j){
+        var map={}, redir={};
+        ((j.query||{}).redirects||[]).forEach(function(r){ redir[r.from]=r.to; });
+        ((j.query||{}).normalized||[]).forEach(function(r){ redir[r.from]=r.to; });
+        var pages=(j.query||{}).pages||{};
+        Object.keys(pages).forEach(function(k){ if(pages[k].thumbnail) map[pages[k].title]=pages[k].thumbnail.source; });
+        var out={}; names.forEach(function(n){ out[n]=map[redir[n]||n]||null; });
+        cb(out);
+      }).catch(function(){ cb({}); });
+    }catch(e){ cb({}); }
+  }
+
+  function redesignCommunity(){
+    try{
+      var box = document.querySelector('.community-box');
+      if (!box || typeof USER_POSTS === 'undefined' || !USER_POSTS.length) return;
+      var posts = USER_POSTS.slice(0,6);
+      var avColors = ['#a83320','#7a5aa8','#c9a84c','#5b7a9a','#7a9a6a','#b07a7a'];
+      var h = '<div class="wcp-hd"><div><div class="wcp-tit">🌿 みんなの最新投稿</div><div class="wcp-sub">参拝の記録をシェアしよう</div></div><div class="wcp-more" id="wcpMore">もっと見る ›</div></div>';
+      h += '<div class="wcp-grid">';
+      posts.forEach(function(p,i){
+        var m = String(p.addr||'').match(/^.{2,3}?[都道府県]/);
+        var pref = m ? m[0] : (p.area||'');
+        h += '<div class="wcp-card" data-pid="'+p.id+'">'
+          + '<img src="'+esc(p.img||'')+'" loading="lazy" onerror="this.parentElement.classList.add(\'noimg\')">'
+          + '<div class="wcp-grad"></div>'
+          + '<div class="wcp-info">'
+          + '<div class="wcp-userrow"><span class="wcp-av" style="background:'+avColors[i%avColors.length]+'">'+(p.avatar||String(p.user||'').slice(0,1))+'</span><span class="wcp-un">'+p.user+'</span><span class="wcp-like">♡</span></div>'
+          + '<div class="wcp-tags"><span># '+p.shrine+'</span><span># '+pref+'</span></div>'
+          + '</div></div>';
+      });
+      h += '</div>';
+      h += '<button class="wcp-postbtn" id="wcpPost">📷 投稿する</button>';
+      box.innerHTML = h;
+      var more = document.getElementById('wcpMore');
+      if (more) more.onclick = function(){ if (typeof openCommunityAll==='function') openCommunityAll(); };
+      var pb = document.getElementById('wcpPost');
+      if (pb) pb.onclick = function(){ if (typeof openCommunityPost==='function') openCommunityPost(); };
+      box.querySelectorAll('.wcp-card').forEach(function(c){
+        c.onclick = function(ev){
+          var t = ev.target;
+          if (t.classList && t.classList.contains('wcp-like')){
+            ev.stopPropagation();
+            t.textContent = (t.textContent==='♡') ? '♥' : '♡';
+            t.classList.toggle('on');
+            return;
+          }
+          if (typeof openPostDetail==='function') openPostDetail(c.getAttribute('data-pid'));
+        };
+      });
+      // 投稿の神社名で本物の写真に差し替え
+      var shrineNames = []; posts.forEach(function(p){ if (p.shrine && shrineNames.indexOf(p.shrine)<0) shrineNames.push(p.shrine); });
+      wikiPhotosFor(shrineNames, function(map){
+        box.querySelectorAll('.wcp-card').forEach(function(c){
+          var pid = c.getAttribute('data-pid');
+          var post = posts.filter(function(p){ return String(p.id)===String(pid); })[0];
+          if (!post) return;
+          var u = map[post.shrine];
+          if (u){
+            var im = c.querySelector('img');
+            if (im){ im.src = u; c.classList.remove('noimg'); }
+          }
+        });
+      });
+    }catch(e){}
+  }
+  redesignCommunity();
 })();
