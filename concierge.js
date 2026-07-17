@@ -237,7 +237,10 @@
           if (status===google.maps.places.PlacesServiceStatus.OK && res){
             var notHotel = function(p){ return job.key==='hotel' || !(p.types && p.types.indexOf('lodging')>-1); };
             var list = res.filter(function(p){ return notHotel(p) && p.rating>=4.0 && (p.user_ratings_total||0)>=50 && p.name!==s0.name; });
-            if (list.length<2) list = res.filter(function(p){ return notHotel(p) && p.rating>=3.8 && (p.user_ratings_total||0)>=10; });
+            // 4件に満たなければ条件をゆるめて補充（人気順）
+            var relaxed = res.filter(function(p){ return notHotel(p) && (p.user_ratings_total||0)>=5 && p.name!==s0.name; })
+              .sort(function(a,b){ return (b.user_ratings_total||0)-(a.user_ratings_total||0); });
+            relaxed.forEach(function(p){ if (list.length<4 && list.indexOf(p)<0) list.push(p); });
             list.sort(function(a,b){ return (b.rating||0)-(a.rating||0); });
             out[job.key] = list.slice(0,4).map(function(p){
               var dist = (p.geometry&&p.geometry.location)?haversine(s0.lat,s0.lng,p.geometry.location.lat(),p.geometry.location.lng()):600;
@@ -454,7 +457,7 @@
     {key:'cafe',    tit:'カフェ・スイーツ', sub:'ひと休みに'},
     {key:'sight',   tit:'観光スポット',   sub:'あわせて立ち寄りたい'},
     {key:'exp',     tit:'体験・アクティビティ', sub:'旅を深める'},
-    {key:'hotel',   tit:'宿泊施設',      sub:'PR・巡拝の拠点に', pr:true}
+    {key:'hotel',   tit:'宿泊施設',      sub:'巡拝の拠点に'}
   ];
   var CAT_LABEL = {gourmet:'ランチ',cafe:'カフェ',sight:'観光',exp:'体験',hotel:'宿泊'};
 
@@ -463,8 +466,7 @@
       + '<div class="wc-img" data-q="'+esc(item.name+' '+(currentNear||''))+'" style="background:'+item.img.grad+'">'
       +   (item.photoUrl ? '<img src="'+esc(item.photoUrl)+'" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">' : '')
       +   '<span style="filter:drop-shadow(0 2px 6px rgba(0,0,0,.3));'+(item.photoUrl?'display:none;':'')+'">'+item.img.emoji+'</span>'
-      +   '<span class="wc-ai">🌿 AIおすすめ度 '+item.ai+'点</span>'
-      +   (cat.pr ? '<span class="wc-pr">PR</span>' : '')
+      +   '<span class="wc-ai">🌿 おすすめ度 '+item.ai+'点</span>'
       + '</div>'
       + '<div class="wc-body">'
       +   '<div class="wc-name" title="'+esc(item.name+'（'+item.genre+'）')+'">'+item.name+'</div>'
@@ -622,7 +624,7 @@
           + (a.item.photoUrl?'<img src="'+esc(a.item.photoUrl)+'" loading="lazy">':a.item.img.emoji)+'</div>'
           + '<div class="wcb-info"><div class="wcb-nm" data-ocat="'+a.cat+'" data-okey="'+esc(a.key)+'"><span class="t">'+a.item.name+'</span><span class="wcb-bdg">'+(CAT_BADGE[a.cat]||'')+'</span></div>'
           + '<div class="wcb-sb">'+(currentNear||'')+'から'+a.item.walk+'</div>'
-          + '<div class="wcb-tags"><span class="wcb-tag">'+a.item.genre+'</span><span class="wcb-tag ai">AIおすすめ度 '+a.item.ai+'点</span></div></div>'
+          + '<div class="wcb-tags"><span class="wcb-tag">'+a.item.genre+'</span><span class="wcb-tag ai">おすすめ度 '+a.item.ai+'点</span></div></div>'
           + (isHotel
              ? '<div class="wcb-stay"><span>宿泊</span><b>1泊</b></div>'
              : '<div class="wcb-stay"><span>滞在時間</span><b>'+(STAY[a.cat]||40)+'分</b></div>')
@@ -769,6 +771,66 @@
   }
 
   // ─────────────────────────────────────────
+  // 4.5 検索ルートの神社数が少ないとき、周辺の神社仏閣をGoogleから補充
+  //（例：7時間なら6社まで。内蔵データベースに無い神社を自動で追加）
+  // ─────────────────────────────────────────
+  var supplyCache = {};
+  function wantSpotCount(){
+    var t = window._aiSelTime || '3時間';
+    return t==='2日' ? 8 : t==='7時間' ? 6 : t==='5時間' ? 4 : 3;
+  }
+  function supplementDynamicRoutes(){
+    try{
+      var routes = window._dynamicRoutes;
+      if (!routes || !routes.length) return;
+      var s0 = routes[0].spots && routes[0].spots[0];
+      if (!s0 || !s0.lat) return;
+      var want = wantSpotCount();
+      var maxSpots = 0;
+      routes.forEach(function(r){ if (r.spots.length > maxSpots) maxSpots = r.spots.length; });
+      if (maxSpots >= want) return;
+      if (typeof API_KEY==='undefined' || !API_KEY || typeof google==='undefined' || !google.maps || !google.maps.places) return;
+      var ck = s0.name + ':' + want;
+      if (supplyCache[ck] === 'loading') return;
+      if (Array.isArray(supplyCache[ck])) { applySupplement(routes, supplyCache[ck], want); return; }
+      supplyCache[ck] = 'loading';
+      var trans = window._aiSelTrans || '電車';
+      var radius = trans==='徒歩' ? 2500 : trans==='車' ? 15000 : 8000;
+      var svc = new google.maps.places.PlacesService(document.createElement('div'));
+      svc.nearbySearch({location:new google.maps.LatLng(s0.lat, s0.lng), radius:radius, keyword:'神社 寺', type:'place_of_worship'}, function(res, status){
+        if (status !== google.maps.places.PlacesServiceStatus.OK || !res){ supplyCache[ck] = []; return; }
+        var pool = res.filter(function(p){ return (p.user_ratings_total||0) >= 20 && p.geometry && p.geometry.location; })
+          .sort(function(a,b){ return (b.user_ratings_total||0)-(a.user_ratings_total||0); })
+          .map(function(p){
+            return { name:p.name,
+              loc:(p.vicinity||'').split(/[、,]/)[0]||'',
+              move:'約15分', benefit:'開運・参拝',
+              lat:p.geometry.location.lat(), lng:p.geometry.location.lng(),
+              photo:(p.photos && p.photos.length) ? p.photos[0].getUrl({maxWidth:500}) : null };
+          });
+        supplyCache[ck] = pool;
+        applySupplement(routes, pool, want);
+        // 追加できたので画面を描き直す
+        if (typeof window.renderRouteCards === 'function') window.renderRouteCards();
+        if (typeof showToast === 'function') showToast('🌿 周辺の神社仏閣をルートに補充しました');
+      });
+    }catch(e){}
+  }
+  function applySupplement(routes, pool, want){
+    routes.forEach(function(r, ri){
+      var have = r.spots.map(function(s){ return s.name; });
+      var cand = pool.filter(function(p){ return have.indexOf(p.name) < 0; });
+      // ルートごとに始点をずらして変化をつける
+      if (cand.length > 1) { var off = ri % cand.length; cand = cand.slice(off).concat(cand.slice(0, off)); }
+      var i = 0;
+      while (r.spots.length < want && i < cand.length){
+        if (r.spots.every(function(s){ return s.name !== cand[i].name; })) r.spots.push(cand[i]);
+        i++;
+      }
+    });
+  }
+
+  // ─────────────────────────────────────────
   // 5.5 スポット詳細ページ（カード画像タップで開く）
   // ─────────────────────────────────────────
   var spotPg = document.createElement('div'); spotPg.id='wcSpot';
@@ -802,7 +864,7 @@
       + '<div id="sdHeroEmoji" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:64px;'+(item.photoUrl?'display:none;':'')+'">'+item.img.emoji+'</div>'
       + '<div class="wc-sd-grad"></div>'
       + '<div class="wc-sd-back" id="sdBack">‹</div><div class="wc-sd-heart">♡</div>'
-      + '<div class="wc-sd-badge">🌿 AIおすすめ度 '+item.ai+'点</div>'
+      + '<div class="wc-sd-badge">🌿 おすすめ度 '+item.ai+'点</div>'
       + '<div class="wc-sd-tit">'+item.name+'</div>'
       + '<div class="wc-sd-meta">★ '+item.rating.toFixed(1)+'（'+item.reviews+'件の口コミ）・'+(currentNear||'')+'から'+item.walk+'</div>'
       + '<div class="wc-sd-btns"><button class="wc-sd-add" id="sdAdd">＋ ルートに追加</button><button class="wc-sd-map" id="sdMap">📍 地図で見る</button></div>'
@@ -857,7 +919,7 @@
     // ⑨ この近くのホテル（アフィリエイト導線）
     var hotels = (d.hotel||[]).filter(function(x){ return x.name!==item.name; });
     if (hotels.length) {
-      h += '<div class="wc-sd-card"><div class="wc-sd-h">🏨 この近くのホテル <span class="wc-pr" style="position:static">PR</span></div>'
+      h += '<div class="wc-sd-card"><div class="wc-sd-h">🏨 この近くのホテル</div>'
         + hotels.map(function(x){
             return '<div style="border:1px solid #eee2c8;border-radius:14px;padding:10px 12px;margin-top:8px">'
               + '<div style="display:flex;gap:10px;align-items:center">'
@@ -988,7 +1050,7 @@
   if (typeof origRRC === 'function') {
     window.renderRouteCards = function(){
       origRRC();
-      try { state.route = null; state.added = []; state.items = null; buildInline(); } catch(e){}
+      try { state.route = null; state.added = []; state.items = null; buildInline(); supplementDynamicRoutes(); } catch(e){}
     };
   }
   // 「このルートを選ぶ」＝そのルートをベースにして、おすすめセクションへ移動
