@@ -1151,6 +1151,7 @@
       wikiPhotosFor(shrineNames, function(map){
         box.querySelectorAll('.wcp-card').forEach(function(c){
           var pid = c.getAttribute('data-pid');
+          if (String(pid).charAt(0)==='u') return; // 自分の投稿は自分の写真のまま
           var post = posts.filter(function(p){ return String(p.id)===String(pid); })[0];
           if (!post) return;
           var u = map[post.shrine];
@@ -1163,4 +1164,300 @@
     }catch(e){}
   }
   redesignCommunity();
+
+  // ─────────────────────────────────────────
+  // 8. 新しい投稿画面（Instagram×Threads風）
+  // ─────────────────────────────────────────
+  var css5 = document.createElement('style');
+  css5.textContent = [
+    '#wcPost{position:fixed;inset:0;z-index:280;background:#fff;display:none;overflow-y:auto;-webkit-overflow-scrolling:touch;}',
+    '.wpo-inner{max-width:500px;margin:0 auto;padding:0 16px 40px;}',
+    '.wpo-hd{position:sticky;top:0;z-index:5;background:#fff;display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid #f0ede6;margin:0 -16px;padding-left:16px;padding-right:16px;}',
+    '.wpo-back{font-size:22px;color:#2F2F2F;cursor:pointer;line-height:1;}',
+    '.wpo-tit{font-size:15px;font-weight:800;color:#2F2F2F;}',
+    '.wpo-prev{font-size:13px;color:#7a5aa8;font-weight:700;cursor:pointer;}',
+    '.wpo-user{display:flex;align-items:center;gap:10px;padding:16px 0 4px;}',
+    '.wpo-av{width:40px;height:40px;border-radius:50%;background:#c9a84c;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;}',
+    '.wpo-un{font-size:14px;font-weight:700;color:#2F2F2F;}',
+    '.wpo-sec{background:#fff;border:1px solid #efe9dd;border-radius:18px;padding:14px;margin-top:14px;box-shadow:0 2px 10px rgba(0,0,0,.03);}',
+    '.wpo-label{font-size:13px;font-weight:800;color:#2F2F2F;margin-bottom:10px;}',
+    '.wpo-label .req{color:#d7453b;}',
+    '.wpo-label .ok{font-size:10px;color:#2e7d4f;background:#e6f4ec;border-radius:10px;padding:2px 8px;margin-left:6px;font-weight:700;}',
+    '.wpo-photos{display:flex;gap:10px;overflow-x:auto;}',
+    '.wpo-ph{position:relative;width:118px;height:118px;border-radius:14px;overflow:hidden;flex:0 0 118px;}',
+    '.wpo-ph img{width:100%;height:100%;object-fit:cover;}',
+    '.wpo-ph .x{position:absolute;top:6px;right:6px;width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.95);display:flex;align-items:center;justify-content:center;font-size:12px;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.25);}',
+    '.wpo-ph .cover{position:absolute;left:6px;bottom:6px;background:rgba(122,90,168,.92);color:#fff;font-size:8.5px;padding:2px 7px;border-radius:8px;}',
+    '.wpo-add{width:118px;height:118px;border-radius:14px;border:2px dashed #ddd5c4;background:#fbfaf6;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:#8a7a5c;font-size:11px;cursor:pointer;flex:0 0 118px;}',
+    '.wpo-add span{font-size:22px;}',
+    '.wpo-input{width:100%;border:1.5px solid #e5ddca;border-radius:14px;padding:13px 38px 13px 13px;font-size:16px;color:#2F2F2F;background:#fff;box-sizing:border-box;font-family:inherit;}',
+    '.wpo-input:focus{outline:none;border-color:#7a5aa8;}',
+    '.wpo-clear{position:absolute;right:12px;top:50%;transform:translateY(-50%);width:20px;height:20px;border-radius:50%;background:#d8d2c4;color:#fff;display:none;align-items:center;justify-content:center;font-size:11px;cursor:pointer;}',
+    '.wpo-select{width:100%;border:1.5px solid #e5ddca;border-radius:14px;padding:13px;font-size:16px;color:#2F2F2F;background:#fff;appearance:none;box-sizing:border-box;font-family:inherit;}',
+    '.wpo-tags{display:flex;flex-wrap:wrap;gap:8px;}',
+    '.wpo-tag{font-size:12px;color:#7a5aa8;background:#f1ecf8;border-radius:14px;padding:6px 12px;cursor:pointer;border:1.5px solid transparent;user-select:none;}',
+    '.wpo-tag.off{color:#b3aca0;background:#f5f3ee;text-decoration:line-through;}',
+    '.wpo-loc{display:flex;align-items:center;gap:10px;border:1.5px solid #e5ddca;border-radius:14px;padding:12px;}',
+    '.wpo-loc-pin{font-size:20px;color:#7a5aa8;}',
+    '.wpo-loc-nm{font-size:13.5px;font-weight:800;color:#2F2F2F;}',
+    '.wpo-loc-ad{font-size:11px;color:#6B6B6B;margin-top:1px;}',
+    '.wpo-ta{width:100%;min-height:120px;border:1.5px solid #e5ddca;border-radius:14px;padding:13px;font-size:16px;color:#2F2F2F;box-sizing:border-box;resize:vertical;font-family:inherit;line-height:1.7;}',
+    '.wpo-ta:focus{outline:none;border-color:#7a5aa8;}',
+    '.wpo-cnt{text-align:right;font-size:11px;color:#a89a80;margin-top:5px;}',
+    '.wpo-submit{display:block;width:100%;height:56px;border:none;border-radius:16px;background:linear-gradient(135deg,#7a5aa8,#5a4470);color:#fff;font-size:16px;font-weight:800;cursor:pointer;margin-top:20px;box-shadow:0 8px 20px -6px rgba(90,68,112,.45);}',
+    '.wpo-submit:disabled{background:#d8d2c4;box-shadow:none;}',
+    '.wpo-note{font-size:10px;color:#a89a80;margin-top:8px;text-align:center;}'
+  ].join('\n');
+  document.head.appendChild(css5);
+
+  var PREFS = ['北海道','青森県','岩手県','宮城県','秋田県','山形県','福島県','茨城県','栃木県','群馬県','埼玉県','千葉県','東京都','神奈川県','新潟県','富山県','石川県','福井県','山梨県','長野県','岐阜県','静岡県','愛知県','三重県','滋賀県','京都府','大阪府','兵庫県','奈良県','和歌山県','鳥取県','島根県','岡山県','広島県','山口県','徳島県','香川県','愛媛県','高知県','福岡県','佐賀県','長崎県','熊本県','大分県','宮崎県','鹿児島県','沖縄県'];
+  var wpoState = { photos:[], tags:[], loc:null };
+
+  var postPg = document.createElement('div'); postPg.id='wcPost';
+  postPg.innerHTML = '<div class="wpo-inner">'
+    + '<div class="wpo-hd"><span class="wpo-back" id="wpoBack">‹</span><span class="wpo-tit">新しく投稿</span><span class="wpo-prev" id="wpoPrev">プレビュー</span></div>'
+    + '<div class="wpo-user"><div class="wpo-av">参</div><div class="wpo-un">あなた（参拝者さん）</div></div>'
+    + '<div class="wpo-sec"><div class="wpo-label">写真を追加 <span class="req">*</span> <span style="font-size:10px;color:#a89a80;font-weight:400">1枚目がトップに表示されます</span></div>'
+    +   '<div class="wpo-photos" id="wpoPhotos"><div class="wpo-add" id="wpoAdd"><span>📷</span>写真を追加</div></div>'
+    +   '<input type="file" id="wpoFile" accept="image/*" multiple style="display:none"></div>'
+    + '<div class="wpo-sec"><div class="wpo-label">神社名 <span class="req">*</span></div>'
+    +   '<div style="position:relative"><input class="wpo-input" id="wpoShrine" placeholder="例：善光寺"><span class="wpo-clear" id="wpoClear">✕</span></div></div>'
+    + '<div class="wpo-sec"><div class="wpo-label">都道府県 <span class="req">*</span></div>'
+    +   '<select class="wpo-select" id="wpoPref"><option value="">選択してください</option>'
+    +   PREFS.map(function(p){ return '<option>'+p+'</option>'; }).join('') + '</select></div>'
+    + '<div class="wpo-sec" id="wpoLocSec" style="display:none"><div class="wpo-label">位置情報 <span style="font-size:10px;color:#6B6B6B;font-weight:400">（写真から自動検出）</span><span class="ok">✓ 検出完了</span></div>'
+    +   '<div class="wpo-loc"><span class="wpo-loc-pin">📍</span><div style="flex:1"><div class="wpo-loc-nm" id="wpoLocNm">—</div><div class="wpo-loc-ad" id="wpoLocAd">—</div></div></div>'
+    +   '<div style="font-size:9.5px;color:#a89a80;margin-top:6px">※写真の位置情報（GPS）から推定しました</div></div>'
+    + '<div class="wpo-sec"><div class="wpo-label">おすすめハッシュタグ <span class="ok" id="wpoTagBadge" style="display:none">✓ 自動生成</span></div>'
+    +   '<div class="wpo-tags" id="wpoTags"><span style="font-size:11px;color:#a89a80">神社名を入れると自動生成されます（タップで付け外し）</span></div></div>'
+    + '<div class="wpo-sec"><div class="wpo-label">投稿内容 <span style="font-size:10px;color:#a89a80;font-weight:400">（最大1000文字）</span></div>'
+    +   '<textarea class="wpo-ta" id="wpoText" maxlength="1000" placeholder="参拝の感想や、境内のおすすめポイント、ご利益など自由にご記入ください"></textarea>'
+    +   '<div class="wpo-cnt"><span id="wpoCnt">0</span> / 1000</div></div>'
+    + '<div class="wpo-sec"><div class="wpo-label">公開設定</div>'
+    +   '<select class="wpo-select" id="wpoVis"><option value="public">🌏 公開（みんなの最新投稿に表示）</option><option value="private">🔒 自分だけ（記録として保存）</option></select></div>'
+    + '<button class="wpo-submit" id="wpoSubmit" disabled>投稿する</button>'
+    + '<div class="wpo-note">投稿は今はこの端末に保存されます（会員機能の公開後にみんなへ共有されます）</div>'
+    + '</div>';
+  document.body.appendChild(postPg);
+
+  function wpoOpen(){
+    wpoState = { photos:[], tags:[], loc:null };
+    document.getElementById('wpoShrine').value='';
+    document.getElementById('wpoPref').value='';
+    document.getElementById('wpoText').value='';
+    document.getElementById('wpoCnt').textContent='0';
+    document.getElementById('wpoLocSec').style.display='none';
+    document.getElementById('wpoTags').innerHTML='<span style="font-size:11px;color:#a89a80">神社名を入れると自動生成されます（タップで付け外し）</span>';
+    wpoRenderPhotos(); wpoValidate();
+    postPg.style.display='block'; postPg.scrollTop=0;
+  }
+  // 既存の「投稿する」ボタンをこの画面に差し替え
+  window.openCommunityPost = wpoOpen;
+
+  document.getElementById('wpoBack').onclick = function(){ postPg.style.display='none'; };
+  document.getElementById('wpoAdd').onclick = function(){ document.getElementById('wpoFile').click(); };
+  document.getElementById('wpoClear').onclick = function(){ var i=document.getElementById('wpoShrine'); i.value=''; i.dispatchEvent(new Event('input')); };
+
+  function wpoRenderPhotos(){
+    var box = document.getElementById('wpoPhotos');
+    var h = '';
+    wpoState.photos.forEach(function(p,i){
+      h += '<div class="wpo-ph"><img src="'+p+'">'+(i===0?'<span class="cover">トップ表示</span>':'')+'<span class="x" data-x="'+i+'">✕</span></div>';
+    });
+    h += '<div class="wpo-add" id="wpoAdd"><span>📷</span>写真を追加</div>';
+    box.innerHTML = h;
+    document.getElementById('wpoAdd').onclick = function(){ document.getElementById('wpoFile').click(); };
+    box.querySelectorAll('[data-x]').forEach(function(x){
+      x.onclick = function(){ wpoState.photos.splice(+x.getAttribute('data-x'),1); wpoRenderPhotos(); wpoValidate(); };
+    });
+  }
+
+  // 写真を縮小してデータ化（端末保存用）
+  function wpoCompress(file, cb){
+    var img = new Image();
+    var fr = new FileReader();
+    fr.onload = function(){ img.src = fr.result; };
+    img.onload = function(){
+      var max = 900, w = img.width, hgt = img.height;
+      if (w > max){ hgt = Math.round(hgt*max/w); w = max; }
+      var cv = document.createElement('canvas'); cv.width=w; cv.height=hgt;
+      cv.getContext('2d').drawImage(img,0,0,w,hgt);
+      cb(cv.toDataURL('image/jpeg',.82));
+    };
+    fr.readAsDataURL(file);
+  }
+
+  // EXIFのGPS情報を読む（あれば）
+  function wpoExifGps(file, cb){
+    var r = new FileReader();
+    r.onload = function(){
+      try{
+        var v = new DataView(r.result);
+        if (v.getUint16(0) !== 0xFFD8){ cb(null); return; }
+        var off = 2, len = v.byteLength;
+        while (off < len){
+          if (v.getUint16(off) === 0xFFE1){
+            var exifOff = off+4;
+            if (v.getUint32(exifOff) !== 0x45786966){ cb(null); return; }
+            var tiff = exifOff+6;
+            var little = v.getUint16(tiff) === 0x4949;
+            function u16(o){ return v.getUint16(o, little); }
+            function u32(o){ return v.getUint32(o, little); }
+            var ifd0 = tiff + u32(tiff+4);
+            var n = u16(ifd0), gpsIfd = 0;
+            for (var i=0;i<n;i++){ var e = ifd0+2+i*12; if (u16(e) === 0x8825) gpsIfd = tiff + u32(e+8); }
+            if (!gpsIfd){ cb(null); return; }
+            var gn = u16(gpsIfd), lat=null, lng=null, latR='N', lngR='E';
+            function rat(o){ return u32(o)/u32(o+4); }
+            function dms(valOff){ var o = tiff + u32(valOff+8); return rat(o) + rat(o+8)/60 + rat(o+16)/3600; }
+            for (var g=0; g<gn; g++){
+              var ge = gpsIfd+2+g*12, tag = u16(ge);
+              if (tag===1) latR = String.fromCharCode(v.getUint8(ge+8));
+              if (tag===2) lat = dms(ge);
+              if (tag===3) lngR = String.fromCharCode(v.getUint8(ge+8));
+              if (tag===4) lng = dms(ge);
+            }
+            if (lat!==null && lng!==null){ cb({lat:(latR==='S'?-lat:lat), lng:(lngR==='W'?-lng:lng)}); return; }
+            cb(null); return;
+          }
+          off += 2 + v.getUint16(off+2);
+        }
+        cb(null);
+      }catch(e){ cb(null); }
+    };
+    r.readAsArrayBuffer(file.slice(0, 131072));
+  }
+
+  // GPS → 最寄りの神社・都道府県をAIが推定して自動入力
+  function wpoDetectFromGps(gps){
+    try{
+      if (typeof API_KEY==='undefined' || !API_KEY || typeof google==='undefined' || !google.maps || !google.maps.places) return;
+      var svc = new google.maps.places.PlacesService(document.createElement('div'));
+      svc.nearbySearch({location:new google.maps.LatLng(gps.lat,gps.lng), rankBy:google.maps.places.RankBy.DISTANCE, type:'place_of_worship'}, function(res, st){
+        if (st!==google.maps.places.PlacesServiceStatus.OK || !res || !res[0]) return;
+        var p = res[0];
+        var sh = document.getElementById('wpoShrine');
+        if (!sh.value){ sh.value = p.name; sh.dispatchEvent(new Event('input')); }
+        var vic = p.vicinity || '';
+        document.getElementById('wpoLocNm').textContent = p.name;
+        document.getElementById('wpoLocAd').textContent = vic;
+        document.getElementById('wpoLocSec').style.display = 'block';
+        // 都道府県はジオコーダで
+        try{
+          new google.maps.Geocoder().geocode({location:{lat:gps.lat,lng:gps.lng}}, function(gres, gst){
+            if (gst==='OK' && gres && gres[0]){
+              var pref = '';
+              gres[0].address_components.forEach(function(c){ if (c.types.indexOf('administrative_area_level_1')>-1) pref = c.long_name; });
+              if (pref){
+                document.getElementById('wpoPref').value = pref;
+                document.getElementById('wpoLocAd').textContent = pref + ' ' + vic;
+                wpoGenTags(); wpoValidate();
+              }
+            }
+          });
+        }catch(e){}
+      });
+    }catch(e){}
+  }
+
+  document.getElementById('wpoFile').onchange = function(){
+    var files = [].slice.call(this.files||[]);
+    if (!files.length) return;
+    files.forEach(function(f, i){
+      wpoCompress(f, function(data){ wpoState.photos.push(data); wpoRenderPhotos(); wpoValidate(); });
+      if (i===0 && !wpoState.photos.length) wpoExifGps(f, function(gps){ if (gps) wpoDetectFromGps(gps); });
+    });
+    this.value='';
+  };
+
+  // 神社名からハッシュタグを自動生成
+  function wpoGenTags(){
+    var name = document.getElementById('wpoShrine').value.trim();
+    var pref = document.getElementById('wpoPref').value;
+    if (!name){ return; }
+    var m = new Date().getMonth()+1;
+    var season = (m>=3&&m<=4)?'#桜':(m>=5&&m<=6)?'#新緑':(m>=7&&m<=8)?'#夏詣':(m>=9&&m<=11)?'#紅葉':'#初詣';
+    var base = ['#'+name];
+    if (pref) base.push('#'+pref);
+    var isTemple = /寺|院|大師|不動|観音/.test(name);
+    base = base.concat(isTemple ? ['#寺院','#御朱印','#仏閣めぐり'] : ['#神社','#御朱印','#パワースポット']);
+    base = base.concat(['#開運', season, '#参拝記録', '#わびなび']);
+    var keep = {};
+    wpoState.tags.forEach(function(t){ keep[t.tag] = t.on; });
+    wpoState.tags = base.map(function(t,i){ return {tag:t, on:(t in keep) ? keep[t] : (i<6)}; });
+    var badge = document.getElementById('wpoTagBadge'); if (badge) badge.style.display='inline-block';
+    wpoRenderTags();
+  }
+  function wpoRenderTags(){
+    var box = document.getElementById('wpoTags');
+    box.innerHTML = wpoState.tags.map(function(t,i){
+      return '<span class="wpo-tag'+(t.on?'':' off')+'" data-t="'+i+'">'+t.tag+'</span>';
+    }).join('');
+    box.querySelectorAll('.wpo-tag').forEach(function(el){
+      el.onclick = function(){ var t=wpoState.tags[+el.getAttribute('data-t')]; t.on=!t.on; wpoRenderTags(); };
+    });
+  }
+  document.getElementById('wpoShrine').addEventListener('input', function(){
+    document.getElementById('wpoClear').style.display = this.value ? 'flex' : 'none';
+    wpoGenTags(); wpoValidate();
+  });
+  document.getElementById('wpoPref').addEventListener('change', function(){ wpoGenTags(); wpoValidate(); });
+  document.getElementById('wpoText').addEventListener('input', function(){ document.getElementById('wpoCnt').textContent = this.value.length; });
+
+  function wpoValidate(){
+    var ok = wpoState.photos.length>0 && document.getElementById('wpoShrine').value.trim() && document.getElementById('wpoPref').value;
+    document.getElementById('wpoSubmit').disabled = !ok;
+  }
+
+  // プレビュー（トップに載るカードの見た目）
+  document.getElementById('wpoPrev').onclick = function(){
+    if (!wpoState.photos.length){ toast('写真を追加するとプレビューできます'); return; }
+    var name = document.getElementById('wpoShrine').value.trim()||'神社名';
+    var pref = document.getElementById('wpoPref').value||'都道府県';
+    var pv = document.createElement('div');
+    pv.style.cssText='position:fixed;inset:0;z-index:300;background:rgba(20,14,8,.75);display:flex;align-items:center;justify-content:center;';
+    pv.innerHTML='<div style="width:230px"><div class="wcp-card"><img src="'+wpoState.photos[0]+'"><div class="wcp-grad"></div><div class="wcp-info"><div class="wcp-userrow"><span class="wcp-av" style="background:#c9a84c">参</span><span class="wcp-un">あなた</span><span class="wcp-like">♡</span></div><div class="wcp-tags"><span># '+name+'</span><span># '+pref+'</span></div></div></div><div style="text-align:center;color:#fff;font-size:11px;margin-top:10px">トップページでの見え方（タップで閉じる）</div></div>';
+    pv.onclick=function(){ pv.remove(); };
+    document.body.appendChild(pv);
+  };
+
+  // 投稿する
+  document.getElementById('wpoSubmit').onclick = function(){
+    var name = document.getElementById('wpoShrine').value.trim();
+    var pref = document.getElementById('wpoPref').value;
+    if (!wpoState.photos.length || !name || !pref) return;
+    var post = {
+      id:'u'+Date.now(),
+      user:'あなた', avatar:'参', date:'たった今',
+      shrine:name, addr:pref, area:pref.replace(/[都道府県]$/,''),
+      img:wpoState.photos[0],
+      text:document.getElementById('wpoText').value.trim(),
+      tags:wpoState.tags.filter(function(t){return t.on;}).map(function(t){return t.tag;}),
+      visibility:document.getElementById('wpoVis').value,
+      likes:0, comments:[]
+    };
+    try{
+      var mine = JSON.parse(localStorage.getItem('wabi_my_posts')||'[]');
+      mine.unshift(post);
+      if (mine.length>12) mine = mine.slice(0,12); // 容量対策
+      localStorage.setItem('wabi_my_posts', JSON.stringify(mine));
+    }catch(e){ toast('端末の保存容量が足りないため、写真は保存されない場合があります'); }
+    if (post.visibility==='public' && typeof USER_POSTS!=='undefined'){
+      USER_POSTS.unshift(post);
+      redesignCommunity();
+    }
+    postPg.style.display='none';
+    toast('🌿 投稿しました！トップの「みんなの最新投稿」に表示されています');
+    var sec = document.querySelector('.community-box');
+    if (sec) sec.scrollIntoView({behavior:'smooth', block:'center'});
+  };
+
+  // 端末に保存済みの自分の投稿を起動時に反映
+  try{
+    var mine0 = JSON.parse(localStorage.getItem('wabi_my_posts')||'[]');
+    if (mine0.length && typeof USER_POSTS!=='undefined'){
+      mine0.slice().reverse().forEach(function(p){ if (p.visibility==='public') USER_POSTS.unshift(p); });
+      redesignCommunity();
+    }
+  }catch(e){}
 })();
