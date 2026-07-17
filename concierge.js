@@ -1166,6 +1166,85 @@
   redesignCommunity();
 
   // ─────────────────────────────────────────
+  // 9. 「この条件で検索する」の結果カード：写真を2×2グリッド（みんなの投稿と同サイズ感）
+  // ─────────────────────────────────────────
+  var css6 = document.createElement('style');
+  css6.textContent = '.wgal{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:.2rem .875rem .7rem;}\n.wgal img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:16px;display:block;}';
+  document.head.appendChild(css6);
+  function upgradeRankingPhotos(){
+    try{
+      if (typeof photoCache === 'undefined') return;
+      document.querySelectorAll('.rcard').forEach(function(card){
+        if (card.querySelector('.wgal')) return;
+        var nameEl = card.querySelector('.rname');
+        if (!nameEl) return;
+        var name = nameEl.textContent.trim();
+        var ph = photoCache[name];
+        if (!ph || !ph.length) return;
+        var wrap = card.querySelector('.pgallery');
+        if (!wrap) return;
+        var strip = card.querySelector('.pstrip');
+        var g = document.createElement('div'); g.className='wgal';
+        g.innerHTML = ph.slice(0,4).map(function(u){ return '<img src="'+u+'" loading="lazy">'; }).join('');
+        wrap.parentElement.insertBefore(g, wrap);
+        wrap.style.display='none';
+        if (strip) strip.style.display='none';
+      });
+    }catch(e){}
+  }
+  setInterval(upgradeRankingPhotos, 1200);
+
+  // ─────────────────────────────────────────
+  // 10. トップ「テーマで巡るベスト10」「季節の行事・ライトアップ」をJSONから表示
+  //（管理画面 admin/sections.html で編集 → data/themes.json・events.json をアップで反映）
+  // ─────────────────────────────────────────
+  function renderTopSection(headText, jsonUrl){
+    fetch(jsonUrl, {cache:'no-store'}).then(function(r){ return r.ok ? r.json() : null; }).then(function(items){
+      if (!items || !items.length) return;
+      var head = [...document.querySelectorAll('div,h2,h3,span')].find(function(e){
+        return e.tagName!=='SCRIPT' && e.childElementCount===0 && (e.textContent||'').trim().indexOf(headText)===0 && !e.closest('#wcPost,#wcPrev,#wcSpot');
+      });
+      if (!head) return;
+      var sec = head;
+      for (var i=0;i<6 && sec.parentElement;i++){
+        sec = sec.parentElement;
+        if (sec.querySelector('.route-card') || sec.innerText.length>120) break;
+      }
+      var row = sec.querySelector('.route-scroll, .route-cards, [class*=scroll]');
+      if (!row){
+        row = [...sec.querySelectorAll('div')].find(function(d){ return d.children.length>=2 && d.scrollWidth>d.clientWidth+40; });
+      }
+      if (!row){
+        // カード列が見つからなければ、見出しの直後に新設
+        row = document.createElement('div');
+        row.style.cssText='display:flex;gap:10px;overflow-x:auto;padding:10px 0 6px;';
+        head.parentElement.insertAdjacentElement('afterend', row);
+      }
+      row.innerHTML = items.map(function(t,i){
+        return '<div class="route-card" data-wtop="'+i+'" style="flex:0 0 165px;cursor:pointer">'
+          + '<div class="route-card-img-wrap"><div class="route-card-img wtop-img" data-shrine-w="'+esc(t.shrine||'')+'" style="display:flex;align-items:center;justify-content:center;font-size:30px;background:linear-gradient(135deg,#8a9ab0,#4a5a70);color:#fff">'+(t.emoji||'⛩')+'</div></div>'
+          + '<div class="route-card-body"><div class="route-card-title">'+(t.emoji?t.emoji+' ':'')+esc(t.title||'')+'</div>'
+          + '<div class="route-card-desc">'+esc(t.desc||'')+'</div>'
+          + '<div class="route-card-meta">'+esc(t.meta||'')+'</div></div></div>';
+      }).join('');
+      row.querySelectorAll('[data-wtop]').forEach(function(c){
+        var t = items[+c.getAttribute('data-wtop')];
+        c.onclick = function(){ if (t.link) location.href = t.link; };
+      });
+      // 神社名からWikipediaの実写真を差し込み
+      var names = items.map(function(t){ return t.shrine; }).filter(Boolean);
+      if (names.length) wikiPhotosFor([...new Set(names)], function(map){
+        row.querySelectorAll('.wtop-img').forEach(function(el){
+          var u = map[el.getAttribute('data-shrine-w')];
+          if (u){ el.style.background='url('+u+') center/cover'; el.textContent=''; }
+        });
+      });
+    }).catch(function(){});
+  }
+  renderTopSection('テーマで巡るベスト', 'data/themes.json');
+  renderTopSection('季節の行事', 'data/events.json');
+
+  // ─────────────────────────────────────────
   // 8. 新しい投稿画面（Instagram×Threads風）
   // ─────────────────────────────────────────
   var css5 = document.createElement('style');
