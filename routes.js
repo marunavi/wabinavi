@@ -330,7 +330,7 @@
   // 下の '' の中にGoogleのAPIキーを貼り付けてください。
   // ※必ずGoogle Cloud側で「HTTPリファラー制限: https://marunavi.github.io/*」を設定してから貼ること
   var WABI_PUBLIC_API_KEY = 'AIzaSyBhItwVQYblQTxo92oWeXuskQW-JYipgCk';
-  if (WABI_PUBLIC_API_KEY && !localStorage.getItem('gplaces_key')) {
+  if (WABI_PUBLIC_API_KEY) {
     try {
       localStorage.setItem('gplaces_key', WABI_PUBLIC_API_KEY);
       API_KEY = WABI_PUBLIC_API_KEY;
