@@ -15,7 +15,10 @@
     <div class="sub">記事の作成・公開を行います</div>
     <div class="field">
       <label for="pw">パスワード</label>
-      <input type="password" id="pw" placeholder="パスワードを入力" autocomplete="current-password">
+      <div style="position:relative">
+        <input type="password" id="pw" placeholder="パスワードを入力" autocomplete="current-password" style="width:100%;box-sizing:border-box;padding-right:44px">
+        <button type="button" id="pwEye" aria-label="パスワードを表示" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;font-size:18px;cursor:pointer;opacity:.65;padding:4px">👁</button>
+      </div>
     </div>
     <div class="login-err" id="err"></div>
     <button class="btn btn-gold" style="width:100%" id="loginBtn">ログイン</button>
@@ -27,6 +30,10 @@
   if (WabiStore.isAuthed()) location.href = 'dashboard.html';
   var pw = document.getElementById('pw');
   var err = document.getElementById('err');
+  document.getElementById('pwEye').addEventListener('click', function () {
+    if (pw.type === 'password') { pw.type = 'text'; this.textContent = '🙈'; this.style.opacity = '1'; }
+    else { pw.type = 'password'; this.textContent = '👁'; this.style.opacity = '.65'; }
+  });
   function tryLogin() {
     if (WabiStore.login(pw.value)) {
       location.href = 'dashboard.html';
