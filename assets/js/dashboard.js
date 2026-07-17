@@ -133,18 +133,23 @@
 
   // ── data/articles.json を記事一覧（localStorage）へ取り込む ──
   // 管理画面の一覧・編集は localStorage を見るため、公開データを取り込んで編集可能にする。
-  // 既にある記事（同じスラッグ）はそのまま残し、まだ無い記事だけを追加する。
+  // 公開サイトに載っている記事は「公開中」として扱う（既存の下書き状態も補正する）。
   function mergeFromJson(url) {
     return fetch(url, { cache: 'no-store' })
       .then(function (r) { return r.ok ? r.json() : []; })
       .then(function (arr) {
         if (!Array.isArray(arr)) return;
-        var have = {};
-        WabiStore.getArticles().forEach(function (a) { if (a.slug) have[a.slug] = true; });
+        var bySlug = {};
+        WabiStore.getArticles().forEach(function (a) { if (a.slug) bySlug[a.slug] = a; });
         arr.forEach(function (a) {
-          if (a && a.slug && !have[a.slug]) {
+          if (!a || !a.slug) return;
+          var ex = bySlug[a.slug];
+          if (ex) {
+            if (ex.status !== 'published') { ex.status = 'published'; WabiStore.upsert(ex); }
+          } else {
             var copy = JSON.parse(JSON.stringify(a));
             copy.id = null; // 新しいIDを割り当てて保存
+            copy.status = 'published';
             WabiStore.upsert(copy);
           }
         });
