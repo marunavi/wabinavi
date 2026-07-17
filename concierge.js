@@ -211,16 +211,16 @@
 
   // 固定10ルート＝手作りデータ／検索ルート＝Google Placesで周辺を実検索
   var dynCache = {};
-  /* 楽天トラベルAPI 近隣ホテル */   var RAKUTEN_APP_ID='b91a95fd-2188-46ff-a466-88040d44cf4a';   var RAKUTEN_ACCESS_KEY='pk_efKQ9Eyzu3LgUSWVTDSBHxLUCva8n76zdA6MLpt9Sof';   var RAKUTEN_AFFILIATE_ID='55c72f69.237de1c5.55c72f6a.3905e7a2';   var rakCache={};   function wcRakutenHotels(lat,lng,cb){     try{       if(lat==null||lng==null){cb(null);return;}       var url='https://openapi.rakuten.co.jp/engine/api/Travel/KeywordHotelSearch/20170426'         +'?applicationId='+encodeURIComponent(RAKUTEN_APP_ID)         +'&accessKey='+encodeURIComponent(RAKUTEN_ACCESS_KEY)         +'&affiliateId='+encodeURIComponent(RAKUTEN_AFFILIATE_ID)         +'&format=json&hits=30&keyword='+encodeURIComponent(lat);       fetch(url).then(function(r){return r.json();}).then(function(j){         var listH=(j&&j.hotels)||[],out=[];         for(var i=0;i<listH.length;i++){           var arr=listH[i]&&listH[i].hotel;if(!arr)continue;           var b=null;for(var k=0;k<arr.length;k++){if(arr[k]&&arr[k].hotelBasicInfo){b=arr[k].hotelBasicInfo;break;}}           if(!b)continue;           var rating=+b.reviewAverage||0,price=+b.hotelMinCharge||0;           if(rating<4.0)continue;           if(!(price>=7000&&price<=40000))continue;           var area=(b.address2||b.address1||'');           out.push({name:b.hotelName||'ホテル',             genre:(b.hotelSpecial?String(b.hotelSpecial).replace(/<[^>]*>/g,'').slice(0,16):'ホテル・旅館'),             rating:rating,reviews:+b.reviewCount||0,             walk:(area?String(area).slice(0,12):'巡拝の拠点に'),             price:'¥'+Number(price).toLocaleString('ja-JP')+'〜',             ai:Math.min(99,Math.round(rating*19+Math.min(+b.reviewCount||0,1000)/125)),             img:I('🏨',G.hotel),             photoUrl:b.hotelImageUrl||b.hotelThumbnailUrl||b.roomImageUrl||null,             url:b.hotelInformationUrl||b.planListUrl||null});         }         out.sort(function(a,b){return (b.rating-a.rating)||(b.reviews-a.reviews);});         cb(out.slice(0,12));       }).catch(function(){cb(null);});     }catch(e){cb(null);}   }   function applyRakuten(route,base){     if(!base||!route||!route.spots||!route.spots[0])return base;     var s0=route.spots[0],rk=s0.name+'|'+s0.lat;     if(rakCache[rk]&&rakCache[rk].length){var c={};for(var k in base)c[k]=base[k];c.hotel=rakCache[rk];return c;}     return base;   }   function dynKey(route){ return route.spots.map(function(s){return s.name;}).join('|'); }
+  function dynKey(route){ return route.spots.map(function(s){return s.name;}).join('|'); }
   function fetchNearby(route){
-    if (window._dynamicRoutes && dynCache[dynKey(route)]) return applyRakuten(route, dynCache[dynKey(route)]);
-    return applyRakuten(route, WC_DATA[route.id] || WC_DATA.dyn);
+    if (window._dynamicRoutes && dynCache[dynKey(route)]) return dynCache[dynKey(route)];
+    return WC_DATA[route.id] || WC_DATA.dyn;
   }
   function haversine(a,b,c,d2){var R=6371e3,p=Math.PI/180;var x=(c-a)*p,y=(d2-b)*p;var s=Math.sin(x/2)*Math.sin(x/2)+Math.cos(a*p)*Math.cos(c*p)*Math.sin(y/2)*Math.sin(y/2);return 2*R*Math.asin(Math.sqrt(s));}
   function fetchDynamicNearby(route, cb){
     try{
       var s0 = route.spots[0];
-      var _k=(typeof localStorage!=='undefined'&&localStorage.getItem('gplaces_key'))||''; if(_k){ try{ window.API_KEY=_k; }catch(e){} } if (!_k || !s0 || !s0.lat){ cb(null); return; } if (typeof google==='undefined' || !google.maps || !google.maps.places){ if(!window.__wabiGmap){ window.__wabiGmap=1; window.__wabiGmapReady=function(){ try{for(var _kk in dynCache){delete dynCache[_kk];}}catch(e){} buildInlineKeep(); }; var _sc=document.createElement('script'); _sc.src='https://maps.googleapis.com/maps/api/js?key='+encodeURIComponent(_k)+'&libraries=places&callback=__wabiGmapReady'; document.head.appendChild(_sc); } cb(null); return; }
+      if (typeof API_KEY==='undefined' || !API_KEY || typeof google==='undefined' || !google.maps || !google.maps.places || !s0 || !s0.lat){ cb(null); return; }
       var svc = new google.maps.places.PlacesService(document.createElement('div'));
       var center = new google.maps.LatLng(s0.lat, s0.lng);
       var out = { near:String(s0.name).replace(/[（(].*$/,''), gourmet:[], cafe:[], sight:[], exp:[], hotel:[],
@@ -272,7 +272,7 @@
     '.wc-sec-tit{font-family:"Shippori Mincho",serif;font-size:14.5px;font-weight:800;color:#2a2018;}',
     '.wc-sec-sub{font-size:11px;color:#a89a80;margin-top:2px;}',
     '.wc-all{font-size:11px;color:#a83320;cursor:pointer;white-space:nowrap;}',
-    '.wc-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:6px 0 2px;}',
+    '.wc-row{display:flex;gap:10px;overflow-x:auto;padding:6px 0 2px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;}',
     '.wc-row::-webkit-scrollbar{display:none;}',
     '.wc-card{flex:0 0 calc(50% - 5px);background:#fff;border-radius:20px;border:1px solid #e8dfcd;box-shadow:0 3px 12px -6px rgba(90,70,40,.2);overflow:hidden;scroll-snap-align:start;}',
     '.wc-img{position:relative;width:100%;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;font-size:34px;overflow:hidden;cursor:pointer;}',
@@ -375,6 +375,34 @@
     '#wcLb img{max-width:94%;max-height:88%;border-radius:10px;}'
   ].join('\n');
   document.head.appendChild(css2);
+  var css3 = document.createElement('style');
+  css3.textContent = [
+    '.wcb-card{background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(0,0,0,.06);padding:18px 14px 14px;margin:16px 16px 0;}',
+    '.wcb-tit{text-align:center;font-family:"Shippori Mincho",serif;font-size:16px;font-weight:800;color:#2a2018;}',
+    '.wcb-sub{text-align:center;font-size:10.5px;color:#a89a80;margin:4px 0 8px;}',
+    '.wcb-total{display:table;margin:0 auto 10px;font-size:11px;font-weight:700;color:#7a4a10;background:#f5efd6;border-radius:14px;padding:4px 14px;}',
+    '.wcb-row{display:flex;align-items:center;gap:10px;padding:8px 2px;background:#fff;border-radius:14px;position:relative;}',
+    '.wcb-row.drag{box-shadow:0 10px 24px rgba(0,0,0,.18);transform:scale(1.02);z-index:5;}',
+    '.wcb-numcol{display:flex;flex-direction:column;align-items:center;flex:0 0 30px;align-self:stretch;}',
+    '.wcb-num{width:29px;height:29px;border-radius:50%;background:#a83320;color:#fff;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;flex:0 0 29px;}',
+    '.wcb-line{flex:1;width:0;border-left:2px dashed #E5E0D8;margin-top:3px;}',
+    '.wcb-img{width:84px;height:64px;border-radius:12px;flex:0 0 84px;display:flex;align-items:center;justify-content:center;font-size:26px;color:#fff;overflow:hidden;position:relative;cursor:pointer;}',
+    '.wcb-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}',
+    '.wcb-info{flex:1;min-width:0;}',
+    '.wcb-nm{font-size:13px;font-weight:800;color:#1F1F1F;font-family:"Shippori Mincho",serif;display:flex;align-items:center;gap:6px;cursor:pointer;}',
+    '.wcb-nm span.t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}',
+    '.wcb-bdg{font-size:8.5px;color:#5a4470;background:#ece5f5;border-radius:10px;padding:2px 8px;font-weight:700;white-space:nowrap;flex:0 0 auto;}',
+    '.wcb-sb{font-size:10px;color:#6B6B6B;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}',
+    '.wcb-tags{display:flex;gap:5px;margin-top:4px;flex-wrap:wrap;}',
+    '.wcb-tag{font-size:8.5px;color:#A8844D;background:#F7F2E6;border-radius:10px;padding:2px 8px;}',
+    '.wcb-tag.ai{color:#A06A00;background:#FFF3D8;}',
+    '.wcb-stay{flex:0 0 54px;background:#FFF7E6;border:1px solid #EADFC6;border-radius:12px;text-align:center;padding:5px 2px;}',
+    '.wcb-stay span{display:block;font-size:8.5px;color:#A8844D;}',
+    '.wcb-stay b{display:block;font-size:12px;color:#2a2018;line-height:1.3;}',
+    '.wcb-handle{flex:0 0 24px;color:#B8B2A6;font-size:19px;text-align:center;cursor:grab;touch-action:none;user-select:none;padding:8px 0;}',
+    '.wcb-addbtn{display:block;width:100%;margin-top:10px;padding:11px 0;border:2px dashed #E6E1D6;border-radius:14px;background:#fff;color:#7a5aa8;font-size:12.5px;font-weight:700;cursor:pointer;font-family:"Shippori Mincho",serif;}'
+  ].join('\n');
+  document.head.appendChild(css3);
 
   // ─────────────────────────────────────────
   // 3. 状態（選択中ルート・追加スポット）
@@ -449,13 +477,12 @@
   // ─────────────────────────────────────────
   // 4. 検索結果ページ（ルート一覧）の下に提案セクションを組み込む
   // ─────────────────────────────────────────
-  function wcShowAll(ck){var d=fetchNearby(state.route),items=(d[ck]||[]),T={gourmet:'グルメ',cafe:'カフェ・スイーツ',sight:'観光スポット',exp:'体験・アクティビティ',hotel:'宿泊施設'};var ov=document.getElementById('wcAllOv');if(!ov){ov=document.createElement('div');ov.id='wcAllOv';document.body.appendChild(ov);}ov.style.cssText='position:fixed;inset:0;z-index:280;background:#F8F5EF;overflow-y:auto;-webkit-overflow-scrolling:touch;';var h='<div style="position:sticky;top:0;background:#fff;display:flex;align-items:center;gap:8px;padding:14px 16px;border-bottom:1px solid #eee8dc;z-index:2"><span id="wcAllBack" style="font-size:24px;color:#a83320;cursor:pointer;padding:0 8px">‹</span><span style="font-family:Shippori Mincho,serif;font-weight:800;font-size:15px;color:#2a2018">'+(T[ck]||'')+'（'+items.length+'件）</span></div><div style="max-width:500px;margin:0 auto;padding:12px 16px 60px">';items.forEach(function(it,i){h+='<div class="wc-allc" data-i="'+i+'" style="background:#fff;border:1px solid #e8dfcd;border-radius:18px;overflow:hidden;margin-bottom:16px;box-shadow:0 3px 12px -6px rgba(90,70,40,.2);cursor:pointer"><div style="width:100%;aspect-ratio:16/10;background:'+it.img.grad+';display:flex;align-items:center;justify-content:center;font-size:28px;color:#fff">'+(it.photoUrl?'<img src="'+esc(it.photoUrl)+'" style="width:100%;height:100%;object-fit:cover">':it.img.emoji)+'</div><div style="padding:12px 14px 14px"><div style="font-family:Shippori Mincho,serif;font-weight:800;font-size:13px;color:#2a2018">'+it.name+'</div><div style="font-size:11px;color:#a89a80;margin-top:3px">★'+it.rating.toFixed(1)+'（'+it.reviews+'）・'+it.walk+'</div>'+(it.price?'<div style="font-size:12px;font-weight:800;color:#a83320;margin-top:3px">'+it.price+'</div>':'')+'<button class="wc-alladd" data-i="'+i+'" style="display:block;width:100%;margin-top:10px;padding:9px 0;border-radius:10px;border:1px solid #c9a84c;background:#fff;color:#7a4a10;font-size:12px;font-weight:700;cursor:pointer;font-family:Shippori Mincho,serif">＋ ルートに追加</button></div></div>';});h+='</div>';ov.innerHTML=h;ov.style.display='block';document.getElementById('wcAllBack').onclick=function(){ov.style.display='none';};ov.querySelectorAll('.wc-allc').forEach(function(c){c.onclick=function(){var ix=+c.getAttribute('data-i');if(ck==='hotel'){var it2=(fetchNearby(state.route).hotel||[])[ix];if(it2&&it2.url){window.open(it2.url,'_blank');return;}}ov.style.display='none';openSpot(ck,ix);};}); ov.querySelectorAll('.wc-alladd').forEach(function(btn){btn.onclick=function(ev){ev.stopPropagation();var ix=+btn.getAttribute('data-i');var it3=(fetchNearby(state.route)[ck]||[])[ix];if(!it3)return;var key=ck+':'+ix;if(!state.added.some(function(a){return a.key===key;})){state.added.push({key:key,cat:ck,item:it3});toast('🌿 「'+it3.name+'」をルートに追加しました');buildInlineKeep();}btn.classList.add('on');btn.textContent='✓ 追加済み';btn.style.background='#a83320';btn.style.color='#fff';btn.style.borderColor='#a83320';};});}
   function buildInline(){
     var ct = document.getElementById('aiRouteCards');
     if (!ct) return;
     var routes = window._dynamicRoutes || window.AI_ROUTES || [];
     if (!routes.length) return;
-    if (!state.route || routes.indexOf(state.route) < 0) { state.route = routes[0]; state.added = []; }
+    if (!state.route || routes.indexOf(state.route) < 0) { state.route = routes[0]; state.added = []; state.items = null; }
     var d;
     if (window._dynamicRoutes) {
       var dk = dynKey(state.route);
@@ -478,12 +505,13 @@
       ct.appendChild(ld);
       return;
     }
-    currentNear = d.near || String(state.route.spots[0].name).replace(/[（(].*$/,'');     var _s0=state.route.spots[0], _rk=_s0?(_s0.name+'|'+_s0.lat):state.route.name;     if (rakCache[_rk] && rakCache[_rk].length){ var _c={}; for(var _k in d)_c[_k]=d[_k]; _c.hotel=rakCache[_rk]; d=_c; }     else if (!rakCache[_rk+':loading'] && _s0 && _s0.lat){ rakCache[_rk+':loading']=true; wcRakutenHotels(_s0.name,_s0.name,function(_l){ rakCache[_rk]=(_l&&_l.length)?_l:(d.hotel||[]); delete rakCache[_rk+':loading']; buildInlineKeep(); }); }
+    currentNear = d.near || String(state.route.spots[0].name).replace(/[（(].*$/,'');
 
     var old = document.getElementById('wcInline'); if (old) old.remove();
     var box = document.createElement('div'); box.id='wcInline';
     box.style.cssText = 'padding-bottom:96px;';
     var h = '';
+    h += '<div id="wcAddedBox"></div>';
     h += '<div class="wc-sec" style="text-align:center;margin-top:18px">'
       + '<div class="wc-sec-tit" style="font-size:15.5px">🌿 この近くもおすすめです 🍃</div>'
       + '<div class="wc-sec-sub">AIが周辺スポットを見つけました（ベース：'+state.route.name+'）</div></div>';
@@ -491,11 +519,10 @@
       var items = d[cat.key]||[];
       if (!items.length) return;
       h += '<div class="wc-sec"><div class="wc-sec-h"><div><span class="wc-sec-tit">'+cat.tit+'</span>'
-        + ' <span class="wc-sec-sub">'+(cat.sub||'')+'</span></div><span class="wc-all" data-cat="'+cat.key+'">すべて見る ›</span></div>'
-        + '<div class="wc-row">' + items.slice(0,4).map(function(it,i){ return cardHtml(it,cat,i); }).join('') + '</div></div>';
+        + ' <span class="wc-sec-sub">'+(cat.sub||'')+'</span></div><span class="wc-all">すべて見る ›</span></div>'
+        + '<div class="wc-row">' + items.map(function(it,i){ return cardHtml(it,cat,i); }).join('') + '</div></div>';
     });
-    
-    h += '<div class="wc-list" id="wcAddedBox"></div>';
+
     box.innerHTML = h;
     ct.appendChild(box);
     renderAddedList();
@@ -512,7 +539,7 @@
         renderAddedList();
       };
     });
-    box.querySelectorAll('.wc-all').forEach(function(a){ a.onclick=function(){ wcShowAll(a.getAttribute('data-cat')); }; });
+    box.querySelectorAll('.wc-all').forEach(function(a){ a.onclick=function(){ toast('「すべて見る」はAPI接続後に対応予定です'); }; });
     // カード画像タップ → スポット詳細ページ
     box.querySelectorAll('.wc-card').forEach(function(cardEl){
       var img = cardEl.querySelector('.wc-img');
@@ -535,49 +562,145 @@
     setTimeout(resolveCardPhotos, 1200); // SDK読み込みが遅れた場合の再試行
   }
 
+  // 滞在時間（分）の目安
+  var STAY = {shrine:40, gourmet:60, cafe:30, sight:30, exp:60};
+  var CAT_BADGE = {gourmet:'ランチ', cafe:'カフェ・休憩', sight:'観光', exp:'体験', hotel:'宿泊'};
+
+  // 並び順つきのルート項目リストを最新化（神社＋追加スポット）
+  function ensureItems(){
+    if (!state.route) return;
+    var prev = state.items || [];
+    var valid = [];
+    prev.forEach(function(it){
+      if (it.type==='shrine' && state.route.spots.some(function(s){ return s.name===it.spot.name; })) valid.push(it);
+      if (it.type==='add' && state.added.some(function(a){ return a.key===it.a.key; })) valid.push(it);
+    });
+    state.route.spots.forEach(function(s){
+      if (!valid.some(function(it){ return it.type==='shrine' && it.spot.name===s.name; })) valid.push({type:'shrine', spot:s});
+    });
+    state.added.forEach(function(a){
+      if (!valid.some(function(it){ return it.type==='add' && it.a.key===a.key; })) valid.push({type:'add', a:a});
+    });
+    state.items = valid;
+  }
+
   function renderAddedList(){
-  var boxEl = document.getElementById('wcAddedBox');
-  if (!boxEl || !state.route) return;
-  var r = state.route, seq = [];
-  seq.push({t:'s', s:r.spots[0]});
-  state.added.forEach(function(a,i){ if(a.cat!=='hotel') seq.push({t:'a', a:a, i:i}); });
-  r.spots.slice(1).forEach(function(sp){ seq.push({t:'s', s:sp}); });
-  state.added.forEach(function(a,i){ if(a.cat==='hotel') seq.push({t:'a', a:a, i:i}); });
-  var STAY={gourmet:'約45分',cafe:'約45分',sight:'約40分',exp:'約60分',hotel:'1泊'};
-  var h = '<div style="text-align:center;margin-bottom:2px"><div style="font-family:Shippori Mincho,serif;font-weight:800;font-size:16px;color:#2a2018;letter-spacing:.05em">❖ 現在のルート ❖</div><div style="font-size:11px;color:#a89a80;margin-top:4px">追加したスポットで、あなただけの巡礼ルートを作りましょう</div></div>';
-  h += '<div style="margin-top:14px">';
-  seq.forEach(function(o,idx){
-    var last = idx===seq.length-1, img, nm, sub, tags='', stay, ctrl='', bg;
-    if(o.t==='s'){
-      var sp=o.s; bg='linear-gradient(135deg,#8a9ab0,#4a5a70)';
-      img = sp.photo ? '<img src="'+esc(sp.photo)+'" style="width:100%;height:100%;object-fit:cover">' : '⛩';
-      nm = String(sp.name); sub = sp.loc || sp.addr || '';
-      tags = '<span style="font-size:10px;color:#7a4a10;background:#f5efd6;border-radius:9px;padding:2px 8px">参拝・巡拝</span>';
-      stay = '約40分';
-    } else {
-      var it=o.a.item; bg=it.img.grad;
-      img = it.photoUrl ? '<img src="'+esc(it.photoUrl)+'" style="width:100%;height:100%;object-fit:cover">' : it.img.emoji;
-      nm = String(it.name); sub = it.walk || '';
-      tags = '<span style="font-size:10px;color:#7a4a10;background:#f5efd6;border-radius:9px;padding:2px 8px">'+(CAT_LABEL[o.a.cat]||'')+'</span>';
-      if(it.ai) tags += ' <span style="font-size:10px;color:#a06a00;background:#fff3d8;border-radius:9px;padding:2px 8px">AIおすすめ度 '+it.ai+'点</span>';
-      stay = STAY[o.a.cat]||'約45分';
-      ctrl = '<div style="display:flex;flex-direction:column;gap:3px;margin-left:2px;flex:0 0 auto"><button data-mv="-1" data-i="'+o.i+'" aria-label="上へ" style="border:none;background:#f3ede1;color:#8a7a5c;width:22px;height:19px;border-radius:6px;font-size:11px;cursor:pointer">↑</button><button data-mv="1" data-i="'+o.i+'" aria-label="下へ" style="border:none;background:#f3ede1;color:#8a7a5c;width:22px;height:19px;border-radius:6px;font-size:11px;cursor:pointer">↓</button><button data-del="'+o.i+'" aria-label="削除" style="border:none;background:#f7e4e0;color:#a83320;width:22px;height:19px;border-radius:6px;font-size:11px;cursor:pointer">✕</button></div>';
-    }
-    h += '<div style="display:flex;align-items:stretch;gap:10px;position:relative;padding-bottom:'+(last?'0':'14px')+'"><div style="display:flex;flex-direction:column;align-items:center;flex:0 0 30px"><div style="width:30px;height:30px;border-radius:50%;background:#a83320;color:#fff;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;flex:0 0 30px">'+(idx+1)+'</div>'+(last?'':'<div style="flex:1;width:0;border-left:2px dashed #e0d4b4;margin:4px 0"></div>')+'</div><div style="flex:1;display:flex;gap:10px;background:#fff;border:1px solid #eee2c8;border-radius:14px;padding:9px;align-items:center;min-width:0;box-shadow:0 3px 10px -6px rgba(90,70,40,.18)"><div style="width:76px;height:60px;flex:0 0 76px;border-radius:10px;overflow:hidden;background:'+bg+';display:flex;align-items:center;justify-content:center;font-size:24px;color:#fff">'+img+'</div><div style="flex:1;min-width:0"><div style="font-family:Shippori Mincho,serif;font-weight:800;font-size:13px;color:#2a2018;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+nm+'</div>'+(sub?'<div style="font-size:10px;color:#a89a80;margin-top:2px">'+sub+'</div>':'')+'<div style="margin-top:5px;display:flex;flex-wrap:wrap;gap:4px">'+tags+'</div></div><div style="flex:0 0 auto;text-align:center;background:#fff7e6;border:1px solid #eadfc6;border-radius:10px;padding:6px 7px"><div style="font-size:8.5px;color:#a89a80">滞在</div><div style="font-size:12px;font-weight:800;color:#7a4a10;white-space:nowrap">'+stay+'</div></div>'+ctrl+'</div></div>';
-  });
-  h += '</div>';
-  h += '<div id="wcAddMore" style="margin-top:14px;border:1.5px dashed #e0d4b4;border-radius:14px;text-align:center;padding:13px;color:#7a5aa8;font-weight:800;font-size:12.5px;cursor:pointer;font-family:Shippori Mincho,serif">＋ スポットを追加</div>';
-  boxEl.innerHTML = h;
-  var am=document.getElementById('wcAddMore');
-  if(am) am.onclick=function(){ var g=document.querySelector('#wcInline .wc-sec'); if(g) g.scrollIntoView({behavior:'smooth',block:'start'}); };
-  boxEl.querySelectorAll('[data-del]').forEach(function(btn){ btn.onclick=function(){ state.added.splice(+btn.getAttribute('data-del'),1); if(document.getElementById('wcInline')) buildInlineKeep(); }; });
-  boxEl.querySelectorAll('[data-mv]').forEach(function(btn){ btn.onclick=function(){ var i=+btn.getAttribute('data-i'),dd=+btn.getAttribute('data-mv'),j=i+dd; if(j<0||j>=state.added.length)return; var t=state.added[i];state.added[i]=state.added[j];state.added[j]=t; renderAddedList(); }; });
-}
+    var boxEl = document.getElementById('wcAddedBox');
+    if (!boxEl || !state.route) return;
+    ensureItems();
+    // 合計滞在時間（宿泊は別枠）
+    var total = 0, hotelCount = 0;
+    state.items.forEach(function(it){
+      if (it.type==='shrine') total += STAY.shrine;
+      else if (it.a.cat==='hotel') hotelCount++;
+      else total += (STAY[it.a.cat]||40);
+    });
+    var totalTxt = '合計滞在 約' + (total>=60 ? Math.floor(total/60)+'時間'+(total%60?total%60+'分':'') : total+'分')
+      + (hotelCount ? '＋宿泊'+hotelCount+'泊' : '') + '（移動時間は別）';
+
+    var h = '<div class="wcb-card">'
+      + '<div class="wcb-tit">✦ 現在のルート ✦</div>'
+      + '<div class="wcb-sub">追加したスポットで、あなただけの巡礼ルートを作りましょう</div>'
+      + '<div class="wcb-total">'+totalTxt+'</div>'
+      + '<div id="wcbList">';
+    state.items.forEach(function(it, i){
+      var last = (i === state.items.length-1);
+      var num = '<div class="wcb-numcol"><div class="wcb-num">'+(i+1)+'</div>'+(last?'':'<div class="wcb-line"></div>')+'</div>';
+      if (it.type==='shrine') {
+        var s = it.spot;
+        h += '<div class="wcb-row" data-i="'+i+'">'+num
+          + '<div class="wcb-img" data-shrinename="'+esc(s.name)+'" style="background:'+G.sight+'">'+(s.photo?'<img src="'+esc(s.photo)+'" loading="lazy">':'⛩')+'</div>'
+          + '<div class="wcb-info"><div class="wcb-nm" data-shrinename="'+esc(s.name)+'"><span class="t">'+s.name+'</span><span class="wcb-bdg">必須スポット</span></div>'
+          + '<div class="wcb-sb">'+(s.loc||'')+'</div>'
+          + '<div class="wcb-tags"><span class="wcb-tag">参拝・観光</span></div></div>'
+          + '<div class="wcb-stay"><span>滞在時間</span><b>'+STAY.shrine+'分</b></div>'
+          + '<div class="wcb-handle" data-h="'+i+'">≡</div></div>';
+      } else {
+        var a = it.a, isHotel = a.cat==='hotel';
+        h += '<div class="wcb-row" data-i="'+i+'">'+num
+          + '<div class="wcb-img" data-ocat="'+a.cat+'" data-okey="'+esc(a.key)+'" style="background:'+a.item.img.grad+'">'
+          + (a.item.photoUrl?'<img src="'+esc(a.item.photoUrl)+'" loading="lazy">':a.item.img.emoji)+'</div>'
+          + '<div class="wcb-info"><div class="wcb-nm" data-ocat="'+a.cat+'" data-okey="'+esc(a.key)+'"><span class="t">'+a.item.name+'</span><span class="wcb-bdg">'+(CAT_BADGE[a.cat]||'')+'</span></div>'
+          + '<div class="wcb-sb">'+(currentNear||'')+'から'+a.item.walk+'</div>'
+          + '<div class="wcb-tags"><span class="wcb-tag">'+a.item.genre+'</span><span class="wcb-tag ai">AIおすすめ度 '+a.item.ai+'点</span></div></div>'
+          + (isHotel
+             ? '<div class="wcb-stay"><span>宿泊</span><b>1泊</b></div>'
+             : '<div class="wcb-stay"><span>滞在時間</span><b>'+(STAY[a.cat]||40)+'分</b></div>')
+          + '<div class="wcb-handle" data-h="'+i+'">≡</div></div>';
+      }
+    });
+    h += '</div>'
+      + '<button class="wcb-addbtn" id="wcbAdd">＋ スポットを追加</button>'
+      + '<div style="text-align:center;font-size:9.5px;color:#b8b2a6;margin-top:7px">≡ を押したまま上下で並び替え ／ 外すときは下のカードの「✓追加済み」をもう一度タップ</div>'
+      + '</div>';
+    boxEl.innerHTML = h;
+
+    // タップで詳細ページへ
+    boxEl.querySelectorAll('[data-shrinename]').forEach(function(el){
+      el.onclick = function(){ if (typeof window.openSpotDetail==='function') window.openSpotDetail(el.getAttribute('data-shrinename')); };
+    });
+    boxEl.querySelectorAll('[data-okey]').forEach(function(el){
+      el.onclick = function(){
+        var key = el.getAttribute('data-okey');
+        var idx = +key.split(':')[1];
+        openSpot(el.getAttribute('data-ocat'), idx);
+      };
+    });
+    // 「＋スポットを追加」→ 下の提案セクションへスクロール
+    var addBtn = document.getElementById('wcbAdd');
+    if (addBtn) addBtn.onclick = function(){
+      var sec = document.querySelector('#wcInline .wc-sec:nth-of-type(1)');
+      var target = document.querySelectorAll('#wcInline .wc-sec')[1] || sec;
+      if (target) target.scrollIntoView({behavior:'smooth', block:'start'});
+    };
+    // ドラッグで並び替え（ハンドル ≡ を押したまま上下）
+    setupDrag();
+  }
+
+  function setupDrag(){
+    var list = document.getElementById('wcbList');
+    if (!list) return;
+    list.querySelectorAll('.wcb-handle').forEach(function(handle){
+      handle.onpointerdown = function(ev){
+        ev.preventDefault();
+        var row = handle.closest('.wcb-row');
+        var startIdx = +row.getAttribute('data-i');
+        var curIdx = startIdx;
+        row.classList.add('drag');
+        handle.setPointerCapture(ev.pointerId);
+        var move = function(e){
+          var rows = [].slice.call(list.querySelectorAll('.wcb-row'));
+          for (var j=0; j<rows.length; j++){
+            if (rows[j]===row) continue;
+            var rc = rows[j].getBoundingClientRect();
+            if (e.clientY > rc.top && e.clientY < rc.bottom){
+              if (e.clientY < rc.top + rc.height/2) list.insertBefore(row, rows[j]);
+              else list.insertBefore(row, rows[j].nextSibling);
+              break;
+            }
+          }
+        };
+        var up = function(e){
+          row.classList.remove('drag');
+          handle.releasePointerCapture(ev.pointerId);
+          document.removeEventListener('pointermove', move);
+          document.removeEventListener('pointerup', up);
+          // DOMの並びから state.items を再構成
+          var order = [].slice.call(list.querySelectorAll('.wcb-row')).map(function(r){ return state.items[+r.getAttribute('data-i')]; });
+          state.items = order;
+          renderAddedList();
+        };
+        document.addEventListener('pointermove', move);
+        document.addEventListener('pointerup', up);
+      };
+    });
+  }
+
   // 削除後にボタン状態も同期して再構築（選択ルートは保持）
   function buildInlineKeep(){
-    var keepRoute = state.route, keepAdded = state.added;
+    var keepRoute = state.route, keepAdded = state.added, keepItems = state.items;
     buildInline();
-    state.route = keepRoute; state.added = keepAdded;
+    state.route = keepRoute; state.added = keepAdded; state.items = keepItems;
     // ボタンの押下状態を復元
     keepAdded.forEach(function(a){
       var btn = document.querySelector('#wcInline .wc-add[data-cat="'+a.cat+'"][data-idx="'+a.key.split(':')[1]+'"]');
@@ -590,16 +713,14 @@
   // 5. カスタマイズ済みルートのプレビュー
   // ─────────────────────────────────────────
   function buildTimeline(){
-    var r = state.route;
-    var tl = [{name:r.spots[0].name, photo:r.spots[0].photo, meta:'約40分滞在', ic:'⛩', grad:G.sight}];
-    state.added.filter(function(a){ return a.cat!=='hotel'; }).forEach(function(a){
-      tl.push({name:a.item.name, meta:CAT_LABEL[a.cat]+'・約60分', ic:a.item.img.emoji, grad:a.item.img.grad});
+    ensureItems();
+    return state.items.map(function(it){
+      if (it.type==='shrine') return {name:it.spot.name, photo:it.spot.photo, meta:'約'+STAY.shrine+'分滞在', ic:'⛩', grad:G.sight};
+      var a = it.a;
+      return {name:a.item.name,
+        meta:(a.cat==='hotel' ? '宿泊・1泊' : (CAT_LABEL[a.cat]||'')+'・約'+(STAY[a.cat]||40)+'分'),
+        ic:a.item.img.emoji, grad:a.item.img.grad, photo:a.item.photoUrl||null};
     });
-    r.spots.slice(1).forEach(function(s){ tl.push({name:s.name, photo:s.photo, meta:'約40分滞在', ic:'⛩', grad:G.sight}); });
-    state.added.filter(function(a){ return a.cat==='hotel'; }).forEach(function(a){
-      tl.push({name:a.item.name, meta:'宿泊・1泊', ic:a.item.img.emoji, grad:a.item.img.grad});
-    });
-    return tl;
   }
 
   function openPreview(){
@@ -665,7 +786,7 @@
   function openSpot(cat, idx){
     var item = (fetchNearby(state.route)[cat]||[])[idx];
     if (!item) return;
-    if (cat==='hotel' && item && item.url){ window.open(item.url,'_blank'); return; }     if (cat==='hotel' && item && item.url){ window.open(item.url,'_blank'); return; }     currentSpot = {cat:cat, idx:idx, item:item};
+    currentSpot = {cat:cat, idx:idx, item:item};
     renderSpot(item, cat);
     spotPg.style.display='block'; spotPg.scrollTop=0;
     enrichSpot(item, cat); // Placesで写真・営業時間・口コミを取得して差し込み
@@ -781,7 +902,7 @@
         var nm=btn.getAttribute('data-hname'), tp=btn.getAttribute('data-htype');
         var url = tp==='rk'
           ? 'https://search.travel.rakuten.co.jp/ds/hotellist/Japan?f_query='+encodeURIComponent(nm)
-          : 'https://px.a8.net/svt/ejp?a8mat=4B7ZH3+NTCZ6+14CS+691UQ';
+          : 'https://www.jalan.net/uw/uwp1300/uww1301.do?keyword='+encodeURIComponent(nm);
         window.open(url,'_blank');
       };
     });
@@ -867,7 +988,7 @@
   if (typeof origRRC === 'function') {
     window.renderRouteCards = function(){
       origRRC();
-      try { state.route = null; state.added = []; buildInline(); } catch(e){}
+      try { state.route = null; state.added = []; state.items = null; buildInline(); } catch(e){}
     };
   }
   // 「このルートを選ぶ」＝そのルートをベースにして、おすすめセクションへ移動
@@ -876,7 +997,7 @@
     var route = routes.find(function(r){ return r.id===rid; });
     if (!route && window.AI_ROUTES) route = window.AI_ROUTES.find(function(r){ return r.id===rid; });
     if (!route || !route.spots || !route.spots.length) return;
-    state.route = route; state.added = [];
+    state.route = route; state.added = []; state.items = null;
     buildInline();
     toast('🌿 「'+route.name+'」をベースにしました。下のおすすめを追加できます');
     var el = document.getElementById('wcInline');
