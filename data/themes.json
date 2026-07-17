@@ -1,0 +1,50 @@
+[
+ {
+  "emoji": "🌸",
+  "title": "桜と御朱印ベスト10",
+  "desc": "春限定御朱印と桜の名所",
+  "meta": "🕐 春のおすすめ",
+  "shrine": "北野天満宮",
+  "link": "articles/article.html?slug=wabinavi11"
+ },
+ {
+  "emoji": "💰",
+  "title": "金運アップ神社ベスト10",
+  "desc": "銭洗弁天・御金神社など",
+  "meta": "🕐 通年",
+  "shrine": "銭洗弁財天宇賀福神社",
+  "link": "articles/article.html?slug=wabinavi16"
+ },
+ {
+  "emoji": "💞",
+  "title": "縁結び神社ベスト10",
+  "desc": "出雲大社・東京大神宮など",
+  "meta": "🕐 通年",
+  "shrine": "出雲大社",
+  "link": "articles/article.html?slug=wabinavi17"
+ },
+ {
+  "emoji": "⛰",
+  "title": "秘境パワースポット10",
+  "desc": "玉置神社・三峯神社など",
+  "meta": "🕐 通年",
+  "shrine": "玉置神社 (十津川村)",
+  "link": "articles/article.html?slug=wabinavi20"
+ },
+ {
+  "emoji": "🎨",
+  "title": "美しい切り絵御朱印10",
+  "desc": "芸術品のような限定御朱印",
+  "meta": "🕐 通年",
+  "shrine": "大神神社",
+  "link": "articles/article.html?slug=wabinavi15"
+ },
+ {
+  "emoji": "🍁",
+  "title": "紅葉の京都ベスト10",
+  "desc": "東福寺・光明寺の錦秋",
+  "meta": "🕐 秋のおすすめ",
+  "shrine": "東福寺",
+  "link": "articles/article.html?slug=wabinavi13"
+ }
+]
