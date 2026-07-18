@@ -1275,6 +1275,37 @@
     }).catch(function(){});
   }
 
+  // ─────────────────────────────────────────
+  // 11. トップの見た目微調整（おすすめ巡拝ルート2枚ぴったり／ツアー特集を大きく）
+  // ─────────────────────────────────────────
+  var css7 = document.createElement('style');
+  css7.textContent = [
+    '.ai-preview-scroll{scroll-snap-type:x mandatory;}',
+    '.ai-preview-scroll .apc{scroll-snap-align:start;}',
+    '.tour-card{border-radius:14px !important;}',
+    '.tour-img{flex:0 0 152px !important;width:152px !important;min-height:112px;}',
+    '.tour-body{padding:.85rem .95rem !important;}',
+    '.tour-title{font-size:14.5px !important;}',
+    '.tour-route{font-size:11.5px !important;}',
+    '.tour-price{font-size:13px !important;}'
+  ].join('\n');
+  document.head.appendChild(css7);
+
+  // おすすめ巡拝ルート：どの画面幅でも「ぴったり2枚」表示（余白を実測して自動調整）
+  function fixApcRow(){
+    try{
+      var sc = document.querySelector('.ai-preview-scroll');
+      if (!sc) return;
+      var P = parseFloat(getComputedStyle(sc).paddingLeft) || 20;
+      sc.style.gap = P + 'px';
+      var card = (sc.clientWidth - P - P) / 2; // gap=P・右余白は詰めて2枚ぴったり
+      sc.querySelectorAll('.apc').forEach(function(c){ c.style.flex = '0 0 ' + card + 'px'; c.style.width = card + 'px'; });
+    }catch(e){}
+  }
+  fixApcRow();
+  setTimeout(fixApcRow, 800);
+  window.addEventListener('resize', fixApcRow);
+
   renderTopSection('テーマで巡るベスト', 'data/themes.json');
   renderTopSection('季節の行事', 'data/events.json');
 
