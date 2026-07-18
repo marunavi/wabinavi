@@ -1345,6 +1345,77 @@
   fixCardImages();
   setInterval(fixCardImages, 1500);
 
+  // ─────────────────────────────────────────
+  // 13. Google地図SDKの自動起動＋おすすめ神社ランキングの写真復活・2枚ぴったり
+  // ─────────────────────────────────────────
+  window.__wcSDKq = window.__wcSDKq || [];
+  function ensureGoogle(cb){
+    if (typeof google!=='undefined' && google.maps && google.maps.places){ if(cb)cb(); return; }
+    if (typeof API_KEY==='undefined' || !API_KEY) return;
+    if (cb) window.__wcSDKq.push(cb);
+    if (window.__wcSDKloading) return;
+    window.__wcSDKloading = true;
+    window.__wcSDKcb = function(){ (window.__wcSDKq||[]).forEach(function(f){ try{f();}catch(e){} }); window.__wcSDKq=[]; };
+    var s = document.createElement('script');
+    s.src = 'https://maps.googleapis.com/maps/api/js?key='+API_KEY+'&libraries=places&callback=__wcSDKcb';
+    s.onerror = function(){ window.__wcSDKloading=false; };
+    document.head.appendChild(s);
+  }
+  ensureGoogle(function(){ if (typeof filter==='function') filter(); }); // 起動時にSDKを用意
+
+  // おすすめ神社ランキング：カードを2枚ぴったり＆写真をPlacesで表示
+  function fixRanking(){
+    try{
+      var cards = document.querySelectorAll('.rcard');
+      if (!cards.length) return;
+      // 2枚ぴったり幅（コンテナ幅とgapから算出）
+      var sc = cards[0].parentElement;
+      var gap = parseFloat(getComputedStyle(sc).gap) || 12;
+      var card = (sc.clientWidth - gap) / 2;
+      cards.forEach(function(c){ c.style.flex = '0 0 '+card+'px'; c.style.width = card+'px'; });
+      // 写真の取得（Places）
+      ensureGoogle(function(){
+        var svc = new google.maps.places.PlacesService(document.createElement('div'));
+        cards.forEach(function(c){
+          if (c.getAttribute('data-wcphoto')) return;
+          var nm = c.querySelector('.rname'); var pg = c.querySelector('.pgallery');
+          if (!nm || !pg) return;
+          c.setAttribute('data-wcphoto','1');
+          var name = nm.textContent.trim();
+          svc.findPlaceFromQuery({query:name+' 神社', fields:['photos']}, function(res, st){
+            if (st===google.maps.places.PlacesServiceStatus.OK && res && res[0] && res[0].photos && res[0].photos.length){
+              var ph = res[0].photos;
+              var urls = ph.slice(0,4).map(function(p){ return p.getUrl({maxWidth:500}); });
+              var main = urls[0];
+              var strip = urls.slice(0,4);
+              while (strip.length<4) strip.push(main);
+              pg.innerHTML = '<div class="pgallery-main"><img src="'+main+'" loading="lazy"><div class="photo-count">📷 '+urls.length+'枚</div></div>';
+              // サムネイルは元からある rcard 直下の .pstrip に入れる（空白の二重化を防ぐ）
+              var stripEl = c.querySelector(':scope > .pstrip') || pg.parentElement.querySelector('.pstrip');
+              if (stripEl) stripEl.innerHTML = strip.map(function(u){ return '<div class="pstrip-item"><img src="'+u+'" loading="lazy"></div>'; }).join('');
+            } else {
+              c.removeAttribute('data-wcphoto'); // 取得失敗は次回リトライ
+            }
+          });
+        });
+      });
+    }catch(e){}
+  }
+  var cssRank = document.createElement('style');
+  cssRank.textContent = [
+    '.rcard{height:auto !important;align-self:flex-start;}',
+    '.rcard .pgallery{height:auto !important;}',
+    '.rcard .pgallery-main{aspect-ratio:4/3 !important;height:auto !important;overflow:hidden;position:relative;border-radius:10px;}',
+    '.rcard .pgallery-main img{width:100%;height:100%;object-fit:cover;display:block;}',
+    '.rcard .pstrip{display:grid !important;grid-template-columns:repeat(4,1fr);gap:4px;margin-top:4px;height:auto !important;}',
+    '.rcard .pstrip-item{aspect-ratio:1;overflow:hidden;border-radius:6px;}',
+    '.rcard .pstrip-item img{width:100%;height:100%;object-fit:cover;display:block;}'
+  ].join('\n');
+  document.head.appendChild(cssRank);
+  fixRanking();
+  setInterval(fixRanking, 2000);
+  window.addEventListener('resize', fixRanking);
+
   renderTopSection('テーマで巡るベスト', 'data/themes.json');
   renderTopSection('季節の行事', 'data/events.json');
 
