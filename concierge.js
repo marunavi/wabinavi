@@ -1403,15 +1403,49 @@
   }
   var cssRank = document.createElement('style');
   cssRank.textContent = [
-    '.rcard{height:auto !important;align-self:flex-start;}',
+    // 全カード統一（1位も含め同じ上品な枠＋やわらかい影。順位は左上バッジで表現）
+    '.rcard, .rcard.r1{border:1px solid #ece4d3 !important;box-shadow:0 6px 18px -10px rgba(90,70,40,.35) !important;height:auto !important;align-self:stretch !important;background:#fff;}',
+    // ヘッダー高を固定して、住所の行数に関わらず画像の開始位置を揃える
+    '.rcard .rhd{min-height:150px !important;box-sizing:border-box;}',
+    // 写真エリア
     '.rcard .pgallery{height:auto !important;}',
     '.rcard .pgallery-main{aspect-ratio:4/3 !important;height:auto !important;overflow:hidden;position:relative;border-radius:10px;}',
     '.rcard .pgallery-main img{width:100%;height:100%;object-fit:cover;display:block;}',
     '.rcard .pstrip{display:grid !important;grid-template-columns:repeat(4,1fr);gap:4px;margin-top:4px;height:auto !important;}',
     '.rcard .pstrip-item{aspect-ratio:1;overflow:hidden;border-radius:6px;}',
-    '.rcard .pstrip-item img{width:100%;height:100%;object-fit:cover;display:block;}'
+    '.rcard .pstrip-item img{width:100%;height:100%;object-fit:cover;display:block;}',
+    // 横スクロールのドット目印
+    '.wc-rankdots{display:flex;justify-content:center;gap:6px;margin:10px 0 2px;}',
+    '.wc-rankdots i{width:7px;height:7px;border-radius:50%;background:#dcd3bf;transition:.2s;}',
+    '.wc-rankdots i.on{background:#a83320;width:18px;border-radius:4px;}'
   ].join('\n');
   document.head.appendChild(cssRank);
+
+  // 横スクロールのドット目印を設置＆連動
+  function fixRankDots(){
+    try{
+      var first = document.querySelector('.rcard');
+      if (!first) return;
+      var sc = first.parentElement;
+      var cards = sc.querySelectorAll('.rcard');
+      if (!cards.length) return;
+      var pages = Math.ceil(cards.length/2);
+      var dots = sc.parentElement.querySelector('.wc-rankdots');
+      if (!dots){
+        dots = document.createElement('div'); dots.className='wc-rankdots';
+        for (var i=0;i<pages;i++){ dots.innerHTML += '<i'+(i===0?' class="on"':'')+'></i>'; }
+        sc.parentElement.insertBefore(dots, sc.nextSibling);
+        sc.addEventListener('scroll', function(){
+          var per = cards[0].getBoundingClientRect().width + 12;
+          var idx = Math.round(sc.scrollLeft/(per*2));
+          dots.querySelectorAll('i').forEach(function(d,i){ d.classList.toggle('on', i===idx); });
+        });
+      }
+    }catch(e){}
+  }
+  var _origFixRanking = fixRanking;
+  fixRanking = function(){ _origFixRanking(); fixRankDots(); };
+
   fixRanking();
   setInterval(fixRanking, 2000);
   window.addEventListener('resize', fixRanking);
