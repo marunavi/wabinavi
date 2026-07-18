@@ -1306,6 +1306,45 @@
   setTimeout(fixApcRow, 800);
   window.addEventListener('resize', fixApcRow);
 
+  // ─────────────────────────────────────────
+  // 12. 季節の行事・ツアー特集のダミー画像を、実在寺社のWikipedia写真に差し替え
+  // ─────────────────────────────────────────
+  var CARD_SHRINE = {
+    // 季節の行事（タイトルの一部 → 神社名）
+    '明治神宮 夏越':'明治神宮', '鞍馬寺 竹伐':'鞍馬寺', '貴船神社':'貴船神社',
+    '住吉大社 御田植':'住吉大社', '熱田神宮 月次':'熱田神宮',
+    // ツアー特集
+    '伊勢神宮':'伊勢神宮内宮', '出雲大社':'出雲大社', '高野山':'金剛峯寺'
+  };
+  function shrineForText(txt){
+    for (var key in CARD_SHRINE){ if (txt.indexOf(key)>=0) return CARD_SHRINE[key]; }
+    return null;
+  }
+  function fixCardImages(){
+    try{
+      var jobs = [];
+      document.querySelectorAll('.season-card').forEach(function(card){
+        var t = card.querySelector('.season-title'); var img = card.querySelector('.season-img img');
+        if (t && img && !img.getAttribute('data-wabi')){ var s = shrineForText(t.textContent||''); if (s){ jobs.push({img:img, shrine:s}); img.setAttribute('data-wabi','1'); } }
+      });
+      document.querySelectorAll('.tour-card').forEach(function(card){
+        var t = card.querySelector('.tour-title'); var img = card.querySelector('.tour-img img');
+        if (t && img && !img.getAttribute('data-wabi')){ var s = shrineForText(t.textContent||''); if (s){ jobs.push({img:img, shrine:s}); img.setAttribute('data-wabi','1'); } }
+      });
+      if (!jobs.length) return;
+      var names = [];
+      jobs.forEach(function(j){ if (names.indexOf(j.shrine)<0) names.push(j.shrine); });
+      wikiPhotosFor(names, function(map){
+        jobs.forEach(function(j){
+          var u = map[j.shrine];
+          if (u){ j.img.src = u; j.img.style.display=''; }
+        });
+      });
+    }catch(e){}
+  }
+  fixCardImages();
+  setInterval(fixCardImages, 1500);
+
   renderTopSection('テーマで巡るベスト', 'data/themes.json');
   renderTopSection('季節の行事', 'data/events.json');
 
