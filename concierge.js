@@ -1450,6 +1450,59 @@
   setInterval(fixRanking, 2000);
   window.addEventListener('resize', fixRanking);
 
+  // おすすめ巡拝ルート：横スクロール → 2列グリッド（テーマで巡るベスト10と同じ一覧配置）
+  var cssRouteGrid = document.createElement('style');
+  cssRouteGrid.textContent = [
+    '.ai-preview-scroll{display:grid !important;grid-template-columns:1fr 1fr !important;gap:14px !important;overflow-x:visible !important;padding:0 16px 8px !important;scroll-snap-type:none !important;}',
+    '.ai-preview-scroll .apc{flex:none !important;width:auto !important;scroll-snap-align:none !important;}'
+  ].join('\n');
+  document.head.appendChild(cssRouteGrid);
+
+  // ─────────────────────────────────────────
+  // 14. 参拝のお供：楽天アフィリエイト商品（5点）を表示
+  // ─────────────────────────────────────────
+  var WABI_OSUPPLY = [
+    { name:'秩父三十四ヶ所札所めぐり 観音霊場巡礼ルートガイド 改訂版', price:'¥1,848', tag:'巡礼ガイド',
+      img:'https://hbb.afl.rakuten.co.jp/hgb/55e62409.82eb9d0a.55e6240a.758d8692/?me_id=1213310&item_id=20543940&pc=https%3A%2F%2Fthumbnail.image.rakuten.co.jp%2F%400_mall%2Fbook%2Fcabinet%2F5857%2F9784780425857_1_4.jpg%3F_ex%3D240x240&s=240x240&t=picttext',
+      link:'https://hb.afl.rakuten.co.jp/ichiba/55e62409.82eb9d0a.55e6240a.758d8692/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fbook%2F16988967%2F%3Fscid%3Daf_pc_bbtn&link_type=picttext&ut=eyJwYWdlIjoiaXRlbSIsInR5cGUiOiJwaWN0dGV4dCIsInNpemUiOiIyNDB4MjQwIiwibmFtIjoxLCJuYW1wIjoicmlnaHQiLCJjb20iOjEsImNvbXAiOiJkb3duIiwicHJpY2UiOjEsImJvciI6MSwiY29sIjoxLCJiYnRuIjoxLCJwcm9kIjowLCJhbXAiOmZhbHNlfQ==' },
+    { name:'御朱印帳 大判 金剛力士像 箔押し 金箔 蛇腹', price:'¥2,090', tag:'御朱印帳',
+      img:'https://hbb.afl.rakuten.co.jp/hgb/55e6354a.261418e4.55e6354b.281f8a3b/?me_id=1344822&item_id=10000097&pc=https%3A%2F%2Fthumbnail.image.rakuten.co.jp%2F%400_mall%2Fnippoh-bb%2Fcabinet%2Fhakuoshi%2Fimgrc0107619189.jpg%3F_ex%3D240x240&s=240x240&t=picttext',
+      link:'https://hb.afl.rakuten.co.jp/ichiba/55e6354a.261418e4.55e6354b.281f8a3b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fnippoh-bb%2F8-001%2F%3Fscid%3Daf_pc_bbtn&link_type=picttext&ut=eyJwYWdlIjoiaXRlbSIsInR5cGUiOiJwaWN0dGV4dCIsInNpemUiOiIyNDB4MjQwIiwibmFtIjoxLCJuYW1wIjoicmlnaHQiLCJjb20iOjEsImNvbXAiOiJkb3duIiwicHJpY2UiOjEsImJvciI6MSwiY29sIjoxLCJiYnRuIjoxLCJwcm9kIjowLCJhbXAiOmZhbHNlfQ==' },
+    { name:'御朱印帳 大判 翡翠花吹雪 金襴 京都ちせん', price:'¥2,480', tag:'御朱印帳',
+      img:'https://hbb.afl.rakuten.co.jp/hgb/55e637eb.50260a1f.55e637ec.b9335393/?me_id=1356718&item_id=10000067&pc=https%3A%2F%2Fthumbnail.image.rakuten.co.jp%2F%400_mall%2Fkyoto-chisen%2Fcabinet%2Fcompass1649313958.jpg%3F_ex%3D240x240&s=240x240&t=picttext',
+      link:'https://hb.afl.rakuten.co.jp/ichiba/55e637eb.50260a1f.55e637ec.b9335393/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fkyoto-chisen%2F10000067%2F%3Fscid%3Daf_pc_bbtn&link_type=picttext&ut=eyJwYWdlIjoiaXRlbSIsInR5cGUiOiJwaWN0dGV4dCIsInNpemUiOiIyNDB4MjQwIiwibmFtIjoxLCJuYW1wIjoicmlnaHQiLCJjb20iOjEsImNvbXAiOiJkb3duIiwicHJpY2UiOjEsImJvciI6MSwiY29sIjoxLCJiYnRuIjoxLCJwcm9kIjowLCJhbXAiOmZhbHNlfQ==' },
+    { name:'トラベルポーチ 4in1 コスメポーチ セット 吊り下げ', price:'¥1,630', tag:'旅行グッズ',
+      img:'https://hbb.afl.rakuten.co.jp/hgb/55e6427a.c24ca2fa.55e6427b.72a6c9f7/?me_id=1405779&item_id=10000142&pc=https%3A%2F%2Fthumbnail.image.rakuten.co.jp%2F%400_mall%2Fbestselectmart%2Fcabinet%2Ftrip%2Ftrip_000%2Ftrip-0003_00.jpg%3F_ex%3D240x240&s=240x240&t=picttext',
+      link:'https://hb.afl.rakuten.co.jp/ichiba/55e6427a.c24ca2fa.55e6427b.72a6c9f7/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fbestselectmart%2Fse-travel-0003%2F%3Fscid%3Daf_pc_bbtn&link_type=picttext&ut=eyJwYWdlIjoiaXRlbSIsInR5cGUiOiJwaWN0dGV4dCIsInNpemUiOiIyNDB4MjQwIiwibmFtIjoxLCJuYW1wIjoicmlnaHQiLCJjb20iOjEsImNvbXAiOiJkb3duIiwicHJpY2UiOjEsImJvciI6MSwiY29sIjoxLCJiYnRuIjoxLCJwcm9kIjowLCJhbXAiOmZhbHNlfQ==' },
+    { name:'旅行用圧縮袋 2点セット YKK 収納ポーチ', price:'¥3,490', tag:'旅行グッズ',
+      img:'https://hbb.afl.rakuten.co.jp/hgb/55e6442a.17a8cbc9.55e6442b.7e61cac6/?me_id=1379780&item_id=10000075&pc=https%3A%2F%2Fthumbnail.image.rakuten.co.jp%2F%400_mall%2Fichifujiec%2Fcabinet%2Fnsana018%2Fnk039%2Fnk03920230930%2Fnsana018set2b.jpg%3F_ex%3D240x240&s=240x240&t=picttext',
+      link:'https://hb.afl.rakuten.co.jp/ichiba/55e6442a.17a8cbc9.55e6442b.7e61cac6/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fichifujiec%2Fnsana018set%2F%3Fscid%3Daf_pc_bbtn&link_type=picttext&ut=eyJwYWdlIjoiaXRlbSIsInR5cGUiOiJwaWN0dGV4dCIsInNpemUiOiIyNDB4MjQwIiwibmFtIjoxLCJuYW1wIjoicmlnaHQiLCJjb20iOjEsImNvbXAiOiJkb3duIiwicHJpY2UiOjEsImJvciI6MSwiY29sIjoxLCJiYnRuIjoxLCJwcm9kIjowLCJhbXAiOmZhbHNlfQ==' }
+  ];
+  var cssOsupply = document.createElement('style');
+  cssOsupply.textContent = [
+    '#osupplyList .osupply-card{position:relative;}',
+    '.wabi-rk-btn{display:block;text-align:center;margin-top:6px;background:#bf0000;color:#fff !important;font-size:11px;font-weight:700;line-height:1;padding:7px 0;border-radius:14px;text-decoration:none;}',
+    '.wabi-pr{position:absolute;top:6px;right:6px;background:rgba(42,32,24,.6);color:#fff;font-size:8.5px;padding:2px 7px;border-radius:9px;z-index:2;}'
+  ].join('\n');
+  document.head.appendChild(cssOsupply);
+  function fixOsupply(){
+    try{
+      var list = document.getElementById('osupplyList');
+      if (!list || list.getAttribute('data-wabi')) return;
+      list.setAttribute('data-wabi','1');
+      list.innerHTML = WABI_OSUPPLY.map(function(p){
+        return '<div class="osupply-card">'
+          + '<span class="wabi-pr">PR</span>'
+          + '<a href="'+p.link+'" target="_blank" rel="nofollow sponsored noopener" style="text-decoration:none;color:inherit;display:block">'
+          + '<div class="osupply-img"><img src="'+p.img+'" alt="" loading="lazy" onerror="this.style.display=\'none\'"><div class="osupply-img-rank">'+p.tag+'</div></div>'
+          + '<div class="osupply-body"><div class="osupply-title">'+p.name+'</div><div class="osupply-price">'+p.price+'</div>'
+          + '<span class="wabi-rk-btn">楽天で見る</span></div></a></div>';
+      }).join('');
+    }catch(e){}
+  }
+  fixOsupply();
+  setInterval(fixOsupply, 2000);
+
   renderTopSection('テーマで巡るベスト', 'data/themes.json');
   renderTopSection('季節の行事', 'data/events.json');
 
