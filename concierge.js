@@ -1368,13 +1368,9 @@
     try{
       var cards = document.querySelectorAll('.rcard');
       if (!cards.length) return;
-      // 横スクロール → 横2列×縦スクロールのグリッドに
+      // 横スクロール → 横2列×縦スクロールのグリッドに（クラスで!important適用）
       var sc = cards[0].parentElement;
-      sc.style.display = 'grid';
-      sc.style.gridTemplateColumns = '1fr 1fr';
-      sc.style.gap = '12px';
-      sc.style.overflowX = 'visible';
-      cards.forEach(function(c){ c.style.flex = 'none'; c.style.width = 'auto'; c.style.alignSelf = 'start'; });
+      sc.classList.add('wc-rankgrid');
       // 写真の取得（Places）
       ensureGoogle(function(){
         var svc = new google.maps.places.PlacesService(document.createElement('div'));
@@ -1405,6 +1401,9 @@
   }
   var cssRank = document.createElement('style');
   cssRank.textContent = [
+    // ランキングを横スクロール→横2列×縦スクロールのグリッドに強制（index.html側の!importantに勝つ）
+    '.wc-rankgrid{display:grid !important;grid-template-columns:1fr 1fr !important;gap:12px !important;overflow-x:visible !important;overflow-y:visible !important;flex-wrap:wrap !important;scroll-snap-type:none !important;}',
+    '.wc-rankgrid>.rcard{flex:none !important;width:auto !important;min-width:0 !important;align-self:start !important;scroll-snap-align:none !important;}',
     // 全カード統一（1位も含め同じ上品な枠＋やわらかい影。順位は左上バッジで表現）
     '.rcard, .rcard.r1{border:1px solid #ece4d3 !important;box-shadow:0 6px 18px -10px rgba(90,70,40,.35) !important;height:auto !important;align-self:stretch !important;background:#fff;}',
     // ヘッダー高を固定して、住所の行数に関わらず画像の開始位置を揃える
