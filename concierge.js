@@ -1485,23 +1485,71 @@
     '.wabi-pr{position:absolute;top:6px;right:6px;background:rgba(42,32,24,.6);color:#fff;font-size:8.5px;padding:2px 7px;border-radius:9px;z-index:2;}'
   ].join('\n');
   document.head.appendChild(cssOsupply);
+  function osupplyCardHtml(p){
+    return '<div class="osupply-card">'
+      + '<span class="wabi-pr">PR</span>'
+      + '<a href="'+p.link+'" target="_blank" rel="nofollow sponsored noopener" style="text-decoration:none;color:inherit;display:block">'
+      + '<div class="osupply-img"><img src="'+p.img+'" alt="" loading="lazy" onerror="this.style.display=\'none\'"><div class="osupply-img-rank">'+p.tag+'</div></div>'
+      + '<div class="osupply-body"><div class="osupply-title">'+p.name+'</div><div class="osupply-price">'+p.price+'</div>'
+      + '<span class="wabi-rk-btn">楽天で見る</span></div></a></div>';
+  }
   function fixOsupply(){
     try{
+      var html = WABI_OSUPPLY.map(osupplyCardHtml).join('');
       var list = document.getElementById('osupplyList');
-      if (!list || list.getAttribute('data-wabi')) return;
-      list.setAttribute('data-wabi','1');
-      list.innerHTML = WABI_OSUPPLY.map(function(p){
-        return '<div class="osupply-card">'
-          + '<span class="wabi-pr">PR</span>'
-          + '<a href="'+p.link+'" target="_blank" rel="nofollow sponsored noopener" style="text-decoration:none;color:inherit;display:block">'
-          + '<div class="osupply-img"><img src="'+p.img+'" alt="" loading="lazy" onerror="this.style.display=\'none\'"><div class="osupply-img-rank">'+p.tag+'</div></div>'
-          + '<div class="osupply-body"><div class="osupply-title">'+p.name+'</div><div class="osupply-price">'+p.price+'</div>'
-          + '<span class="wabi-rk-btn">楽天で見る</span></div></a></div>';
-      }).join('');
+      if (list && !list.getAttribute('data-wabi')){ list.setAttribute('data-wabi','1'); list.innerHTML = html; }
+      var full = document.getElementById('osupplyGridFull');
+      if (full && !full.getAttribute('data-wabi')){ full.setAttribute('data-wabi','1'); full.className='osupply-list'; full.innerHTML = html; }
     }catch(e){}
   }
   fixOsupply();
   setInterval(fixOsupply, 2000);
+
+  // ─────────────────────────────────────────
+  // 15. ツアー特集：楽天トラベル観光体験アフィリエイト（4件）
+  // ─────────────────────────────────────────
+  var WABI_TOURS = [
+    { name:'嵐電1日フリーきっぷ 御朱印帳付きプラン', area:'京都・嵐電', badge:'御朱印付き', partner:'楽天トラベル',
+      shrine:'車折神社', link:'https://a.r10.to/hFISmH' },
+    { name:'京都魔界案内ミステリーツアー 陰陽師編', area:'京都・体験', badge:'人気', partner:'楽天トラベル',
+      shrine:'晴明神社', link:'https://a.r10.to/hgv8Ka' },
+    { name:'奈良 吉野 櫻本坊 修行体験＋お抹茶＋お菓子', area:'奈良・吉野', badge:'世界遺産', partner:'楽天トラベル',
+      shrine:'金峯山寺', link:'https://a.r10.to/h5KHp7' },
+    { name:'犬鳴山 七宝瀧寺 滝行＋写経体験', area:'大阪・泉佐野', badge:'修験の聖地', partner:'楽天トラベル',
+      shrine:'七宝瀧寺', link:'https://a.r10.to/h8XIiv' }
+  ];
+  function tourCardHtml(t){
+    return '<div class="tour-card" style="position:relative">'
+      + '<span class="wabi-pr">PR</span>'
+      + '<a href="'+t.link+'" target="_blank" rel="nofollow sponsored noopener" style="display:flex;text-decoration:none;color:inherit;width:100%">'
+      + '<div class="tour-img" data-tourshrine="'+t.shrine+'"><div class="tour-img-badge">'+t.badge+'</div></div>'
+      + '<div class="tour-body"><div><div class="tour-title">'+t.name+'</div><div class="tour-route">'+t.area+'</div></div>'
+      + '<div class="tour-bottom"><span class="wabi-rk-btn" style="padding:6px 14px">楽天トラベルで見る</span>'
+      + '<span style="font-size:9px;color:#a89a80;margin-left:6px">'+t.partner+'</span></div></div></a></div>';
+  }
+  function fixTours(){
+    try{
+      var html = WABI_TOURS.map(tourCardHtml).join('');
+      var changed = false;
+      var t1 = document.getElementById('tourList');
+      if (t1 && !t1.getAttribute('data-wabi')){ t1.setAttribute('data-wabi','1'); t1.innerHTML = html; changed=true; }
+      var t2 = document.getElementById('tourListFull');
+      if (t2 && !t2.getAttribute('data-wabi')){ t2.setAttribute('data-wabi','1'); t2.innerHTML = html; changed=true; }
+      if (changed){
+        var shrines = WABI_TOURS.map(function(t){ return t.shrine; });
+        wikiPhotosFor(shrines, function(map){
+          document.querySelectorAll('.tour-img[data-tourshrine]').forEach(function(el){
+            var u = map[el.getAttribute('data-tourshrine')];
+            if (u){ el.style.background = 'url('+u+') center/cover'; }
+          });
+        });
+      }
+    }catch(e){}
+  }
+  fixTours();
+  setInterval(fixTours, 2000);
+
+
 
   renderTopSection('テーマで巡るベスト', 'data/themes.json');
   renderTopSection('季節の行事', 'data/events.json');
