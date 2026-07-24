@@ -1368,11 +1368,13 @@
     try{
       var cards = document.querySelectorAll('.rcard');
       if (!cards.length) return;
-      // 2枚ぴったり幅（コンテナ幅とgapから算出）
+      // 横スクロール → 横2列×縦スクロールのグリッドに
       var sc = cards[0].parentElement;
-      var gap = parseFloat(getComputedStyle(sc).gap) || 12;
-      var card = (sc.clientWidth - gap) / 2;
-      cards.forEach(function(c){ c.style.flex = '0 0 '+card+'px'; c.style.width = card+'px'; });
+      sc.style.display = 'grid';
+      sc.style.gridTemplateColumns = '1fr 1fr';
+      sc.style.gap = '12px';
+      sc.style.overflowX = 'visible';
+      cards.forEach(function(c){ c.style.flex = 'none'; c.style.width = 'auto'; c.style.alignSelf = 'start'; });
       // 写真の取得（Places）
       ensureGoogle(function(){
         var svc = new google.maps.places.PlacesService(document.createElement('div'));
@@ -1406,10 +1408,10 @@
     // 全カード統一（1位も含め同じ上品な枠＋やわらかい影。順位は左上バッジで表現）
     '.rcard, .rcard.r1{border:1px solid #ece4d3 !important;box-shadow:0 6px 18px -10px rgba(90,70,40,.35) !important;height:auto !important;align-self:stretch !important;background:#fff;}',
     // ヘッダー高を固定して、住所の行数に関わらず画像の開始位置を揃える
-    '.rcard .rhd{min-height:150px !important;box-sizing:border-box;}',
+    '.rcard .rhd{min-height:130px !important;box-sizing:border-box;}',
     // 写真エリア
     '.rcard .pgallery{height:auto !important;}',
-    '.rcard .pgallery-main{aspect-ratio:4/3 !important;height:auto !important;overflow:hidden;position:relative;border-radius:10px;}',
+    '.rcard .pgallery-main{aspect-ratio:16/11 !important;height:auto !important;overflow:hidden;position:relative;border-radius:10px;}',
     '.rcard .pgallery-main img{width:100%;height:100%;object-fit:cover;display:block;}',
     '.rcard .pstrip{display:grid !important;grid-template-columns:repeat(4,1fr);gap:4px;margin-top:4px;height:auto !important;}',
     '.rcard .pstrip-item{aspect-ratio:1;overflow:hidden;border-radius:6px;}',
@@ -1430,6 +1432,8 @@
       var cards = sc.querySelectorAll('.rcard');
       if (!cards.length) return;
       var pages = Math.ceil(cards.length/2);
+      var ex = sc.parentElement.querySelector('.wc-rankdots'); if (ex) ex.remove();
+      return; // 縦2列グリッドではスクロール目印は不要
       var dots = sc.parentElement.querySelector('.wc-rankdots');
       if (!dots){
         dots = document.createElement('div'); dots.className='wc-rankdots';
