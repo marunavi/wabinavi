@@ -1853,3 +1853,6 @@
     }
   }catch(e){}
 })();
+
+// マイページを読み込む
+(function(){var s=document.createElement("script");s.src="mypage.js?v="+(window._wv||Date.now());document.body.appendChild(s);})();
