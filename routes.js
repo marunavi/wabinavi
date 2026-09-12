@@ -2306,6 +2306,11 @@
 (function(){
   if (window.__wabiPrevCard) return;
   window.__wabiPrevCard = true;
+  // ★2026-09-12 停止★
+  // カスタマイズ済みルートの画面そのものを作り直したため、この調整は役目を終えた。
+  // 写真を84px四方に固定する !important が残っていると、新しい見た目（横長3:2）に
+  // 勝ってしまい、写真だけ元の正方形に戻ってしまう。よってここで抜ける。
+  return;
 
   var RULES = [
     'html body #wcPrev .wc-tl{padding:20px 16px !important;border-radius:24px !important;}',

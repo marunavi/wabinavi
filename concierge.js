@@ -968,31 +968,173 @@
     });
   }
 
+  /* ══════════════════════════════════════════════════════════
+     カスタマイズ済みルートの見た目（2026-09-12 差し替え）
+
+     ★壊してはいけない目印★（ナビ・保存・追加スポットが読んでいる）
+       #wcPrevBody .wc-hero-t   … 保存するときのルート名
+       #wcPrevBody .wc-tl       … あとから追加したスポットの入れ物
+       #wcPrevBody .wc-tl-i     … 1行ぶんの入れ物
+       #wcPrevBody .wc-tl-nm    … 神社名。ナビと保存が「並び順のまま」読む
+       #wcPrevBody .wc-tl-mt    … 名前の下の1行
+       #wcNavi / #wcSave        … ボタンのid
+     これらは名前も並び順もそのまま残し、見た目だけCSSで変えている。
+     （routes.js の「神社カードを大きく見やすくする」は役目を終えたので停止済み）
+     ══════════════════════════════════════════════════════════ */
+  var cssPrev = document.createElement('style');
+  cssPrev.id = 'wabiPrevRedesign';
+  cssPrev.textContent = [
+    /* 見出し */
+    '#wcPrevBody .wcr-head{text-align:center;padding:10px 20px 9px;}',
+    '#wcPrevBody .wcr-head-en{font-family:"Shippori Mincho",serif;font-size:12px;font-weight:700;color:#7a6a55;letter-spacing:.08em;}',
+    '#wcPrevBody .wcr-head-tit{font-family:"Shippori Mincho",serif;font-size:21px;font-weight:800;color:#3a1d5d;letter-spacing:.03em;line-height:1.3;margin-top:1px;}',
+    '#wcPrevBody .wcr-head-tit .mk{color:#c9a84c;font-size:16px;margin-right:4px;}',
+    '#wcPrevBody .wcr-head-sub{font-size:10.5px;color:#8c8479;margin-top:4px;line-height:1.5;}',
+    /* ルート本体のカード */
+    '#wcPrevBody .wcr-card{background:#fff;border:1px solid #e8e0d0;border-radius:16px;margin:0 12px;padding:5px;box-shadow:0 4px 16px rgba(58,29,93,.06);}',
+    '#wcPrevBody .wc-hero{position:relative;width:100%;aspect-ratio:12/5 !important;border-radius:12px;overflow:hidden;background:#e8e0d0;}',
+    '#wcPrevBody .wc-hero-grad{display:none;}',
+    '#wcPrevBody .wcr-theme{display:flex;gap:10px;align-items:flex-start;padding:8px 8px 1px;}',
+    '#wcPrevBody .wcr-theme-l{flex:1 1 54%;min-width:0;}',
+    '#wcPrevBody .wcr-theme-r{flex:1 1 46%;min-width:0;}',
+    '#wcPrevBody .wcr-label{display:inline-block;font-family:"Shippori Mincho",serif;font-size:10px;font-weight:700;color:#fff;background:#a98a38;padding:3px 11px;border-radius:999px;letter-spacing:.06em;}',
+    /* ルート名。位置は静的に戻す（元は写真の上に重ねていた） */
+    '#wcPrevBody .wc-hero-t{position:static !important;left:auto !important;right:auto !important;bottom:auto !important;',
+      'font-family:"Shippori Mincho",serif;font-size:16.5px !important;font-weight:800;color:#3a1d5d !important;',
+      'line-height:1.38 !important;margin-top:6px;letter-spacing:.01em;text-shadow:none !important;}',
+    '#wcPrevBody .wcr-start{display:flex;align-items:center;gap:4px;margin-top:6px;font-size:10px;color:#8c8479;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}',
+    '#wcPrevBody .wcr-start b{font-weight:700;color:#6b5f52;}',
+    '#wcPrevBody .wcr-meta{display:grid;grid-template-columns:1fr 1fr;}',
+    '#wcPrevBody .wcr-meta-i{padding:0 6px;text-align:center;min-width:0;border-left:1px solid #e8e0d0;}',
+    '#wcPrevBody .wcr-meta-i:first-child{border-left:none;}',
+    '#wcPrevBody .wcr-meta-l{display:flex;align-items:center;justify-content:center;gap:3px;font-size:9px;color:#9a9288;white-space:nowrap;}',
+    '#wcPrevBody .wcr-meta-v{font-family:"Shippori Mincho",serif;font-size:13px;font-weight:700;color:#3a1d5d;line-height:1.3;margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}',
+    '#wcPrevBody .wcr-ico{width:10px;height:10px;flex-shrink:0;stroke:#a98a38;fill:none;stroke-width:1.8;}',
+    '#wcPrevBody .wcr-strip{display:grid;margin-top:7px;background:#f5efd6;border-radius:10px;padding:5px 0;}',
+    '#wcPrevBody .wcr-strip-i{text-align:center;border-left:1px solid rgba(169,138,56,.28);min-width:0;}',
+    '#wcPrevBody .wcr-strip-i:first-child{border-left:none;}',
+    '#wcPrevBody .wcr-strip-l{font-size:9px;color:#9a8a60;}',
+    '#wcPrevBody .wcr-strip-v{font-family:"Shippori Mincho",serif;font-size:13px;font-weight:700;color:#2a124a;line-height:1.3;margin-top:2px;white-space:nowrap;}',
+    /* 訪問予定スポット */
+    '#wcPrevBody .wcr-spots-hd{text-align:center;font-family:"Shippori Mincho",serif;font-size:17px;font-weight:800;color:#3a1d5d;letter-spacing:.06em;margin:12px 0 8px;}',
+    '#wcPrevBody .wc-tl{margin:0 12px !important;background:transparent !important;border-radius:0 !important;padding:0 !important;box-shadow:none !important;}',
+    '#wcPrevBody .wc-tl-i{display:flex !important;gap:8px !important;align-items:stretch !important;padding:0 !important;}',
+    '#wcPrevBody .wc-tl-n{width:22px !important;height:22px !important;flex:0 0 22px !important;border-radius:50%;background:#a98a38 !important;color:#fff !important;',
+      'font-family:"Shippori Mincho",serif;font-size:12px !important;font-weight:800;display:flex;align-items:center;justify-content:center;',
+      'margin:9px 2px 0 2px;box-shadow:0 0 0 3px #F8F5EF,0 1px 5px rgba(58,29,93,.18);}',
+    /* 番号の右側が1枚のカード */
+    '#wcPrevBody .wcr-row{flex:1;min-width:0;background:#fff;border:1px solid #e8e0d0;border-radius:14px;padding:4px;',
+      'display:flex;gap:9px;align-items:center;box-shadow:0 2px 8px rgba(58,29,93,.05);cursor:pointer;}',
+    '#wcPrevBody .wc-tl-th{width:38% !important;height:auto !important;flex:0 0 38% !important;aspect-ratio:3/2;',
+      'border-radius:10px !important;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:26px !important;color:#fff;}',
+    '#wcPrevBody .wc-tl-th img{width:100%;height:100%;object-fit:cover;display:block;}',
+    '#wcPrevBody .wcr-txt{flex:1;min-width:0;padding:0 4px 0 0;}',
+    '#wcPrevBody .wc-tl-nm{font-family:"Shippori Mincho",serif;font-size:14.5px !important;font-weight:800;color:#3a1d5d !important;',
+      'line-height:1.25 !important;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}',
+    '#wcPrevBody .wc-tl-mt{font-size:10px !important;color:#9a9288 !important;margin-top:3px !important;',
+      'overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}',
+    /* スポットとスポットの間の移動時間 */
+    '#wcPrevBody .wc-tl-mv{display:flex !important;align-items:center;justify-content:center;gap:5px;',
+      'font-size:10.5px !important;color:#8c8479 !important;padding:4px 0 !important;margin:0 0 0 34px !important;',
+      'border:none !important;height:auto !important;line-height:1.4 !important;}',
+    /* 下部の固定ボタン（2段） */
+    /* ★下端ではなく「下部メニューの上」に置く★
+       下部メニュー(#wabiNav)は重なり順が最大で、bottom:0 にすると
+       2段目の紫のボタンがそっくり隠れてしまう（実際に隠れた）。
+       サイトが元から使っている固定バーと同じく、メニューの高さぶん上げる。 */
+    '#wcPrevBody .wcr-foot{position:fixed;left:0;right:0;bottom:var(--wabi-nav-h,60px);z-index:2100;',
+      'max-width:500px;margin:0 auto;',
+      'background:rgba(248,245,239,.97);border-top:1px solid #e8e0d0;',
+      '-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);',
+      'padding:7px 12px 9px;}',
+    '#wcPrevBody .wcr-foot-row{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:7px;}',
+    '#wcPrevBody .wcr-btn{height:40px;border-radius:20px;border:1px solid #e8e0d0;background:#fff;color:#3a1d5d;',
+      'font-family:"Shippori Mincho",serif;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;',
+      'gap:5px;cursor:pointer;min-width:0;padding:0 6px;white-space:nowrap;}',
+    '#wcPrevBody .wcr-btn-main{width:100%;height:46px;border-radius:23px;border:none;background:#3a1d5d;color:#fff;',
+      'font-family:"Shippori Mincho",serif;font-size:14.5px;font-weight:800;letter-spacing:.03em;',
+      'display:flex;align-items:center;justify-content:center;gap:7px;cursor:pointer;box-shadow:0 4px 14px rgba(58,29,93,.3);}',
+    '#wcPrevBody .wcr-btn:active,#wcPrevBody .wcr-btn-main:active{transform:scale(.985);}',
+    /* 固定ボタンに隠れないように、中身の下を空ける */
+    '#wcPrev .wc-inner{padding-bottom:calc(var(--wabi-nav-h,60px) + 126px) !important;}'
+  ].join('\n');
+  document.head.appendChild(cssPrev);
+
+  var WCR_ICO = {
+    trans:'<path d="M5.2 16.4V9.9L6.8 6.2h10.4l1.6 3.7v6.5"/><path d="M3.9 16.4h16.2M6.6 12h10.8"/><path d="M7 18.6h1.8M15.2 18.6h1.8"/>',
+    time :'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+    pin  :'<path d="M12 21s7-6 7-11a7 7 0 10-14 0c0 5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/>'
+  };
+  function wcrIco(d){ return '<svg class="wcr-ico" viewBox="0 0 24 24">' + d + '</svg>'; }
+
   function openPreview(){
     if (!state.route) return;
     var r = state.route, tl = buildTimeline();
     var base = String(r.spots[0].name).replace(/[（(].*$/,'');
     var theme = (r.tags && r.tags[0]) ? r.tags[0] : '祈り';
-    var title = base + 'とめぐる、<br>' + theme + 'の旅';
-    var transIc = r.transport==='徒歩' ? '🚶 徒歩中心' : r.transport==='車' ? '🚗 車中心' : '🚃 電車・バス';
+    var title = base + 'とめぐる、' + theme + 'の旅';
+    var transTx = r.transport || '電車・バス';
     var hero = r.spots[0].photo || '';
-    var h = '<div class="wc-hero">' + (hero ? '<img src="'+esc(hero)+'">' : '<div style="width:100%;height:100%;background:'+G.sight+'"></div>')
-      + '<div class="wc-hero-grad"></div>'
-      + '<div style="position:absolute;top:14px;left:14px;background:rgba(255,255,255,.9);color:#5a4470;font-size:10px;font-weight:700;padding:4px 12px;border-radius:14px">カスタマイズ済みルート</div>'
-      + '<div class="wc-hero-t">'+title+'</div>'
-      + '<div class="wc-hero-chips"><span class="wc-chip">'+transIc+'</span><span class="wc-chip">🕐 '+(r.time||'')+'＋α</span><span class="wc-chip">📍 '+tl.length+'スポット</span></div></div>';
+
+    var h = '<div class="wcr-head">'
+      + '<div class="wcr-head-en">AIがおすすめする</div>'
+      + '<div class="wcr-head-tit"><span class="mk">❀</span>神社・お寺巡りルート</div>'
+      + '<div class="wcr-head-sub">以下のルートでよろしいですか？内容をご確認ください。</div>'
+      + '</div>';
+
+    // 訪問数と、分かっているときだけ総移動時間（分からないものは出さない）
+    var stripCells = '<div class="wcr-strip-i"><div class="wcr-strip-l">訪問数</div>'
+      + '<div class="wcr-strip-v">' + tl.length + 'か所</div></div>';
+    if (r.totalMove) {
+      stripCells += '<div class="wcr-strip-i"><div class="wcr-strip-l">総移動時間</div>'
+        + '<div class="wcr-strip-v">' + esc(String(r.totalMove).replace(/^総移動時間\s*/, '')) + '</div></div>';
+    }
+
+    h += '<div class="wcr-card">'
+      + '<div class="wc-hero">' + (hero ? '<img src="'+esc(hero)+'">' : '<div style="width:100%;height:100%;background:'+G.sight+'"></div>')
+      + '<div class="wc-hero-grad"></div></div>'
+      + '<div class="wcr-theme">'
+        + '<div class="wcr-theme-l">'
+          + '<span class="wcr-label">ルートのテーマ</span>'
+          + '<div class="wc-hero-t">' + title + '</div>'
+          + '<div class="wcr-start">' + wcrIco(WCR_ICO.pin) + 'スタート地点 <b>' + esc(tl[0] ? tl[0].name : '') + '</b></div>'
+        + '</div>'
+        + '<div class="wcr-theme-r">'
+          + '<div class="wcr-meta">'
+            + '<div class="wcr-meta-i"><div class="wcr-meta-l">' + wcrIco(WCR_ICO.trans) + '交通手段</div>'
+              + '<div class="wcr-meta-v">' + esc(transTx) + '</div></div>'
+            + '<div class="wcr-meta-i"><div class="wcr-meta-l">' + wcrIco(WCR_ICO.time) + '所要時間</div>'
+              + '<div class="wcr-meta-v">' + esc(r.time || '—') + '</div></div>'
+          + '</div>'
+          + '<div class="wcr-strip" style="grid-template-columns:repeat(' + (r.totalMove ? 2 : 1) + ',1fr)">'
+            + stripCells + '</div>'
+        + '</div>'
+      + '</div></div>';
+
+    h += '<div class="wcr-spots-hd">訪問予定スポット</div>';
     h += '<div class="wc-tl">';
     tl.forEach(function(t,i){
       h += '<div class="wc-tl-i"><div class="wc-tl-n">'+(i+1)+'</div>'
+        + '<div class="wcr-row">'
         + '<div class="wc-tl-th"'+(t.sname?' data-shrinename="'+esc(t.sname)+'"':'')+' style="background:'+t.grad+'">'+(t.photo?'<img src="'+esc(t.photo)+'" loading="lazy">':t.ic)+'</div>'
-        + '<div><div class="wc-tl-nm">'+t.name+'</div><div class="wc-tl-mt">'+t.meta+'</div></div></div>';
+        + '<div class="wcr-txt"><div class="wc-tl-nm">'+t.name+'</div><div class="wc-tl-mt">'+t.meta+'</div></div>'
+        + '</div></div>';
       if (i<tl.length-1) h += '<div class="wc-tl-mv">'+(r.transport==='徒歩'?'徒歩':'移動')+' 約10分</div>';
     });
     h += '</div>';
-    h += '<div style="display:flex;gap:10px;margin:20px 16px 30px">'
-      + '<button class="wc-btn2 wc-save" id="wcSave">♡ ルートを保存</button>'
-      + '<button class="wc-btn2 wc-navi" id="wcNavi">✦ このルートでナビを開始 →</button></div>';
+    h += '<div class="wcr-foot"><div class="wcr-foot-row">'
+      + '<button class="wcr-btn" id="wcBack">'
+        + '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#3a1d5d" stroke-width="1.8"><path d="M15 5l-7 7 7 7"/></svg>'
+        + '条件を変更して再検索</button>'
+      // 文言とハートは routes.js が保存状態に合わせて書き換える（♡未保存／♥保存済み）。
+      // 出た瞬間に文字が入れ替わって見えないよう、最初から同じ形にしておく。
+      + '<button class="wcr-btn" id="wcSave"><span class="wabi-heart">♡</span>ルートを保存</button>'
+      + '</div>'
+      + '<button class="wcr-btn-main" id="wcNavi">✦ このルートでナビを開始'
+        + '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#fff" stroke-width="1.8"><path d="M9 5l7 7-7 7"/></svg>'
+        + '</button></div>';
     document.getElementById('wcPrevBody').innerHTML = h;
+    document.getElementById('wcBack').onclick = function(){ prev.style.display = 'none'; };
     prev.style.display = 'block'; prev.scrollTop = 0;
     document.getElementById('wcSave').onclick = function(){
       try{
@@ -10318,9 +10460,11 @@
         d.className = 'wc-tl-i';
         d.setAttribute('data-wapx', x.name);
         d.innerHTML = '<div class="wc-tl-n">＋</div>'
+          + '<div class="wcr-row">'
           + '<div class="wc-tl-th" style="background:#EFE9DE">📍</div>'
-          + '<div><div class="wc-tl-nm">' + x.name + '</div>'
-          + '<div class="wc-tl-mt">' + (x.addr || '自分で追加したスポット') + '</div></div>';
+          + '<div class="wcr-txt"><div class="wc-tl-nm">' + x.name + '</div>'
+          + '<div class="wc-tl-mt">' + (x.addr || '自分で追加したスポット') + '</div></div>'
+          + '</div>';
         tl.appendChild(d);
       });
     }
