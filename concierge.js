@@ -1435,7 +1435,16 @@
       });
     }catch(e){}
   }
-  WABI_TICK(upgradeRankingPhotos, 1200);
+  // ★2026-09-12 停止★
+  // この処理は「大きい写真1枚」を隠して、代わりに小さい縦長写真4枚を入れていた。
+  // ところが同じ写真の場所を index.html の galleryHtml()、下の fixRanking()、
+  // この処理の3つが奪い合っていて、どれが先に間に合うかで見た目が変わっていた。
+  // （写真が取れたカードだけ4枚の小さい写真になり、取れなかったカードは大きい写真1枚。
+  //   トップページで「法隆寺だけ小さい4枚」になっていたのがこれ）
+  // あとから入れたデザイン統一（下の方にある「写真は1枚だけ」「比率は4:3」）と
+  // 真逆のことをしているので、この処理は動かさないことにした。
+  // ※ 消さずに残してあるのは、また必要になったときのため。戻すときは所有者を1つに絞ること。
+  void upgradeRankingPhotos;
   WABI_TICK(function(){ if (window.wabiSyncInlineCta) window.wabiSyncInlineCta(); }, 400);
   WABI_TICK(function(){ if (window.wabiFillSpotPhotos) window.wabiFillSpotPhotos(); }, 1500);
 
