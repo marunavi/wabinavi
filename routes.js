@@ -3197,10 +3197,22 @@
    東京・港区の愛宕神社を探しているのに京都の愛宕神社が返ってくる。
    （ルートの座標そのものは東京で正しいが、写真と詳細が京都のものになる）
 
-   ★対策★
+   ★対策（2026-09-02）★
    問い合わせに場所の指定が無いときだけ、
    いま見ているルートの起点のまわり（60km）を指定として足す。
    起点が分からないときは何もしない（従来どおり）。
+
+   ★それでも京都が出た（2026-09-14 追記）★
+   locationBias は「こっちを優先して」というお願いでしかなく、命令ではない。
+   京都の愛宕神社は全国的に有名でクチコミも多いため、60kmのお願いでは
+   押し切られて、やはり京都が返ってきていた。
+
+   そこで2つ足した。
+    ① 名前から座標が分かる神社（SHRINE_COORDS・108件）は、
+       ルートの起点ではなく**その神社自身の座標**のまわり8kmを指定する。
+    ② 返ってきた場所の座標を調べ、**知っている座標から30km以上離れていたら捨てる**。
+       近い候補があればそれに差し替え、無ければ「見つからなかった」ことにする。
+       間違った写真を出すくらいなら、写真を出さないほうが正しい（CLAUDE.md 8）。
    ══════════════════════════════════════════════════════════════ */
 (function(){
   if (window.__wabiPlaceBias) return;
@@ -3232,27 +3244,120 @@
     return null;
   }
 
+  // ── 名前から座標を引く（index.html の SHRINE_COORDS・108件） ──
+  function coordTable(){
+    try { if (typeof SHRINE_COORDS !== 'undefined' && SHRINE_COORDS) return SHRINE_COORDS; } catch(e){}
+    return window.SHRINE_COORDS || null;
+  }
+  // 「愛宕神社 神社」「明治神宮 東京都渋谷区」などから神社名を取り出して座標を返す
+  function knownCoord(query){
+    var C = coordTable();
+    if (!C) return null;
+    var q = String(query || '').trim();
+    if (!q) return null;
+    var t = q.replace(/\s*(神社|寺|お寺)\s*$/, '').trim();   // 末尾に足された語を外す
+    if (C[t]) return C[t];
+    if (C[q]) return C[q];
+    // 前方一致（長い名前から順に見て、短い名前に誤って当たらないようにする）
+    var keys = Object.keys(C).sort(function(a,b){ return b.length - a.length; });
+    for (var i = 0; i < keys.length; i++){
+      if (q.indexOf(keys[i]) === 0) return C[keys[i]];
+    }
+    return null;
+  }
+  // 2点間のおおよその距離（km）
+  function distKm(a, b){
+    if (!a || !b) return Infinity;
+    var R = 6371, rad = Math.PI / 180;
+    var dLat = (b.lat - a.lat) * rad, dLng = (b.lng - a.lng) * rad;
+    var la = a.lat * rad, lb = b.lat * rad;
+    var h = Math.sin(dLat/2)*Math.sin(dLat/2)
+          + Math.sin(dLng/2)*Math.sin(dLng/2)*Math.cos(la)*Math.cos(lb);
+    return 2 * R * Math.asin(Math.min(1, Math.sqrt(h)));
+  }
+  function placeCoord(p){
+    try {
+      var g = p && p.geometry && p.geometry.location;
+      if (!g) return null;
+      return { lat: (typeof g.lat === 'function' ? g.lat() : g.lat),
+               lng: (typeof g.lng === 'function' ? g.lng() : g.lng) };
+    } catch(e){ return null; }
+  }
+  var FAR_KM = 30;   // 知っている座標からこれ以上離れていたら別の社とみなす
+
+  // 問い合わせに「場所の指定」を足す。座標が分かる神社はその社自身のまわりを指定する。
+  function addBias(req){
+    try {
+      if (!req || req.locationBias || req.locationRestriction) return null;
+      var k = knownCoord(req.query);
+      if (k){
+        req.locationBias = { center: { lat: k.lat, lng: k.lng }, radius: 8000 };
+        return k;
+      }
+      var c = center();
+      if (c) req.locationBias = { center: { lat: c.lat, lng: c.lng }, radius: 60000 };
+    } catch(e){}
+    return null;
+  }
+
+  // 返ってきた候補のうち、知っている座標の近くにあるものだけを残す。
+  // 1件も残らなければ「見つからなかった」として返す（間違った写真を出さないため）。
+  function guard(known, cb){
+    if (!known || typeof cb !== 'function') return cb;
+    return function(results, status){
+      try {
+        if (results && results.length){
+          var near = results.filter(function(p){
+            var c = placeCoord(p);
+            return !c || distKm(known, c) <= FAR_KM;   // 座標が分からないものは触らない
+          });
+          if (!near.length){
+            var ZERO = (window.google && google.maps && google.maps.places
+                        && google.maps.places.PlacesServiceStatus.ZERO_RESULTS) || 'ZERO_RESULTS';
+            return cb([], ZERO);
+          }
+          return cb(near, status);
+        }
+      } catch(e){}
+      return cb(results, status);
+    };
+  }
+
   function patch(){
     try {
       if (!(window.google && google.maps && google.maps.places
             && google.maps.places.PlacesService)) return;
       var proto = google.maps.places.PlacesService.prototype;
-      if (!proto || typeof proto.findPlaceFromQuery !== 'function') return;
-      if (proto.findPlaceFromQuery.__wbias) return;
+      if (!proto) return;
 
-      var orig = proto.findPlaceFromQuery;
-      var wrapped = function(req, cb){
-        try {
-          if (req && !req.locationBias && !req.locationRestriction){
-            var c = center();
-            // 60km以内を優先して探す（同じ名前の遠方の社を掴まないため）
-            if (c) req.locationBias = { center: { lat: c.lat, lng: c.lng }, radius: 60000 };
-          }
-        } catch(e){}
-        return orig.call(this, req, cb);
-      };
-      wrapped.__wbias = true;
-      proto.findPlaceFromQuery = wrapped;
+      // findPlaceFromQuery … 欲しい項目を自分で指定する形。検証用に geometry を足す
+      if (typeof proto.findPlaceFromQuery === 'function' && !proto.findPlaceFromQuery.__wbias){
+        var origFind = proto.findPlaceFromQuery;
+        var wrappedFind = function(req, cb){
+          var known = null;
+          try {
+            known = addBias(req);
+            if (known && req && req.fields && req.fields.indexOf('geometry') < 0){
+              req.fields = req.fields.concat(['geometry']);
+            }
+          } catch(e){}
+          return origFind.call(this, req, guard(known, cb));
+        };
+        wrappedFind.__wbias = true;
+        proto.findPlaceFromQuery = wrappedFind;
+      }
+
+      // textSearch … こちらは座標が必ず付いてくる
+      if (typeof proto.textSearch === 'function' && !proto.textSearch.__wbias){
+        var origText = proto.textSearch;
+        var wrappedText = function(req, cb){
+          var known = null;
+          try { known = addBias(req); } catch(e){}
+          return origText.call(this, req, guard(known, cb));
+        };
+        wrappedText.__wbias = true;
+        proto.textSearch = wrappedText;
+      }
     } catch(e){}
   }
 

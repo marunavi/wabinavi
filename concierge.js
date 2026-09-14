@@ -1119,7 +1119,8 @@
         + '<div class="wc-tl-th"'+(t.sname?' data-shrinename="'+esc(t.sname)+'"':'')+' style="background:'+t.grad+'">'+(t.photo?'<img src="'+esc(t.photo)+'" loading="lazy">':t.ic)+'</div>'
         + '<div class="wcr-txt"><div class="wc-tl-nm">'+t.name+'</div><div class="wc-tl-mt">'+t.meta+'</div></div>'
         + '</div></div>';
-      if (i<tl.length-1) h += '<div class="wc-tl-mv">'+(r.transport==='徒歩'?'徒歩':'移動')+' 約10分</div>';
+      // 「移動 約10分」は全区間そろって決め打ちの数字で、実際に測った値ではない。
+      // 嘘の数字を見せないため表示しない（SIMBAさんの指示 2026-09-14）。
     });
     h += '</div>';
     h += '<div class="wcr-foot"><div class="wcr-foot-row">'

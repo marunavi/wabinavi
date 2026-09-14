@@ -62,6 +62,12 @@
 - **Google Places `findPlaceFromQuery` は locationBias が無いと世界で一番有名な同名を返す。**
   「愛宕神社」で京都が返り、埼玉指定でも千葉の鹿島神宮が出た事故がある。
   必ず県名・住所を付けるか locationBias を渡し、**返ってきた住所の都道府県を検証する**
+- **locationBias は「お願い」であって「命令」ではない。** 60km を指定しても、
+  全国的に有名な同名（京都の愛宕神社）に押し切られて再発した（2026-09-14）。
+  **返ってきた座標を必ず検算し、離れていたら捨てること。**
+  `routes.js` の `__wabiPlaceBias` が、名前から `SHRINE_COORDS`（108件）を引いて
+  その社自身の8km を指定し、30km以上離れた結果は ZERO_RESULTS にしている。
+  `findPlaceFromQuery` だけでなく `textSearch` も包む必要がある
 - **Places `nearbySearch` の `type:'place_of_worship'` は神社・寺・教会を全部返す。**
   神社だけ選んでも寺が混ざる原因だった
 - **Google Maps の `dir/?api=1` は transit + waypoints を受け付けない**（入力画面のまま）
