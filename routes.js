@@ -4008,3 +4008,42 @@
   run();
   setInterval(run, 1200);
 })();
+
+/* ══════════════════════════════════════════════════════════════
+   御朱印画像の撮影者表示（2026-11-13）
+   Instagramから許可を得て掲載する御朱印の「📷 投稿者」を、撮影者のアカウントにする。
+   （何も書かないと「TREN公式」と出てしまうため）
+   index.html の goshuinAuthors に、ページ読み込み後に足すだけ。見た目は変えない。
+   ══════════════════════════════════════════════════════════════ */
+(function(){
+  var ADD = {
+    '敢國神社': '@goshuinger_red（Instagram）',
+    '妙心寺': '@goshuinger_red（Instagram）',
+    '建仁寺': '@goshuinger_red（Instagram）',
+    '鞍馬寺': '@goshuinger_red（Instagram）',
+    '玉前神社': '@hiro_powerspot_jinja（Instagram）',
+    '三峯神社': '@goshuinger_red（Instagram）',
+    '吉野神宮': '@goshuinger_red（Instagram）',
+    '春日大社': '@gosyuin_japan_watanabe（Instagram）',
+    '上野東照宮': '@gosyuin_japan_watanabe（Instagram）',
+    '富岡八幡宮': '@jinjamemocom（Instagram）',
+    '寛永寺': '@sekine_goshuin_trip（Instagram）',
+    '日枝神社': '@gosyuin_japan_watanabe（Instagram）',
+    '明治神宮': '@gosyuin_japan_watanabe（Instagram）',
+    '東郷神社': '@jinjamemocom（Instagram）',
+    '根津神社': '@jinjamemocom（Instagram）',
+    '湯島天満宮': '@jinjamemocom（Instagram）',
+    '伊勢山皇大神宮': '@gosyuin_japan_watanabe（Instagram）',
+    '榛名神社': '@gosyuin_japan_watanabe（Instagram）'
+  };
+  var tries = 0;
+  (function put(){
+    try {
+      if (typeof goshuinAuthors !== 'undefined') {
+        for (var k in ADD) if (!goshuinAuthors[k]) goshuinAuthors[k] = ADD[k];
+        return;
+      }
+    } catch(e){}
+    if (tries++ < 80) setTimeout(put, 100);
+  })();
+})();
