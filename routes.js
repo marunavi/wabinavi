@@ -4404,3 +4404,64 @@
     if (n++ < 40) setTimeout(run, ok ? 800 : 150);
   })();
 })();
+
+/* ══════════════════════════════════════════════════════════════
+   2026-11-14 SIMBAの指示で2点
+   ① AIルートを作る待ち時間を 5秒 → 3.5秒 に（1.5秒短く）
+   ② おすすめルートの寺社の写真を横長に（横を広げる。縦は今より小さくしない）
+   ══════════════════════════════════════════════════════════════ */
+(function(){
+  if (window.__wabiRouteTune1114) return;
+  window.__wabiRouteTune1114 = true;
+
+  // ② 写真を横長に：カードの左右の余白を詰め、写真の幅を 52% → 62% に。高さは150px以上を保つ
+  var css = document.createElement('style');
+  css.textContent = [
+    '.ai-rcard-spots{padding-left:8px;padding-right:8px;}',
+    '.ai-rcard-spots .tl-row{gap:8px;}',
+    '.ai-rcard-spots .tl-rail{width:34px;}',
+    '.ai-rcard-spots .spot-card .spot-card-photo{width:62%;aspect-ratio:auto;min-height:150px;}',
+    '.ai-rcard-spots .spot-card .spot-card-body{padding:12px 8px 12px 12px;}',
+    // 文字側が狭くなるぶん、名前とご利益タグを少しだけ小さくして1行に収める（折り返すと写真が縦長に戻るため）
+    '.ai-rcard-spots .spot-card .spot-card-name{font-size:17px !important;line-height:1.35 !important;}',
+    '.ai-rcard-spots .spot-card .spot-card-benefit-row{flex-wrap:nowrap;gap:4px;}',
+    '.ai-rcard-spots .spot-card .spot-card-benefit-tag{font-size:10.5px !important;padding:3px 6px !important;white-space:nowrap;}',
+    '.ai-rcard-spots .spot-card .spot-card-stay{font-size:11.5px !important;white-space:nowrap;}'
+  ].join('');
+  document.head.appendChild(css);
+
+  // ① 待ち時間
+  var TOTAL = 3500, DELAYS = [250, 800, 1350, 1900, 2450];
+  function tune(){
+    var steps = document.querySelectorAll('#aiLoadSteps .ai-load-step');
+    if (!steps.length) return false;
+    [].forEach.call(steps, function(s, i){ s.setAttribute('data-delay', DELAYS[i] != null ? DELAYS[i] : i * 550); });
+    var note = document.querySelector('#pgAiLoading .ai-load-note');
+    if (note) note.textContent = '※ 約3秒ほどで完了します';
+    return true;
+  }
+  function install(){
+    if (typeof window.openAiFlow !== 'function' || typeof showRouteList !== 'function') return false;
+    tune();
+    window.openAiFlow = function(selTime, selTrans){
+      window._aiSelTime = selTime || '3時間';
+      window._aiSelTrans = selTrans || '電車';
+      var pg = document.getElementById('pgAiLoading');
+      if (!pg) return;
+      pg.classList.add('show');
+      var steps = document.querySelectorAll('#aiLoadSteps .ai-load-step');
+      [].forEach.call(steps, function(s){ s.classList.remove('done'); });
+      [].forEach.call(steps, function(s, i){
+        var d = parseInt(s.getAttribute('data-delay'), 10) || i * 550;
+        setTimeout(function(){ s.classList.add('done'); }, d);
+      });
+      setTimeout(function(){
+        pg.classList.remove('show');
+        showRouteList();
+      }, TOTAL);
+    };
+    return true;
+  }
+  var n = 0;
+  (function run(){ if (!install() && n++ < 100) setTimeout(run, 100); })();
+})();
