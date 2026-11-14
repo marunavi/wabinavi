@@ -371,7 +371,7 @@
         // ② 御朱印（あれば表示、なければ募集中）
         var c2 = document.createElement('div');
         duo.appendChild(c2);
-        var name = s.name;
+        var name = (typeof window.wabiGoshuinKey === 'function') ? window.wabiGoshuinKey(s) : s.name;
         if (typeof resolveGoshuin === 'function') resolveGoshuin(name);
         var tries = 0;
         (function poll(){
@@ -4034,7 +4034,15 @@
     '根津神社': '@jinjamemocom（Instagram）',
     '湯島天満宮': '@jinjamemocom（Instagram）',
     '伊勢山皇大神宮': '@gosyuin_japan_watanabe（Instagram）',
-    '榛名神社': '@gosyuin_japan_watanabe（Instagram）'
+    '榛名神社': '@gosyuin_japan_watanabe（Instagram）',
+    // 同じ名前の寺社が別の県にもあるもの（「名前@都道府県」で登録）
+    '長谷寺@奈良県': '@goshuinger_red（Instagram）',
+    '長谷寺@神奈川県': '@gosyuin_japan_watanabe（Instagram）',
+    '乃木神社@東京都': '@jinjamemocom（Instagram）',
+    '大宮八幡宮@東京都': '@jinjamemocom（Instagram）',
+    '水天宮@東京都': '@jinjamemocom（Instagram）',
+    '亀山八幡宮@山口県': '@gosyuin_japan_watanabe（Instagram）',
+    '伊豆山神社@静岡県': '@goshuinger_red（Instagram）'
   };
   var tries = 0;
   (function put(){
@@ -4045,5 +4053,83 @@
       }
     } catch(e){}
     if (tries++ < 80) setTimeout(put, 100);
+  })();
+})();
+
+/* ══════════════════════════════════════════════════════════════
+   同じ名前の寺社が別の県にもあるときの御朱印（2026-11-14）
+   御朱印画像は「寺社名.jpg」で探すので、長谷寺（奈良・鎌倉）のように同じ名前が
+   複数の県にあると、どの長谷寺にも同じ画像が出てしまう。
+   → 同じ名前が2つ以上の県にある寺社だけ「寺社名_都道府県.jpg」で探す。
+     （例：長谷寺_奈良県.jpg）名前が1つしかない寺社は今までどおり「寺社名.jpg」。
+   index.html の gCandidates / goshuinBlock に、この小さいファイルから手を加える。
+   ══════════════════════════════════════════════════════════════ */
+(function(){
+  var memo = null, memoLen = -1;
+  function prefOf(s){
+    var m = String((s && s.addr) || '').match(/^(東京都|北海道|(?:京都|大阪)府|.{2,3}県)/);
+    return m ? m[1] : '';
+  }
+  function ambiguous(){
+    if (typeof SHRINES === 'undefined' || !Array.isArray(SHRINES)) return {};
+    if (memo && memoLen === SHRINES.length) return memo;
+    var seen = {}, amb = {};
+    SHRINES.forEach(function(x){
+      var p = prefOf(x); if (!p) return;
+      seen[x.name] = seen[x.name] || {};
+      seen[x.name][p] = 1;
+    });
+    for (var n in seen) if (Object.keys(seen[n]).length > 1) amb[n] = 1;
+    memo = amb; memoLen = SHRINES.length;
+    return amb;
+  }
+  window.wabiGoshuinKey = function(s){
+    if (!s || !s.name) return s && s.name;
+    var p = prefOf(s);
+    return (p && ambiguous()[s.name]) ? s.name + '@' + p : s.name;
+  };
+  var tries = 0;
+  (function hook(){
+    if (typeof gCandidates !== 'function' || typeof goshuinBlock !== 'function') {
+      if (tries++ < 100) setTimeout(hook, 100);
+      return;
+    }
+    if (window.__wabiGoshuinPrefHooked) return;
+    window.__wabiGoshuinPrefHooked = true;
+    var origCand = gCandidates, origBlock = goshuinBlock;
+    if (typeof resolveGoshuinByVision === 'function') {
+      var origVision = resolveGoshuinByVision;
+      window.resolveGoshuinByVision = function(key){
+        // 「名前@県」で画像が無いときは、写真から探さず「募集中」にする
+        if (String(key).indexOf('@') >= 0) {
+          goshuinFileCache[key] = false;
+          try { if (typeof currentTag !== 'undefined' && currentTag === 'goshuin' && typeof filter === 'function') filter(); } catch(e){}
+          return;
+        }
+        return origVision(key);
+      };
+    }
+    window.gCandidates = function(key){
+      var i = String(key).indexOf('@');
+      if (i < 0) return origCand(key);
+      // 「名前@県」→「名前_県.jpg」だけを探す（名前だけの画像は使わない＝別の県の御朱印を出さない）
+      var base = String(key).slice(0, i) + '_' + String(key).slice(i + 1);
+      var out = [], seen = {};
+      [base].concat((function(){ try { var d = base.normalize('NFD'); return d !== base ? [d] : []; } catch(e){ return []; } })())
+        .forEach(function(b){
+          ['jpg','png','JPG','PNG','jpeg'].forEach(function(ext){
+            var u = './' + encodeURIComponent(b) + '.' + ext;
+            if (!seen[u]) { seen[u] = 1; out.push(u); }
+          });
+        });
+      return out;
+    };
+    window.goshuinBlock = function(s){
+      var k = window.wabiGoshuinKey(s);
+      if (k === s.name) return origBlock(s);
+      var copy = {}; for (var p in s) copy[p] = s[p];
+      copy.name = k;
+      return origBlock(copy).replace(/openGoshuinAdmin\('([^']*)@[^']*'\)/g, "openGoshuinAdmin('$1')");
+    };
   })();
 })();
