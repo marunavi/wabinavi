@@ -4133,3 +4133,274 @@
     };
   })();
 })();
+
+/* ══════════════════════════════════════════════════════════════
+   スマホ版をPC版（pc.html）の新デザインにそろえる・第1弾（2026-11-14）
+   index.html は触らず、ここから足すだけ。やめたいときはこのブロックを消せば元に戻る。
+   ① トップに4つの入口（神社・お寺を探す／御朱印を探す／AIで巡拝ルート／参拝記録をシェア）
+   ② 「全国のおすすめ御朱印」の欄と、御朱印の一覧ページ（実際に登録した御朱印だけ）
+   ③ 見出しをPC版と同じ形（赤い英字ラベル＋明朝の見出し）に
+   ④ おすすめ巡拝ルートをPC版と同じ紫の箱に
+   ══════════════════════════════════════════════════════════════ */
+(function(){
+  if (window.__wabiSpNewDesign) return;
+  window.__wabiSpNewDesign = true;
+
+  // 登録済みの御朱印（名前・都道府県・画像ファイル・撮影者）。増やすときはここに1行足す
+  var G = [
+    ['明治神宮','東京都','明治神宮','gosyuin_japan_watanabe'],
+    ['根津神社','東京都','根津神社','jinjamemocom'],
+    ['湯島天満宮','東京都','湯島天満宮','jinjamemocom'],
+    ['日枝神社','東京都','日枝神社','gosyuin_japan_watanabe'],
+    ['上野東照宮','東京都','上野東照宮','gosyuin_japan_watanabe'],
+    ['富岡八幡宮','東京都','富岡八幡宮','jinjamemocom'],
+    ['東郷神社','東京都','東郷神社','jinjamemocom'],
+    ['乃木神社','東京都','乃木神社_東京都','jinjamemocom'],
+    ['大宮八幡宮','東京都','大宮八幡宮_東京都','jinjamemocom'],
+    ['水天宮','東京都','水天宮_東京都','jinjamemocom'],
+    ['寛永寺','東京都','寛永寺','sekine_goshuin_trip'],
+    ['伊勢山皇大神宮','神奈川県','伊勢山皇大神宮','gosyuin_japan_watanabe'],
+    ['長谷寺','神奈川県','長谷寺_神奈川県','gosyuin_japan_watanabe'],
+    ['三峯神社','埼玉県','三峯神社','goshuinger_red'],
+    ['玉前神社','千葉県','玉前神社','hiro_powerspot_jinja'],
+    ['榛名神社','群馬県','榛名神社','gosyuin_japan_watanabe'],
+    ['伊豆山神社','静岡県','伊豆山神社_静岡県','goshuinger_red'],
+    ['敢國神社','三重県','敢國神社','goshuinger_red'],
+    ['妙心寺','京都府','妙心寺','goshuinger_red'],
+    ['建仁寺','京都府','建仁寺','goshuinger_red'],
+    ['鞍馬寺','京都府','鞍馬寺','goshuinger_red'],
+    ['春日大社','奈良県','春日大社','gosyuin_japan_watanabe'],
+    ['長谷寺','奈良県','長谷寺_奈良県','goshuinger_red'],
+    ['吉野神宮','奈良県','吉野神宮','goshuinger_red'],
+    ['亀山八幡宮','山口県','亀山八幡宮_山口県','gosyuin_japan_watanabe']
+  ];
+  function src(g){ return './' + encodeURIComponent(g[2]) + '.jpg'; }
+  function esc(t){ return String(t).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+
+  var css = document.createElement('style');
+  css.textContent = [
+    /* ① 4つの入口 */
+    '.wsp-quick{display:grid;grid-template-columns:1fr 1fr;margin:18px 1.25rem 0;background:#fff;border:1px solid #E5DED3;border-radius:16px;overflow:hidden;box-shadow:0 1px 2px rgba(43,20,10,.05),0 10px 24px -12px rgba(43,20,10,.16);}',
+    '.wsp-quick .q{padding:16px 8px 14px;text-align:center;cursor:pointer;border-right:1px solid #E5DED3;border-bottom:1px solid #E5DED3;-webkit-tap-highlight-color:transparent;}',
+    '.wsp-quick .q:nth-child(2n){border-right:none;}',
+    '.wsp-quick .q:nth-child(n+3){border-bottom:none;}',
+    '.wsp-quick .q:active{background:#FAF7F3;}',
+    '.wsp-quick .ic{width:38px;height:38px;margin:0 auto 8px;border-radius:10px;background:#FAF4EC;display:flex;align-items:center;justify-content:center;color:#4B2E83;}',
+    '.wsp-quick .q:nth-child(2) .ic{color:#B8452A;}',
+    '.wsp-quick .q:nth-child(3) .ic{color:#C8A65A;}',
+    '.wsp-quick .ic svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;}',
+    ".wsp-quick .t{font-family:'Noto Serif JP','Shippori Mincho',serif;font-size:13.5px;font-weight:700;color:#2B2B2B;letter-spacing:.02em;}",
+    '.wsp-quick .s{font-size:10.5px;color:#777;margin-top:4px;line-height:1.5;}',
+    /* ③ 見出し（赤い英字ラベル＋明朝） */
+    ".wsp-eb{display:block;font-family:'Noto Sans JP',sans-serif;font-size:10.5px;font-weight:700;letter-spacing:.14em;color:#B8452A;margin:0 0 4px;}",
+    '.sec .sechd{flex-wrap:wrap;}',
+    '.sec .sechd .wsp-eb{flex:0 0 100%;}',
+    '.sec .sechd .secln{display:none;}',
+    ".sec .sechd .sectit{font-family:'Noto Serif JP','Shippori Mincho',serif;font-size:19px;font-weight:700;color:#2B2B2B;letter-spacing:.02em;}",
+    '.home-sec .home-sec-hd,.theme-section-hd{align-items:flex-end;}',
+    ".home-sec .home-sec-tit,.theme-section-hd .theme-section-tit{display:block;font-family:'Noto Serif JP','Shippori Mincho',serif;font-size:19px;font-weight:700;color:#2B2B2B;letter-spacing:.02em;}",
+    '.home-sec .home-sec-tit .ico,.theme-section-hd .theme-section-tit .ico{display:none;}',
+    '.community-box .wcp-tit{font-family:\'Noto Serif JP\',\'Shippori Mincho\',serif;font-size:19px;font-weight:700;color:#2B2B2B;}',
+    /* ④ おすすめ巡拝ルートを紫の箱に */
+    '.ai-preview{background:#4B2E83;margin:28px 1.25rem 8px;border-radius:18px;padding:26px 0 18px;position:relative;box-shadow:0 14px 30px -16px rgba(75,46,131,.6);}',
+    ".ai-preview::before{content:'わびなびだけのAI機能';position:absolute;top:-11px;left:18px;background:#C8A65A;color:#2B2B2B;font-size:10px;font-weight:700;padding:4px 12px;border-radius:999px;letter-spacing:.04em;font-family:'Noto Sans JP',sans-serif;}",
+    '.ai-preview .ai-preview-hd{text-align:left;padding:0 18px;}',
+    '.ai-preview .ai-preview-label{color:#E6CF96;letter-spacing:.14em;font-weight:700;}',
+    ".ai-preview .ai-preview-tit{color:#fff;font-family:'Noto Serif JP','Shippori Mincho',serif;}",
+    '.ai-preview .ai-preview-scroll{padding-left:18px;padding-right:18px;}',
+    /* ② 全国のおすすめ御朱印 */
+    '.wsp-gs{padding:30px 1.25rem 26px;margin-top:22px;background:linear-gradient(180deg,#fff 0%,#FAF7F3 100%);border-top:1px solid #EFE8DC;border-bottom:1px solid #EFE8DC;}',
+    '.wsp-gs-hd{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:14px;}',
+    ".wsp-gs-tit{font-family:'Noto Serif JP','Shippori Mincho',serif;font-size:19px;font-weight:700;color:#2B2B2B;letter-spacing:.02em;}",
+    '.wsp-gs-sub{font-size:11.5px;color:#777;margin-top:4px;}',
+    '.wsp-gs-more{font-size:12px;font-weight:700;color:#4B2E83;cursor:pointer;white-space:nowrap;padding:6px 0 2px 10px;}',
+    '.wsp-gs-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}',
+    '.wsp-gc{background:#fff;border:1px solid #E5DED3;border-radius:12px;overflow:hidden;cursor:pointer;box-shadow:0 1px 2px rgba(43,20,10,.05),0 10px 24px -14px rgba(43,20,10,.18);-webkit-tap-highlight-color:transparent;}',
+    '.wsp-gc:active{transform:scale(.985);}',
+    '.wsp-gc .im{aspect-ratio:3/4;background:#F4EEE4;display:flex;align-items:center;justify-content:center;overflow:hidden;}',
+    '.wsp-gc .im img{width:100%;height:100%;object-fit:contain;display:block;}',
+    '.wsp-gc .bd{padding:9px 10px 10px;}',
+    ".wsp-gc .nm{font-family:'Noto Serif JP','Shippori Mincho',serif;font-size:13.5px;font-weight:700;color:#2B2B2B;line-height:1.4;}",
+    '.wsp-gc .pf{font-size:10.5px;color:#B8452A;font-weight:600;margin-top:2px;}',
+    '.wsp-gc .au{font-size:9.5px;color:#999;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}',
+    '.wsp-gs-all{display:block;width:100%;margin-top:16px;padding:13px;border:1px solid #4B2E83;border-radius:999px;background:#fff;color:#4B2E83;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;}',
+    /* 御朱印の一覧ページ */
+    '#wspGsPg{display:none;position:fixed;inset:0;z-index:300;background:#FAF7F3;overflow-y:auto;-webkit-overflow-scrolling:touch;}',
+    '#wspGsPg .in{max-width:500px;margin:0 auto;padding:0 1.1rem 110px;}',
+    '#wspGsPg .tb{position:sticky;top:0;z-index:2;background:rgba(250,247,243,.96);backdrop-filter:blur(8px);display:flex;align-items:center;gap:8px;padding:12px 0 10px;margin-bottom:6px;}',
+    '#wspGsPg .bk{width:36px;height:36px;border:1px solid #E5DED3;border-radius:50%;background:#fff;font-size:20px;line-height:1;color:#4B2E83;cursor:pointer;flex:0 0 36px;}',
+    "#wspGsPg .tt{font-family:'Noto Serif JP','Shippori Mincho',serif;font-size:17px;font-weight:700;color:#2B2B2B;}",
+    '#wspGsPg .cn{font-size:11px;color:#777;margin-left:auto;}',
+    '#wspGsPg .chips{display:flex;gap:8px;overflow-x:auto;padding:4px 0 12px;scrollbar-width:none;}',
+    '#wspGsPg .chips::-webkit-scrollbar{display:none;}',
+    '#wspGsPg .chip{flex:0 0 auto;padding:7px 14px;border:1px solid #E5DED3;border-radius:999px;background:#fff;font-size:12px;color:#555;cursor:pointer;white-space:nowrap;}',
+    '#wspGsPg .chip.on{background:#2B2B2B;border-color:#2B2B2B;color:#fff;}',
+    '#wspGsPg .note{font-size:10.5px;color:#999;line-height:1.7;margin-top:18px;}'
+  ].join('');
+  document.head.appendChild(css);
+
+  var IC = {
+    search: '<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>',
+    book:   '<svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6"/></svg>',
+    spark:  '<svg viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3z"/></svg>',
+    cam:    '<svg viewBox="0 0 24 24"><path d="M4 8h3l1.5-2h7L17 8h3v11H4z"/><circle cx="12" cy="13" r="3.2"/></svg>'
+  };
+
+  function findShrine(g){
+    if (typeof SHRINES === 'undefined') return null;
+    var hit = null;
+    for (var i = 0; i < SHRINES.length; i++){
+      var s = SHRINES[i];
+      if (s.name !== g[0]) continue;
+      if (String(s.addr || '').indexOf(g[1]) === 0) return s;
+      if (!hit) hit = s;
+    }
+    // 同じ名前でも県が違うものは開かない（別の寺社を出さない）
+    return (hit && String(hit.addr || '').indexOf(g[1]) === 0) ? hit : null;
+  }
+  function openG(i){
+    var g = G[i], s = findShrine(g);
+    closePg();
+    if (s && typeof openShrineDetail === 'function') openShrineDetail(s);
+    else if (typeof showToast === 'function') showToast(g[0] + ' のページを準備中です');
+  }
+  function card(g, i){
+    return '<div class="wsp-gc" data-wfs="keep" data-i="' + i + '">'
+      + '<div class="im"><img src="' + src(g) + '" alt="' + esc(g[0]) + 'の御朱印" loading="lazy"></div>'
+      + '<div class="bd"><div class="nm">' + esc(g[0]) + '</div><div class="pf">' + esc(g[1]) + '</div>'
+      + '<div class="au">📷 @' + esc(g[3]) + '（Instagram）</div></div></div>';
+  }
+  function bindCards(root){
+    root.addEventListener('click', function(ev){
+      var c = ev.target.closest ? ev.target.closest('.wsp-gc') : null;
+      if (c) openG(parseInt(c.getAttribute('data-i'), 10));
+    });
+  }
+
+  /* 御朱印の一覧ページ */
+  var pg = null, curPref = '';
+  function buildPg(){
+    if (pg) return;
+    pg = document.createElement('div');
+    pg.id = 'wspGsPg';
+    var prefs = [];
+    G.forEach(function(g){ if (prefs.indexOf(g[1]) < 0) prefs.push(g[1]); });
+    pg.innerHTML = '<div class="in"><div class="tb"><button class="bk" aria-label="戻る">‹</button>'
+      + '<div class="tt">御朱印を探す</div><div class="cn"></div></div>'
+      + '<div class="chips"><div class="chip on" data-p="">すべて</div>'
+      + prefs.map(function(p){ return '<div class="chip" data-p="' + p + '">' + p + '</div>'; }).join('')
+      + '</div><div class="wsp-gs-grid"></div>'
+      + '<div class="note">掲載している御朱印は、撮影者の許可を得て、日付の日にちを消した画像です。<br>御朱印をタップすると、その神社・お寺のページが開きます。</div></div>';
+    document.body.appendChild(pg);
+    pg.querySelector('.bk').onclick = closePg;
+    pg.querySelector('.chips').addEventListener('click', function(ev){
+      var c = ev.target.closest ? ev.target.closest('.chip') : null;
+      if (!c) return;
+      curPref = c.getAttribute('data-p');
+      [].forEach.call(pg.querySelectorAll('.chip'), function(x){ x.classList.toggle('on', x === c); });
+      fillPg();
+    });
+    bindCards(pg.querySelector('.wsp-gs-grid'));
+  }
+  function fillPg(){
+    var html = '', n = 0;
+    G.forEach(function(g, i){ if (!curPref || g[1] === curPref){ html += card(g, i); n++; } });
+    pg.querySelector('.wsp-gs-grid').innerHTML = html;
+    pg.querySelector('.cn').textContent = n + '件';
+  }
+  function openPg(){
+    buildPg(); fillPg();
+    pg.style.display = 'block';
+    pg.scrollTop = 0;
+  }
+  function closePg(){ if (pg) pg.style.display = 'none'; }
+  window.wabiOpenGoshuinList = openPg;
+  // 「御朱印なび」を開く昔の入口も、この一覧に向ける（中身が仮の投稿のままのため）
+  window.openGoshuinSearch = openPg;
+  // 下のメニュー（ホーム・マップなど）を押したら一覧を閉じる
+  document.addEventListener('click', function(ev){
+    if (pg && ev.target.closest && ev.target.closest('#wabiNav')) closePg();
+  }, true);
+
+  function scrollToEl(sel){
+    var el = document.querySelector(sel);
+    if (!el) return;
+    var y = el.getBoundingClientRect().top + window.pageYOffset - 70;
+    window.scrollTo({ top: y, behavior: 'smooth' });
+  }
+  function eyebrow(target, text, before){
+    if (!target || target.querySelector('.wsp-eb')) return;
+    var e = document.createElement('span');
+    e.className = 'wsp-eb';
+    e.setAttribute('data-wfs', 'keep');
+    e.textContent = text;
+    if (before) target.insertBefore(e, target.firstChild); else target.appendChild(e);
+  }
+
+  function build(){
+    var home = document.getElementById('pgHome');
+    if (!home) return false;
+    var hero = home.querySelector('.hero');
+    var rank = home.querySelector('.sec');
+    if (!hero || !rank) return false;
+
+    // ① 4つの入口（検索カードのすぐ下）
+    if (!home.querySelector('.wsp-quick')){
+      var q = document.createElement('div');
+      q.className = 'wsp-quick';
+      q.setAttribute('data-wfs', 'keep');
+      q.innerHTML =
+          '<div class="q" data-k="find"><div class="ic">' + IC.search + '</div><div class="t">神社・お寺を探す</div><div class="s">エリアや条件からかんたん検索</div></div>'
+        + '<div class="q" data-k="gs"><div class="ic">' + IC.book + '</div><div class="t">御朱印を探す</div><div class="s">掲載中の御朱印を一覧でチェック</div></div>'
+        + '<div class="q" data-k="ai"><div class="ic">' + IC.spark + '</div><div class="t">AIで巡拝ルートを作る</div><div class="s">時間と交通手段からAIが提案</div></div>'
+        + '<div class="q" data-k="post"><div class="ic">' + IC.cam + '</div><div class="t">参拝記録をシェアする</div><div class="s">写真と一緒にみんなと共有</div></div>';
+      hero.parentNode.insertBefore(q, hero.nextSibling);
+      q.addEventListener('click', function(ev){
+        var c = ev.target.closest ? ev.target.closest('.q') : null;
+        if (!c) return;
+        var k = c.getAttribute('data-k');
+        if (k === 'find') scrollToEl('#pgHome .tagbar');
+        else if (k === 'gs') openPg();
+        else if (k === 'ai') window.scrollTo({ top: 0, behavior: 'smooth' });
+        else if (k === 'post' && typeof openCommunityAll === 'function') openCommunityAll();
+      });
+    }
+
+    // ② 全国のおすすめ御朱印（ランキングの下）
+    if (!home.querySelector('.wsp-gs')){
+      var gs = document.createElement('div');
+      gs.className = 'wsp-gs';
+      gs.setAttribute('data-wfs', 'keep');
+      gs.innerHTML = '<div class="wsp-gs-hd"><div><span class="wsp-eb">GOSHUIN</span>'
+        + '<div class="wsp-gs-tit">全国のおすすめ御朱印</div><div class="wsp-gs-sub">美しい御朱印や限定御朱印を探そう</div></div>'
+        + '<div class="wsp-gs-more">もっと見る ＞</div></div>'
+        + '<div class="wsp-gs-grid">' + G.slice(0, 6).map(card).join('') + '</div>'
+        + '<button class="wsp-gs-all">御朱印をすべて見る（' + G.length + '件）</button>';
+      rank.parentNode.insertBefore(gs, rank.nextSibling);
+      bindCards(gs.querySelector('.wsp-gs-grid'));
+      gs.querySelector('.wsp-gs-more').onclick = openPg;
+      gs.querySelector('.wsp-gs-all').onclick = openPg;
+    }
+
+    // ③ 見出しに英字ラベル
+    eyebrow(rank.querySelector('.sechd'), 'RANKING', true);
+    var box = home.querySelector('.community-box .wcp-hd > div');
+    eyebrow(box, 'COMMUNITY', true);
+    var LABEL = { 'artList':'ARTICLE', 'osupplyList':'ITEMS', 'seasonList':'EVENT', 'tourList':'TOUR', 'ecGrid':'GOODS', 'shukatsuList':'SUPPORT' };
+    [].forEach.call(home.querySelectorAll('.home-sec'), function(sec){
+      for (var id in LABEL){
+        if (sec.querySelector('#' + id)) eyebrow(sec.querySelector('.home-sec-tit'), LABEL[id], true);
+      }
+    });
+    eyebrow(home.querySelector('.theme-section-tit'), 'THEME', true);
+    return true;
+  }
+
+  var n = 0;
+  (function run(){
+    var ok = false;
+    try { ok = build(); } catch(e){}
+    // 他の処理が見出しを書き直すことがあるので、しばらくの間だけ付け直す
+    if (n++ < 40) setTimeout(run, ok ? 800 : 150);
+  })();
+})();
