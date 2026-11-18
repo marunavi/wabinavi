@@ -4038,6 +4038,16 @@
     '下鴨神社': '@gosyuin_japan_watanabe（Instagram）',
     '靖国神社': '@jinjamemocom（Instagram）',
     '仁和寺': '@goshuinger_red（Instagram）',
+    '鶴岡八幡宮': '@goshuinger_red（Instagram）',
+    '東京大神宮': '@jinjamemocom（Instagram）',
+    '箱根神社': '@goshuinger_red（Instagram）',
+    '江島神社': '@goshuinger_red（Instagram）',
+    '高龍寺': '@sekine_goshuin_trip（Instagram）',
+    '出雲伊波比神社': '@sekine_goshuin_trip（Instagram）',
+    '願成就院': '@goshuinger_red（Instagram）',
+    '生田神社': '@gosyuin_japan_watanabe（Instagram）',
+    '大山祇神社': '@goshuinger_red（Instagram）',
+    '竈門神社': '@goshuinger_red（Instagram）',
     // 同じ名前の寺社が別の県にもあるもの（「名前@都道府県」で登録）
     '長谷寺@奈良県': '@goshuinger_red（Instagram）',
     '長谷寺@神奈川県': '@gosyuin_japan_watanabe（Instagram）',
@@ -4178,7 +4188,17 @@
     ['春日大社','奈良県','春日大社','gosyuin_japan_watanabe'],
     ['長谷寺','奈良県','長谷寺_奈良県','goshuinger_red'],
     ['吉野神宮','奈良県','吉野神宮','goshuinger_red'],
-    ['亀山八幡宮','山口県','亀山八幡宮_山口県','gosyuin_japan_watanabe']
+    ['亀山八幡宮','山口県','亀山八幡宮_山口県','gosyuin_japan_watanabe'],
+    ['鶴岡八幡宮','神奈川県','鶴岡八幡宮','goshuinger_red'],
+    ['東京大神宮','東京都','東京大神宮','jinjamemocom'],
+    ['箱根神社','神奈川県','箱根神社','goshuinger_red'],
+    ['江島神社','神奈川県','江島神社','goshuinger_red'],
+    ['高龍寺','北海道','高龍寺','sekine_goshuin_trip'],
+    ['出雲伊波比神社','埼玉県','出雲伊波比神社','sekine_goshuin_trip'],
+    ['願成就院','静岡県','願成就院','goshuinger_red'],
+    ['生田神社','兵庫県','生田神社','gosyuin_japan_watanabe'],
+    ['大山祇神社','愛媛県','大山祇神社','goshuinger_red'],
+    ['竈門神社','福岡県','竈門神社','goshuinger_red']
   ];
   function src(g){ return './' + encodeURIComponent(g[2]) + '.jpg'; }
   function esc(t){ return String(t).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
