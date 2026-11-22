@@ -1,6 +1,17 @@
 [
   {
     "id": "e2612-01",
+    "title": "秩父神社 秩父夜祭",
+    "sub": "日本三大曳山祭。屋台と冬の花火",
+    "area": "埼玉",
+    "place": "秩父神社",
+    "period": "2026年12月2日（水）宵宮／3日（木）大祭",
+    "tag": "冬",
+    "photo": "秩父神社",
+    "url": "https://www.chichibu-jinja.or.jp/yomatsuri/"
+  },
+  {
+    "id": "e2612-02",
     "title": "泉岳寺 冬の義士祭",
     "sub": "赤穂四十七義士の墓所で営む供養祭",
     "area": "東京",
@@ -9,5 +20,38 @@
     "tag": "冬",
     "photo": "泉岳寺",
     "url": "https://sengakuji.or.jp/event/akougishi.html"
+  },
+  {
+    "id": "e2612-03",
+    "title": "春日大社 春日若宮おん祭",
+    "sub": "平安から続く古都奈良の年末の大祭",
+    "area": "奈良",
+    "place": "春日大社",
+    "period": "12月15日〜18日",
+    "tag": "冬",
+    "photo": "春日大社",
+    "url": "https://onmatsuri.kasugataisha.or.jp/"
+  },
+  {
+    "id": "e2612-04",
+    "title": "秋葉山本宮秋葉神社 火まつり",
+    "sub": "火防の総本宮で夜に舞う古式の神事",
+    "area": "静岡",
+    "place": "秋葉山本宮秋葉神社",
+    "period": "2026年12月15日（火）〜16日（水）火まつりは16日22:00〜",
+    "tag": "冬",
+    "photo": "秋葉山本宮秋葉神社",
+    "url": "https://www.akihasanhongu.jp/himatsuri/"
+  },
+  {
+    "id": "e2612-05",
+    "title": "浅草寺 羽子板市",
+    "sub": "江戸の歳の市を伝える年末の風物詩",
+    "area": "東京",
+    "place": "金龍山 浅草寺",
+    "period": "2026年12月17日（木）〜19日（土）",
+    "tag": "冬",
+    "photo": "浅草寺",
+    "url": "https://www.senso-ji.jp/annual_event/21.html"
   }
 ]
