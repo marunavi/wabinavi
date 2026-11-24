@@ -20,7 +20,7 @@
 <meta name="viewport" content="width=1024">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;600;700&family=Shippori+Mincho:wght@600;800&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg:#FAF7F3;
@@ -609,6 +609,33 @@
 .sd-map-mini iframe{width:100%;height:100%;border:none;display:block}
 
 </style>
+
+<style id="pc-like-sp-1124">
+/* 2026-11-24 PC版トップ（ヒーローと検索カード）をスマホ版のデザインにそろえる */
+.hero{background:linear-gradient(180deg,rgba(247,241,232,.06) 0%,rgba(247,241,232,0) 40%,rgba(247,241,232,.22) 78%,rgba(247,241,232,.8) 100%),url('https://raw.githubusercontent.com/marunavi/wabinavi/main/hero-top.jpg') center 30%/cover !important;}
+.hero-eyebrow{display:none;}
+.hero-inner h1{font-family:'Shippori Mincho',serif;font-weight:800;letter-spacing:.06em;line-height:1.55;text-shadow:0 0 18px rgba(255,250,240,.9),0 0 4px rgba(255,250,240,.8);}
+.hero-inner h1 .hl-a{color:#a83320;}
+.hero-inner h1 .hl-b{color:#5d3a7a;}
+.hero-inner p{color:#4a3a2a;font-family:'Noto Serif JP',serif;text-shadow:0 0 10px rgba(255,250,240,.95);}
+.search-card{background:#fff !important;}
+.search-card-deco{display:none;}
+.search-card-hd{justify-content:center;margin-bottom:22px !important;}
+.search-card-icon,.search-card-sub{display:none !important;}
+.search-card .search-title{font-family:'Shippori Mincho',serif;font-size:22px !important;letter-spacing:.08em;display:flex;align-items:center;gap:14px;}
+.search-card .search-title::before,.search-card .search-title::after{content:"";width:34px;height:1px;background:#bba67a;}
+.search-card .field{background:#fff !important;border-color:#e8dfcd !important;}
+.search-card .ai-field-label{font-family:'Shippori Mincho',serif;color:#8a7f72 !important;letter-spacing:.06em !important;}
+.search-card .ai-pill-row{display:flex;gap:12px;}
+.search-card .ai-pill{flex:1;justify-content:center;font-family:'Shippori Mincho',serif;color:#999 !important;border-color:#e8dfcd !important;letter-spacing:.06em;}
+.search-card .ai-pill.on{background:#3b2160 !important;border-color:#3b2160 !important;color:#fff !important;}
+.search-card #wabiPlaceBtn{width:100%;justify-content:center;background:#3b2160 !important;border-color:#3b2160 !important;color:#fff !important;font-family:'Shippori Mincho',serif;}
+.pc-feat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:26px;padding:22px 12px;border:1px solid #efe6d6;border-radius:16px;background:#fbf8f2;}
+.pc-feat{text-align:center;font-family:'Shippori Mincho',serif;font-size:14px;color:#6b5b45;line-height:1.6;}
+.pc-feat .ic{width:58px;height:58px;margin:0 auto 10px;border-radius:50%;border:1.5px solid #c9b48a;display:flex;align-items:center;justify-content:center;color:#a8946a;background:#fff;}
+.search-card .ai-cta-big{background:linear-gradient(90deg,#3b2160,#5d3a7a) !important;border-radius:40px !important;font-family:'Shippori Mincho',serif;letter-spacing:.08em;box-shadow:0 12px 26px rgba(59,33,96,.3) !important;}
+.search-card .ai-cta-note{color:#b39a6a !important;font-family:'Noto Serif JP',serif;}
+</style>
 </head>
 <body>
 
@@ -850,7 +877,7 @@
 <div class="hero" id="home">
   <div class="hero-inner">
     <div class="hero-eyebrow">神社・お寺・御朱印・巡拝ルートを、ひとつのサイトで</div>
-    <h1>あなたに合った<br>神社・お寺巡りを<br>わびなびAIがご提案</h1>
+    <h1><span class="hl-a">あなたに合った</span><br><span class="hl-a">神社・お寺巡りを</span><br><span class="hl-b">わびなびAIがご提案</span></h1>
     <p>行きたい神社やお寺、使える時間や交通手段を選ぶだけ。<br>AIが最適な巡拝ルートを作成します。</p>
   </div>
 </div>
@@ -895,6 +922,12 @@
       <button class="ai-pill" data-v="5時間">5時間</button>
       <button class="ai-pill" data-v="7時間">7時間</button>
       <button class="ai-pill" data-v="2日">2日</button>
+    </div>
+    <div class="pc-feat-row">
+      <div class="pc-feat"><div class="ic"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg></div>行きたい場所から<br>ルート作成</div>
+      <div class="pc-feat"><div class="ic"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/></svg></div>移動時間をAIが<br>最適化</div>
+      <div class="pc-feat"><div class="ic"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="3.5" width="14" height="17" rx="2"/><path d="M8.5 8h7M8.5 12h7M8.5 16h4"/></svg></div>御利益や御朱印を<br>考慮</div>
+      <div class="pc-feat"><div class="ic"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 3.5h10v17l-5-3.5-5 3.5z"/></svg></div>保存・共有で<br>いつでも確認</div>
     </div>
     <div class="ai-cta-row">
       <button class="ai-cta-big" onclick="startAiRoutePC()">
@@ -2997,6 +3030,20 @@ function openArticle(id){
   setInterval(run, 400);
 })();
 
+</script>
+
+<script>
+/* 2026-11-24 スマホ版と同じ並び：種類 → 場所 → 交通手段 → 所要時間 */
+(function(){
+  var n=0;(function t(){
+    var tp=document.getElementById('aiTypePills'),pb=document.getElementById('wabiPlaceBtn');
+    if(!tp||!pb){ if(n++<40) setTimeout(t,250); return; }
+    var lbl=tp.previousElementSibling; if(lbl&&lbl.classList.contains('ai-field-label')) lbl.style.display='none';
+    var row=pb.parentNode, plbl=row.previousElementSibling;
+    if(plbl) tp.parentNode.insertBefore(tp, plbl);
+    tp.style.marginTop='4px';
+  })();
+})();
 </script>
 </body>
 </html>
