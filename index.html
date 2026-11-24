@@ -12,7 +12,8 @@
     // 行ったり来たりする原因になっていた。
     // そのため幅による判定はやめ、ブラウザが自己申告する情報（UA）だけで判定する。
     // 「PC版で見る」を選ぶとブラウザ側がUAを非モバイルとして送るため、これで確実に判定できる。
-    var isDesktop = !isMobileUA;
+    // 2026-11-24 SIMBAさんの指示：PCでもスマホ版と同じデザインを表示する（pc.htmlへは切り替えない）
+    var isDesktop = false && !isMobileUA;
     if (isDesktop && !sessionStorage.getItem('wabinavi_force_mobile')) {
       // PC版に差し替わるまでの一瞬、モバイル版が見えてしまう（チラつく）のを防ぐため、
       // 判定がPCだと分かった時点で即座に画面を非表示にする。
