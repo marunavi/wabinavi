@@ -259,6 +259,11 @@
   .rank9-card{position:relative;border-radius:var(--r-md);overflow:hidden;aspect-ratio:4/3;transition:transform .25s,box-shadow .25s;}
   .rank9-card:hover{transform:translateY(-4px);box-shadow:0 18px 30px -14px rgba(43,20,10,.32);}
   .rank9-card img{width:100%;height:100%;object-fit:cover;transition:transform .4s;}
+  .rank9-card.gs-real{cursor:pointer;background:#F3ECDF;}
+  .rank9-card.gs-real img{object-fit:contain;padding:8px 8px 52px;}
+  .rank9-card.gs-real:hover img{transform:scale(1.03);}
+  .rank9-card.gs-real::after{background:linear-gradient(0deg,rgba(20,10,5,.82) 0%,rgba(20,10,5,.0) 34%,transparent 100%);}
+  .gs-credit{font-size:10px;color:#EADFCB;margin-top:2px;opacity:.9;}
   .rank9-card:hover img{transform:scale(1.06);}
   .rank9-card::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(20,10,5,.8) 0%,rgba(20,10,5,.04) 55%,transparent 100%);}
   .rank9-num{position:absolute;top:12px;left:12px;z-index:2;width:32px;height:32px;border-radius:50%;background:var(--gold);color:#fff;font-family:'Noto Serif JP',serif;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px rgba(0,0,0,.25);}
@@ -990,15 +995,15 @@
       <a class="more-link" href="#">もっと見る ＞</a>
     </div>
     <div class="grid-rank9">
-      <div class="rank9-card"><img loading="lazy" src="https://images.unsplash.com/photo-1760333972888-852dd0072281?fm=jpg&q=70&w=600&auto=format&fit=crop" alt="伏見稲荷大社 御朱印"><div class="goshuin-mini-seal">伏見<br>稲荷</div><div class="rank9-info"><div class="r-name">伏見稲荷大社</div><div class="r-area">京都府</div></div></div>
-      <div class="rank9-card"><img loading="lazy" src="https://images.unsplash.com/photo-1758531588833-4e0ae03c2153?fm=jpg&q=70&w=600&auto=format&fit=crop" alt="伊勢神宮 御朱印"><div class="goshuin-mini-seal">奉拝</div><div class="rank9-info"><div class="r-name">伊勢神宮（内宮）</div><div class="r-area">三重県</div></div></div>
-      <div class="rank9-card"><img loading="lazy" src="https://images.unsplash.com/photo-1752146506990-f9699e41f814?fm=jpg&q=70&w=600&auto=format&fit=crop" alt="明治神宮 御朱印"><div class="goshuin-mini-seal">明治<br>神宮</div><div class="rank9-info"><div class="r-name">明治神宮</div><div class="r-area">東京都</div></div></div>
-      <div class="rank9-card"><img loading="lazy" src="https://images.unsplash.com/photo-1759339645664-9b9c15d70b56?fm=jpg&q=70&w=600&auto=format&fit=crop" alt="出雲大社 御朱印"><div class="goshuin-mini-seal">縁結<br>び</div><div class="rank9-info"><div class="r-name">出雲大社</div><div class="r-area">島根県</div></div></div>
-      <div class="rank9-card"><img loading="lazy" src="https://images.unsplash.com/photo-1752898514963-e36929a03859?fm=jpg&q=70&w=600&auto=format&fit=crop" alt="春日大社 御朱印"><div class="goshuin-mini-seal">春日<br>大社</div><div class="rank9-info"><div class="r-name">春日大社</div><div class="r-area">奈良県</div></div></div>
-      <div class="rank9-card"><img loading="lazy" src="https://images.unsplash.com/photo-1763120339579-d660fbebaa16?fm=jpg&q=70&w=600&auto=format&fit=crop" alt="厳島神社 御朱印"><div class="goshuin-mini-seal">厳島</div><div class="rank9-info"><div class="r-name">厳島神社</div><div class="r-area">広島県</div></div></div>
-      <div class="rank9-card"><img loading="lazy" src="https://images.unsplash.com/photo-1760333972888-852dd0072281?fm=jpg&q=70&w=600&auto=format&fit=crop" alt="鶴岡八幡宮 御朱印"><div class="goshuin-mini-seal">鶴岡<br>八幡</div><div class="rank9-info"><div class="r-name">鶴岡八幡宮</div><div class="r-area">神奈川県</div></div></div>
-      <div class="rank9-card"><img loading="lazy" src="https://images.unsplash.com/photo-1758531588833-4e0ae03c2153?fm=jpg&q=70&w=600&auto=format&fit=crop" alt="石清水八幡宮 御朱印"><div class="goshuin-mini-seal">石清<br>水</div><div class="rank9-info"><div class="r-name">石清水八幡宮</div><div class="r-area">京都府</div></div></div>
-      <div class="rank9-card"><img loading="lazy" src="https://images.unsplash.com/photo-1752146506990-f9699e41f814?fm=jpg&q=70&w=600&auto=format&fit=crop" alt="住吉大社 御朱印"><div class="goshuin-mini-seal">住吉<br>大社</div><div class="rank9-info"><div class="r-name">住吉大社</div><div class="r-area">大阪府</div></div></div>
+      <div class="rank9-card gs-real" onclick="openShrineDetailPC('明治神宮','東京都')"><img loading="lazy" src="./明治神宮.jpg" alt="明治神宮 御朱印"><div class="rank9-info"><div class="r-name">明治神宮</div><div class="r-area">東京都</div><div class="gs-credit">写真：@gosyuin_japan_watanabe（Instagram）</div></div></div>
+      <div class="rank9-card gs-real" onclick="openShrineDetailPC('鶴岡八幡宮','神奈川県')"><img loading="lazy" src="./鶴岡八幡宮.jpg" alt="鶴岡八幡宮 御朱印"><div class="rank9-info"><div class="r-name">鶴岡八幡宮</div><div class="r-area">神奈川県</div><div class="gs-credit">写真：@goshuinger_red（Instagram）</div></div></div>
+      <div class="rank9-card gs-real" onclick="openShrineDetailPC('春日大社','奈良県')"><img loading="lazy" src="./春日大社.jpg" alt="春日大社 御朱印"><div class="rank9-info"><div class="r-name">春日大社</div><div class="r-area">奈良県</div><div class="gs-credit">写真：@gosyuin_japan_watanabe（Instagram）</div></div></div>
+      <div class="rank9-card gs-real" onclick="openShrineDetailPC('下鴨神社','京都府')"><img loading="lazy" src="./下鴨神社.jpg" alt="下鴨神社 御朱印"><div class="rank9-info"><div class="r-name">下鴨神社</div><div class="r-area">京都府</div><div class="gs-credit">写真：@gosyuin_japan_watanabe（Instagram）</div></div></div>
+      <div class="rank9-card gs-real" onclick="openShrineDetailPC('靖国神社','東京都')"><img loading="lazy" src="./靖国神社.jpg" alt="靖国神社 御朱印"><div class="rank9-info"><div class="r-name">靖国神社</div><div class="r-area">東京都</div><div class="gs-credit">写真：@jinjamemocom（Instagram）</div></div></div>
+      <div class="rank9-card gs-real" onclick="openShrineDetailPC('東京大神宮','東京都')"><img loading="lazy" src="./東京大神宮.jpg" alt="東京大神宮 御朱印"><div class="rank9-info"><div class="r-name">東京大神宮</div><div class="r-area">東京都</div><div class="gs-credit">写真：@jinjamemocom（Instagram）</div></div></div>
+      <div class="rank9-card gs-real" onclick="openShrineDetailPC('三峯神社','埼玉県')"><img loading="lazy" src="./三峯神社.jpg" alt="三峯神社 御朱印"><div class="rank9-info"><div class="r-name">三峯神社</div><div class="r-area">埼玉県</div><div class="gs-credit">写真：@goshuinger_red（Instagram）</div></div></div>
+      <div class="rank9-card gs-real" onclick="openShrineDetailPC('仁和寺','京都府')"><img loading="lazy" src="./仁和寺.jpg" alt="仁和寺 御朱印"><div class="rank9-info"><div class="r-name">仁和寺</div><div class="r-area">京都府</div><div class="gs-credit">写真：@goshuinger_red（Instagram）</div></div></div>
+      <div class="rank9-card gs-real" onclick="openShrineDetailPC('生田神社','兵庫県')"><img loading="lazy" src="./生田神社.jpg" alt="生田神社 御朱印"><div class="rank9-info"><div class="r-name">生田神社</div><div class="r-area">兵庫県</div><div class="gs-credit">写真：@gosyuin_japan_watanabe（Instagram）</div></div></div>
     </div>
   </div>
 </section>
