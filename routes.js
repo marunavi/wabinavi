@@ -4491,3 +4491,66 @@
   var n = 0;
   (function run(){ if (!install() && n++ < 100) setTimeout(run, 100); })();
 })();
+
+/* ── 2026-11-24 スマホ版のトップ（ヒーローと検索カード）をPC版の見た目にそろえる ── */
+(function(){
+  if (window.__wabiSpHero1124) return;
+  window.__wabiSpHero1124 = true;
+  var css = [
+    '.hero{padding:0 0 .2rem !important;}',
+    '.hero-ov{background:linear-gradient(180deg,rgba(18,10,8,.30),rgba(18,10,8,.62)) !important;}',
+    '.hero-bg-wrap{aspect-ratio:auto !important;min-height:372px;background-size:cover !important;background-position:center 30% !important;}',
+    '.hero-ct{padding:2.3rem 1.25rem 3.8rem !important;}',
+    '.hero-icon{display:none !important;}',
+    '.hero-copy{text-align:center;}',
+    '.hero-copy::before{content:"神社・お寺・御朱印・巡拝ルートを、ひとつのサイトで";display:block;color:#F3D9A0;font-family:"Noto Sans JP",sans-serif;font-size:10.5px;font-weight:600;letter-spacing:.1em;margin-bottom:12px;}',
+    '.hero-copy-main{font-family:"Noto Serif JP",serif !important;letter-spacing:.03em !important;line-height:1.5 !important;}',
+    '.hero-copy-main span,.hero-copy-main .accent,.hero-copy-main .main-3{color:#fff !important;-webkit-text-fill-color:#fff !important;background:none !important;font-size:24px !important;font-weight:700 !important;text-shadow:0 3px 18px rgba(0,0,0,.55) !important;display:block;}',
+    '.hero-copy-sub{color:#F5EFE5 !important;font-family:"Noto Sans JP",sans-serif !important;text-shadow:0 1px 10px rgba(0,0,0,.4);margin-top:.8rem !important;}',
+    '.hero-search{font-family:"Noto Sans JP",sans-serif;background:linear-gradient(155deg,#fff 0%,#fff 62%,#FBF4E4 100%) !important;border:1px solid #E5DED3;border-radius:22px !important;padding:1.25rem 1.1rem 1.1rem !important;margin:-2.6rem auto 0 !important;box-shadow:0 22px 48px rgba(43,20,10,.18) !important;width:calc(100% - 2rem) !important;}',
+    '.wsp-shd{display:flex;align-items:center;gap:12px;margin-bottom:14px;text-align:left;}',
+    '.wsp-shd .ic{flex:none;width:46px;height:46px;border-radius:50%;background:linear-gradient(155deg,#fff,#FAF7F3);border:1.5px solid #C8A65A;box-shadow:0 5px 12px rgba(200,166,90,.25);display:flex;align-items:center;justify-content:center;}',
+    '.wsp-shd .tt{font-family:"Noto Serif JP",serif;font-size:17px;font-weight:700;color:#2B2B2B;line-height:1.4;}',
+    '.wsp-shd .sb{font-size:11px;color:#777;margin-top:3px;line-height:1.5;}',
+    '.hero-search-label{display:none !important;}',
+    '.hero-search-input-wrap{background:#FAF7F3 !important;border:1px solid #E5DED3 !important;border-radius:12px !important;}',
+    '.hero-search-input{font-family:"Noto Sans JP",sans-serif !important;background:transparent !important;}',
+    '#wabiNameNote{font-family:"Noto Sans JP",sans-serif !important;color:#555 !important;font-weight:500 !important;letter-spacing:0 !important;}',
+    '.hero-search-row-label,.wsp-lbl{font-family:"Noto Sans JP",sans-serif !important;font-weight:700 !important;color:#2B2B2B !important;letter-spacing:.02em !important;margin:.85rem 0 .45rem !important;text-align:left !important;}',
+    '.hero-search-pills,.hero-search-toggles{display:flex !important;flex-wrap:wrap;gap:7px !important;justify-content:flex-start !important;}',
+    '.hero-search-pill,.hero-search-toggle{flex:0 0 auto !important;min-width:0 !important;padding:.5rem .95rem !important;border-radius:20px !important;border:1px solid #E5DED3 !important;background:#fff !important;color:#2B2B2B !important;font-family:"Noto Sans JP",sans-serif !important;font-weight:500 !important;letter-spacing:0 !important;box-shadow:none !important;}',
+    '.hero-search-pill.on,.hero-search-toggle.on{background:#4B2E83 !important;border-color:#4B2E83 !important;color:#fff !important;font-weight:700 !important;box-shadow:0 4px 10px rgba(75,46,131,.22) !important;}',
+    '.hero-search-pill svg,.hero-search-toggle svg{width:13px;height:13px;}',
+    '.hero-feat-row{display:none !important;}',
+    '.hero-search-cta{width:100% !important;max-width:none !important;height:52px !important;margin:1.2rem auto 0 !important;border-radius:14px !important;background:linear-gradient(100deg,#4B2E83 0%,#6b3fa0 45%,#c2793f 100%) !important;font-family:"Noto Sans JP",sans-serif !important;font-size:15px !important;letter-spacing:.03em !important;box-shadow:0 12px 26px rgba(75,46,131,.35) !important;}',
+    '.hero-search-cta[disabled]{opacity:.55 !important;}',
+    '.hero-search-note{font-family:"Noto Sans JP",sans-serif !important;color:#777 !important;text-align:center;margin-top:.6rem !important;}'
+  ].join('\n');
+  var st = document.createElement('style'); st.id = 'wabi-sp-hero-1124'; st.textContent = css;
+  (document.head || document.documentElement).appendChild(st);
+
+  function build(){
+    var card = document.querySelector('.hero-search');
+    if (!card || card.querySelector('.wsp-shd')) return !!card;
+    var hd = document.createElement('div'); hd.className = 'wsp-shd';
+    hd.innerHTML = '<div class="ic"><svg viewBox="0 0 40 40" width="24" height="24" fill="none"><path d="M20 4c-3 6-11 9-11 9h22s-8-3-11-9z" fill="#B8452A"/><rect x="12" y="12" width="3" height="22" fill="#B8452A"/><rect x="25" y="12" width="3" height="22" fill="#B8452A"/><rect x="6" y="17" width="28" height="3" fill="#B8452A"/></svg></div>'
+      + '<div><div class="tt">行きたい神社・お寺を入力</div><div class="sb">条件を選ぶだけで、AIが最適な巡拝ルートをご提案します</div></div>';
+    card.insertBefore(hd, card.firstChild);
+    /* 並び順をPC版と同じに：入力 → 注意書き → 場所 → 種類 → 交通手段 → 所要時間 */
+    var tg = card.querySelector('.hero-search-toggles');
+    var placeBtn = document.getElementById('wabiPlaceBtn');
+    var placeRow = placeBtn && placeBtn.parentNode;
+    var placeLbl = placeRow && placeRow.previousElementSibling;
+    if (tg && placeRow && placeLbl && placeLbl.classList.contains('hero-search-row-label')) {
+      tg.parentNode.insertBefore(placeLbl, tg);
+      tg.parentNode.insertBefore(placeRow, tg);
+    }
+    if (tg && !card.querySelector('.wsp-lbl')) {
+      var l = document.createElement('div'); l.className = 'hero-search-row-label wsp-lbl'; l.textContent = '神社・お寺の種類';
+      tg.parentNode.insertBefore(l, tg);
+    }
+    return true;
+  }
+  var n = 0;
+  (function tick(){ if (!build() && n++ < 60) setTimeout(tick, 250); else setTimeout(build, 1500); })();
+})();
